@@ -356,6 +356,44 @@ ShowGridLines属性(true/false)：行列分割线是否显示
 
 - 某个事件发生时触发
 
+# 控件模板
+
+## ControlTemplate
+
+```c#
+ <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+</ControlTemplate>
+```
+
+## DataTemplate
+
+```c#
+ <ComboBox x:Name="Com" Width="200" Height="20" Margin="0 20 0 0">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Name}"></TextBlock>
+                            <TextBlock Text="||"></TextBlock>
+                            <TextBlock Text="{Binding Sex}"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+```
+
 # Bingding(绑定)
 
 绑定的概念则侧重于: 两者的关联,协议与两者之间的影响
@@ -438,6 +476,177 @@ ShowGridLines属性(true/false)：行列分割线是否显示
     </Grid>
 ```
 
+或者直接在页面申明强类型
+
+```xaml
+<Window.DataContext>
+    <local:MainViewModel/>
+</Window.DataContext>    
+```
+
+## DataGrid绑定
+
+### MainViewModel
+
+```c#
+ 	public class MainViewModel
+    {
+        public MainViewModel()
+        {
+            Students = new ObservableCollection<Student>();
+            for (int i = 0; i < 10; i++)
+            {
+                Students.Add(new Student()
+                {
+                    Name = $"Student-{i}",
+                    Sex = i % 2 == 0 ? "男" : "女"
+                });
+            }
+        }
+
+		//ObservableCollection  动态集合
+        private ObservableCollection<Student> _students;
+
+        public ObservableCollection<Student> Students
+        {
+            get => _students;
+            set => _students = value;
+        }
+    }
+```
+
+### MainWindow
+
+```xaml
+	<Window.DataContext>
+        <local:MainViewModel></local:MainViewModel>
+    </Window.DataContext>
+    <Grid>
+        <StackPanel>
+            
+            <!--AutoGenerateColumns:是否自动创建列-->
+            <DataGrid ItemsSource="{Binding Students}"  AutoGenerateColumns="False" Margin="0 10 0 0 ">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="姓名" Binding="{Binding Name}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="姓名" Binding="{Binding Sex}"></DataGridTextColumn>
+</DataGrid.Columns>
+            </DataGrid>
+
+
+        </StackPanel>
+    </Grid>
+```
+
+## 绑定命令
+
+1. 定义方法实现Icommand
+
+```c#
+ 	public class RelayCommand:ICommand
+    {
+        public Action Action;
+
+        public RelayCommand(Action action)
+        {
+            Action = action;
+        }
+
+        /// <summary>
+        /// 能不能执行
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        public bool CanExecute(object parameter)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// 具体执行的什么
+        /// </summary>
+        /// <param name="parameter"></param>
+        public void Execute(object parameter)
+        {
+            if (Action != null)
+                Action();
+        }
+
+        public event EventHandler CanExecuteChanged;
+    }
+```
+
+2. 在MainViewModel中定义命令GetDataCommand,并实现InotifyPropertyChanged
+
+```c#
+	public class MainViewModel:INotifyPropertyChanged
+    {
+        public MainViewModel()
+        {
+            GetDataCommand = new RelayCommand(GetData);
+        }
+
+        private void GetData()
+        {
+            Students = new ObservableCollection<Student>();
+            for (int i = 0; i < 10; i++)
+            {
+                Students.Add(new Student()
+                {
+                    Name = $"Student-{i}",
+                    Sex = i % 2 == 0 ? "男" : "女"
+                });
+            }
+        }
+
+
+        private ObservableCollection<Student> _students;
+
+        public ObservableCollection<Student> Students
+        {
+            get => _students;
+            set 
+            { 	_students = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        #region 命令
+        public RelayCommand GetDataCommand { get; set; }
+        #endregion
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+```
+
+3. 绑定命令
+
+```xaml
+<Button Margin="0 10 0 0" Command="{Binding GetDataCommand}" Width="40" Height="20" Content="显示"></Button>
+```
+
+## 对于没有Command属性的控件
+
+1. 安装System.Windows.Interactivity.WPF包
+2. 引用包`xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"`
+3. 给控件绑定事件
+
+```xaml
+			<Border Width="60" Height="40" Background="Aqua" Margin="0 10 0 0">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseLeftButtonDown"><!--鼠标左击事件-->
+                        <i:InvokeCommandAction Command="{Binding GetDataCommand}"></i:InvokeCommandAction>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Border>
+```
+
 # MVVMLight
 
 - 1.NuGet引用MVVM框架包
@@ -504,6 +713,8 @@ ShowGridLines属性(true/false)：行列分割线是否显示
             set { students = value; RaisePropertyChanged(); }
         }
 
+        
+        private RelayCommand<Student> command;
         public RelayCommand<Student> Command
         {
             get
@@ -514,8 +725,6 @@ ShowGridLines属性(true/false)：行列分割线是否显示
             }
         }
 
-        private RelayCommand<Student> command;
-
         private void Rcommand(Student stu)
         {
             MessageBox.Show($"学生的姓名:{stu.Name}学生的年龄:{stu.Age}学生的性别:{stu.Sex}");
@@ -523,7 +732,6 @@ ShowGridLines属性(true/false)：行列分割线是否显示
 
 
         private RelayCommand updateCommand;
-
         public RelayCommand UpdateCommand
         {
             get
@@ -578,5 +786,163 @@ ShowGridLines属性(true/false)：行列分割线是否显示
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
+```
+
+## 注册和发送消息
+
+```c#
+		//在命令中发送消息
+        Messenger.Default.Send("123","show");
+
+		public MainWindow()
+        {
+            InitializeComponent();
+
+
+            //在当前的页面注册一个消息
+            Messenger.Default.Register<string>(this, "show", Show);
+        }
+
+        void Show(string str)
+        {
+            MessageBox.Show(str);
+        }
+```
+
+## 如果需要发送信息且接收回调microsoft.toolkit.mvvm
+
+将``MvvmLight`` 改为安装``microsoft.toolkit.mvvm``,``MainViewModel``继承``ObservableObject``
+
+```c#
+			//发送消息
+			//回调会显示名字改成了李四
+			var result = WeakReferenceMessenger.Default.Send(new Student()
+            {
+                Name = "张三",
+                Sex = "男"
+            },"show");
+
+
+			//在当前的页面注册一个消息
+            WeakReferenceMessenger.Default.Register<Student,string>(this, "show", (sender, arg) =>
+            {
+                arg.Name = "李四";
+            });
+
+
+			//用完要取消注册
+			WeakReferenceMessenger.Default.UnregisterAll(this);
+
+```
+
+## 异步的Command
+
+``IAsyncRelayCommand``
+
+```c#
+ public class MainViewModel:ObservableObject
+    {
+        public MainViewModel()
+        {
+            GetDataCommand = new AsyncRelayCommand(GetData);
+        }
+
+        private async Task GetData()
+        {
+            Students = new ObservableCollection<Student>();
+            for (int i = 0; i < 10; i++)
+            {
+                Students.Add(new Student()
+                {
+                    Name = $"Student-{i}",
+                    Sex = i % 2 == 0 ? "男" : "女"
+                });
+            }
+
+            //发送消息
+            var result = WeakReferenceMessenger.Default.Send(new Student()
+            {
+                Name = "张三",
+                Sex = "男"
+            },"show");
+
+
+            await Task.Run(() =>
+            {
+                Console.WriteLine(result);
+            });
+        }
+
+
+        private ObservableCollection<Student> _students;
+
+        public ObservableCollection<Student> Students
+        {
+            get => _students;
+            set 
+            { _students = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        #region 命令
+        public IAsyncRelayCommand GetDataCommand { get; set; }
+        #endregion
+    }
+```
+
+## DataGrid传递当前行参数
+
+```c#
+		public MainViewModel()
+        {
+            GetDataCommand = new AsyncRelayCommand(GetData);
+            GetDataCommand2 = new RelayCommand<string>(GetData2);
+        }
+
+        private void GetData2(string m)
+        {
+            m = m + "s";
+        }
+
+		public RelayCommand<string> GetDataCommand2 { get; set; }
+```
+
+```xaml
+DataGrid ItemsSource="{Binding Students}"  AutoGenerateColumns="False" Margin="0 10 0 0 ">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="姓名" Binding="{Binding Name}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="性别" Binding="{Binding Sex}"></DataGridTextColumn>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="编辑" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}},Path=DataContext.GetDataCommand2}" CommandParameter="{Binding  Name}"></Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+```
+
+# 调用api(可以用postman查看调用代码)
+
+```c#
+var client = new RestClient("https://localhost:44391/api/student/Login");
+client.Timeout = -1;
+var request = new RestRequest(Method.POST);
+request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+request.AddParameter("UserName", "aaaaaa");
+request.AddParameter("UserPwd", "12231");
+IRestResponse response = client.Execute(request);
+
+
+
+
+var client = new RestClient("https://localhost:44391/api/student/1");
+client.Timeout = -1;
+var request = new RestRequest(Method.GET);
+request.AddHeader("token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJMb2dpbk5hbWUiOiJhYWFhYWEiLCJVc2VyUHdkIjoiMTIyMzEiLCJ0aW1lb3V0IjoiMjAyMS0wNC0yNVQwMDoyNzoyNC4zNDcyNTQ3KzA4OjAwIn0.baWyjzh52h12kdGbxaQ8ybJD2J0_Q5u1dCxw-M6Tp9E");
+IRestResponse response = client.Execute(request);
 ```
 
