@@ -946,3 +946,268 @@ request.AddHeader("token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJMb2dpbk5hbWU
 IRestResponse response = client.Execute(request);
 ```
 
+# 装饰器
+
+```c#
+	public class TestAdorner:Adorner
+    {
+        public TestAdorner(UIElement adornedElement) : base(adornedElement)
+        {
+
+        }
+
+        /// <summary>
+        /// 该装饰器效果--给四个边角加圆圈
+        /// </summary>
+        /// <param name="drawingContext"></param>
+        protected override void OnRender(DrawingContext drawingContext)
+        {
+            Rect adornedElementRect = new Rect(this.AdornedElement.DesiredSize);
+
+            // Some arbitrary drawing implements.
+            SolidColorBrush renderBrush = new SolidColorBrush(Colors.Green);
+            renderBrush.Opacity = 0.2;
+            Pen renderPen = new Pen(new SolidColorBrush(Colors.Navy), 1.5);
+            double renderRadius = 5.0;
+
+            // Draw a circle at each corner.
+            drawingContext.DrawEllipse(renderBrush, renderPen, adornedElementRect.TopLeft, renderRadius, renderRadius);
+            drawingContext.DrawEllipse(renderBrush, renderPen, adornedElementRect.TopRight, renderRadius, renderRadius);
+            drawingContext.DrawEllipse(renderBrush, renderPen, adornedElementRect.BottomLeft, renderRadius, renderRadius);
+            drawingContext.DrawEllipse(renderBrush, renderPen, adornedElementRect.BottomRight, renderRadius, renderRadius);
+        }
+    }
+```
+
+```c#
+ 		private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            var layer = AdornerLayer.GetAdornerLayer(myBtn);//装饰层
+
+            if (layer != null) layer.Add(new TestAdorner(myBtn)); //添加装饰器
+        }
+
+        private void Button2_OnClick(object sender, RoutedEventArgs e)
+        {
+            var layer = AdornerLayer.GetAdornerLayer(myBtn);//装饰层
+
+            if (layer != null)
+            {
+                var arr = layer.GetAdorners(myBtn); //装饰器数组
+                if (arr != null)
+                {
+                    foreach (var item in arr)
+                    {
+                        layer.Remove(item);
+                    }
+                }
+            }
+        }
+```
+
+```xaml
+	<Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="100"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Button Width="200" Height="40" x:Name="myBtn"></Button>
+        
+
+        <StackPanel Grid.Row="1">
+            <Button Content="添加装饰效果" Width="200" Height="40" Click="ButtonBase_OnClick"></Button>
+            <Button Content="移除装饰效果" Width="200" Height="40" Click="Button2_OnClick" Margin="0 10 0 0 "></Button>
+        </StackPanel>
+
+    </Grid>
+```
+
+- 效果
+
+![](images/013.png)
+
+![](images/012.png)
+
+# 转换器
+
+## 值转换器
+
+```c#
+	//实现IValueConverter
+	public class IDisplayConverter:IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value != null)
+            {
+                return  value.ToString().Equals("0")?"Yes":"No";
+            }
+
+            return "";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+```
+
+```xaml
+	<Window.Resources>
+        <local:IDisplayConverter x:Key="Converter"></local:IDisplayConverter>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+            <TextBlock Text="0" Name="t1" FontSize="50"></TextBlock>
+			<!--使用转换器-->
+            <TextBlock Name="t2" FontSize="50" Text="{Binding ElementName=t1,Path=Text,Converter={StaticResource Converter}}">
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+```
+
+- 效果
+
+![](images/014.png)
+
+## 多值转换器
+
+```c#
+	//实现IMultiValueConverter
+	public class IMultiValueDisplayConverter:IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values == null || values.Length<3)
+            {
+                return null;
+            }
+
+            byte r = System.Convert.ToByte(values[0]);
+            byte g = System.Convert.ToByte(values[1]);
+            byte b = System.Convert.ToByte(values[2]);
+
+            Color color = Color.FromRgb(r,g,b);
+
+            return new SolidColorBrush(color);
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+```
+
+```xaml
+	<Window.Resources>
+        <local:IMultiValueDisplayConverter x:Key="MultiValueDisplayConverter"></local:IMultiValueDisplayConverter>
+    </Window.Resources>
+    <Grid>
+        <StackPanel>
+            <Slider Name="Slider_R" Minimum="0" Maximum="255" Width="400" Margin="10"></Slider>
+            <Slider Name="Slider_G" Minimum="0" Maximum="255" Width="400" Margin="10"></Slider>
+            <Slider Name="Slider_B" Minimum="0" Maximum="255" Width="400" Margin="10"></Slider>
+
+            <Path HorizontalAlignment="Center" Margin="321,0">
+                <Path.Data>
+                    <EllipseGeometry Center="80,80" RadiusX="50" RadiusY="50"></EllipseGeometry>
+                </Path.Data>
+
+                <Path.Fill>
+                    <MultiBinding Converter="{StaticResource MultiValueDisplayConverter}">
+                        <Binding ElementName="Slider_R" Path="Value"></Binding>
+                        <Binding ElementName="Slider_G" Path="Value"></Binding>
+                        <Binding ElementName="Slider_B" Path="Value"></Binding>
+                    </MultiBinding>
+                </Path.Fill>
+            </Path>
+        </StackPanel>
+    </Grid>
+```
+
+- 效果
+
+![](images/015.png)
+
+# 行为(Behavior)
+
+首先安装System.Windows.Interactivity.WPF
+
+```c#
+ 	public class EffectBehavior:Behavior<FrameworkElement>
+    {
+        protected override void OnAttached()
+        {
+            base.OnAttached();
+
+            AssociatedObject.MouseMove += AssociatedObjectOnMouseMove;
+
+            AssociatedObject.MouseLeave += AssociatedObjectOnMouseLeave;
+        }
+
+        
+        protected override void OnDetaching()
+        {
+            base.OnDetaching();
+            AssociatedObject.MouseMove -= AssociatedObjectOnMouseMove;
+
+            AssociatedObject.MouseLeave -= AssociatedObjectOnMouseLeave;
+        }
+        
+        private void AssociatedObjectOnMouseLeave(object sender, MouseEventArgs e)
+        {
+            var element = sender as FrameworkElement;
+            if (element != null)
+                element.Effect = (Effect)new DropShadowEffect() { Color = Colors.Transparent, ShadowDepth = 0 };
+        }
+
+        private void AssociatedObjectOnMouseMove(object sender, MouseEventArgs e)
+        {
+            var element = sender as FrameworkElement;
+            if (element != null)
+                element.Effect = (Effect)new DropShadowEffect() { Color = Colors.Red, ShadowDepth = 0 };
+        }
+
+    }
+```
+
+```xaml
+	<Window x:Class="WpfBehaviorDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"<!--引用命名空间-->
+        xmlns:local="clr-namespace:WpfBehaviorDemo"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <StackPanel>
+            
+            <TextBox Width="100" Height="30" Margin="10">
+                <i:Interaction.Behaviors>
+                    <local:EffectBehavior></local:EffectBehavior>
+                </i:Interaction.Behaviors>
+            </TextBox>
+
+            <Button Width="100" Height="30" Margin="10">
+                <i:Interaction.Behaviors>
+                    <local:EffectBehavior></local:EffectBehavior>
+                </i:Interaction.Behaviors>
+            </Button>
+            
+        </StackPanel>
+    </Grid>
+</Window>
+```
+
+# 动画
+
