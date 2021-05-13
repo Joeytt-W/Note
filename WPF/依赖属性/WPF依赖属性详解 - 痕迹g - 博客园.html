@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<!-- saved from url=(0046)https://www.cnblogs.com/zh7791/p/14346176.html -->
+<html lang="zh-cn" mode="dark" theme="a"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="description" content="前言 如果看文字版本不没耐心, 点击下方查看视频讲解。 点击观看视频 回顾 在讲解依赖属性之前, 首先我们熟悉一下WPF当中的绑定(Binding), 可能你曾用过WPF中绑定的语法。 下面演示了在B">
+    <meta property="og:description" content="前言 如果看文字版本不没耐心, 点击下方查看视频讲解。 点击观看视频 回顾 在讲解依赖属性之前, 首先我们熟悉一下WPF当中的绑定(Binding), 可能你曾用过WPF中绑定的语法。 下面演示了在B">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>WPF依赖属性详解 - 痕迹g - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <link rel="stylesheet" href="./WPF依赖属性详解 - 痕迹g - 博客园_files/blog-common.min.css">
+    
+    <link type="text/css" rel="stylesheet" href="./WPF依赖属性详解 - 痕迹g - 博客园_files/custom.css">
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./WPF依赖属性详解 - 痕迹g - 博客园_files/bundle-custom-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/zh7791/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/zh7791/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/zh7791/wlwmanifest.xml">
+    <script async="" src="./WPF依赖属性详解 - 痕迹g - 博客园_files/analytics.js.下载"></script><script>
+        var currentBlogId = 357758;
+        var currentBlogApp = 'zh7791';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'Custom';
+        var visitorUserId = '';
+    </script>
+        <script>
+            var currentPostDateAdded = '2021-01-29 05:32';
+        </script>
+    <script src="./WPF依赖属性详解 - 痕迹g - 博客园_files/jquery-2.2.0.min.js.下载"></script>
+    <script src="./WPF依赖属性详解 - 痕迹g - 博客园_files/blog-common.min.js.下载"></script><style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style>
+    
+    
+    
+<link rel="stylesheet" href="./WPF依赖属性详解 - 痕迹g - 博客园_files/lightbox.min.css"></head>
+<body class="no-navbar">
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc navbar-custom">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding"><a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="./WPF依赖属性详解 - 痕迹g - 博客园_files/logo.svg" alt="博客园Logo"></a></li>
+                <li><a href="https://www.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-sitehome&#39;)">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-news&#39;)">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-q&#39;)">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-brands&#39;)">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-ing&#39;)">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-edu&#39;)">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="./WPF依赖属性详解 - 痕迹g - 博客园_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="./WPF依赖属性详解 - 痕迹g - 博客园_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./WPF依赖属性详解 - 痕迹g - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./WPF依赖属性详解 - 痕迹g - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./WPF依赖属性详解 - 痕迹g - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./WPF依赖属性详解 - 痕迹g - 博客园_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    <!--done-->
+<div id="home">
+<div id="header"><div class="esa-mobile-menu"><i class="fa fa-bars"></i></div>
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/zh7791/"><img id="blogLogo" src="./WPF依赖属性详解 - 痕迹g - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/zh7791/">痕迹-微软MVP</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/zh7791/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E7%97%95%E8%BF%B9g">
+联系</a></li>
+
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 159&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 156&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 379760">
+37万</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/zh7791/p/14346176.html">
+    <span>WPF依赖属性详解</span>
+    
+
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+<h2 id="前言">前言</h2>
+<p>如果看文字版本不没耐心, 点击下方查看视频讲解。<br>
+<a href="https://www.bilibili.com/video/BV1Y54y1p7n4" target="_blank">点击观看视频</a></p>
+<h2 id="回顾">回顾</h2>
+<p>在讲解依赖属性之前, 首先我们熟悉一下WPF当中的绑定(Binding), 可能你曾用过WPF中绑定的语法。</p>
+<p>下面演示了在Button按钮上为Content属性设置了一个绑定语法, 如下所示:</p>
+<pre><code class="hljs xml hljsln ln-hide"> <span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">Content</span>=<span class="hljs-string">"{Binding Content}"</span>/&gt;</span>
+</code></pre>
+<p>当你在Content属性按下F12转到定义时,可以观察到Button按钮所继承的类的定义,如下所示:<br>
+<a href="./WPF依赖属性详解 - 痕迹g - 博客园_files/1161656-20210129160704396-1339341116.png" data-title="" data-alt="" data-lightbox="roadtrip"><img src="./WPF依赖属性详解 - 痕迹g - 博客园_files/1161656-20210129160704396-1339341116.png" alt="" loading="lazy" class="medium-zoom-image"></a><br>
+如图上红圈位置, 定义了一个静态的只读字段ContentProperty。<br>
+通过查看该字段的类型DependencyProperty,没错！它就是一个依赖属性。</p>
+<p>看到这里, 你应该有了一个概念, 在WPF当中, 所有支持绑定的属性本质上它都是封装后的依赖属性。<br>
+那么也就是说, <strong>只有依赖属性才可以进行绑定</strong>。<br>
+如果你不能够理解, 我们再举个例子, 当你使用WPF当中PasswordBox控件的时候, 你会发现Password属性不支持绑定, 当按下F12转到定义,会发现该Password就是一个普通属性:<br>
+<a href="./WPF依赖属性详解 - 痕迹g - 博客园_files/1161656-20210129162045845-1695495659.png" data-title="" data-alt="" data-lightbox="roadtrip"><img src="./WPF依赖属性详解 - 痕迹g - 博客园_files/1161656-20210129162045845-1695495659.png" alt="" loading="lazy" class="medium-zoom-image"></a><br>
+这也就是为什么Password不支持绑定的真正原因。</p>
+<h2 id="属性和依赖属性">属性和依赖属性</h2>
+<p>现在, 我们来解决另外一个概念问题, 可能看到上面, 你还是不太清楚属性和依赖属性它们的区别在哪里?</p>
+<h3 id="属性">属性</h3>
+<p>很常见, 在C#中的标准属性,通常会由一个非静态类型的私有字段支持, 假设当前有一个对象, 它拥有100个标准属性,<br>
+并且背后都定义了一个4字节的字段, 如果我们初始化10000个这样的对象, 那么这些字段将占用100×4×10000= 3.81M 内存。<br>
+但是实际上, 我们并非使用到所有的属性, 这就意味着大多数内存会被浪费！</p>
+<h3 id="依赖属性">依赖属性</h3>
+<p>如何解决属性带来的问题? 我们回到现实生活当中想象一种场景, 假设老王和你的女朋友去旅游, 他们准备东西的时候大都是把必要的带上, 而不是说女朋友想喝水,要不然在行李箱里面放一箱水? 那么是不是意味着上厕所把纸带上? 洗发水? 沐浴露? 天呐, 这真是一场糟糕的旅行。<br>
+我们都知道, 水、厕所纸、洗发水、沐浴露这些酒店里面都有阿, 为什么要我们自己带? 所以我们懂了, 这些不必要带的东西我们可以依赖外部提供给我们。是的, 我们把这种思想带到编程当中。<br>
+所以, 这就是WPF当中的依赖属性的理念,  也许你在其它的地方都听过别人讲解过依赖属性, 并且他们都告诉你依赖属性本身没有值, 可以依赖绑定来源获得值。</p>
+<h3 id="总结">总结</h3>
+<p>下面是对比属性/依赖属性改的定义:</p>
+<pre><code class="hljs csharp hljsln ln-hide">       <span class="hljs-comment">//依赖属性</span>
+
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">readonly</span> DependencyProperty MyPropertyProperty =
+           DependencyProperty.Register(<span class="hljs-string">"MyProperty"</span>, <span class="hljs-keyword">typeof</span>(<span class="hljs-built_in">int</span>), <span class="hljs-keyword">typeof</span>(Test), <span class="hljs-keyword">new</span> PropertyMetadata(<span class="hljs-number">0</span>));
+
+        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> MyProperty
+        {
+            <span class="hljs-keyword">get</span> { <span class="hljs-keyword">return</span> (<span class="hljs-built_in">int</span>)GetValue(MyPropertyProperty); }
+            <span class="hljs-keyword">set</span> { SetValue(MyPropertyProperty, <span class="hljs-keyword">value</span>); }
+        }
+
+        <span class="hljs-comment">//属性</span>
+
+        <span class="hljs-keyword">private</span> <span class="hljs-built_in">int</span> name;
+
+        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> Name
+        {
+            <span class="hljs-keyword">get</span> { <span class="hljs-keyword">return</span> name; }
+            <span class="hljs-keyword">set</span> { name = <span class="hljs-keyword">value</span>; }
+        }
+</code></pre>
+<p>通过上面我们可以了解到, 普通的属性通过定义了一个私有字段, 然后通过这个私有字段进行读取或设置值。<br>
+而对于依赖属性, 它同样是使用属性的访问方式, 但是它获取和设置值是通过依赖属性而不再是私有字段。</p>
+<h2 id="依赖属性定义">依赖属性定义</h2>
+<p>同样, 你也许在许多的博客当中, 别人教你怎么定义依赖属性, 它通过DependencyProperty类的静态Register方法注册, 如下所示:</p>
+<pre><code class="hljs csharp hljsln ln-hide">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Test</span> : <span class="hljs-title">DependencyObject</span>
+    {
+        <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Message
+        {
+            <span class="hljs-keyword">get</span> { <span class="hljs-keyword">return</span> (<span class="hljs-built_in">string</span>)GetValue(MyPropertyProperty); }
+            <span class="hljs-keyword">set</span> { SetValue(MyPropertyProperty, <span class="hljs-keyword">value</span>); }
+        }
+
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">readonly</span> DependencyProperty MyPropertyProperty =
+            DependencyProperty.Register(<span class="hljs-string">"Message"</span>, <span class="hljs-keyword">typeof</span>(<span class="hljs-built_in">string</span>), <span class="hljs-keyword">typeof</span>(Test), <span class="hljs-keyword">new</span> PropertyMetadata(<span class="hljs-literal">null</span>));
+    }
+</code></pre>
+<p>上面的代码当中, 我们定义了一个string类型的依赖属性Message, 如果你们有看过WPF的源代码, 你可能会了解, 在其背后, 生成了一个key/value存储在Hashtable里面。</p>
+<ul>
+<li>生成key的代码片段<br>
+<a href="./WPF依赖属性详解 - 痕迹g - 博客园_files/1161656-20210129173618306-1699178995.png" data-title="" data-alt="" data-lightbox="roadtrip"><img src="./WPF依赖属性详解 - 痕迹g - 博客园_files/1161656-20210129173618306-1699178995.png" alt="" loading="lazy" class="medium-zoom-image"></a></li>
+<li>添加到Hashtable中<br>
+<a href="./WPF依赖属性详解 - 痕迹g - 博客园_files/1161656-20210129173632205-1501097100.png" data-title="" data-alt="" data-lightbox="roadtrip"><img src="./WPF依赖属性详解 - 痕迹g - 博客园_files/1161656-20210129173632205-1501097100.png" alt="" loading="lazy"></a><br>
+终于解开了疑惑,有了这个全局的Hashtable存在, 意味着,他就是用来存储依赖属性实例的地方。</li>
+</ul>
+<p><strong>注意:</strong>定义依赖属性的地方, 你会发现它需要继承于DependencyObject对象, 通过该对象当中的提供的GetValue/SetValue方法, 我们可以获取/设置依赖属性的值:<br>
+<a href="./WPF依赖属性详解 - 痕迹g - 博客园_files/1161656-20210129173655186-252638409.png" data-title="" data-alt="" data-lightbox="roadtrip"><img src="./WPF依赖属性详解 - 痕迹g - 博客园_files/1161656-20210129173655186-252638409.png" alt="" loading="lazy"></a></p>
+<h3 id="getvaluesetvalue哪里来？">GetValue/SetValue哪里来？</h3>
+<p>看看WPF中的继承关系, 噢,懂了。 基类就是DependencyObject。<br>
+<a href="./WPF依赖属性详解 - 痕迹g - 博客园_files/1161656-20210129180128228-686533412.png" data-title="" data-alt="" data-lightbox="roadtrip"><img src="./WPF依赖属性详解 - 痕迹g - 博客园_files/1161656-20210129180128228-686533412.png" alt="" loading="lazy" class="medium-zoom-image"></a></p>
+<p>噢！ 我的🐎🦆, 这也就是为什么, 微软提供了标准属性的访问方式！让我们傻傻分不清其内部通过依赖属性来设置或获取值。</p>
+<p><a href="https://referencesource.microsoft.com/#WindowsBase/Base/System/Windows/DependencyProperty.cs,413209cce40ef57f" target="_blank">在线搜索WPF源代码</a></p>
+<h2 id="附加属性">附加属性</h2>
+<p>字母意思来理解, 附加属性就是对于一个对象而言, 本来它不具备这个属性, 但是由于附加给这个对象, 然后才有了这个属性,这种我们称之为附加属性。<br>
+<strong>注</strong>：附加属性也是依赖属性, 只是它的注册方式与表达方式略有不同。<br>
+如果仍然不理解, 我们可以找到WPF当中经常用到的例子, 如下所示, 当一个按钮处在不同的容器当中, 它就具有了不同的附加属性:</p>
+<pre><code class="hljs xml hljsln ln-hide">        <span class="hljs-tag">&lt;<span class="hljs-name">Grid</span>&gt;</span>
+            <span class="hljs-comment">&lt;!--在Grid当中,具备Row/Column附加属性--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">Grid.Row</span>=<span class="hljs-string">"0"</span> <span class="hljs-attr">Grid.Column</span>=<span class="hljs-string">"0"</span> /&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Grid</span>&gt;</span>
+       
+        <span class="hljs-tag">&lt;<span class="hljs-name">DockPanel</span>&gt;</span>
+            <span class="hljs-comment">&lt;!--在DockPanel中,具备Dock附加属性--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">DockPanel.Dock</span>=<span class="hljs-string">"Left"</span> /&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">DockPanel</span>&gt;</span>
+
+        <span class="hljs-tag">&lt;<span class="hljs-name">Canvas</span>&gt;</span>
+            <span class="hljs-comment">&lt;!--在Canvas中,具备Left/Top/Rifht/Bottom等附加属性--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">Canvas.Left</span>=<span class="hljs-string">"10"</span>/&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Canvas</span>&gt;</span>
+</code></pre>
+<h2 id="依赖属性与附加属性对比">依赖属性与附加属性对比</h2>
+<h3 id="声明方式">声明方式</h3>
+<h4 id="创建依赖属性">创建依赖属性</h4>
+<p>我们可以输入propdp再按两下tab键生成一个依赖属性的模板,如下所示:<br>
+<strong>注</strong>: 声明依赖属性的所在位置的对象必须直接或简介继承于DependencyObject对象, 这样它才具备GetValue/SetValue方法。</p>
+<pre><code class="hljs csharp hljsln ln-hide">        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> MyProperty
+        {
+            <span class="hljs-keyword">get</span> { <span class="hljs-keyword">return</span> (<span class="hljs-built_in">int</span>)GetValue(MyPropertyProperty); }
+            <span class="hljs-keyword">set</span> { SetValue(MyPropertyProperty, <span class="hljs-keyword">value</span>); }
+        }
+
+        <span class="hljs-comment">// Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...</span>
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">readonly</span> DependencyProperty MyPropertyProperty =
+            DependencyProperty.Register(<span class="hljs-string">"MyProperty"</span>, <span class="hljs-keyword">typeof</span>(<span class="hljs-built_in">int</span>), <span class="hljs-keyword">typeof</span>(ownerclass), <span class="hljs-keyword">new</span> PropertyMetadata(<span class="hljs-number">0</span>));
+</code></pre>
+<h4 id="创建附加属性">创建附加属性</h4>
+<p>我们可以输入propa再按两下tab键生成一个附加属性的模板,如下所示:<br>
+<strong>注</strong>:声明附加属性的对象无需继承于DependencyObject, 因为这个时候DependencyObject对象作为方法参数传递。</p>
+<pre><code class="hljs csharp hljsln ln-hide">        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-built_in">int</span> <span class="hljs-title">GetMyProperty</span>(<span class="hljs-params">DependencyObject obj</span>)</span>
+        {
+            <span class="hljs-keyword">return</span> (<span class="hljs-built_in">int</span>)obj.GetValue(MyPropertyProperty);
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">SetMyProperty</span>(<span class="hljs-params">DependencyObject obj, <span class="hljs-built_in">int</span> <span class="hljs-keyword">value</span></span>)</span>
+        {
+            obj.SetValue(MyPropertyProperty, <span class="hljs-keyword">value</span>);
+        }
+
+        <span class="hljs-comment">// Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...</span>
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">readonly</span> DependencyProperty MyPropertyProperty =
+            DependencyProperty.RegisterAttached(<span class="hljs-string">"MyProperty"</span>, <span class="hljs-keyword">typeof</span>(<span class="hljs-built_in">int</span>), <span class="hljs-keyword">typeof</span>(ownerclass), <span class="hljs-keyword">new</span> PropertyMetadata(<span class="hljs-number">0</span>));
+</code></pre>
+<h3 id="使用场景">使用场景</h3>
+<p><strong>依赖属性</strong>: 当您需要单独创建控件时, 并且希望控件的某个部分能够支持数据绑定时, 你则可以使用到依赖属性。<br>
+<strong>附加属性</strong>: 这种情况很多, 正因为WPF当中并不是所有的内容都支持数据绑定, 但是我们希望其支持数据绑定, 这样我们就可以创建基于自己声明的附加属性,添加到元素上, 让其元素的某个原本不支持数据绑定的属性间接形成绑定关系。<br>
+<strong>例如</strong>:为PassWord定义附加属性与PassWord进行关联。例如DataGrid控件不支持SelectedItems, 但是我们想要实现选中多个条目进行数据绑定, 这个时候也可以声明附加属性的形式让其支持数据绑定。</p>
+
+</div>
+<div id="MySignature" style="display: block;"><div class="esa-post-signature"> 
+                <p>作者：痕迹g</p> 
+                <p>出处：<a href="https://www.cnblogs.com/zh7791/p/14346176.html">https://www.cnblogs.com/zh7791/p/14346176.html</a></p> 
+                <p>版权：本作品采用「<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">署名-非商业性使用-相同方式共享 4.0 国际</a>」许可协议进行许可。</p> 
+                <p></p> 
+            </div></div>
+<div class="clear"></div>
+<div id="blog_post_info_block"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/zh7791/category/1213318.html" target="_blank">WPF</a></div>
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(14346176,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;e47a10a5-9333-e711-9fc1-ac853d9f53cc&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./WPF依赖属性详解 - 痕迹g - 博客园_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./WPF依赖属性详解 - 痕迹g - 博客园_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/zh7791/" target="_blank"><img src="./WPF依赖属性详解 - 痕迹g - 博客园_files/20200724141223.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/zh7791/">痕迹g</a><br>
+            <a href="https://home.cnblogs.com/u/zh7791/followees/">关注 - 8</a><br>
+            <a href="https://home.cnblogs.com/u/zh7791/followers/">粉丝 - 923</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;e47a10a5-9333-e711-9fc1-ac853d9f53cc&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(14346176,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">5</span>
+    </div>
+    <div class="buryit" onclick="votePost(14346176,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/zh7791/p/14320463.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/zh7791/p/14320463.html" title="发布于 2021-01-24 12:10">WPF Prism8.x源码解析-IDialogService</a>
+    <br>
+    <a href="https://www.cnblogs.com/zh7791/p/14440626.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/zh7791/p/14440626.html" title="发布于 2021-02-24 12:11">ASP.NET Core 基础系列（1）(Main方法)</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2021-01-29 17:32</span>&nbsp;
+<a href="https://www.cnblogs.com/zh7791/">痕迹g</a>&nbsp;
+阅读(<span id="post_view_count">842</span>)&nbsp;
+评论(<span id="post_comment_count">4</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=14346176" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(14346176);return false;">收藏</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script src="./WPF依赖属性详解 - 痕迹g - 博客园_files/highlight.min.js.下载"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 357758, cb_blogApp = 'zh7791', cb_blogUserGuid = 'e47a10a5-9333-e711-9fc1-ac853d9f53cc';
+    var cb_entryId = 14346176, cb_entryCreatedDate = '2021-01-29 17:32', cb_postType = 1;
+    updatePostStats(
+        [cb_entryId],
+        function(id, count) { $("#post_view_count").text(count) },
+        function(id, count) { $("#post_comment_count").text(count) })
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+</script>
+<a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/zh7791/p/14346176.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/zh7791/p/14346176.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+        <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;"></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card"><b>园子动态</b>：<br>· <a href="https://www.cnblogs.com/cmt/p/14585828.html" target="_blank">致园友们的一封检讨书：都是我们的错</a><br>· <a href="https://www.cnblogs.com/cmt/p/14595262.html" target="_blank">数据库实例 CPU 100% 引发全站故障</a><br>· <a href="https://www.cnblogs.com/cmt/p/14217355.html" target="_blank">发起一个开源项目：博客引擎 fluss</a><br></div></div>
+    <div id="cnblogs_c2" class="under-post-card">
+        <div id="div-gpt-ad-1592366332455-0" style="width: 468px; height: 60px;"></div>
+    </div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/693790/" target="_blank">货拉拉打车虽香 但涉嫌违规载客</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/693789/" target="_blank">咖啡之后，陆正耀盯上小面</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/693788/" target="_blank">三年累计亏损超过1亿元 奈雪卷不动了？</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/693787/" target="_blank">4500万知识教信徒、毛利90% 樊登读书3年赚了50亿？</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/693786/" target="_blank">Netflix知道自己的敌人是谁</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+       var commentManager = new blogCommentManager();
+       commentManager.renderComments(0);
+       fixPostBody();
+       deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);       deliverT2();
+       deliverC1C2();
+       loadNewsAndKb();
+       loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);       LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+       GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+       loadOptUnderPost();
+       GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem"><!--done-->
+<h3 class="catListTitle">公告</h3>
+
+<div id="blog-news">
+    <script type="text/javascript">window['__document_write_ajax_callbacks__']['4']();</script><script>window['__document_write_ajax_callbacks__']['1']();</script>
+<script type="text/javascript">window['__document_write_ajax_callbacks__']['5']();</script><script type="text/javascript">window['__document_write_ajax_callbacks__']['6']();</script><script>window['__document_write_ajax_callbacks__']['2']();</script>
+
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/zh7791/">
+            痕迹g
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/zh7791/" title="入园时间：2017-05-08">
+            4年
+        </a>
+        <br>
+        粉丝：
+        <a href="https://home.cnblogs.com/u/zh7791/followers/">
+            923
+        </a>
+        <br>
+        关注：
+        <a href="https://home.cnblogs.com/u/zh7791/followees/">
+            8
+        </a>
+        <div id="p_b_follow">
+<a href="javascript:void(0)" onclick="follow(&#39;e47a10a5-9333-e711-9fc1-ac853d9f53cc&#39;)">+加关注</a></div>
+        <script type="text/javascript">window['__document_write_ajax_callbacks__']['7']();</script><script>window['__document_write_ajax_callbacks__']['3']();</script>
+    </div>
+</div>
+
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block"><div class="catListLink">
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+    
+<li><a href="https://www.cnblogs.com/zh7791/p/" title="我的博客的随笔列表">我的随笔</a></li>
+<li><a href="https://www.cnblogs.com/zh7791/MyComments.html" title="我的发表过的评论列表">我的评论</a></li>
+<li><a href="https://www.cnblogs.com/zh7791/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li>
+<li><a href="https://www.cnblogs.com/zh7791/RecentComments.html" title="我的博客的评论列表">最新评论</a></li>
+<li><a href="https://www.cnblogs.com/zh7791/tag/" title="我的博客的标签列表">我的标签</a></li>
+
+</ul>
+</div>
+
+</div>
+
+<!-- 最新随笔 -->
+<div id="sidebar_recentposts" class="sidebar-block"><div class="catListEssay">
+<h3 class="catListTitle">最新随笔</h3>
+    <ul>
+                <li>
+                    
+<a href="https://www.cnblogs.com/zh7791/p/14750344.html">1.微软RPA工具Power Automate Desktop</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/zh7791/p/14714786.html">2.C# 实现(阿姆斯特朗数)</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/zh7791/p/14713954.html">3.C# 实现(变量交换、斐波那契数列、质数、回文)</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/zh7791/p/14679818.html">4.Visual Studio 2022 预览版</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/zh7791/p/14560386.html">5.ASP.NET Core 基础系列（10）(.NET CLI)</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/zh7791/p/14552716.html">6.ASP.NET Core 基础系列（9）(异常中间件)</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/zh7791/p/14552472.html">7.ASP.NET Core 基础系列（8）(wwwroot)</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/zh7791/p/14534549.html">8.ASP.NET Core 基础系列（7）(请求处理管道)</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/zh7791/p/14527238.html">9.MAUI预览版发布 (.NET 6 Preview2)</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/zh7791/p/14518884.html">10.ASP.NET Core 基础系列（6）(中间件)</a>
+
+                </li>
+    </ul>
+</div>
+
+</div>
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block"></div>
+
+<!-- 积分与排名 -->
+<div id="sidebar_scorerank" class="sidebar-block"><div class="catListBlogRank">
+<h3 class="catListTitle">积分与排名</h3>
+<ul>
+	<li class="liScore">
+		积分 -	
+195868
+	</li>
+	<li class="liRank">
+		排名 -	
+3957
+	</li>
+</ul>
+</div>
+
+
+
+</div>
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔分类
+
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1851606.html" rel="" target="">
+    .Net Core(8)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1851119.html" rel="" target="">
+    .NET框架体系结构(9)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1936344.html" rel="" target="">
+    ASP.NET Core基础系列(9)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1725252.html" rel="" target="">
+    Blazor 系列(7)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1122011.html" rel="" target="">
+    C#(54)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1851439.html" rel="" target="">
+    C#面试题合集(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1021598.html" rel="" target="">
+    Dev控件(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1051305.html" rel="" target="">
+    PLC编程(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1893907.html" rel="" target="">
+    Prism合集(10)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1063694.html" rel="" target="">
+    RFID(5)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1009263.html" rel="" target="">
+    SOAP(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1213318.html" rel="" target="">
+    WPF(39)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1528742.html" rel="" target="">
+    WPF入门基础教程系列(10)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1648618.html" rel="" target="">
+    Xamarin(6)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1009265.html" rel="" target="">
+    打印机(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1009267.html" rel="" target="">
+    理论实践(4)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1025237.html" rel="" target="">
+    设计模式(4)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1589192.html" rel="" target="">
+    数据结构(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1009262.html" rel="" target="">
+    图形图表(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1177095.html" rel="" target="">
+    自动化(4)
+</a>
+ 
+
+                </li>                
+            <li>
+                <a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a>
+            </li>
+        </ul>
+
+
+    </div>    
+    <div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔档案
+
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2021/05.html" rel="" target="">
+    2021年5月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2021/04.html" rel="" target="">
+    2021年4月(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2021/03.html" rel="" target="">
+    2021年3月(10)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2021/02.html" rel="" target="">
+    2021年2月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2021/01.html" rel="" target="">
+    2021年1月(9)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2020/12.html" rel="" target="">
+    2020年12月(9)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2020/11.html" rel="" target="">
+    2020年11月(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2020/10.html" rel="" target="">
+    2020年10月(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2020/09.html" rel="" target="">
+    2020年9月(15)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2020/08.html" rel="" target="">
+    2020年8月(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2020/07.html" rel="" target="">
+    2020年7月(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2020/06.html" rel="" target="">
+    2020年6月(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2020/05.html" rel="" target="">
+    2020年5月(6)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2020/04.html" rel="" target="">
+    2020年4月(14)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2020/03.html" rel="" target="">
+    2020年3月(7)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2020/02.html" rel="" target="">
+    2020年2月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2019/11.html" rel="" target="">
+    2019年11月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2019/09.html" rel="" target="">
+    2019年9月(6)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2019/08.html" rel="" target="">
+    2019年8月(9)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2019/07.html" rel="" target="">
+    2019年7月(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2019/03.html" rel="" target="">
+    2019年3月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2019/02.html" rel="" target="">
+    2019年2月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2018/11.html" rel="" target="">
+    2018年11月(6)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2018/10.html" rel="" target="">
+    2018年10月(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2018/09.html" rel="" target="">
+    2018年9月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2018/08.html" rel="" target="">
+    2018年8月(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2018/07.html" rel="" target="">
+    2018年7月(5)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2018/05.html" rel="" target="">
+    2018年5月(5)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2018/03.html" rel="" target="">
+    2018年3月(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2017/11.html" rel="" target="">
+    2017年11月(13)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2017/10.html" rel="" target="">
+    2017年10月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2017/08.html" rel="" target="">
+    2017年8月(4)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2017/06.html" rel="" target="">
+    2017年6月(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2017/05.html" rel="" target="">
+    2017年5月(6)
+</a>
+ 
+
+                </li>                
+            <li>
+                <a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a>
+            </li>
+        </ul>
+
+
+    </div>    
+</div>
+
+<!-- 最新评论 -->
+<div id="sidebar_recentcomments" class="sidebar-block"><div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+
+	<div class="RecentCommentBlock">
+        <ul>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/zh7791/p/14086734.html">1. Re:WPF Prism框架合集(3.Region)</a></li>
+                    <li class="recent_comment_body">文章很清晰，我出现了一个问题：为指定区域指定界面后，那个界面的数据绑定不会实时更新了（绑定写好了且确实有数据），如果换做对指定区域绑定到UIElement控件，进行CreateInstance给UIE...</li>
+                    <li class="recent_comment_author">--cjh2020</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/zh7791/p/9878322.html">2. Re:WPF通用框架ZFS《项目结构介绍01》_模块介绍</a></li>
+                    <li class="recent_comment_body"><p>楼主，项目地址down不了代码了吗？</p>
+</li>
+                    <li class="recent_comment_author">--番茄酱子</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/zh7791/p/11502696.html">3. Re:WPF 基础总结(学习建议)</a></li>
+                    <li class="recent_comment_body">@张星星呀 你是做EAP的吗?...</li>
+                    <li class="recent_comment_author">--走在小路上</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/zh7791/p/14086734.html">4. Re:WPF Prism框架合集(3.Region)</a></li>
+                    <li class="recent_comment_body"><p>学习了。厉害。</p>
+</li>
+                    <li class="recent_comment_author">--菜鸟1号前来报到</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/zh7791/p/13706930.html">5. Re:.NET Core版本</a></li>
+                    <li class="recent_comment_body"><p>文章该更新了</p>
+</li>
+                    <li class="recent_comment_author">--秋意正寒</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/zh7791/p/12603770.html">6. Re:RFID_R420 C# ImpinjSDK参数详解</a></li>
+                    <li class="recent_comment_body"><p>没想到大佬也搞过读写器啊，哈哈</p>
+</li>
+                    <li class="recent_comment_author">--眯着</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/zh7791/p/14107961.html">7. Re:WPF Prism框架合集(4.Module)</a></li>
+                    <li class="recent_comment_body"><p>现在感觉桌面开发是不是已经out了.是不是应该转战网页开发或者服务开发.<br>
+看到现在高薪都是做服务的,内心真是纠结啊.</p>
+</li>
+                    <li class="recent_comment_author">--zsw_crown</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/zh7791/p/14107961.html">8. Re:WPF Prism框架合集(4.Module)</a></li>
+                    <li class="recent_comment_body"><p>痕迹boss  我看了你的prism视频教程感觉很不错,想更深入的学习一些prism,请问有什么高见吗?同时,我觉得你写的md文档很不错,不知道怎么获取到.</p>
+</li>
+                    <li class="recent_comment_author">--zsw_crown</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/zh7791/p/9928133.html">9. Re:Expression表达式树(C#)</a></li>
+                    <li class="recent_comment_body">后来我使用 ` var func = GenerateExpression(new SearchInfo() { Code = "1", Id = "1", Name = "3", Addr = "5...</li>
+                    <li class="recent_comment_author">--傲哥哥</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/zh7791/p/9928133.html">10. Re:Expression表达式树(C#)</a></li>
+                    <li class="recent_comment_body">也不知道是从哪里copy出来的代码 . 前面讲得挺好的 , 但是后面那个 GenerateExpression 你自由有调试过吗 ? 这里所有的 objValue == null 也就是说 , Met...</li>
+                    <li class="recent_comment_author">--傲哥哥</li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block"><div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/7930342.html">
+                            1. C#  单例模式的多种简单实现(44033)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/9549542.html">
+                            2. C# WPF开源控件库MaterialDesign介绍(38031)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/6909159.html">
+                            3. Winform中Chart图表的简单使用(28825)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/9761935.html">
+                            4. WPF框架ZFS(17367)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/9928133.html">
+                            5. Expression表达式树(C#)(15010)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/6905130.html">
+                            6. BarTender 通过ZPL命令操作打印机打印条码, 操作RFID标签(12930)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/12617961.html">
+                            7. WPF LiveChart 图表详解(12363)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/9951478.html">
+                            8. C# async/await异步编程深入理解(9198)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/6907455.html">
+                            9. C# Bartender模板打印 条码,二维码, 文字, 及操作RFID标签等。(8770)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/11151787.html">
+                            10. C# Socket服务器及多客户端连接示例(8492)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block"><div class="catListFeedback">
+<h3 class="catListTitle">评论排行榜</h3>
+	<div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/9317042.html">
+                            1. C#串口调试工具  (WPF/MVVM结构完整示例版)(10)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/11502696.html">
+                            2. WPF 基础总结(学习建议)(8)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/14253770.html">
+                            3. 如何成为微软社区MVP以及年终总结(7)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/11449492.html">
+                            4. WPF数据模板(7)(6)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/9928133.html">
+                            5. Expression表达式树(C#)(6)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/9439926.html">
+                            6. C# MQTT 服务端客户端通讯(6)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/7930342.html">
+                            7. C#  单例模式的多种简单实现(6)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/13202009.html">
+                            8. C#跨平台开源项目实战(WPF/Android/IOS/Blazor)(5)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/9761935.html">
+                            9. WPF框架ZFS(5)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/9549542.html">
+                            10. C# WPF开源控件库MaterialDesign介绍(5)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block">
+<div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">推荐排行榜</h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/zh7791/p/9761935.html">
+                                1. WPF框架ZFS(19)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/zh7791/p/13202009.html">
+                                2. C#跨平台开源项目实战(WPF/Android/IOS/Blazor)(18)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/zh7791/p/11502696.html">
+                                3. WPF 基础总结(学习建议)(16)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/zh7791/p/11449492.html">
+                                4. WPF数据模板(7)(10)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/zh7791/p/12617961.html">
+                                5. WPF LiveChart 图表详解(8)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div></div></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2021 痕迹g
+<br><span id="poweredby">Powered by .NET 5.0 on Kubernetes</span>
+
+
+
+	<span class="esa-copyright">&amp; Theme <a href="https://github.com/esofar/cnblogs-theme-silence" target="_blank">Silence v3.0.0</a></span></div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8L-rpLgFVEJMgssCVvNUAjuwQ7URYIDU7SFhGXzHsTa18AQBpwSI1i8x9RbxD1GUucNkWh58qpZLwhwLbcNddGY30HFsvasKa51PqV5aswryIxwkWUOjxce__9Sxpp90Nytqjj4fOUlP-7GV7LAm8f0">
+
+
+<script type="text/javascript">
+    window.$silence={
+        profile: {
+            enable: true,
+            avatar: 'http://pic.cnblogs.com/avatar/1161656/20200724141223.png',
+        },
+        github:{
+            enable: true,
+            color: '#fff',
+            fill: null,
+            link: 'https://github.com/HenJigg'
+        }
+    };
+</script><a href="https://www.cnblogs.com/zh7791/p/[object%20Object]" class="github-corner" title="GitHub" target="_blank">
+                <svg width="60" height="60" viewBox="0 0 250 250" style="color:#fff" aria-hidden="true">
+                    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+                    <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+                    <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+                </svg>
+            </a><div class="esa-toolbar">
+        <div class="bars bars-show"><i class="fa fa-ellipsis-h"></i></div>
+        <span class="up up-show" title="返回顶部"><i class="fa fa-chevron-up"></i></span>
+        <span class="mode mode-show" title="切换模式"><i class="fa fa-adjust"></i></span>
+        <span class="skin skin-show" title="主题设置"><i class="fa fa-cog"></i></span>
+        <div class="skin-popup">
+            <div class="item">
+                <div class="title">主题色彩</div>
+                <div class="themes">
+                    <button data-theme="a" style="background: #2D8CF0;"></button>
+                    <button data-theme="b" style="background: #FA7298;"></button>
+                    <button data-theme="c" style="background: #42B983;"></button>
+                    <button data-theme="d" style="background: #607D8B;"></button>
+                    <button data-theme="e" style="background: #5E72E4;"></button>
+                    <button data-theme="f" style="background: #FF9700;"></button>
+                    <button data-theme="g" style="background: #FF5722;"></button>
+                    <button data-theme="h" style="background: #009688;"></button>
+                    <button data-theme="i" style="background: #673BB7;"></button>
+                    <button data-theme="j" style="background: #906f61;"></button>
+                </div>
+            </div>
+        </div>
+        </div>
+    <script type="text/javascript">getFollowStatus('e47a10a5-9333-e711-9fc1-ac853d9f53cc');</script><div id="lightboxOverlay" tabindex="-1" class="lightboxOverlay" style="display: none;"></div><div id="lightbox" tabindex="-1" class="lightbox" style="display: none;"><div class="lb-outerContainer"><div class="lb-container"><img class="lb-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" alt=""><div class="lb-nav"><a class="lb-prev" aria-label="Previous image" href="https://www.cnblogs.com/zh7791/p/14346176.html"></a><a class="lb-next" aria-label="Next image" href="https://www.cnblogs.com/zh7791/p/14346176.html"></a></div><div class="lb-loader"><a class="lb-cancel"></a></div></div></div><div class="lb-dataContainer"><div class="lb-data"><div class="lb-details"><span class="lb-caption"></span><span class="lb-number"></span></div><div class="lb-closeContainer"><a class="lb-close"></a></div></div></div></div></body></html>

@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<!-- saved from url=(0046)https://www.cnblogs.com/zh7791/p/12897696.html -->
+<html lang="zh-cn" mode="dark" theme="a"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="description" content="点击观看视频教程 本章介绍关键帧动画之前, 首先需要讲解一下关于WPF当中基础动画与本章所讲的关键帧动画的区别。 动画与关键帧的区别 普通动画 WPF基础动画当中, 我们熟悉的From/To/By驱动">
+    <meta property="og:description" content="点击观看视频教程 本章介绍关键帧动画之前, 首先需要讲解一下关于WPF当中基础动画与本章所讲的关键帧动画的区别。 动画与关键帧的区别 普通动画 WPF基础动画当中, 我们熟悉的From/To/By驱动">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>WPF关键帧动画 - 痕迹g - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <link rel="stylesheet" href="./WPF关键帧动画 - 痕迹g - 博客园_files/blog-common.min.css">
+    
+    <link type="text/css" rel="stylesheet" href="./WPF关键帧动画 - 痕迹g - 博客园_files/custom.css">
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./WPF关键帧动画 - 痕迹g - 博客园_files/bundle-custom-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/zh7791/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/zh7791/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/zh7791/wlwmanifest.xml">
+    <script src="./WPF关键帧动画 - 痕迹g - 博客园_files/osd.js.下载"></script><script async="" src="./WPF关键帧动画 - 痕迹g - 博客园_files/analytics.js.下载"></script><script>
+        var currentBlogId = 357758;
+        var currentBlogApp = 'zh7791';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'Custom';
+        var visitorUserId = '';
+    </script>
+        <script>
+            var currentPostDateAdded = '2020-05-15 10:43';
+        </script>
+    <script src="./WPF关键帧动画 - 痕迹g - 博客园_files/jquery-2.2.0.min.js.下载"></script>
+    <script src="./WPF关键帧动画 - 痕迹g - 博客园_files/blog-common.min.js.下载"></script><style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style>
+    
+    
+    
+<link rel="stylesheet" href="./WPF关键帧动画 - 痕迹g - 博客园_files/lightbox.min.css"><meta http-equiv="origin-trial" content="A+b/H0b8RPXNaJgaNFpO0YOFuGK6myDQXlwnJB3SwzvNMfcndat4DZYMrP4ClJIzYWo3/yP2S+8FTZ/lpqbPAAEAAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="A9ZgbRtm4pU3oZiuNzOsKcC8ppFSZdcjP2qYcdQrFKVzkmiWH1kdYY1Mi9x7G8+PS8HV9Ha9Cz0gaMdKsiVZIgMAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxL6oBxcpn5rQDPKSAs+d0oxNyJYq2/4esBUh3Yx5z8QfcLu+AU8iFCXYRcr/CEEfDnkxxLTsvXPJFQBxHfvkgMAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A9KPtG5kl3oLTk21xqynDPGQ5t18bSOpwt0w6kGa6dEWbuwjpffmdUpR3W+faZDubGT+KIk2do0BX2ca16x8qAcAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A3HucHUo1oW9s+9kIKz8mLkbcmdaj5lxt3eiIMp1Nh49dkkBlg1Fhg4Fd/r0vL69mRRA36YutI9P/lJUfL8csQoAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjI2MjIwNzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A0OysezhLoCRYomumeYlubLurZTCmsjTb087OvtCy95jNM65cfEsbajrJnhaGwiTxhz38ZZbm+UhUwQuXfVPTg0AAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjI2MjIwNzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="AxoOxdZQmIoA1WeAPDixRAeWDdgs7ZtVFfH2y19ziTgD1iaHE5ZGz2UdSjubkWvob9C5PrjUfkWi4ZSLgWk3Xg8AAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjI2MjIwNzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A7+rMYR5onPnACrz+niKSeFdH3xw1IyHo2AZSHmxrofRk9w4HcQPMYcpBUKu6OQ6zsdxf4m/vqa6tG6Na4OLpAQAAAB4eyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjI2MjIwNzk5LCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AwfG8hAcHnPa/kJ1Co0EvG/K0F9l1s2JZGiDLt2mhC3QI5Fh4qmsmSwrWObZFbRC9ieDaSLU6lHRxhGUF/i9sgoAAACBeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiSW50ZXJlc3RDb2hvcnRBUEkiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AwQ7dCmHkvR6FuOFxAuNnktYSQrGbL4dF+eBkrwNLALc69Wr//PnO1yzns3pjUoCaYbKHtVcnng2hU+8OUm0PAYAAACHeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiSW50ZXJlc3RDb2hvcnRBUEkiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AysVDPGQTLD/Scn78x4mLwB1tMfje5jwUpAAzGRpWsr1NzoN7MTFhT3ClmImi2svDZA7V6nWGIV8YTPsSRTe0wYAAACHeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiSW50ZXJlc3RDb2hvcnRBUEkiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><script src="./WPF关键帧动画 - 痕迹g - 博客园_files/pubads_impl_2021050601.js.下载" async=""></script><link rel="preload" href="./WPF关键帧动画 - 痕迹g - 博客园_files/f.txt" as="script"><script type="text/javascript" src="./WPF关键帧动画 - 痕迹g - 博客园_files/f.txt"></script><link rel="prefetch" href="https://9f64d87e95ac9e12afd3e9f9446a50ba.safeframe.googlesyndication.com/safeframe/1-0-38/html/container.html"><link rel="prefetch" href="https://tpc.googlesyndication.com/safeframe/1-0-38/html/container.html"></head>
+<body class="no-navbar">
+    <a name="top"></a>
+        <div id="bannerbar" class="bannerbar-mobile formobile">
+            <a href="https://developer.aliyun.com/learning/trainingcamp/realtime/1?utm_content=g_1000268661" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;aliyun-realtime-blog-bannerbar-mobile&#39;)">
+                <img src="./WPF关键帧动画 - 痕迹g - 博客园_files/35695-20210509221214222-438425324.png" alt="">
+            </a>
+        </div>
+    <div id="top_nav" class="navbar forpc navbar-custom">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding"><a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="./WPF关键帧动画 - 痕迹g - 博客园_files/logo.svg" alt="博客园Logo"></a></li>
+                <li><a href="https://www.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-sitehome&#39;)">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-news&#39;)">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-q&#39;)">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-brands&#39;)">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-ing&#39;)">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-edu&#39;)">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="./WPF关键帧动画 - 痕迹g - 博客园_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="./WPF关键帧动画 - 痕迹g - 博客园_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./WPF关键帧动画 - 痕迹g - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./WPF关键帧动画 - 痕迹g - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./WPF关键帧动画 - 痕迹g - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./WPF关键帧动画 - 痕迹g - 博客园_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    <!--done-->
+<div id="home">
+<div id="header"><div class="esa-mobile-menu"><i class="fa fa-bars"></i></div>
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/zh7791/"><img id="blogLogo" src="./WPF关键帧动画 - 痕迹g - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/zh7791/">痕迹-微软MVP</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/zh7791/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E7%97%95%E8%BF%B9g">
+联系</a></li>
+
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 159&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 155&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 378987">
+37万</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/zh7791/p/12897696.html">
+    <span>WPF关键帧动画</span>
+    
+
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+<p><a href="https://www.bilibili.com/video/BV1kT4y1u7gL" target="_blank">点击观看视频教程</a></p>
+<p>本章介绍关键帧动画之前, 首先需要讲解一下关于WPF当中基础动画与本章所讲的关键帧动画的区别。</p>
+<h2 id="动画与关键帧的区别">动画与关键帧的区别</h2>
+<h3 id="普通动画">普通动画</h3>
+<p>WPF基础动画当中, 我们熟悉的From/To/By驱动的动画, 主要在两个值之间创建过渡效果, 如下图所示:<br>
+<a href="./WPF关键帧动画 - 痕迹g - 博客园_files/1161656-20200601234706274-483756816.png" data-title="" data-alt="" data-lightbox="roadtrip"><img src="./WPF关键帧动画 - 痕迹g - 博客园_files/1161656-20200601234706274-483756816.png" alt="" loading="lazy"></a></p>
+<p>下面是使用普通的ThicknessAnimation创建的爱心跳动的动画<br>
+<a href="./WPF关键帧动画 - 痕迹g - 博客园_files/1161656-20210507160833946-1794467616.gif" data-title="" data-alt="" data-lightbox="roadtrip"><img src="./WPF关键帧动画 - 痕迹g - 博客园_files/1161656-20210507160833946-1794467616.gif" alt="" loading="lazy"></a></p>
+<h3 id="关键帧">关键帧</h3>
+<p>对于关键帧动画而言,关键帧动画没有From/To/By的属性, 而关键帧动画的值则是使用帧对象来进行描述, 故称之为关键帧动画, 如下所示:<br>
+<a href="./WPF关键帧动画 - 痕迹g - 博客园_files/1161656-20200515222912841-788574191.png" data-title="" data-alt="" data-lightbox="roadtrip"><img src="./WPF关键帧动画 - 痕迹g - 博客园_files/1161656-20200515222912841-788574191.png" alt="" loading="lazy"></a></p>
+<p>下面是使用关键帧动画创建的一个矩形位移的动画<br>
+<a href="./WPF关键帧动画 - 痕迹g - 博客园_files/1161656-20210507162305297-17569812.gif" data-title="" data-alt="" data-lightbox="roadtrip"><img src="./WPF关键帧动画 - 痕迹g - 博客园_files/1161656-20210507162305297-17569812.gif" alt="" loading="lazy" class="medium-zoom-image"></a></p>
+<p><strong>注</strong>： 能够注意到, 左下角, 描述了整个动画的过程:<br>
+1.首先5秒内, 矩形从位置0 -&gt; 500   : LinearDoubleKeyFrame Value="500" KeyTime="0:0:5"<br>
+2.从5-10秒内, 矩形位置500 -&gt; 200  : SplineDoubleKeyFrame KeySpline="0.25,0.5 0.75,1" Value="200" KeyTime="0:0:10"<br>
+3.从10-12秒内, 矩形位置200 -&gt; 290  : LinearDoubleKeyFrame Value="290" KeyTime="0:0:12"<br>
+4.从12-13.5秒内, 矩形位置290 -&gt; 300  : LinearDoubleKeyFrame Value="300" KeyTime="0:0:13.5"<br>
+5.从13.5-15秒内, 矩形位置300 -&gt; 0  : SplineDoubleKeyFrame KeySpline="0.25,0.5 0.75,1" Value="0" KeyTime="0:0:15"<br>
+注: 关键帧对象(Frame) 主要包含两个参数, Value是目标值， KeyTime 则表达的是时间</p>
+<p>到目前为止, 我们应该可以理解普通动画与关键帧动画的区别, 对于帧动画而言, 在于控制每一个帧的表现形式, 这一点并不像普通动画中, 对于整个动画的控制我们只能从开始到结束, 而帧动画可以控制开始到结束的整个过程。</p>
+<h2 id="介绍关键帧动画">介绍关键帧动画</h2>
+<p>下面,介绍了如何创建一个简单的关键帧动画。<br>
+1.如下代码,创建了一个矩形, 为其添加了一个点击时间触发动画, 该动画在Storyboard中定义并且触发:</p>
+<pre><code class="hljs xml hljsln ln-hide"><span class="hljs-tag">&lt;<span class="hljs-name">Border</span> <span class="hljs-attr">Width</span>=<span class="hljs-string">"400"</span> <span class="hljs-attr">BorderBrush</span>=<span class="hljs-string">"Black"</span>&gt;</span>  
+    <span class="hljs-tag">&lt;<span class="hljs-name">Rectangle</span> <span class="hljs-attr">Fill</span>=<span class="hljs-string">"Blue"</span> 
+      <span class="hljs-attr">Width</span>=<span class="hljs-string">"50"</span> <span class="hljs-attr">Height</span>=<span class="hljs-string">"50"</span>
+      <span class="hljs-attr">HorizontalAlignment</span>=<span class="hljs-string">"Left"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Rectangle.RenderTransform</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">TranslateTransform</span> 
+          <span class="hljs-attr">x:Name</span>=<span class="hljs-string">"MyAnimatedTranslateTransform"</span> 
+          <span class="hljs-attr">X</span>=<span class="hljs-string">"0"</span> <span class="hljs-attr">Y</span>=<span class="hljs-string">"0"</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Rectangle.RenderTransform</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Rectangle.Triggers</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">EventTrigger</span> <span class="hljs-attr">RoutedEvent</span>=<span class="hljs-string">"Rectangle.MouseLeftButtonDown"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">BeginStoryboard</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">Storyboard</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">DoubleAnimationUsingKeyFrames</span>
+                <span class="hljs-attr">Storyboard.TargetName</span>=<span class="hljs-string">"MyAnimatedTranslateTransform"</span>
+                <span class="hljs-attr">Storyboard.TargetProperty</span>=<span class="hljs-string">"X"</span>
+                <span class="hljs-attr">Duration</span>=<span class="hljs-string">"0:0:10"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">LinearDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"0"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"0:0:0"</span> /&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">LinearDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"350"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"0:0:2"</span> /&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">LinearDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"50"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"0:0:7"</span> /&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">LinearDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"200"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"0:0:8"</span> /&gt;</span>                          
+              <span class="hljs-tag">&lt;/<span class="hljs-name">DoubleAnimationUsingKeyFrames</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">Storyboard</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">BeginStoryboard</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">EventTrigger</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Rectangle.Triggers</span>&gt;</span> 
+    <span class="hljs-tag">&lt;/<span class="hljs-name">Rectangle</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">Border</span>&gt;</span> 
+</code></pre>
+<p>说明:以上的创建了一个DoubleAnimation类型的帧动画, 为其绑定了一个目标及目标的动画依赖属性 "Y", Duration则为其设定了一个帧动画持续时间,在关键帧动画的集合中, 定义了多个线性关键帧(LinearDoubleKeyFrame), 为其设定了Value目标值和KeyTime持续时间。</p>
+<p>此处说讲到的线性关键帧所属其中的一种类型, 在后面将会有更多的介绍。</p>
+<h2 id="关键帧动画类型">关键帧动画类型</h2>
+<p>关键帧动画属于System.Windows.Media.Animation命令空间下, 命名规则约定为<br>
+<type>AnimationUsingKeyFrames<br>
+Type: 为动画的值类型, 例如上面的动画当中, 需要给举行的X轴移动位置, X的值属于双精度类型, 所以定义的类型为 :DoubleAnimationUsingKeyFrames 。</type></p>
+<h3 id="关键帧的动画类型列表">关键帧的动画类型列表</h3>
+<p><a href="./WPF关键帧动画 - 痕迹g - 博客园_files/1161656-20200515225524407-453456305.png" data-title="" data-alt="" data-lightbox="roadtrip"><img src="./WPF关键帧动画 - 痕迹g - 博客园_files/1161656-20200515225524407-453456305.png" alt="" loading="lazy"></a></p>
+<h3 id="帧对象的类型">帧对象的类型</h3>
+<p>正如我们创建不同类型的动画, 我们需要按照约定命名方式定义, 如: DoubleAnimation,  ColorAnimation 等等。<br>
+对于帧动画而言, 主要由一个或者N个帧对象组成(Frame), 帧对象同时也拥有不同的种类, 故帧对象遵循一下的命名约定:<br>
+&lt;插值方法&gt;&lt;类型&gt;<keyframe><br>
+插值方法: 是帧对象使用的插值方法, 如: 离散(Discrete)、线性(Linear) 、样条(Spline) 等。<br>
+类型: 是动画的值类型, 例如Double、Decimal等。<br>
+KeyFrame: 固定的帧对象语法结束</keyframe></p>
+<p>关键帧的主要目的是指定 和KeyTime、Value 每个关键帧类型都可提供这两种属性。</p>
+<ul>
+<li>属性Value指定该关键帧的目标值。</li>
+<li>该KeyTime属性指定何时（在动画的Duration）中到达关键帧。 Value<br>
+当关键帧动画开始时，按其KeyTime属性定义的顺序遍接其关键帧。</li>
+<li>如果时间 0 时没有关键帧，动画会在目标属性的当前值和第Value一个关键帧之间的转换;否则，动画的输出值将成为第一个关键帧的值。</li>
+<li>动画使用第二个关键帧指定的Value插值方法在第一个关键帧和第二个关键帧之间创建过渡。 转换从第一个关键帧开始KeyTime，并在到达第二个关键帧KeyTime时结束。</li>
+<li>动画将继续，这会创建每个后续关键帧和其前面的关键帧之间的过渡。</li>
+<li>最后，动画转换为关键帧的值，其最大键时间等于或小于动画的值Duration。<br>
+如果动画的Duration或Automatic其Duration等于最后一个关键帧的时间，则动画结束。 否则，如果动画大于Duration最后一个关键帧的键时间，则动画将保留关键帧值，直到到达其Duration的末尾。 与所有动画一样，关键帧动画使用其FillBehavior属性来确定在到达活动周期结束时是否保留最终值。</li>
+</ul>
+<h3 id="插值方法">插值方法</h3>
+<p>下面将主要介绍有三种不同类型的内插方法: 线性、离散和曲线。</p>
+<h4 id="线性内插">线性内插</h4>
+<p>使用线性内插，动画将以段持续时间的固定速度进行播放。 例如，如果关键帧段从 0 过渡到 10，持续时间为 5 秒，则动画会在指定时间输出以下值：<br>
+<a href="./WPF关键帧动画 - 痕迹g - 博客园_files/1161656-20200515233123658-1074453345.png" data-title="" data-alt="" data-lightbox="roadtrip"><img src="./WPF关键帧动画 - 痕迹g - 博客园_files/1161656-20200515233123658-1074453345.png" alt="" loading="lazy"></a></p>
+<h4 id="离散内插">离散内插</h4>
+<p>使用离散内插，动画函数将从一个值跳到下一个值，没有内插。 如果关键帧段从 0 过渡到 10，持续时间为 5 秒，则动画会在指定时间输出以下值：<br>
+<a href="./WPF关键帧动画 - 痕迹g - 博客园_files/1161656-20200515233140864-143455107.png" data-title="" data-alt="" data-lightbox="roadtrip"><img src="./WPF关键帧动画 - 痕迹g - 博客园_files/1161656-20200515233140864-143455107.png" alt="" loading="lazy"></a></p>
+<p><strong>注: 通过观察线性和离散的插入比较, 可以清晰的看出来, 离线类型的插入方式, 在动画的执行过程中, 我们无法在规定的时间内观察其变化效果, 直接至时间结束后, 到指定的目标值。</strong></p>
+<h4 id="曲线内插">曲线内插</h4>
+<p>曲线内插可能很难理解；使用不同的设置进行体验有助于理解。 通过主曲线动画示例，可以更改主曲线值，并查看由此所产生的动画结果, 可以查看最上方视频进行理解。</p>
+<h4 id="组合内插">组合内插</h4>
+<p>可在一个关键帧动画中使用具有不同内插类型的关键帧。 如果两个具有不同内插的关键帧动画彼此跟随，第二个关键帧的内插方法将用于创建从第一个值到第二个值的过渡。<br>
+下面的示例,演示了一个使用DoubleAnimationUsingKeyFrames创建使用线性、拼接和离散插值的示例:</p>
+<pre><code class="hljs xml hljsln ln-hide">      <span class="hljs-tag">&lt;<span class="hljs-name">Rectangle</span> 
+  <span class="hljs-attr">Width</span>=<span class="hljs-string">"50"</span>
+  <span class="hljs-attr">Height</span>=<span class="hljs-string">"50"</span>
+  <span class="hljs-attr">Fill</span>=<span class="hljs-string">"Orange"</span>&gt;</span>  
+  <span class="hljs-tag">&lt;<span class="hljs-name">Rectangle.RenderTransform</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">TranslateTransform</span> 
+      <span class="hljs-attr">x:Name</span>=<span class="hljs-string">"ComboAnimatedTranslateTransform"</span> 
+      <span class="hljs-attr">X</span>=<span class="hljs-string">"0"</span> <span class="hljs-attr">Y</span>=<span class="hljs-string">"0"</span> /&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">Rectangle.RenderTransform</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">Rectangle.Triggers</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">EventTrigger</span> <span class="hljs-attr">RoutedEvent</span>=<span class="hljs-string">"Rectangle.Loaded"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">BeginStoryboard</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Storyboard</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">DoubleAnimationUsingKeyFrames</span>
+            <span class="hljs-attr">Storyboard.TargetName</span>=<span class="hljs-string">"ComboAnimatedTranslateTransform"</span>
+            <span class="hljs-attr">Storyboard.TargetProperty</span>=<span class="hljs-string">"X"</span>
+            <span class="hljs-attr">Duration</span>=<span class="hljs-string">"0:0:15"</span>
+            <span class="hljs-attr">RepeatBehavior</span>=<span class="hljs-string">"Forever"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">DiscreteDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"500"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"0:0:7"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">LinearDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"200"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"0:0:10"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">SplineDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"350"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"0:0:15"</span>  
+              <span class="hljs-attr">KeySpline</span>=<span class="hljs-string">"0.25,0.5 0.75,1"</span> /&gt;</span>                      
+          <span class="hljs-tag">&lt;/<span class="hljs-name">DoubleAnimationUsingKeyFrames</span>&gt;</span>           
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Storyboard</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">BeginStoryboard</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">EventTrigger</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">Rectangle.Triggers</span>&gt;</span> 
+<span class="hljs-tag">&lt;/<span class="hljs-name">Rectangle</span>&gt;</span>
+</code></pre>
+<h2 id="duration与keytime">Duration与KeyTime</h2>
+<p>与其他动画一样，关键帧动画具有属性Duration。 除了指定动画的Duration外，还需要指定每个关键帧的持续时间的哪一部分。 为此，您可以为每个动画的关键KeyTime帧描述 。 每个关键帧指定KeyTime该关键帧的结束时间。<br>
+属性KeyTime不指定密钥时间播放的时间。 关键帧的播放时长由关键帧的结束时间、前一个关键帧的结束时间以及动画的持续时间确定。 关键时间可以指定为时间值、百分比或特殊值Uniform或Paced。</p>
+<h3 id="timespan">TimeSpan</h3>
+<p>以下示例演示一个持续时间为 10 秒钟、有四个关键帧（这些关键帧的关键时间指定为时间值）的动画。</p>
+<ul>
+<li>在前 3 秒钟内，第一个关键帧在基值和 100 之间进行动画处理，结束时间 = 0:0:03。</li>
+<li>第二个关键帧在 100 和 200 之间进行动画处理。 它在第一个关键帧结束后开始（开始时间 = 3 秒），播放 5 秒钟，结束时间 = 0:0:8。</li>
+<li>第三个关键帧在 200 和 500 之间进行动画处理。 它在第二个关键帧结束时开始（开始时间 = 8 秒），播放 1 秒钟，结束时间 = 0:0:9。</li>
+<li>第四个关键帧在 500 和 600 之间进行动画处理。 它在第三个关键帧结束时开始（开始时间 = 9 秒），播放 1 秒钟，结束时间 = 0:0:10。</li>
+</ul>
+<pre><code class="hljs xml hljsln ln-hide">      <span class="hljs-tag">&lt;<span class="hljs-name">Rectangle</span> <span class="hljs-attr">Width</span>=<span class="hljs-string">"50"</span> <span class="hljs-attr">Height</span>=<span class="hljs-string">"50"</span> <span class="hljs-attr">Fill</span>=<span class="hljs-string">"Blue"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">Rectangle.RenderTransform</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">TranslateTransform</span> <span class="hljs-attr">x:Name</span>=<span class="hljs-string">"TranslateTransform01"</span> <span class="hljs-attr">X</span>=<span class="hljs-string">"10"</span> <span class="hljs-attr">Y</span>=<span class="hljs-string">"30"</span> /&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">Rectangle.RenderTransform</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">Rectangle.Triggers</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">EventTrigger</span> <span class="hljs-attr">RoutedEvent</span>=<span class="hljs-string">"Rectangle.Loaded"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">BeginStoryboard</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Storyboard</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">DoubleAnimationUsingKeyFrames</span> 
+            <span class="hljs-attr">Storyboard.TargetName</span>=<span class="hljs-string">"TranslateTransform01"</span> 
+            <span class="hljs-attr">Storyboard.TargetProperty</span>=<span class="hljs-string">"X"</span>
+            <span class="hljs-attr">Duration</span>=<span class="hljs-string">"0:0:10"</span>
+            <span class="hljs-attr">RepeatBehavior</span>=<span class="hljs-string">"Forever"</span>&gt;</span>
+
+            <span class="hljs-comment">&lt;!-- KeyTime properties are expressed as TimeSpan values 
+                 which are in the form of "hours:minutes:seconds". --&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">LinearDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"100"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"0:0:3"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">LinearDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"200"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"0:0:8"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">LinearDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"500"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"0:0:9"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">LinearDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"600"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"0:0:10"</span> /&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">DoubleAnimationUsingKeyFrames</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Storyboard</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">BeginStoryboard</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">EventTrigger</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">Rectangle.Triggers</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">Rectangle</span>&gt;</span>
+</code></pre>
+<h3 id="百分比">百分比</h3>
+<p>百分比值指定关键帧以动画的某些Duration百分比结束。 在 XAML 中，指定百分比作为 % 符号后的数字。 在代码中，使用FromPercent方法并传递一个Double指示百分比的方法。 该值必须大于或等于 0 并且小于或等于 100%。 以下示例演示一个持续时间为 10 秒钟、有四个关键帧（这些关键帧的关键时间指定为百分比）的动画。</p>
+<ul>
+<li>在前 3 秒钟内，第一个关键帧将在基值和 100 之间进行动画处理，结束时间 = 0:0:3。</li>
+<li>第二个关键帧在 100 和 200 之间进行动画处理。 它在第一个关键帧结束后开始（开始时间 = 3 秒），播放 5 秒钟，结束时间 = 0:0:8 (0.8 * 10 = 8)。</li>
+<li>第三个关键帧在 200 和 500 之间进行动画处理。 它在第二个关键帧结束时开始（开始时间 = 8 秒），播放 1 秒钟，结束时间 = 0:0:9 (0.9 * 10 = 9)。</li>
+<li>第四个关键帧在 500 和 600 之间进行动画处理。 它在第三个关键帧结束时开始（开始时间 = 9 秒），播放 1 秒钟，结束时间 = 0:0:10 (1 * 10 = 10)。</li>
+</ul>
+<pre><code class="hljs xml hljsln ln-hide">      <span class="hljs-tag">&lt;<span class="hljs-name">Rectangle</span> <span class="hljs-attr">Height</span>=<span class="hljs-string">"50"</span> <span class="hljs-attr">Width</span>=<span class="hljs-string">"50"</span> <span class="hljs-attr">Fill</span>=<span class="hljs-string">"Purple"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">Rectangle.RenderTransform</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">TranslateTransform</span> <span class="hljs-attr">x:Name</span>=<span class="hljs-string">"TranslateTransform02"</span> <span class="hljs-attr">X</span>=<span class="hljs-string">"10"</span> <span class="hljs-attr">Y</span>=<span class="hljs-string">"110"</span> /&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">Rectangle.RenderTransform</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">Rectangle.Triggers</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">EventTrigger</span> <span class="hljs-attr">RoutedEvent</span>=<span class="hljs-string">"Rectangle.Loaded"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">BeginStoryboard</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Storyboard</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">DoubleAnimationUsingKeyFrames</span> 
+            <span class="hljs-attr">Storyboard.TargetName</span>=<span class="hljs-string">"TranslateTransform02"</span> 
+            <span class="hljs-attr">Storyboard.TargetProperty</span>=<span class="hljs-string">"X"</span>
+            <span class="hljs-attr">Duration</span>=<span class="hljs-string">"0:0:10"</span>
+            <span class="hljs-attr">RepeatBehavior</span>=<span class="hljs-string">"Forever"</span>&gt;</span>
+
+            <span class="hljs-comment">&lt;!-- KeyTime properties are expressed as Percentages. --&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">LinearDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"100"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"30%"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">LinearDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"200"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"80%"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">LinearDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"500"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"90%"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">LinearDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"600"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"100%"</span> /&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">DoubleAnimationUsingKeyFrames</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Storyboard</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">BeginStoryboard</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">EventTrigger</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">Rectangle.Triggers</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">Rectangle</span>&gt;</span>
+</code></pre>
+<h3 id="uniform">Uniform</h3>
+<p>当您Uniform希望每个关键帧花费相同的时间时，请使用计时。<br>
+Uniform关键时间将可用时间平均除以关键帧数，以确定每个关键帧的结束时间。 下面的示例显示持续时间为 10 秒的动画和四个关键帧，其关键时间指定为Uniform。</p>
+<ul>
+<li>在前 2.5 秒钟内，第一个关键帧在基值和 100 之间进行动画处理，结束时间 = 0:0:2.5。</li>
+<li>第二个关键帧在 100 和 200 之间进行动画处理。 它在第一个关键帧结束后开始（开始时间 = 2.5 秒），播放大约 2.5 秒钟，结束时间 = 0:0:5。</li>
+<li>第三个关键帧在 200 和 500 之间进行动画处理。 它在第二个关键帧结束时开始（开始时间 = 5 秒），播放 2.5 秒钟，结束时间 = 0:0:7.5。</li>
+<li>第四个关键帧在 500 和 600 之间进行动画处理。 它在第二个关键帧结束时开始（开始时间 = 7.5 秒），播放 2.5 秒钟，结束时间 = 0:0:1。</li>
+</ul>
+<pre><code class="hljs xml hljsln ln-hide">      <span class="hljs-tag">&lt;<span class="hljs-name">Rectangle</span> <span class="hljs-attr">Height</span>=<span class="hljs-string">"50"</span> <span class="hljs-attr">Width</span>=<span class="hljs-string">"50"</span> <span class="hljs-attr">Fill</span>=<span class="hljs-string">"Red"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">Rectangle.RenderTransform</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">TranslateTransform</span> <span class="hljs-attr">x:Name</span>=<span class="hljs-string">"TranslateTransform03"</span> <span class="hljs-attr">X</span>=<span class="hljs-string">"10"</span> <span class="hljs-attr">Y</span>=<span class="hljs-string">"190"</span> /&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">Rectangle.RenderTransform</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">Rectangle.Triggers</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">EventTrigger</span> <span class="hljs-attr">RoutedEvent</span>=<span class="hljs-string">"Rectangle.Loaded"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">BeginStoryboard</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Storyboard</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">DoubleAnimationUsingKeyFrames</span> 
+            <span class="hljs-attr">Storyboard.TargetName</span>=<span class="hljs-string">"TranslateTransform03"</span> 
+            <span class="hljs-attr">Storyboard.TargetProperty</span>=<span class="hljs-string">"X"</span>
+            <span class="hljs-attr">Duration</span>=<span class="hljs-string">"0:0:10"</span>
+            <span class="hljs-attr">RepeatBehavior</span>=<span class="hljs-string">"Forever"</span>&gt;</span>
+
+            <span class="hljs-comment">&lt;!-- KeyTime properties are expressed with values of Uniform. 
+                 When a key time is set to "Uniform" the total allotted 
+                 time of the animation is divided evenly between key frames.  
+                 In this example, the total duration of the animation is 
+                 ten seconds and there are four key frames each of which 
+                 are set to "Uniform", therefore, the duration of each key frame 
+                 is 3.3 seconds (10/3). --&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">LinearDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"100"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"Uniform"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">LinearDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"200"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"Uniform"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">LinearDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"500"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"Uniform"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">LinearDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"600"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"Uniform"</span> /&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">DoubleAnimationUsingKeyFrames</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Storyboard</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">BeginStoryboard</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">EventTrigger</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">Rectangle.Triggers</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">Rectangle</span>&gt;</span>
+</code></pre>
+<h3 id="paced">Paced</h3>
+<p>如果要Paced以恒定速率进行动画处理，请使用计时。<br>
+Paced关键时间根据每个关键帧的长度分配可用时间，以确定每个帧的持续时间。 这样，动画的速度或速率将保持不变。 下面的示例显示持续时间为 10 秒的动画和三个关键帧，其关键时间指定为Paced。</p>
+<pre><code class="hljs xml hljsln ln-hide">      <span class="hljs-tag">&lt;<span class="hljs-name">Rectangle</span> <span class="hljs-attr">Height</span>=<span class="hljs-string">"50"</span> <span class="hljs-attr">Width</span>=<span class="hljs-string">"50"</span> <span class="hljs-attr">Fill</span>=<span class="hljs-string">"Orange"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">Rectangle.RenderTransform</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">TranslateTransform</span> <span class="hljs-attr">x:Name</span>=<span class="hljs-string">"TranslateTransform04"</span> <span class="hljs-attr">X</span>=<span class="hljs-string">"10"</span> <span class="hljs-attr">Y</span>=<span class="hljs-string">"270"</span> /&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">Rectangle.RenderTransform</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">Rectangle.Triggers</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">EventTrigger</span> <span class="hljs-attr">RoutedEvent</span>=<span class="hljs-string">"Rectangle.Loaded"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">BeginStoryboard</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Storyboard</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">DoubleAnimationUsingKeyFrames</span> 
+            <span class="hljs-attr">Storyboard.TargetName</span>=<span class="hljs-string">"TranslateTransform04"</span> 
+            <span class="hljs-attr">Storyboard.TargetProperty</span>=<span class="hljs-string">"X"</span>
+            <span class="hljs-attr">Duration</span>=<span class="hljs-string">"0:0:10"</span>
+            <span class="hljs-attr">RepeatBehavior</span>=<span class="hljs-string">"Forever"</span>&gt;</span>
+
+            <span class="hljs-comment">&lt;!-- KeyTime properties are expressed with values of Paced. 
+                 Paced values are used when a constant rate is desired. 
+                 The time allocated to a key frame with a KeyTime of "Paced" 
+                 is determined by the time allocated to the other key 
+                 frames of the animation. This time is calculated to 
+                 attempt to give a "paced" or "constant velocity" 
+                 for the animation. --&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">LinearDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"100"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"Paced"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">LinearDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"200"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"Paced"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">LinearDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"500"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"Paced"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">LinearDoubleKeyFrame</span> <span class="hljs-attr">Value</span>=<span class="hljs-string">"600"</span> <span class="hljs-attr">KeyTime</span>=<span class="hljs-string">"Paced"</span> /&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">DoubleAnimationUsingKeyFrames</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Storyboard</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">BeginStoryboard</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">EventTrigger</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">Rectangle.Triggers</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">Rectangle</span>&gt;</span>
+</code></pre>
+<h2 id="关键帧时间及顺序">关键帧时间及顺序</h2>
+<p>可以在同一动画中使用具有不同KeyTime值类型的关键帧。 尽管建议以关键帧的实际播放顺序来添加关键帧，但此操作不是必需的。 动画和计时系统能够处理顺序紊乱的关键帧。 将忽略关键时间无效的关键帧。<br>
+下表描述了为关键帧动画的关键帧解析关键时间的过程。<br>
+1 解析TimeSpanKeyTime值。<br>
+2 确定动画的总内插时间，即关键帧动画完成向前迭代所需的全部时间。<br>
+如果动画的Duration不是Automatic或Forever，则总插值时间是动画Duration属性的值。<br>
+否则，总插值时间是其关键帧（TimeSpanKeyTime如果有）之间指定的最大值。<br>
+否则，总内插时间为 1 秒。<br>
+3 使用总插值时间值解析PercentKeyTime值。<br>
+4 如果最后一个关键帧尚未在之前步骤中解析，则将解析该关键帧。 如果最后KeyTime一个关键帧为Uniform或Paced，则其解析时间将等于总插值时间。<br>
+如果第KeyTime一个关键帧的，Paced并且此动画比关键帧多，则将其KeyTime值解析为零;如果只有一个关键帧，并且其KeyTime值为Paced，则解析为总插值时间，如上一步所述。<br>
+5 解析剩余UniformKeyTime值：每个值都给定可用时间的相等份额。 在此过程中PacedKeyTime，未解析的值将暂时视为UniformKeyTime值，并获得临时解析的时间。<br>
+6 使用声明KeyTime的最接近具有已解析KeyTime值的关键帧，解决未指定密钥时间的关键帧的值。<br>
+7 解析剩余PacedKeyTime值。 PacedKeyTime使用相邻KeyTime关键帧的值来确定其解析时间。 目的是确保动画速度在此关键帧的解析时间内保持固定不变。<br>
+8 按解析时间（主键）和声明顺序（辅助键）对关键帧进行排序，即根据已解决的关键帧KeyTime值使用稳定排序。</p>
+
+</div>
+<div id="MySignature" style="display: block;"><div class="esa-post-signature"> 
+                <p>作者：痕迹g</p> 
+                <p>出处：<a href="https://www.cnblogs.com/zh7791/p/12897696.html">https://www.cnblogs.com/zh7791/p/12897696.html</a></p> 
+                <p>版权：本作品采用「<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">署名-非商业性使用-相同方式共享 4.0 国际</a>」许可协议进行许可。</p> 
+                <p></p> 
+            </div></div>
+<div class="clear"></div>
+<div id="blog_post_info_block"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/zh7791/category/1213318.html" target="_blank">WPF</a></div>
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(12897696,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;e47a10a5-9333-e711-9fc1-ac853d9f53cc&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./WPF关键帧动画 - 痕迹g - 博客园_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./WPF关键帧动画 - 痕迹g - 博客园_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/zh7791/" target="_blank"><img src="./WPF关键帧动画 - 痕迹g - 博客园_files/20200724141223.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/zh7791/">痕迹g</a><br>
+            <a href="https://home.cnblogs.com/u/zh7791/followees/">关注 - 8</a><br>
+            <a href="https://home.cnblogs.com/u/zh7791/followers/">粉丝 - 923</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;e47a10a5-9333-e711-9fc1-ac853d9f53cc&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(12897696,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">3</span>
+    </div>
+    <div class="buryit" onclick="votePost(12897696,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/zh7791/p/12768714.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/zh7791/p/12768714.html" title="发布于 2020-04-24 17:08">RFID EPC Gen2 搜索模式和会话</a>
+    <br>
+    <a href="https://www.cnblogs.com/zh7791/p/12924933.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/zh7791/p/12924933.html" title="发布于 2020-05-20 17:34">.NET 多平台应用 UI介绍</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2020-05-15 22:43</span>&nbsp;
+<a href="https://www.cnblogs.com/zh7791/">痕迹g</a>&nbsp;
+阅读(<span id="post_view_count">773</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=12897696" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(12897696);return false;">收藏</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script src="./WPF关键帧动画 - 痕迹g - 博客园_files/highlight.min.js.下载"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 357758, cb_blogApp = 'zh7791', cb_blogUserGuid = 'e47a10a5-9333-e711-9fc1-ac853d9f53cc';
+    var cb_entryId = 12897696, cb_entryCreatedDate = '2020-05-15 22:43', cb_postType = 1;
+    updatePostStats(
+        [cb_entryId],
+        function(id, count) { $("#post_view_count").text(count) },
+        function(id, count) { $("#post_comment_count").text(count) })
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+</script>
+<a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/zh7791/p/12897696.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/zh7791/p/12897696.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"><a href="https://developer.aliyun.com/learning/trainingcamp/realtime/1?utm_content=g_1000268661" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-阿里云-实时数仓&#39;)">【推荐】阿里云专家倾力打造，实时计算Flink版+Hologres实时数仓“王炸组合”</a><br><a href="http://www.uccpsoft.com/index.htm" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-ucancode&#39;)">【推荐】大型组态、工控、仿真、CAD\GIS 50万行VC++源码免费下载!</a><br><a href="https://brands.cnblogs.com/huawei" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-华为专区&#39;)">【推荐】玩转开发板：旧键盘+OpenHarmony 变身蓝牙键盘 v0.1</a><br><a href="https://www.aliyun.com/activity/daily/bestoffer?userCode=swh7dvlt" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-阿里云-cps&#39;)">【推荐】阿里云爆品销量榜单，精选爆款产品低至0.55折</a><br><a href="http://www.moojnn.com/?source=bokeyuan" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-魔镜&#39;)">【推荐】限时秒杀！国云大数据魔镜，企业级云分析平台</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+        <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;" data-google-query-id="CP-96sedxPACFQ3OvQodHy8DPQ"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C1_0" width="300" height="250" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" allow="conversion-measurement &#39;src&#39;" data-google-container-id="1" style="border: 0px; vertical-align: bottom;" data-load-complete="true" src="./WPF关键帧动画 - 痕迹g - 博客园_files/saved_resource.html"></iframe></div></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card"><b>园子动态</b>：<br>· <a href="https://www.cnblogs.com/cmt/p/14585828.html" target="_blank">致园友们的一封检讨书：都是我们的错</a><br>· <a href="https://www.cnblogs.com/cmt/p/14595262.html" target="_blank">数据库实例 CPU 100% 引发全站故障</a><br>· <a href="https://www.cnblogs.com/cmt/p/14217355.html" target="_blank">发起一个开源项目：博客引擎 fluss</a><br></div></div>
+    <div id="cnblogs_c2" class="under-post-card">
+        <div id="div-gpt-ad-1592366332455-0" style="width: 468px; height: 60px;" data-google-query-id="CIC-6sedxPACFQ3OvQodHy8DPQ"><div id="google_ads_iframe_/1090369/C2_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C2_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C2_0" width="468" height="60" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" allow="conversion-measurement &#39;src&#39;" data-google-container-id="2" style="border: 0px; vertical-align: bottom;" data-load-complete="true" src="./WPF关键帧动画 - 痕迹g - 博客园_files/saved_resource(1).html"></iframe></div></div>
+    </div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/693710/" target="_blank">身价1280亿！美团王兴为高中母校豪捐5000万：设立教育基金</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/693709/" target="_blank">NASA公布绝美项链星云影像：堪称宇宙级钻石项链</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/693708/" target="_blank">我是特斯拉车主，现在别人纷纷绕着走</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/693707/" target="_blank">清华「计图」现在支持国产芯片了！动态图推理比PyTorch快了270倍</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/693706/" target="_blank">科学家揭秘大脑靠“旋转”区分过去和现在，还给了个AI架构设计新思路 | Nature子刊</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+       var commentManager = new blogCommentManager();
+       commentManager.renderComments(0);
+       fixPostBody();
+       deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);       deliverT2();
+       deliverC1C2();
+       loadNewsAndKb();
+       loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);       LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+       GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+       loadOptUnderPost();
+       GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem"><!--done-->
+<h3 class="catListTitle">公告</h3>
+
+<div id="blog-news">
+    <script type="text/javascript">window['__document_write_ajax_callbacks__']['4']();</script><script>window['__document_write_ajax_callbacks__']['1']();</script>
+<script type="text/javascript">window['__document_write_ajax_callbacks__']['5']();</script><script type="text/javascript">window['__document_write_ajax_callbacks__']['6']();</script><script>window['__document_write_ajax_callbacks__']['2']();</script>
+
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/zh7791/">
+            痕迹g
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/zh7791/" title="入园时间：2017-05-08">
+            4年
+        </a>
+        <br>
+        粉丝：
+        <a href="https://home.cnblogs.com/u/zh7791/followers/">
+            923
+        </a>
+        <br>
+        关注：
+        <a href="https://home.cnblogs.com/u/zh7791/followees/">
+            8
+        </a>
+        <div id="p_b_follow">
+<a href="javascript:void(0)" onclick="follow(&#39;e47a10a5-9333-e711-9fc1-ac853d9f53cc&#39;)">+加关注</a></div>
+        <script type="text/javascript">window['__document_write_ajax_callbacks__']['7']();</script><script>window['__document_write_ajax_callbacks__']['3']();</script>
+    </div>
+</div>
+
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block"><div class="catListLink">
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+    
+<li><a href="https://www.cnblogs.com/zh7791/p/" title="我的博客的随笔列表">我的随笔</a></li>
+<li><a href="https://www.cnblogs.com/zh7791/MyComments.html" title="我的发表过的评论列表">我的评论</a></li>
+<li><a href="https://www.cnblogs.com/zh7791/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li>
+<li><a href="https://www.cnblogs.com/zh7791/RecentComments.html" title="我的博客的评论列表">最新评论</a></li>
+<li><a href="https://www.cnblogs.com/zh7791/tag/" title="我的博客的标签列表">我的标签</a></li>
+
+</ul>
+</div>
+
+</div>
+
+<!-- 最新随笔 -->
+<div id="sidebar_recentposts" class="sidebar-block"><div class="catListEssay">
+<h3 class="catListTitle">最新随笔</h3>
+    <ul>
+                <li>
+                    
+<a href="https://www.cnblogs.com/zh7791/p/14750344.html">1.微软RPA工具Power Automate Desktop</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/zh7791/p/14714786.html">2.C# 实现(阿姆斯特朗数)</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/zh7791/p/14713954.html">3.C# 实现(变量交换、斐波那契数列、质数、回文)</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/zh7791/p/14679818.html">4.Visual Studio 2022 预览版</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/zh7791/p/14560386.html">5.ASP.NET Core 基础系列（10）(.NET CLI)</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/zh7791/p/14552716.html">6.ASP.NET Core 基础系列（9）(异常中间件)</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/zh7791/p/14552472.html">7.ASP.NET Core 基础系列（8）(wwwroot)</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/zh7791/p/14534549.html">8.ASP.NET Core 基础系列（7）(请求处理管道)</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/zh7791/p/14527238.html">9.MAUI预览版发布 (.NET 6 Preview2)</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/zh7791/p/14518884.html">10.ASP.NET Core 基础系列（6）(中间件)</a>
+
+                </li>
+    </ul>
+</div>
+
+</div>
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block"></div>
+
+<!-- 积分与排名 -->
+<div id="sidebar_scorerank" class="sidebar-block"><div class="catListBlogRank">
+<h3 class="catListTitle">积分与排名</h3>
+<ul>
+	<li class="liScore">
+		积分 -	
+195462
+	</li>
+	<li class="liRank">
+		排名 -	
+3964
+	</li>
+</ul>
+</div>
+
+
+
+</div>
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔分类
+
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1851606.html" rel="" target="">
+    .Net Core(8)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1851119.html" rel="" target="">
+    .NET框架体系结构(9)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1936344.html" rel="" target="">
+    ASP.NET Core基础系列(9)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1725252.html" rel="" target="">
+    Blazor 系列(7)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1122011.html" rel="" target="">
+    C#(54)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1851439.html" rel="" target="">
+    C#面试题合集(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1021598.html" rel="" target="">
+    Dev控件(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1051305.html" rel="" target="">
+    PLC编程(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1893907.html" rel="" target="">
+    Prism合集(10)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1063694.html" rel="" target="">
+    RFID(5)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1009263.html" rel="" target="">
+    SOAP(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1213318.html" rel="" target="">
+    WPF(39)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1528742.html" rel="" target="">
+    WPF入门基础教程系列(10)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1648618.html" rel="" target="">
+    Xamarin(6)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1009265.html" rel="" target="">
+    打印机(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1009267.html" rel="" target="">
+    理论实践(4)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1025237.html" rel="" target="">
+    设计模式(4)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1589192.html" rel="" target="">
+    数据结构(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1009262.html" rel="" target="">
+    图形图表(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/category/1177095.html" rel="" target="">
+    自动化(4)
+</a>
+ 
+
+                </li>                
+            <li>
+                <a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a>
+            </li>
+        </ul>
+
+
+    </div>    
+    <div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔档案
+
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2021/05.html" rel="" target="">
+    2021年5月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2021/04.html" rel="" target="">
+    2021年4月(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2021/03.html" rel="" target="">
+    2021年3月(10)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2021/02.html" rel="" target="">
+    2021年2月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2021/01.html" rel="" target="">
+    2021年1月(9)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2020/12.html" rel="" target="">
+    2020年12月(9)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2020/11.html" rel="" target="">
+    2020年11月(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2020/10.html" rel="" target="">
+    2020年10月(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2020/09.html" rel="" target="">
+    2020年9月(15)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2020/08.html" rel="" target="">
+    2020年8月(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2020/07.html" rel="" target="">
+    2020年7月(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2020/06.html" rel="" target="">
+    2020年6月(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2020/05.html" rel="" target="">
+    2020年5月(6)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2020/04.html" rel="" target="">
+    2020年4月(14)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2020/03.html" rel="" target="">
+    2020年3月(7)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2020/02.html" rel="" target="">
+    2020年2月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2019/11.html" rel="" target="">
+    2019年11月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2019/09.html" rel="" target="">
+    2019年9月(6)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2019/08.html" rel="" target="">
+    2019年8月(9)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2019/07.html" rel="" target="">
+    2019年7月(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2019/03.html" rel="" target="">
+    2019年3月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2019/02.html" rel="" target="">
+    2019年2月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2018/11.html" rel="" target="">
+    2018年11月(6)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2018/10.html" rel="" target="">
+    2018年10月(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2018/09.html" rel="" target="">
+    2018年9月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2018/08.html" rel="" target="">
+    2018年8月(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2018/07.html" rel="" target="">
+    2018年7月(5)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2018/05.html" rel="" target="">
+    2018年5月(5)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2018/03.html" rel="" target="">
+    2018年3月(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2017/11.html" rel="" target="">
+    2017年11月(13)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2017/10.html" rel="" target="">
+    2017年10月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2017/08.html" rel="" target="">
+    2017年8月(4)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2017/06.html" rel="" target="">
+    2017年6月(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/zh7791/archive/2017/05.html" rel="" target="">
+    2017年5月(6)
+</a>
+ 
+
+                </li>                
+            <li>
+                <a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a>
+            </li>
+        </ul>
+
+
+    </div>    
+</div>
+
+<!-- 最新评论 -->
+<div id="sidebar_recentcomments" class="sidebar-block"><div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+
+	<div class="RecentCommentBlock">
+        <ul>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/zh7791/p/9878322.html">1. Re:WPF通用框架ZFS《项目结构介绍01》_模块介绍</a></li>
+                    <li class="recent_comment_body"><p>楼主，项目地址down不了代码了吗？</p>
+</li>
+                    <li class="recent_comment_author">--番茄酱子</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/zh7791/p/11502696.html">2. Re:WPF 基础总结(学习建议)</a></li>
+                    <li class="recent_comment_body">@张星星呀 你是做EAP的吗?...</li>
+                    <li class="recent_comment_author">--走在小路上</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/zh7791/p/14086734.html">3. Re:WPF Prism框架合集(3.Region)</a></li>
+                    <li class="recent_comment_body"><p>学习了。厉害。</p>
+</li>
+                    <li class="recent_comment_author">--菜鸟1号前来报到</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/zh7791/p/13706930.html">4. Re:.NET Core版本</a></li>
+                    <li class="recent_comment_body"><p>文章该更新了</p>
+</li>
+                    <li class="recent_comment_author">--秋意正寒</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/zh7791/p/12603770.html">5. Re:RFID_R420 C# ImpinjSDK参数详解</a></li>
+                    <li class="recent_comment_body"><p>没想到大佬也搞过读写器啊，哈哈</p>
+</li>
+                    <li class="recent_comment_author">--眯着</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/zh7791/p/14107961.html">6. Re:WPF Prism框架合集(4.Module)</a></li>
+                    <li class="recent_comment_body"><p>现在感觉桌面开发是不是已经out了.是不是应该转战网页开发或者服务开发.<br>
+看到现在高薪都是做服务的,内心真是纠结啊.</p>
+</li>
+                    <li class="recent_comment_author">--zsw_crown</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/zh7791/p/14107961.html">7. Re:WPF Prism框架合集(4.Module)</a></li>
+                    <li class="recent_comment_body"><p>痕迹boss  我看了你的prism视频教程感觉很不错,想更深入的学习一些prism,请问有什么高见吗?同时,我觉得你写的md文档很不错,不知道怎么获取到.</p>
+</li>
+                    <li class="recent_comment_author">--zsw_crown</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/zh7791/p/9928133.html">8. Re:Expression表达式树(C#)</a></li>
+                    <li class="recent_comment_body">后来我使用 ` var func = GenerateExpression(new SearchInfo() { Code = "1", Id = "1", Name = "3", Addr = "5...</li>
+                    <li class="recent_comment_author">--傲哥哥</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/zh7791/p/9928133.html">9. Re:Expression表达式树(C#)</a></li>
+                    <li class="recent_comment_body">也不知道是从哪里copy出来的代码 . 前面讲得挺好的 , 但是后面那个 GenerateExpression 你自由有调试过吗 ? 这里所有的 objValue == null 也就是说 , Met...</li>
+                    <li class="recent_comment_author">--傲哥哥</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/zh7791/p/11369020.html">10. Re:WPF布局介绍(1)</a></li>
+                    <li class="recent_comment_body"><p>详实</p>
+</li>
+                    <li class="recent_comment_author">--endingly</li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block"><div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/7930342.html">
+                            1. C#  单例模式的多种简单实现(43964)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/9549542.html">
+                            2. C# WPF开源控件库MaterialDesign介绍(37982)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/6909159.html">
+                            3. Winform中Chart图表的简单使用(28801)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/9761935.html">
+                            4. WPF框架ZFS(17343)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/9928133.html">
+                            5. Expression表达式树(C#)(15002)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/6905130.html">
+                            6. BarTender 通过ZPL命令操作打印机打印条码, 操作RFID标签(12923)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/12617961.html">
+                            7. WPF LiveChart 图表详解(12313)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/9951478.html">
+                            8. C# async/await异步编程深入理解(9191)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/6907455.html">
+                            9. C# Bartender模板打印 条码,二维码, 文字, 及操作RFID标签等。(8767)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/11151787.html">
+                            10. C# Socket服务器及多客户端连接示例(8485)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block"><div class="catListFeedback">
+<h3 class="catListTitle">评论排行榜</h3>
+	<div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/9317042.html">
+                            1. C#串口调试工具  (WPF/MVVM结构完整示例版)(10)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/11502696.html">
+                            2. WPF 基础总结(学习建议)(8)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/14253770.html">
+                            3. 如何成为微软社区MVP以及年终总结(7)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/11449492.html">
+                            4. WPF数据模板(7)(6)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/9928133.html">
+                            5. Expression表达式树(C#)(6)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/9439926.html">
+                            6. C# MQTT 服务端客户端通讯(6)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/7930342.html">
+                            7. C#  单例模式的多种简单实现(6)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/13202009.html">
+                            8. C#跨平台开源项目实战(WPF/Android/IOS/Blazor)(5)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/9761935.html">
+                            9. WPF框架ZFS(5)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/zh7791/p/9549542.html">
+                            10. C# WPF开源控件库MaterialDesign介绍(5)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block">
+<div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">推荐排行榜</h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/zh7791/p/9761935.html">
+                                1. WPF框架ZFS(19)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/zh7791/p/13202009.html">
+                                2. C#跨平台开源项目实战(WPF/Android/IOS/Blazor)(18)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/zh7791/p/11502696.html">
+                                3. WPF 基础总结(学习建议)(16)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/zh7791/p/11449492.html">
+                                4. WPF数据模板(7)(10)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/zh7791/p/12617961.html">
+                                5. WPF LiveChart 图表详解(8)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div></div></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2021 痕迹g
+<br><span id="poweredby">Powered by .NET 5.0 on Kubernetes</span>
+
+
+
+	<span class="esa-copyright">&amp; Theme <a href="https://github.com/esofar/cnblogs-theme-silence" target="_blank">Silence v3.0.0</a></span></div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8L-rpLgFVEJMgssCVvNUAjv5iwdTrZX7OaLCVf64_mjaSNDwhhC7Uod4bZInY0Pqrf_gc59m1VMKwzLiViZ2822fbK3r9vkqsOGMLKo2u0pM9QqX21fWzMnja2hrvIvpKf6AGqPHBLG8phNPIXoiiJg">
+
+
+<script type="text/javascript">
+    window.$silence={
+        profile: {
+            enable: true,
+            avatar: 'http://pic.cnblogs.com/avatar/1161656/20200724141223.png',
+        },
+        github:{
+            enable: true,
+            color: '#fff',
+            fill: null,
+            link: 'https://github.com/HenJigg'
+        }
+    };
+</script><a href="https://www.cnblogs.com/zh7791/p/[object%20Object]" class="github-corner" title="GitHub" target="_blank">
+                <svg width="60" height="60" viewBox="0 0 250 250" style="color:#fff" aria-hidden="true">
+                    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+                    <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+                    <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+                </svg>
+            </a><div class="esa-toolbar">
+        <div class="bars bars-show"><i class="fa fa-ellipsis-h"></i></div>
+        <span class="up up-show" title="返回顶部"><i class="fa fa-chevron-up"></i></span>
+        <span class="mode mode-show" title="切换模式"><i class="fa fa-adjust"></i></span>
+        <span class="skin skin-show" title="主题设置"><i class="fa fa-cog"></i></span>
+        <div class="skin-popup">
+            <div class="item">
+                <div class="title">主题色彩</div>
+                <div class="themes">
+                    <button data-theme="a" style="background: #2D8CF0;"></button>
+                    <button data-theme="b" style="background: #FA7298;"></button>
+                    <button data-theme="c" style="background: #42B983;"></button>
+                    <button data-theme="d" style="background: #607D8B;"></button>
+                    <button data-theme="e" style="background: #5E72E4;"></button>
+                    <button data-theme="f" style="background: #FF9700;"></button>
+                    <button data-theme="g" style="background: #FF5722;"></button>
+                    <button data-theme="h" style="background: #009688;"></button>
+                    <button data-theme="i" style="background: #673BB7;"></button>
+                    <button data-theme="j" style="background: #906f61;"></button>
+                </div>
+            </div>
+        </div>
+        </div>
+    <script type="text/javascript">getFollowStatus('e47a10a5-9333-e711-9fc1-ac853d9f53cc');</script><div id="lightboxOverlay" tabindex="-1" class="lightboxOverlay" style="display: none;"></div><div id="lightbox" tabindex="-1" class="lightbox" style="display: none;"><div class="lb-outerContainer"><div class="lb-container"><img class="lb-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" alt=""><div class="lb-nav"><a class="lb-prev" aria-label="Previous image" href="https://www.cnblogs.com/zh7791/p/12897696.html"></a><a class="lb-next" aria-label="Next image" href="https://www.cnblogs.com/zh7791/p/12897696.html"></a></div><div class="lb-loader"><a class="lb-cancel"></a></div></div></div><div class="lb-dataContainer"><div class="lb-data"><div class="lb-details"><span class="lb-caption"></span><span class="lb-number"></span></div><div class="lb-closeContainer"><a class="lb-close"></a></div></div></div></div><iframe id="google_osd_static_frame_2267938169802" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;" src="./WPF关键帧动画 - 痕迹g - 博客园_files/saved_resource(2).html"></iframe></body></html>

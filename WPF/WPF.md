@@ -1211,3 +1211,202 @@ IRestResponse response = client.Execute(request);
 
 # 动画
 
+```c#
+        private void BtnStart(object sender, RoutedEventArgs e)
+        {
+            Storyboard storyboard = new Storyboard();
+
+            //DoubleAnimation doubleAnimation = new DoubleAnimation();
+
+            ////doubleAnimation.From = 0;//动画的起始值
+            ////doubleAnimation.To = 100;//动画的结束值
+            //doubleAnimation.By = 30;//代表在原有基础上增加的范围
+
+            //doubleAnimation.Duration = TimeSpan.FromSeconds(2);//持续时间
+
+            //doubleAnimation.RepeatBehavior = RepeatBehavior.Forever;//一直重复
+
+            //doubleAnimation.AutoReverse = true;//自动倒序播放
+
+            //Storyboard.SetTarget(doubleAnimation,Btn1);
+            //Storyboard.SetTargetProperty(doubleAnimation,new PropertyPath("Width"));
+
+            storyboard.Children.Add(CreateDoubleAnimation(Btn1,false, RepeatBehavior.Forever,"Width",30,2));
+            storyboard.Children.Add(CreateDoubleAnimation(Btn2, false, new RepeatBehavior(5), "Width", 30, 2));
+
+            storyboard.Children.Add(CreateDoubleAnimation(Btn3, true, new RepeatBehavior(2), "Width", 30, 2));
+
+            storyboard.Children.Add(CreateDoubleAnimation(Btn4, true, RepeatBehavior.Forever, "Width", 30, 2));
+
+
+            storyboard.Begin();
+
+        }
+
+        private void BtnStart1(object sender, RoutedEventArgs e)
+        {
+            Storyboard storyboard = new Storyboard();
+
+            ////Btn5.RenderTransform = new TranslateTransform(0, 0);//支持位移
+
+            //Btn5.RenderTransform = new RotateTransform(0, 0, 0);//支持旋转
+
+            //DoubleAnimation doubleAnimation = new DoubleAnimation();
+
+            //doubleAnimation.By = 360;
+            //doubleAnimation.Duration = TimeSpan.FromSeconds(2);
+            //Storyboard.SetTarget(doubleAnimation, Btn5);
+
+            //Storyboard.SetTargetProperty(doubleAnimation, new PropertyPath("(UIElement.RenderTransform).(RotateTransform.Angle)"));//(UIElement.RenderTransform).(TranslateTransform.X)
+            //storyboard.Children.Add(doubleAnimation);
+
+            //
+
+            storyboard.Children.Add(CreateDoubleAnimation(Btn5,true,RepeatBehavior.Forever, "(UIElement.RenderTransform).(TranslateTransform.X)", 120,2));
+
+            storyboard.Children.Add(CreateDoubleAnimation(Btn6, false, new RepeatBehavior(2), "(UIElement.RenderTransform).(TranslateTransform.X)", 120, 2));
+
+            storyboard.Children.Add(CreateDoubleAnimation(Btn7, true, RepeatBehavior.Forever, "(UIElement.RenderTransform).(RotateTransform.Angle)", 120, 2));
+
+            storyboard.Children.Add(CreateDoubleAnimation(Btn8, true, RepeatBehavior.Forever, "(UIElement.RenderTransform).(RotateTransform.Angle)", 120, 2));
+
+            storyboard.Begin();
+        }
+
+        /// <summary>
+        /// 创建动画
+        /// </summary>
+        /// <param name="element">元素</param>
+        /// <param name="autoReverse">是否自动倒序播放</param>
+        /// <param name="repeatBehavior">运动类型</param>
+        /// <param name="property">执行动画的属性</param>
+        /// <param name="by">在原有基础上增加的范围</param>
+        /// <param name="duration">持续时间</param>
+        /// <returns></returns>
+        private static Timeline CreateDoubleAnimation(UIElement element,bool autoReverse,RepeatBehavior repeatBehavior,string property,double by,double duration)
+        {
+            Storyboard storyboard = new Storyboard();
+
+            DoubleAnimation doubleAnimation = new DoubleAnimation();
+
+            doubleAnimation.From = 0;//动画的起始值
+            //doubleAnimation.To = 100;//动画的结束值
+            doubleAnimation.By = by;//代表在原有基础上增加的范围
+
+            doubleAnimation.Duration = TimeSpan.FromSeconds(duration);//持续时间
+
+            doubleAnimation.RepeatBehavior = repeatBehavior;//一直重复
+
+            doubleAnimation.AutoReverse = autoReverse;//自动倒序播放
+
+            Storyboard.SetTarget(doubleAnimation, element);
+            Storyboard.SetTargetProperty(doubleAnimation, new PropertyPath(property));
+
+            return doubleAnimation;
+        }
+
+
+        private void BtnStart2(object sender, RoutedEventArgs e)
+        {
+            Storyboard storyboard = new Storyboard();
+
+            storyboard.Children.Add(CreateDoubleAnimation(Btn9, false, RepeatBehavior.Forever, "Opacity", 1, 2));
+            storyboard.Children.Add(CreateDoubleAnimation(Btn10, false, new RepeatBehavior(5), "Opacity", 1, 2));
+
+            storyboard.Children.Add(CreateDoubleAnimation(Btn11, true, new RepeatBehavior(2), "Opacity", 1, 2));
+
+            storyboard.Children.Add(CreateDoubleAnimation(Btn12, true, RepeatBehavior.Forever, "Opacity", 1, 2));
+
+
+            storyboard.Begin();
+        }
+```
+
+```xaml
+    <Grid>
+        <TabControl>
+            <TabItem Header="大小变化">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="80"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Button Width="120" Height="40" Content="启动" Click="BtnStart"></Button>
+
+
+                    <UniformGrid Grid.Row="1" Columns="2" Rows="2">
+                        <Button Width="80" Height="30" Name="Btn1"></Button>
+                        <Button Width="80" Height="30" Name="Btn2"></Button>
+                        <Button Width="80" Height="30" Name="Btn3"></Button>
+                        <Button Width="80" Height="30" Name="Btn4"></Button>
+                    </UniformGrid>
+
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="旋转移动">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="80"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Button Width="120" Height="40" Content="启动" Click="BtnStart1"></Button>
+
+
+                    <UniformGrid Grid.Row="1" Columns="2" Rows="2">
+                        <Button Width="80" Height="30" Name="Btn5">
+                            <Button.RenderTransform>
+                                <TranslateTransform X="0" Y="0"></TranslateTransform>
+                            </Button.RenderTransform>
+                        </Button>
+                        <Button Width="80" Height="30" Name="Btn6">
+                            <Button.RenderTransform>
+                                <TranslateTransform X="0" Y="0"></TranslateTransform>
+                            </Button.RenderTransform>
+                        </Button>
+                        <Button Width="80" Height="30" Name="Btn7">
+                            <Button.RenderTransform>
+                                <RotateTransform Angle="0" CenterX="0" CenterY="0"></RotateTransform>
+                            </Button.RenderTransform>
+                        </Button>
+                        <Button Width="80" Height="30" Name="Btn8">
+                            <Button.RenderTransform>
+                                <RotateTransform Angle="0" CenterX="0" CenterY="0"></RotateTransform>
+                            </Button.RenderTransform>
+                        </Button>
+                    </UniformGrid>
+
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="渐变">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="80"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Button Width="120" Height="40" Content="启动" Click="BtnStart2"></Button>
+
+
+                    <UniformGrid Grid.Row="1" Columns="2" Rows="2">
+                        <Button Width="80" Height="30" Name="Btn9"></Button>
+                        <Button Width="80" Height="30" Name="Btn10"></Button>
+                        <Button Width="80" Height="30" Name="Btn11"></Button>
+                        <Button Width="80" Height="30" Name="Btn12"></Button>
+                    </UniformGrid>
+
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+```
+
+
+
+
+
+
+
