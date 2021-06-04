@@ -1,4 +1,155 @@
-# AutoFac
+# ``AutoFac``
+
+​		控制反转背后的想法是，与其将应用程序中的类绑定在一起并让类“更新”它们的依赖项，不如将其切换，以便在类构建期间传递依赖项。
+
+## 多种注册方法
+
+```c#
+// 创建用于注册组件/服务的构建器。
+var builder = new ContainerBuilder();
+
+// 用实现接口的类型注册..。
+builder.RegisterType<ConsoleLogger>().As<ILogger>();
+
+// 用创建的对象实例注册...
+var output = new StringWriter();
+builder.RegisterInstance(output).As<TextWriter>();
+
+// 注册创建对象的表达式...
+builder.Register(c => new ConfigReader("mysection")).As<IConfigReader>();
+
+// 构建容器以完成注册并准备对象解析.
+var container = builder.Build();
+
+using(var scope = container.BeginLifetimeScope())
+{
+  var reader = scope.Resolve<IConfigReader>();
+}
+```
+
+## 多个构造器
+
+```c#
+public class MyComponent
+{
+    public MyComponent() { /* ... */ }
+    public MyComponent(ILogger logger) { /* ... */ }
+    public MyComponent(ILogger logger, IConfigReader reader) { /* ... */ }
+}
+```
+
+在容器中注册这样的组件和服务
+
+```c#
+var builder = new ContainerBuilder();
+builder.RegisterType<MyComponent>();
+builder.RegisterType<ConsoleLogger>().As<ILogger>();
+var container = builder.Build();
+
+using(var scope = container.BeginLifetimeScope())
+{
+  var component = scope.Resolve<MyComponent>();
+}
+```
+
+``Autofac ``将看到已注册``ILogger``，但没有注册``IConfigReader``。在这种情况下，将选择第二个构造器，因为这是在容器中可以找到的参数最多的构造器
+
+### 指定构造器
+
+```c#
+builder.RegisterType<MyComponent>()
+       .UsingConstructor(typeof(ILogger), typeof(IConfigReader));
+```
+
+## 泛型
+
+```c#
+builder.RegisterGeneric(typeof(NHibernateRepository<>))
+       .As(typeof(IRepository<>))
+       .InstancePerLifetimeScope();
+
+
+// Autofac will return an NHibernateRepository<Task>
+var tasks = container.Resolve<IRepository<Task>>();
+```
+
+## 修改默认注册的实例
+
+```c#
+builder.RegisterType<ConsoleLogger>().As<ILogger>();
+builder.RegisterType<FileLogger>().As<ILogger>();//FileLogger默认
+```
+
+```c#
+builder.RegisterType<ConsoleLogger>().As<ILogger>();//ConsoleLogger默认
+builder.RegisterType<FileLogger>().As<ILogger>().PreserveExistingDefaults();
+```
+
+## 需要在注册时传入参数
+
+```c#
+public class ConfigReader : IConfigReader
+{
+  public ConfigReader(string configSectionName)
+  {
+    // Store config section name
+  }
+
+  // ...read configuration based on the section name.
+}
+```
+
+可以使用lambda表达式的形式注册
+
+```c#
+builder.Register(c => new ConfigReader("sectionName")).As<IConfigReader>();
+```
+
+或者
+
+```c#
+// Using a NAMED parameter:
+builder.RegisterType<ConfigReader>()
+       .As<IConfigReader>()
+       .WithParameter("configSectionName", "sectionName");
+
+// Using a TYPED parameter:
+builder.RegisterType<ConfigReader>()
+       .As<IConfigReader>()
+       .WithParameter(new TypedParameter(typeof(string), "sectionName"));
+
+// Using a RESOLVED parameter:
+builder.RegisterType<ConfigReader>()
+       .As<IConfigReader>()
+       .WithParameter(
+         new ResolvedParameter(
+           (pi, ctx) => pi.ParameterType == typeof(string) && pi.Name == "configSectionName",
+           (pi, ctx) => "sectionName"));
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 官方网站http://autofac.org/
 
