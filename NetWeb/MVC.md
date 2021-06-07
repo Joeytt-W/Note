@@ -211,7 +211,9 @@ TempData["hello"] = "hello";
 
 ### 从View到Controller
 
+## MVC生命周期
 
+![](images/002.png)
 
 
 
