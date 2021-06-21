@@ -96,6 +96,73 @@ services.AddControllers(setup =>
 
 ```
 
+# 读取配置文件
+
+```json
+{
+    "AllowedHosts": "*",
+    "Logging": {
+        "LogLevel": {
+            "Default": "Information",
+            "Microsoft": "Warning",
+            "Other": "Information"
+        }
+    }
+}
+```
+
+```c#
+	public class Logging
+    {
+        public const string logging = "Logging";
+        public LogLevel LogLevel { get;} = new LogLevel();
+    }
+
+    public class LogLevel
+    {
+        public string Default { get; set; }
+
+        public string Microsoft { get; set; }
+
+        public string Other { get; set; }
+    }
+```
+
+- startup中读取
+
+```c#
+		app.Use(async (context, next) =>
+            {
+                var log = new Logging();
+                Configuration.GetSection(Logging.logging).Bind(log);
+                await context.Response.WriteAsync(log.LogLevel.Microsoft);
+            });
+```
+
+- 注入之后在其他地方使用
+
+```c#
+ //添加到依赖注入容器
+ services.Configure<Logging>(Configuration.GetSection(Logging.logging));
+```
+
+```c#
+ 		private readonly Logging _options;
+        public ValuesController(IOptions<Logging> options)
+        {
+            _options = options.Value;
+        }
+
+        [HttpGet(nameof(GetValue))]
+        public IActionResult GetValue()
+        {
+            var str = _options.LogLevel.Default;
+            return Ok($"{str}");
+        }
+```
+
+
+
 # ActionResult<T>
 
 # AutoMapper: 对象到对象的映射器

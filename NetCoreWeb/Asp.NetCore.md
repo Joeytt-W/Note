@@ -46,7 +46,7 @@
         public void ConfigureServices(IServiceCollection services)
         {
             //注册MVC相关服务
-            services.AddMvc();
+            services.AddControllersWithViews();
             
             services.AddSingleton<ICinemaService,CinemaMemoryService>();
             services.AddSingleton<IMovieService, MovieMemoryService>();
@@ -220,7 +220,17 @@ public class HomeController:Controller{
 
 # 使用Razor
 
-## HtmlHelpers
+## 路由
+
+![](images/051.png)
+
+## configureservice方法services.addRazorPages();
+
+## configure方法
+
+![](images/052.png)
+
+# HtmlHelpers
 
 - 超链接：@Html.ActionLink("Content","actionName",“ControllerName”,new{id = @Model.id});
 
@@ -464,7 +474,7 @@ public class HomeController:Controller{
   </div>
   ```
 
-  - 模板
+  - 模板（在index.cshtml同级的DisplayTemplates文件夹下）
 
   ```c#
   @using CoreDemo.Models
@@ -484,14 +494,19 @@ public class HomeController:Controller{
   </tr>
   ```
 
-
 # View Component
 
-继承ViewComponent,实现Invoke方法
+1. 项目的ViewComponents文件夹下建立xxxViewCompontnt类，继承ViewComponent,实现Invoke[Async]方法，返回Task<IViewComponentResult>[return view()],如果需要传参数，直接给Invoke[Async]加参数
 
-@Component.Invoke("ComponentName")
+![](images/050.png)
 
-TagHelper:`<vc:component-name><vc:component-name>`,要在_ViewImports.cshtml下添加@addTagHelper *,项目名
+2. 视图建在Shared/Components/xxx/Default.cshtml
+
+3. 调用：@[await] Component.Invoke[Async] ("xxx")
+
+   带参数的调用：@[await] Component.Invoke[Async] ("xxx",new {title="汇总列表"})
+
+4. TagHelper方式调用:`<vc:component-name title="汇总二"><vc:component-name>`,要在_ViewImports.cshtml下添加@addTagHelper *,项目名称
 
 # 授权认证
 
