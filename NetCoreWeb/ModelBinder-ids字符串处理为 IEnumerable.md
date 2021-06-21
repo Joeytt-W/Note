@@ -1,6 +1,6 @@
 ```c#
-/// <summary>
-    /// 自定义 Model 绑定器，将 Uri Query 中的 Company ids 字符串处理为 IEnumerable<Guid>（视频P24)
+	/// <summary>
+    /// 自定义 Model 绑定器，将 Uri Query 中的 Company ids 字符串处理为 IEnumerable<Guid>
     /// </summary>
     public class ArrayModelBinder : IModelBinder
     {
