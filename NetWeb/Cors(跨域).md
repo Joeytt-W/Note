@@ -30,3 +30,12 @@ public class StudentController : ApiController
 }    
 ```
 
+# CSRF
+
+CSRF（Cross-site request forgery）跨站请求伪造，也被称为“One Click Attack”或者Session Riding，通常缩写为CSRF或者XSRF，是一种对网站的恶意利用
+
+需要在view加上Html.AntiForgeryToken()防止CSRF攻击，还需要在目标action上增加[ValidateAntiForgeryToken]特性*它主要检查*
+
+(1)请求的是否包含一个约定的AntiForgery名的cookie
+
+(2)请求是否有一个Request.Form["约定的AntiForgery名"]，约定的AntiForgery名的cookie和Request.Form值是否匹配
