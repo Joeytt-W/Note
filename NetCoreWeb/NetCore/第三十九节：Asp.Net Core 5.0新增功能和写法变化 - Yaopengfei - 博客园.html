@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)https://www.cnblogs.com/yaopengfei/p/14423713.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="description" content="一.&amp;#160;新增功能 参考：https://docs.microsoft.com/zh-cn/aspnet/core/release-notes/aspnetcore-5.0?view=aspne">
+    <meta property="og:description" content="一.&amp;#160;新增功能 参考：https://docs.microsoft.com/zh-cn/aspnet/core/release-notes/aspnetcore-5.0?view=aspne">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([class*="language-"]):not([highlighted]):not(.hljs) {
+        background: rgb(245, 245, 245);
+        padding: 5px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(0, 0, 0);
+        font-family: "Courier New", sans-serif;
+    }:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]) code:not(.hljs) {
+            background: rgb(245, 245, 245) !important;
+            border-color: transparent !important;
+        }</style><link rel="stylesheet" href="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/blog-common.min.css">
+    <link id="MainCss" rel="stylesheet" href="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/bundle-darkgreentrip.min.css">
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/cnblogs.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/bundle-darkgreentrip-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/yaopengfei/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/yaopengfei/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/yaopengfei/wlwmanifest.xml">
+    <script type="text/javascript" src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/encoder.js.下载"></script><script type="text/javascript" async="" src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/analytics.js.下载"></script><script>
+        var currentBlogId = 307315;
+        var currentBlogApp = 'yaopengfei';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'darkgreentrip';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function(){ return ''; } });
+            }
+        } catch(error) { }
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+    </script>
+        <script>
+            var currentPostDateAdded = '2021-02-20 22:46';
+        </script>
+    <script src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/jquery-2.2.0.min.js.下载"></script>
+    <script src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/blog-common.min.js.下载"></script><style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style><script id="hljs-script" async="" data-loaded="true" src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/highlight.min.js.下载"></script>
+    
+    
+    
+<meta http-equiv="origin-trial" content="AxujKG9INjsZ8/gUq8+dTruNvk7RjZQ1oFhhgQbcTJKDnZfbzSTE81wvC2Hzaf3TW4avA76LTZEMdiedF1vIbA4AAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="Azuce85ORtSnWe1MZDTv68qpaW3iHyfL9YbLRy0cwcCZwVnePnOmkUJlG8HGikmOwhZU22dElCcfrfX2HhrBPAkAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A16nvcdeoOAqrJcmjLRpl1I6f3McDD8EfofAYTt/P/H4/AWwB99nxiPp6kA0fXoiZav908Z8etuL16laFPUdfQsAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxBHdr0J44vFBQtZUqX9sjiqf5yWZ/OcHRcRMN3H9TH+t90V/j3ENW6C8+igBZFXMJ7G3Pr8Dd13632aLng42wgAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A88BWHFjcawUfKU3lIejLoryXoyjooBXLgWmGh+hNcqMK44cugvsI5YZbNarYvi3roc1fYbHA1AVbhAtuHZflgEAAAB2eyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IlRydXN0VG9rZW5zIiwiZXhwaXJ5IjoxNjUyNzc0NDAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A8FHS1NmdCwGqD9DwOicnHHY+y27kdWfxKa0YHSGDfv0CSpDKRHTQdQmZVPDUdaFWUsxdgVxlwAd6o+dhJykPA0AAACWeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A8zdXi6dr1hwXEUjQrYiyYQGlU3557y5QWDnN0Lwgj9ePt66XMEvNkVWOEOWPd7TP9sBQ25X0Q15Lr1Nn4oGFQkAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A4/Htern2udN9w3yJK9QgWQxQFruxOXsXL7cW60DyCl0EZFGCSme/J33Q/WzF7bBkVvhEWDlcBiUyZaim5CpFQwAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><script src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/pubads_impl_2021111801.js.下载" async=""></script></head>
+<body class="skin-darkgreentrip has-navbar has-bannerbar">
+    <a name="top"></a>
+        <a href="https://c.gridsumdissector.com/r/?gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__" target="_blank" rel="nofollow" onclick="countClicks(&#39;ad&#39;, &#39;C0-火山引擎&#39;)">
+            <div class="bannerbar forpc" style="display: flex; background-color: #11225a;">
+                <img src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/volcengine-b0c0-1.jpg" onload="impressC0(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)" alt="">
+                <img src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/volcengine-b0c0-2.jpg" alt="">
+                <img style="margin-left: auto;" src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/volcengine-b0c0-3.jpg" alt="">
+            </div>
+        </a>
+            <div id="bannerbar" class="bannerbar-mobile formobile">
+                <a href="https://c.gridsumdissector.com/r/?gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__" onclick="countClicks(&#39;ad&#39;, &#39;M2-火山引擎&#39;)" rel="nofollow">
+                    <img src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/volcengine-m2.jpg" alt="" onload="impressM2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+                </a>
+            </div>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding"><a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/logo.svg" alt="博客园Logo"></a></li>
+                <li><a href="https://www.cnblogs.com/" onclick="countClicks(&#39;skin-navbar-sitehome&#39;)">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-brands&#39;)">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-edu&#39;)">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/yaopengfei/"><img id="blogLogo" src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/yaopengfei/">奔跑的路上</a>
+</h1>
+<h2>广泛汲取，用心打磨，精益求精。</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/yaopengfei/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/Yaopengfei">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/yaopengfei/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 494&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 1303&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 604717">
+60万</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/yaopengfei/p/14423713.html">
+    <span>第三十九节：Asp.Net Core 5.0新增功能和写法变化</span>
+    
+
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">一.&nbsp;新增功能</span></p>
+<p><span style="color: rgba(0, 0, 255, 1)">　参考：https://docs.microsoft.com/zh-cn/aspnet/core/release-notes/aspnetcore-5.0?view=aspnetcore-5.0</span></p>
+<p><strong><span style="font-size: 16px">1.&nbsp;WebApi项目默认引入OpenApi</span></strong></p>
+<h3 id="openapi-specification-on-by-default" class="heading-anchor"><strong><span style="font-size: 15px"><span data-ttu-id="ccd14-122">(1).&nbsp;新建的时候可选引入OpenApi</span></span></strong></h3>
+<p><span data-ttu-id="ccd14-122"><img src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/1031302-20210222160010681-406102832.png" alt="" width="671" height="297" loading="lazy" style="display: block; margin-left: auto; margin-right: auto" class="medium-zoom-image"></span></p>
+<p><strong><span style="font-size: 15px">(2).&nbsp;项目创建成功后，发现引入了openApi的程序集 ，Configure和ConfigureService中也自动引入了OpenApi的配置代码。</span></strong></p>
+<p><strong><span style="font-size: 15px"><img src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/1031302-20210222160542218-1290565354.png" alt="" loading="lazy" style="display: block; margin-left: auto; margin-right: auto"></span></strong></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码分享&nbsp;</span></p>
+<div class="cnblogs_code"><img src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_7594c3fd-62c8-4118-8515-02597c68febd" class="code_img_closed"><img src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_7594c3fd-62c8-4118-8515-02597c68febd" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_7594c3fd-62c8-4118-8515-02597c68febd" class="cnblogs_code_hide">
+<pre> <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">void</span><span style="color: rgba(0, 0, 0, 1)"> ConfigureServices(IServiceCollection services)
+        {
+
+            services.AddControllers();
+            services.AddSwaggerGen(c </span>=&gt;<span style="color: rgba(0, 0, 0, 1)">
+            {
+                c.SwaggerDoc(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">v1</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(0, 0, 255, 1)">new</span> OpenApiInfo { Title = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">CoreWebApi</span><span style="color: rgba(128, 0, 0, 1)">"</span>, Version = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">v1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)"> });
+            });
+        }
+
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> This method gets called by the runtime. Use this method to configure the HTTP request pipeline.</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">void</span><span style="color: rgba(0, 0, 0, 1)"> Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span><span style="color: rgba(0, 0, 0, 1)"> (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c </span>=&gt; c.SwaggerEndpoint(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">/swagger/v1/swagger.json</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">CoreWebApi v1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">));
+            }
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints </span>=&gt;<span style="color: rgba(0, 0, 0, 1)">
+            {
+                endpoints.MapControllers();
+            });
+        }</span></pre>
+</div>
+<span class="cnblogs_code_collapse">ConfigureServices+Configure</span></div>
+<p><strong><span style="font-size: 15px">(3).&nbsp;通过地址&nbsp;http://localhost:65511/swagger/index.html 直接运行&nbsp;</span></strong></p>
+<p>&nbsp;<img src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/1031302-20210222160846039-2047889662.png" alt="" width="729" height="347" loading="lazy" style="display: block; margin-left: auto; margin-right: auto"></p>
+<p><strong><span style="font-size: 16px">2.&nbsp;grpc性能改进</span></strong></p>
+<p>&nbsp;　详见：https://devblogs.microsoft.com/aspnet/grpc-performance-improvements-in-net-5/</p>
+<p><strong><span style="font-size: 16px">3.&nbsp;signalR改进</span></strong></p>
+<p>&nbsp;　<span data-ttu-id="ccd14-223">ASP.NET Core SignalR 现在能够处理并行中心调用。&nbsp;<span data-ttu-id="ccd14-224">可以更改默认行为，以允许客户端一次调用多个中心方法：</span></span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">void</span><span style="color: rgba(0, 0, 0, 1)"> ConfigureServices(IServiceCollection services)
+{
+    services.AddSignalR(options </span>=&gt;<span style="color: rgba(0, 0, 0, 1)">
+    {
+        options.MaximumParallelInvocationsPerClient </span>= <span style="color: rgba(128, 0, 128, 1)">5</span><span style="color: rgba(0, 0, 0, 1)">;
+    });
+}</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">二.&nbsp;写法变化</span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div style="border: 2px dashed rgba(0, 0, 255, 1); border-radius: 10px; height: 120px; width: 1100px; margin-left: 60px">
+<div style="width: 0; height: 0; border-left: 20px solid rgba(0, 0, 0, 0); border-right: 20px solid rgba(0, 0, 0, 0); border-bottom: 30px solid rgba(255, 255, 0, 1); float: left; margin-top: 40px; margin-left: 20px">
+<p style="font-size: 16px; font-weight: bold; margin-top: 8px; margin-left: -2px">!</p>
+</div>
+<div style="float: left; margin-left: 16px">
+<ul style="list-style: none; padding: 0; margin-left: 20px">
+<li style="margin-bottom: 1px; line-height: 28px">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者 : <span style="color: rgba(255, 0, 0, 1)">Yaopengfei(姚鹏飞)</span></li>
+<li style="margin-bottom: 1px; line-height: 28px">博客地址 : <a style="text-decoration: none" href="http://www.cnblogs.com/yaopengfei/"><span style="color: rgba(255, 0, 0, 1)">http://www.cnblogs.com/yaopengfei/</span></a></li>
+<li style="margin-bottom: 1px; line-height: 28px">声&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明1 : 如有错误，欢迎讨论，请勿谩骂^_^。</li>
+<li style="margin-bottom: 1px; line-height: 28px">声&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明2 : 原创博客请在转载时保留原文链接或在文章开头加上本人博客地址，否则保留追究法律责任的权利。</li>
+</ul>
+</div>
+<div style="clear: both">&nbsp;</div>
+</div>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/yaopengfei/category/1239348.html" target="_blank">03-Asp.Net Core</a></div>
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(14423713,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;7d349e7e-c080-e611-9fc1-ac853d9f53cc&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/yaopengfei/" target="_blank"><img src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/20180828165403.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/yaopengfei/">Yaopengfei</a><br>
+            <a href="https://home.cnblogs.com/u/yaopengfei/followees/">关注 - 18</a><br>
+            <a href="https://home.cnblogs.com/u/yaopengfei/followers/">粉丝 - 828</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;7d349e7e-c080-e611-9fc1-ac853d9f53cc&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(14423713,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(14423713,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/yaopengfei/p/14410478.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/yaopengfei/p/14410478.html" title="发布于 2021-02-18 07:51">第四节：剖析其它组件ComboBox、DateTimeBox、Messager用法</a>
+    <br>
+    <a href="https://www.cnblogs.com/yaopengfei/p/14431157.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/yaopengfei/p/14431157.html" title="发布于 2021-02-22 16:37">第二十节：EFCore5.0的新功能(变化)、性能测试、常用组件的支持、MySQL测试</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2021-02-20 22:46</span>&nbsp;
+<a href="https://www.cnblogs.com/yaopengfei/">Yaopengfei</a>&nbsp;
+阅读(<span id="post_view_count">235</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=14423713" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(14423713);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;14423713&#39;, targetLink: &#39;https://www.cnblogs.com/yaopengfei/p/14423713.html&#39;, title: &#39;第三十九节：Asp.Net Core 5.0新增功能和写法变化&#39; })">举报</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+
+<script>
+    markdown_highlight()
+    var allowComments = true, cb_blogId = 307315, cb_blogApp = 'yaopengfei', cb_blogUserGuid = '7d349e7e-c080-e611-9fc1-ac853d9f53cc';
+    var cb_entryId = 14423713, cb_entryCreatedDate = '2021-02-20 22:46', cb_postType = 1;
+    updatePostStats(
+        [cb_entryId],
+        function(id, count) { $("#post_view_count").text(count) },
+        function(id, count) { $("#post_comment_count").text(count) })
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+</script>
+<a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/yaopengfei/p/14423713.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/yaopengfei/p/14423713.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="cnblogs_ch"><a href="https://c.gridsumdissector.com/r/?gid=gad_545_sf71nlea&amp;ck=1057&amp;adk=10670&amp;autorefresh=__AUTOREFRESH__" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-火山引擎-1203-1209&#39;})">【推荐】字节跳动旗下火山引擎，邀您共同揭秘“云+增长”</a><br><a href="http://www.uccpsoft.com/index.htm" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-ucancode&#39;})">【推荐】跨平台组态\工控\仿真\CAD 50万行C++源码全开放免费下载！</a><br><a href="https://brands.cnblogs.com/huawei/p/2704" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-华为专区&#39;})">【推荐】华为 HarmonyOS 校园极客秀征文活动第1期，秀出你的COOL</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+        <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;"></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/coco1s/p/15627657.html" target="_blank">使用 CSS 轻松实现一些高频出现的奇形怪状按钮</a>
+    <br>
+· <a href="https://www.cnblogs.com/strick/p/15394367.html" target="_blank">带团队后的日常思考（六）</a>
+    <br>
+· <a href="https://www.cnblogs.com/xiao2shiqi/p/15623540.html" target="_blank">聊聊云原生和微服务架构</a>
+    <br>
+· <a href="https://www.cnblogs.com/youzhibing/p/15615272.html" target="_blank">异或运算的巧用：不用额外的变量，如何交换两个变量的值？ </a>
+    <br>
+· <a href="https://www.cnblogs.com/myshowtime/p/15596630.html" target="_blank">OAuth 2.1 带来了哪些变化</a>
+    <br>
+</div></div>
+        <div id="cnblogs_c2" class="under-post-card">
+            <a href="https://c.gridsumdissector.com/r/?gid=gad_545_wrrk6jpf&amp;ck=1057&amp;adk=10673&amp;autorefresh=__AUTOREFRESH__" rel="nofollow" target="_blank">
+                <img src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/volcengine-c2.jpg" alt="" onload="impressC2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_wrrk6jpf&amp;ck=1057&amp;adk=10673&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+            </a>
+        </div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/708325/" target="_blank">达摩院AliceMind上新！首个中文表格预训练模型发布，已向业界开源（2021-12-03 15:55）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708324/" target="_blank">亚马逊中国卖家遭遇最惨“黑五”：销量不及预期，封号仍在继续（2021-12-03 15:48）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708323/" target="_blank">印度人民怀念中国App（2021-12-03 15:40）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708322/" target="_blank">专利申请量超美国、高新企业数增10倍：一图看懂近20年中国科技有多燃（2021-12-03 15:34）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708321/" target="_blank">“大红大紫”的代价！英伟达再也收不了ARM了？（2021-12-03 15:31）</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+       var commentManager = new blogCommentManager();
+       commentManager.renderComments(0);
+       fixPostBody();
+
+           window.tocManager.displayDisableTocTips = false
+           window.tocManager.generateToc();
+           setTimeout(function() { incrementViewCount(cb_entryId); }, 50);       deliverT2();
+       deliverC1C2();
+       loadNewsAndKb();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);       LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+       GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+       loadOptUnderPost();
+       GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem"><!--done-->
+<h3 class="catListTitle">公告</h3>
+
+<div id="blog-news">
+    
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/yaopengfei/">
+            Yaopengfei
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/yaopengfei/" title="入园时间：2016-09-22">
+            5年2个月
+        </a>
+        <br>
+        粉丝：
+        <a href="https://home.cnblogs.com/u/yaopengfei/followers/">
+            828
+        </a>
+        <br>
+        关注：
+        <a href="https://home.cnblogs.com/u/yaopengfei/followees/">
+            18
+        </a>
+        <div id="p_b_follow">
+<a href="javascript:void(0)" onclick="follow(&#39;7d349e7e-c080-e611-9fc1-ac853d9f53cc&#39;)">+加关注</a></div>
+        <script>getFollowStatus('7d349e7e-c080-e611-9fc1-ac853d9f53cc');</script>
+    </div>
+</div>
+
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2021/11/03&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2021年12月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2022/01/03&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">28</td>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                        <td class="" align="center">
+                            2
+                        </td>
+                        <td class="CalTodayDay" align="center">
+                            3
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        4
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            5
+                        </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            11
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            12
+                        </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            18
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            19
+                        </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            25
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            26
+                        </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                            <td class="" align="center">
+                                30
+                            </td>
+                            <td class="" align="center">
+                                31
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            1
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            2
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            8
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            <div id="widget_my_google" class="div_my_zzk">
+                <input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+
+
+<!-- 最新随笔 -->
+
+
+<!-- 我的标签 -->
+
+
+<!-- 积分与排名 -->
+<div id="sidebar_scorerank" class="sidebar-block"><div class="catListBlogRank">
+<h3 class="catListTitle">积分与排名</h3>
+<ul>
+	<li class="liScore">
+		积分 -	
+490240
+	</li>
+	<li class="liRank">
+		排名 -	
+1007
+	</li>
+</ul>
+</div>
+
+
+
+</div>
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔分类
+<span style="font-size:11px;font-weight:normal">(493)</span>
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1010867.html" class="category-item-link" rel="" target="">00-个人计划(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1005494.html" class="category-item-link" rel="" target="">01-DotNet基础进阶(21)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1087077.html" class="category-item-link" rel="" target="">02-ASP.NET (17)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1239348.html" class="category-item-link" rel="" target="">03-Asp.Net Core(40)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1076556.html" class="category-item-link" rel="" target="">04-EF(22)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1239350.html" class="category-item-link" rel="" target="">05-EF Core(23)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1076560.html" class="category-item-link" rel="" target="">06-WebApi(含Core)(16)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1202154.html" class="category-item-link" rel="" target="">07-实时通讯(WebSocket、Signalr、Core Signalr)(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1133264.html" class="category-item-link" rel="" target="">08-多线程和异步(19)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1570309.html" class="category-item-link" rel="" target="">09-Vue全家桶(43)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1594192.html" class="category-item-link" rel="" target="">10-Redis系列(19)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1879386.html" class="category-item-link" rel="" target="">11-MySQL专题(17)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/885832.html" class="category-item-link" rel="" target="">11-SQLServer专题(16)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1609238.html" class="category-item-link" rel="" target="">12-数据结构和算法(12)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1023541.html" class="category-item-link" rel="" target="">13-设计模式(19)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1164016.html" class="category-item-link" rel="" target="">14-Quarzt.Net系列(13)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/912576.html" class="category-item-link" rel="" target="">15-CSS基础(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/942408.html" class="category-item-link" rel="" target="">16-JS、TS、Nodejs(19)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1985692.html" class="category-item-link" rel="" target="">17-Java基础(19)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/886200.html" class="category-item-link" rel="" target="">18-框架搭建(old)(11)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1896660.html" class="category-item-link" rel="" target="">19-后台管理框架搭建系列(16)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/912575.html" class="category-item-link" rel="" target="">20-三方平台对接(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1081236.html" class="category-item-link" rel="" target="">21-各类配置(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1005495.html" class="category-item-link" rel="" target="">22-IOC和DI(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/885872.html" class="category-item-link" rel="" target="">23-系统运维(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1764508.html" class="category-item-link" rel="" target="">24-微服务(24)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1833379.html" class="category-item-link" rel="" target="">26-Linux专题(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1838847.html" class="category-item-link" rel="" target="">27-Linux+Docker+K8s(12)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1860633.html" class="category-item-link" rel="" target="">28-高并发秒杀方案(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1960769.html" class="category-item-link" rel="" target="">31-中间件(RabbitMq/Kafka/MongonDB)(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1972839.html" class="category-item-link" rel="" target="">32-电商项目剖析专题(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1668199.html" class="category-item-link" rel="" target="">33-云开发(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1211239.html" class="category-item-link" rel="" target="">999-废弃被替代的文章(39)</a>
+ 
+                </li>                
+            <li>
+                <a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a>
+            </li>
+        </ul>
+
+
+    </div>    
+    <div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔档案
+<span style="font-size:11px;font-weight:normal">(494)</span>
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2021/11.html" class="category-item-link" rel="" target="">2021年11月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2021/10.html" class="category-item-link" rel="" target="">2021年10月(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2021/09.html" class="category-item-link" rel="" target="">2021年9月(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2021/08.html" class="category-item-link" rel="" target="">2021年8月(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2021/07.html" class="category-item-link" rel="" target="">2021年7月(10)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2021/06.html" class="category-item-link" rel="" target="">2021年6月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2021/05.html" class="category-item-link" rel="" target="">2021年5月(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2021/04.html" class="category-item-link" rel="" target="">2021年4月(16)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2021/03.html" class="category-item-link" rel="" target="">2021年3月(15)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2021/02.html" class="category-item-link" rel="" target="">2021年2月(11)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2021/01.html" class="category-item-link" rel="" target="">2021年1月(11)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/12.html" class="category-item-link" rel="" target="">2020年12月(12)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/11.html" class="category-item-link" rel="" target="">2020年11月(13)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/10.html" class="category-item-link" rel="" target="">2020年10月(19)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/09.html" class="category-item-link" rel="" target="">2020年9月(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/08.html" class="category-item-link" rel="" target="">2020年8月(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/07.html" class="category-item-link" rel="" target="">2020年7月(11)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/06.html" class="category-item-link" rel="" target="">2020年6月(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/05.html" class="category-item-link" rel="" target="">2020年5月(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/04.html" class="category-item-link" rel="" target="">2020年4月(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/03.html" class="category-item-link" rel="" target="">2020年3月(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/02.html" class="category-item-link" rel="" target="">2020年2月(10)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/01.html" class="category-item-link" rel="" target="">2020年1月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/12.html" class="category-item-link" rel="" target="">2019年12月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/11.html" class="category-item-link" rel="" target="">2019年11月(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/10.html" class="category-item-link" rel="" target="">2019年10月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/09.html" class="category-item-link" rel="" target="">2019年9月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/08.html" class="category-item-link" rel="" target="">2019年8月(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/07.html" class="category-item-link" rel="" target="">2019年7月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/06.html" class="category-item-link" rel="" target="">2019年6月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/05.html" class="category-item-link" rel="" target="">2019年5月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/04.html" class="category-item-link" rel="" target="">2019年4月(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/03.html" class="category-item-link" rel="" target="">2019年3月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/02.html" class="category-item-link" rel="" target="">2019年2月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/01.html" class="category-item-link" rel="" target="">2019年1月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/12.html" class="category-item-link" rel="" target="">2018年12月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/11.html" class="category-item-link" rel="" target="">2018年11月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/10.html" class="category-item-link" rel="" target="">2018年10月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/09.html" class="category-item-link" rel="" target="">2018年9月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/08.html" class="category-item-link" rel="" target="">2018年8月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/07.html" class="category-item-link" rel="" target="">2018年7月(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/06.html" class="category-item-link" rel="" target="">2018年6月(13)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/05.html" class="category-item-link" rel="" target="">2018年5月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/04.html" class="category-item-link" rel="" target="">2018年4月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/03.html" class="category-item-link" rel="" target="">2018年3月(12)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/02.html" class="category-item-link" rel="" target="">2018年2月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/01.html" class="category-item-link" rel="" target="">2018年1月(13)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2017/12.html" class="category-item-link" rel="" target="">2017年12月(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2017/11.html" class="category-item-link" rel="" target="">2017年11月(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2017/10.html" class="category-item-link" rel="" target="">2017年10月(10)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2017/09.html" class="category-item-link" rel="" target="">2017年9月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2017/08.html" class="category-item-link" rel="" target="">2017年8月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2017/07.html" class="category-item-link" rel="" target="">2017年7月(25)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2017/06.html" class="category-item-link" rel="" target="">2017年6月(13)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2017/05.html" class="category-item-link" rel="" target="">2017年5月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2017/03.html" class="category-item-link" rel="" target="">2017年3月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2017/02.html" class="category-item-link" rel="" target="">2017年2月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2017/01.html" class="category-item-link" rel="" target="">2017年1月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2016/12.html" class="category-item-link" rel="" target="">2016年12月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2016/11.html" class="category-item-link" rel="" target="">2016年11月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2016/09.html" class="category-item-link" rel="" target="">2016年9月(6)</a>
+ 
+                </li>                
+            <li>
+                <a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a>
+            </li>
+        </ul>
+
+
+    </div>    
+</div>
+
+<!-- 最新评论 -->
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block"><div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/9249390.html">
+                            1. 第十五节：深入理解async和await的作用及各种适用场景和用法(旧，详见最新两篇)(26533)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/9201989.html">
+                            2. ASP.NET MVC深入浅出系列(9856)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/9226328.html">
+                            3. 第二十三节: EF性能篇(三)之基于开源组件 Z.EntityFrameWork.Plus.EF6解决EF性能问题(9348)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/9196962.html">
+                            4. ORM系列之Entity FrameWork详解(9302)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/9263950.html">
+                            5. 第一节：.Net版基于WebSocket的聊天室样例(8607)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/8853590.html">
+                            6. DotNet进阶系列(8462)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/9216229.html">
+                            7. 定时调度系列之Quartz.Net详解(7972)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/8183530.html">
+                            8. 第四节：Task的启动的四种方式以及Task、TaskFactory的线程等待和线程延续的解决方案(7899)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/8229175.html">
+                            9. 第七节：利用CancellationTokenSource实现任务取消和利用CancellationToken类检测取消异常。(7874)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/6093316.html">
+                            10. .Net版微信支付(7380)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block"><div class="catListFeedback">
+<h3 class="catListTitle">评论排行榜</h3>
+	<div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/9249390.html">
+                            1. 第十五节：深入理解async和await的作用及各种适用场景和用法(旧，详见最新两篇)(49)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/9428206.html">
+                            2. 第一节：框架前期准备篇之Log4Net日志详解(39)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/9518725.html">
+                            3. 第三节：框架前期准备篇之利用Newtonsoft.Json改造MVC默认的JsonResult(36)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/9479268.html">
+                            4. 第二节：框架前期准备篇之AutoFac常见用法总结(31)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/9304308.html">
+                            5. 第四节：SignalR灵魂所在Hub模型及再探聊天室样例(31)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block">
+<div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">推荐排行榜</h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/yaopengfei/p/9428206.html">
+                                1. 第一节：框架前期准备篇之Log4Net日志详解(41)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/yaopengfei/p/9249390.html">
+                                2. 第十五节：深入理解async和await的作用及各种适用场景和用法(旧，详见最新两篇)(38)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/yaopengfei/p/9216229.html">
+                                3. 定时调度系列之Quartz.Net详解(32)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/yaopengfei/p/8853590.html">
+                                4. DotNet进阶系列(32)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/yaopengfei/p/9479268.html">
+                                5. 第二节：框架前期准备篇之AutoFac常见用法总结(28)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div></div><div id="sidebar_recentcomments" class="sidebar-block"><div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+
+	<div class="RecentCommentBlock">
+        <ul>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/yaopengfei/p/14211883.html">1. Re: 第十四节：基于CSRedisCore程序集调用redis各个功能详解</a></li>
+                    <li class="recent_comment_body"><p>Cluster集群模式当停止一个redis时，就会报错，有什么办法吗？</p>
+</li>
+                    <li class="recent_comment_author">--xiaoshi657</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/yaopengfei/p/13330482.html">2. Re:第十九节：SQLServer通过发布订阅实现主从同步(读写分离)详解</a></li>
+                    <li class="recent_comment_body">我在订阅选择发布的时候出现了对象名sysservers无效的错误 SQL Server 无法检索有关发布“rwtest”的信息。 (新建订阅向导) 有关帮助信息，请单击: 对象名 'sysserver...</li>
+                    <li class="recent_comment_author">--prettyboyzhuo</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/yaopengfei/p/15573314.html">3. Re:第二节：三方库集成和配置(vue cli-webpack、element-plus、axios、vscode、区分不同环境)</a></li>
+                    <li class="recent_comment_body"><p>补充了axios的封装</p>
+</li>
+                    <li class="recent_comment_author">--Yaopengfei</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/yaopengfei/p/14945185.html">4. Re:第五节：使用TortoiseGit管理Git操作 、IDEA集成Git、使用SSH协议传数据</a></li>
+                    <li class="recent_comment_body"><p>补充了几个git可视化操作</p>
+</li>
+                    <li class="recent_comment_author">--Yaopengfei</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/yaopengfei/p/11121984.html">5. Re:第十二节：Asp.Net Core 之分布式缓存(SQLServer和Redis)</a></li>
+                    <li class="recent_comment_body"><p>mark</p>
+</li>
+                    <li class="recent_comment_author">--leavind</li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+
+</div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2021 Yaopengfei
+<br><span id="poweredby">Powered by .NET 6 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8FO3GXnjClZGrNGr2Ic8Z1ov8Me7hr8awP012C-RnmtU_eCL7t-460M5xLKdFOmrf76sdp7ELGCHceaiDcsK5NOrsItzUoe7RcA-1ecxcStwUDoKe9OgURq8cMjmIRAU2LWwIE8HwOmw_oeJXmml18A">
+    <script async="" src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/js"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+    </script>
+    <script defer="" src="./第三十九节：Asp.Net Core 5.0新增功能和写法变化 - Yaopengfei - 博客园_files/hm.js.下载"></script>
+
+</body></html>

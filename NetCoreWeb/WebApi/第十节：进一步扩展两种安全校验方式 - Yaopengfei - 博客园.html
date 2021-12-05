@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)https://www.cnblogs.com/yaopengfei/p/10468728.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="description" content="一. 简介 简介：&amp;#160;上一节中，主要介绍了JWT校验，它是无状态的，是基于Token校验的一种升级，它适用的范围很广泛，APP、JS前端、后台等等客户端调用服务器端的校验。本节补充几种后台接口">
+    <meta property="og:description" content="一. 简介 简介：&amp;#160;上一节中，主要介绍了JWT校验，它是无状态的，是基于Token校验的一种升级，它适用的范围很广泛，APP、JS前端、后台等等客户端调用服务器端的校验。本节补充几种后台接口">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([class*="language-"]):not([highlighted]):not(.hljs) {
+        background: rgb(245, 245, 245);
+        padding: 5px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(0, 0, 0);
+        font-family: "Courier New", sans-serif;
+    }:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]) code:not(.hljs) {
+            background: rgb(245, 245, 245) !important;
+            border-color: transparent !important;
+        }</style><link rel="stylesheet" href="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/blog-common.min.css">
+    <link id="MainCss" rel="stylesheet" href="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/bundle-darkgreentrip.min.css">
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/cnblogs.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/bundle-darkgreentrip-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/yaopengfei/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/yaopengfei/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/yaopengfei/wlwmanifest.xml">
+    <script type="text/javascript" async="" src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/analytics.js.下载"></script><script type="text/javascript" src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/encoder.js.下载"></script><script>
+        var currentBlogId = 307315;
+        var currentBlogApp = 'yaopengfei';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'darkgreentrip';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function(){ return ''; } });
+            }
+        } catch(error) { }
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+    </script>
+        <script>
+            var currentPostDateAdded = '2019-03-04 07:52';
+        </script>
+    <script src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/jquery-2.2.0.min.js.下载"></script>
+    <script src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/blog-common.min.js.下载"></script><style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style><script id="hljs-script" async="" data-loaded="true" src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/highlight.min.js.下载"></script>
+    
+    
+    
+</head>
+<body class="skin-darkgreentrip has-navbar has-bannerbar">
+    <a name="top"></a>
+        <a href="https://c.gridsumdissector.com/r/?gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__" target="_blank" rel="nofollow" onclick="countClicks(&#39;ad&#39;, &#39;C0-火山引擎&#39;)">
+            <div class="bannerbar forpc" style="display: flex; background-color: #11225a;">
+                <img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/volcengine-b0c0-1.jpg" onload="impressC0(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)" alt="">
+                <img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/volcengine-b0c0-2.jpg" alt="">
+                <img style="margin-left: auto;" src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/volcengine-b0c0-3.jpg" alt="">
+            </div>
+        </a>
+            <div id="bannerbar" class="bannerbar-mobile formobile">
+                <a href="https://c.gridsumdissector.com/r/?gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__" onclick="countClicks(&#39;ad&#39;, &#39;M2-火山引擎&#39;)" rel="nofollow">
+                    <img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/volcengine-m2.jpg" alt="" onload="impressM2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+                </a>
+            </div>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding"><a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/logo.svg" alt="博客园Logo"></a></li>
+                <li><a href="https://www.cnblogs.com/" onclick="countClicks(&#39;skin-navbar-sitehome&#39;)">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-brands&#39;)">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-edu&#39;)">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/yaopengfei/"><img id="blogLogo" src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/yaopengfei/">奔跑的路上</a>
+</h1>
+<h2>广泛汲取，用心打磨，精益求精。</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/yaopengfei/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/Yaopengfei">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/yaopengfei/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<div id="blog_stats_place_holder"><script>loadBlogStats();</script></div>
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/yaopengfei/p/10468728.html">
+    <span>第十节：进一步扩展两种安全校验方式</span>
+    
+
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">一. 简介</span></p>
+<blockquote style="padding: 15px 20px; background: 9px 0 no-repeat rgba(255, 255, 163, 1); font-size: 17px; font-family: &quot;Microsoft Yahei&quot;; box-shadow: 0 0 8px rgba(170, 170, 170, 1); clear: both; border-radius: 4px">
+<p><em><strong style="font-size: 30px; color: rgba(0, 128, 0, 1)">简介：</strong></em>&nbsp;上一节中，主要介绍了JWT校验，它是无状态的，是基于Token校验的一种升级，它适用的范围很广泛，APP、JS前端、后台等等客户端调用服务器端的校验。本节补充几种后台接口的校验方式，它主要适用于后台代码的调用，不适合JS、APP等客户端直接调用。</p>
+<p>　　PS：在一些对接一些银行接口或者一些支付接口，通常会提到这么几个名词：</p>
+<p>　　(1). 根据参数名正序排序、根据参数名的ASCII码排序。</p>
+<p>　　(2). appKey和appSecret，通常appKey是要当做参数进行传递，appSecret用于Sign值的计算（通常拼接后用MD5加密），有的让你 MD5(拼接参数)，然后再和appSecret拼接一块，有的直接吧appSecret和其它参数按照一定规则直接拼接，最后进行MD5加密。</p>
+</blockquote>
+<p><strong><span style="font-size: 16px">1. 根据参数名正序排序</span></strong></p>
+<p><span style="font-size: 16px">eg：参数名分别为appKey、abp、userName、userPwd，排序先根据首字母排序，首字母相同，看第二个字母，依次类推，所以排序的结果为：abp、appkey、userName、userPwd，我们最终想拼接的字符串的形式为：【abp=hh&amp;appkey=hh&amp;userName=hh&amp;userPwd=hh】</span></p>
+<p><strong><span style="font-size: 16px; color: rgba(0, 0, 255, 1)">代码分享：</span></strong></p>
+<p><span style="font-size: 16px; color: rgba(0, 0, 255, 1)">借助orderBy和Select可以实现正序排序，然后利用Join方法进行拼接</span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span> <span style="color: rgba(0, 0, 0, 1)">       [HttpGet]
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> TestParamZx()
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span>             Dictionary&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>, <span style="color: rgba(0, 0, 255, 1)">string</span>&gt; dics = <span style="color: rgba(0, 0, 255, 1)">new</span> Dictionary&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>, <span style="color: rgba(0, 0, 255, 1)">string</span>&gt;<span style="color: rgba(0, 0, 0, 1)">();
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span>             dics.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">abp</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">hh</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span>             dics.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">appkey</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">hh</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>             dics.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">useName</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">hh</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span>             dics.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">userPwd</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">hh</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">根据名称正序排序 拿出来key和value，中间用=拼接</span>
+<span style="color: rgba(0, 128, 128, 1)">10</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> param = dics.OrderBy(u =&gt; u.Key).Select(u =&gt; u.Key + <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">=</span><span style="color: rgba(128, 0, 0, 1)">"</span> +<span style="color: rgba(0, 0, 0, 1)"> u.Value);
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">将param中的集合遍历用&amp;拼接成字符串</span>
+<span style="color: rgba(0, 128, 128, 1)">12</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> finalParam = <span style="color: rgba(0, 0, 255, 1)">string</span>.Join(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">&amp;</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, param);
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> finalParam;
+</span><span style="color: rgba(0, 128, 128, 1)">14</span>         }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><strong><span style="font-size: 16px">结果：</span></strong></p>
+<p><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/1031302-20190317211228731-1643763648.png" alt="" class="medium-zoom-image"></p>
+<p>&nbsp;</p>
+<p><strong><span style="font-size: 16px">2. 根据参数名的ASCII码由小到大排序</span></strong></p>
+<p><span style="font-size: 16px">&nbsp;eg：参数名分别为1、2、A、a、B、b，根据其ASCII排序，所以排序的结果为：1、2、A、B、a、b，我们最终想拼接的字符串的形式为：【1=hh&amp;2=hh&amp;A=hh&amp;B=hh&amp;a=hh&amp;b=hh】</span></p>
+<p><span style="font-size: 16px; color: rgba(0, 0, 255, 1)"><strong>代码分享：</strong></span></p>
+<p><span style="font-size: 16px; color: rgba(0, 0, 255, 1)">这里不能直接借助orderBy和Select可以实现ASCII排序，需要对orderBy利用CompareOrdinal进行改造，&nbsp; 然后利用Join方法进行拼接</span></p>
+<div class="cnblogs_code"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/ContractedBlock.gif" alt="" id="code_img_closed_6fdba150-d250-42d0-a0b4-474265c09a48" class="code_img_closed"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" alt="" id="code_img_opened_6fdba150-d250-42d0-a0b4-474265c09a48" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_6fdba150-d250-42d0-a0b4-474265c09a48" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span> <span style="color: rgba(0, 0, 0, 1)">        [HttpGet]
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> TestParamASCII()
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span>             Dictionary&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>, <span style="color: rgba(0, 0, 255, 1)">string</span>&gt; dics = <span style="color: rgba(0, 0, 255, 1)">new</span> Dictionary&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>, <span style="color: rgba(0, 0, 255, 1)">string</span>&gt;<span style="color: rgba(0, 0, 0, 1)">();
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span>             dics.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">1</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">hh</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span>             dics.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">2</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">hh</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>             dics.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">A</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">hh</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span>             dics.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">a</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">hh</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>             dics.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">B</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">hh</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">10</span>             dics.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">b</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">hh</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> finalParam =<span style="color: rgba(0, 0, 0, 1)"> GetParamSrc(dics);
+</span><span style="color: rgba(0, 128, 128, 1)">12</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> finalParam;
+</span><span style="color: rgba(0, 128, 128, 1)">13</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">14</span> 
+<span style="color: rgba(0, 128, 128, 1)">15</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">16</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 参数按照参数名ASCII码从小到大排序（字典序）
+</span><span style="color: rgba(0, 128, 128, 1)">17</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">18</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="paramsMap"&gt;&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">19</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">20</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> GetParamSrc(Dictionary&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>, <span style="color: rgba(0, 0, 255, 1)">string</span>&gt;<span style="color: rgba(0, 0, 0, 1)"> paramsMap)
+</span><span style="color: rgba(0, 128, 128, 1)">21</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">22</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">繁琐写法
+</span><span style="color: rgba(0, 128, 128, 1)">23</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">var vDic = paramsMap.OrderBy(x =&gt; x.Key, new ComparerString()).ToDictionary(x =&gt; x.Key, y =&gt; y.Value);
+</span><span style="color: rgba(0, 128, 128, 1)">24</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">StringBuilder str = new StringBuilder();
+</span><span style="color: rgba(0, 128, 128, 1)">25</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">foreach (KeyValuePair&lt;string, string&gt; kv in vDic)
+</span><span style="color: rgba(0, 128, 128, 1)">26</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)">27</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    string pkey = kv.Key;
+</span><span style="color: rgba(0, 128, 128, 1)">28</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    string pvalue = kv.Value;
+</span><span style="color: rgba(0, 128, 128, 1)">29</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    str.Append(pkey + "=" + pvalue + "&amp;");
+</span><span style="color: rgba(0, 128, 128, 1)">30</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">}
+</span><span style="color: rgba(0, 128, 128, 1)">31</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">string result = str.ToString().Substring(0, str.ToString().Length - 1);
+</span><span style="color: rgba(0, 128, 128, 1)">32</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">return result;
+</span><span style="color: rgba(0, 128, 128, 1)">33</span> 
+<span style="color: rgba(0, 128, 128, 1)">34</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">简介写法</span>
+<span style="color: rgba(0, 128, 128, 1)">35</span>             <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(0, 0, 255, 1)">string</span>.Join(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">&amp;</span><span style="color: rgba(128, 0, 0, 1)">"</span>, paramsMap.OrderBy(x =&gt; x.Key, <span style="color: rgba(0, 0, 255, 1)">new</span> ComparerString()).Select(u =&gt; u.Key + <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">=</span><span style="color: rgba(128, 0, 0, 1)">"</span> +<span style="color: rgba(0, 0, 0, 1)"> u.Value));
+</span><span style="color: rgba(0, 128, 128, 1)">36</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">37</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span> ComparerString : IComparer&lt;String&gt;
+<span style="color: rgba(0, 128, 128, 1)">38</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">39</span>             <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">int</span><span style="color: rgba(0, 0, 0, 1)"> Compare(String x, String y)
+</span><span style="color: rgba(0, 128, 128, 1)">40</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">41</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)">.CompareOrdinal(x, y);
+</span><span style="color: rgba(0, 128, 128, 1)">42</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">43</span>         } </pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="color: rgba(0, 0, 255, 1)"><strong><span style="font-size: 16px">结果：</span></strong></span></p>
+<p>&nbsp;<img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/1031302-20190317211724236-1535686315.png" alt="" class="medium-zoom-image"></p>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">二. 扩展算法1</span></p>
+<p><strong><span style="font-size: 16px">1.前提</span></strong></p>
+<p><span style="font-size: 16px">　　有appKey、appSecret、sign这么几个参数，appKey和appSecret事先存在数据库里，且一一对应，服务商只把appKey和appSecret分发</span><span style="font-size: 16px">给调用者,调用者采用Get请求的方式，除了传递参数外，需要在报文头中传递appKey和sign这两个参数，其中sign的计算方法为把所有</span><span style="font-size: 16px">的参数的参数名按照正序排序，然后<span style="color: rgba(255, 0, 0, 1)"><strong>再和</strong></span>appSecret拼接起来，一起计算MD5值，</span></p>
+<p><span style="font-size: 16px">即 MD5(a+b+c..+appSecret) → MD5("goodId=001&amp;money=150&amp;appSecret=0806")</span></p>
+<p><span style="font-size: 16px">服务器端验证：见CheckPer1.cs 服务器端调用见：SDKClient类</span></p>
+<p><span style="color: rgba(255, 0, 0, 1)"><strong><span style="font-size: 16px">PS：这里也可以改成按照参数名的ASCII由小到大排序，就换成另外一种算法了。</span></strong></span></p>
+<p><strong><span style="font-size: 16px">2.深度分析</span></strong></p>
+<p><span style="font-size: 16px">　　这种接口的验证规则适用于后台的代码调用，不适用js或其它前端调用，比如js调用的话，不但组装这个这种格式的参数麻烦，而且appSecret就和加密算法就直接暴露在外面了，</span><span style="font-size: 16px">当然你可以对js文件进行混淆来解决这个问题，但是这类接口还是更加适合后台代码调用，这样的话appSecret保存在服务器端，更加安全。</span></p>
+<p><span style="font-size: 16px">　　即使appKey和sign这两个参数被截取了，也只能发相同数据的请求同一个接口，任何一个参数变化，sign均会发生变化，即验证不过去，相同的数据完全</span><span style="font-size: 16px">可以通过业务代码来限制。</span></p>
+<p><strong><span style="font-size: 16px">3.举一个使用场景</span></strong></p>
+<p><span style="font-size: 16px">　　一个App项目，有两个服务器，一个是业务服务器，一个是下单服务器，app项目请求的是业务服务器，不能直接请求下单服务器，但执行一个下单业务，流程如下：</span><span style="font-size: 16px">app采用jwt算法调用业务服务器→业务服务器进行jwt校验→校验通过→对参数进行组装MD5(a+b+c..+appSecret)，调用下单服务器。</span></p>
+<p><span style="color: rgba(128, 0, 128, 1)"><strong><span style="font-size: 16px">注：业务服务器供app调用，采用jwt算法，下单服务器供业务服务器调用，采用上述扩展算法(a+b+c..+appSecret)</span></strong></span></p>
+<p><strong><span style="font-size: 16px">4. 实战测试</span></strong></p>
+<p><span style="font-size: 16px">　　前提：appKey为：ypf 、appSecret为：0806， 这里我们就不再做JWT校验了，直接通过PostMan调用业务服务器，即：</span><span style="font-size: 16px">用PostMan调用:http://localhost:2131/api/Seventh/BuyGoods?goodId=001&amp;money=150 模拟客户端请求。</span></p>
+<p><span style="color: rgba(0, 0, 255, 1); font-size: 15px"><strong><span style="font-size: 16px">(1). 业务服务器代码 和封装的SDKClient类(对参数进行拼接，发送Get请求)</span></strong></span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 开放给客户端(模拟购买商品接口)
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 正常和客户端直接应该有验证，比如jwt验证，这里省略了,直接用postMan调用
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 5</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 6</span> <span style="color: rgba(0, 0, 0, 1)">        [HttpGet]
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">async</span> Task&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>&gt; BuyGoods(<span style="color: rgba(0, 0, 255, 1)">string</span> goodId, <span style="color: rgba(0, 0, 255, 1)">int</span><span style="color: rgba(0, 0, 0, 1)"> money)
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">appKey和appScret分别为：ypf、0806</span>
+<span style="color: rgba(0, 128, 128, 1)">10</span>             SDKClient sdk = <span style="color: rgba(0, 0, 255, 1)">new</span> SDKClient(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ypf</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">0806</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">这里的userId实际应该从jwt中解析出来</span>
+<span style="color: rgba(0, 128, 128, 1)">12</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> payload = <span style="color: rgba(0, 0, 255, 1)">new</span> Dictionary&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>, <span style="color: rgba(0, 0, 255, 1)">object</span>&gt;
+<span style="color: rgba(0, 128, 128, 1)">13</span> <span style="color: rgba(0, 0, 0, 1)">                    {
+</span><span style="color: rgba(0, 128, 128, 1)">14</span>                          {<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">userId</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)"> },
+</span><span style="color: rgba(0, 128, 128, 1)">15</span>                          {<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">goodId</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, goodId },
+</span><span style="color: rgba(0, 128, 128, 1)">16</span>                          {<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">money</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">,money }
+</span><span style="color: rgba(0, 128, 128, 1)">17</span> <span style="color: rgba(0, 0, 0, 1)">                    };
+</span><span style="color: rgba(0, 128, 128, 1)">18</span>             SDKResult sdkResult = <span style="color: rgba(0, 0, 255, 1)">await</span> sdk.GetAsync(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">http://localhost:2131/api/Seventh/CommitOrder</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, payload);
+</span><span style="color: rgba(0, 128, 128, 1)">19</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> sdkResult.Result;
+</span><span style="color: rgba(0, 128, 128, 1)">20</span>         }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<div class="cnblogs_code"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/ContractedBlock.gif" alt="" id="code_img_closed_e4ac305b-b0a1-48f4-a232-a865171f149f" class="code_img_closed"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" alt="" id="code_img_opened_e4ac305b-b0a1-48f4-a232-a865171f149f" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_e4ac305b-b0a1-48f4-a232-a865171f149f" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>  <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span>     <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 封装请求类
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>     <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 4</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> SDKClient
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span>         <span style="color: rgba(0, 0, 255, 1)">private</span> <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> appKey;
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(0, 0, 255, 1)">private</span> <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> appSecret;
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> SDKClient(<span style="color: rgba(0, 0, 255, 1)">string</span> appKey, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> appSecret)
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">10</span>             <span style="color: rgba(0, 0, 255, 1)">this</span>.appKey =<span style="color: rgba(0, 0, 0, 1)"> appKey;
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>             <span style="color: rgba(0, 0, 255, 1)">this</span>.appSecret =<span style="color: rgba(0, 0, 0, 1)"> appSecret;
+</span><span style="color: rgba(0, 128, 128, 1)">12</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">13</span> 
+<span style="color: rgba(0, 128, 128, 1)">14</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">15</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">封装发送请求的方法 
+</span><span style="color: rgba(0, 128, 128, 1)">16</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">17</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="url"&gt;</span><span style="color: rgba(0, 128, 0, 1)">请求地址</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">18</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="queryStringData"&gt;</span><span style="color: rgba(0, 128, 0, 1)">请求参数，键值对</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">19</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">20</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">async</span> Task&lt;SDKResult&gt; GetAsync(<span style="color: rgba(0, 0, 255, 1)">string</span> url, IDictionary&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>, <span style="color: rgba(0, 0, 255, 1)">object</span>&gt;<span style="color: rgba(0, 0, 0, 1)"> queryStringData)
+</span><span style="color: rgba(0, 128, 128, 1)">21</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">22</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (queryStringData == <span style="color: rgba(0, 0, 255, 1)">null</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)">23</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">24</span>                 <span style="color: rgba(0, 0, 255, 1)">throw</span> <span style="color: rgba(0, 0, 255, 1)">new</span> ArgumentNullException(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">queryStringData不能为null</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">25</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">26</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">根据key的参数名正序排序(首字母有小到大，首字母相同看第二个字母)</span>
+<span style="color: rgba(0, 128, 128, 1)">27</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> qsItems = queryStringData.OrderBy(kv =&gt; kv.Key).Select(kv =&gt; kv.Key + <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">=</span><span style="color: rgba(128, 0, 0, 1)">"</span> +<span style="color: rgba(0, 0, 0, 1)"> kv.Value);
+</span><span style="color: rgba(0, 128, 128, 1)">28</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">循环遍历qsItems值，用&amp;拼接起来</span>
+<span style="color: rgba(0, 128, 128, 1)">29</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> queryString = <span style="color: rgba(0, 0, 255, 1)">string</span>.Join(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">&amp;</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, qsItems);
+</span><span style="color: rgba(0, 128, 128, 1)">30</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> finalStr = queryString + <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">&amp;appSecret=</span><span style="color: rgba(128, 0, 0, 1)">"</span> +<span style="color: rgba(0, 0, 0, 1)"> appSecret;
+</span><span style="color: rgba(0, 128, 128, 1)">31</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> sign =<span style="color: rgba(0, 0, 0, 1)"> SecurityHelp.CalcMD5(finalStr);
+</span><span style="color: rgba(0, 128, 128, 1)">32</span>             <span style="color: rgba(0, 0, 255, 1)">using</span> (HttpClient hc = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> HttpClient())
+</span><span style="color: rgba(0, 128, 128, 1)">33</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">34</span>                 hc.DefaultRequestHeaders.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">appKey</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, appKey);
+</span><span style="color: rgba(0, 128, 128, 1)">35</span>                 hc.DefaultRequestHeaders.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">sign</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, sign);
+</span><span style="color: rgba(0, 128, 128, 1)">36</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> resp = <span style="color: rgba(0, 0, 255, 1)">await</span> hc.GetAsync(url + <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">?</span><span style="color: rgba(128, 0, 0, 1)">"</span> +<span style="color: rgba(0, 0, 0, 1)"> queryString);
+</span><span style="color: rgba(0, 128, 128, 1)">37</span>                 SDKResult sdkResult = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> SDKResult();
+</span><span style="color: rgba(0, 128, 128, 1)">38</span>                 sdkResult.Result = <span style="color: rgba(0, 0, 255, 1)">await</span><span style="color: rgba(0, 0, 0, 1)"> resp.Content.ReadAsStringAsync();
+</span><span style="color: rgba(0, 128, 128, 1)">39</span>                 sdkResult.StatusCode =<span style="color: rgba(0, 0, 0, 1)"> resp.StatusCode;
+</span><span style="color: rgba(0, 128, 128, 1)">40</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> sdkResult;
+</span><span style="color: rgba(0, 128, 128, 1)">41</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">42</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">43</span> 
+<span style="color: rgba(0, 128, 128, 1)">44</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)">45</span> 
+<span style="color: rgba(0, 128, 128, 1)">46</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> SDKResult
+</span><span style="color: rgba(0, 128, 128, 1)">47</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)">48</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span> Result { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)">; }
+</span><span style="color: rgba(0, 128, 128, 1)">49</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> HttpStatusCode StatusCode { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)">; }
+</span><span style="color: rgba(0, 128, 128, 1)">50</span>     }</pre>
+</div>
+<span class="cnblogs_code_collapse">SDKClient</span></div>
+<p><strong><span style="font-size: 16px; color: rgba(0, 0, 255, 1)">(2).&nbsp; 过滤器代码和订单服务器代码</span></strong></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>  <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span>     <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 扩展算法一 的过滤器
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>     <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 4</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> CheckPer1 : AuthorizeAttribute
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">override</span> <span style="color: rgba(0, 0, 255, 1)">void</span><span style="color: rgba(0, 0, 0, 1)"> OnAuthorization(HttpActionContext actionContext)
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1.获取报文头中的appKey和sign</span>
+<span style="color: rgba(0, 128, 128, 1)"> 9</span>             IEnumerable&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>&gt;<span style="color: rgba(0, 0, 0, 1)"> appKeys;
+</span><span style="color: rgba(0, 128, 128, 1)">10</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (!actionContext.Request.Headers.TryGetValues(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">appKey</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(0, 0, 255, 1)">out</span><span style="color: rgba(0, 0, 0, 1)"> appKeys))
+</span><span style="color: rgba(0, 128, 128, 1)">11</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">12</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">HttpContext.Current.Response.Write("报文头中的AppKey为空");  </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">这里不能这么返回，用Response.write不能截断，仍然会进入到方法中</span>
+<span style="color: rgba(0, 128, 128, 1)">13</span>                 actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, <span style="color: rgba(0, 0, 255, 1)">new</span> HttpError(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">报文头中的appKey为空</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">));
+</span><span style="color: rgba(0, 128, 128, 1)">14</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">15</span>             IEnumerable&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>&gt;<span style="color: rgba(0, 0, 0, 1)"> signs;
+</span><span style="color: rgba(0, 128, 128, 1)">16</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (!actionContext.Request.Headers.TryGetValues(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">sign</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(0, 0, 255, 1)">out</span><span style="color: rgba(0, 0, 0, 1)"> signs))
+</span><span style="color: rgba(0, 128, 128, 1)">17</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">18</span>                 actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, <span style="color: rgba(0, 0, 255, 1)">new</span> HttpError(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">报文头中的sign为空</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">));
+</span><span style="color: rgba(0, 128, 128, 1)">19</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">20</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> appKey =<span style="color: rgba(0, 0, 0, 1)"> appKeys.First();
+</span><span style="color: rgba(0, 128, 128, 1)">21</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> sign =<span style="color: rgba(0, 0, 0, 1)"> signs.First();
+</span><span style="color: rgba(0, 128, 128, 1)">22</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">2.根据appKey查询数据库获取appSecret
+</span><span style="color: rgba(0, 128, 128, 1)">23</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">（这里进行模拟，暂不查询数据库  分别为ypf和0806代替）</span>
+<span style="color: rgba(0, 128, 128, 1)">24</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> appInfor = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> AppInfor()
+</span><span style="color: rgba(0, 128, 128, 1)">25</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">26</span>                 AppKey = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ypf</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">,
+</span><span style="color: rgba(0, 128, 128, 1)">27</span>                 AppSecret = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">0806</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">,
+</span><span style="color: rgba(0, 128, 128, 1)">28</span>                 IsEnabled = <span style="color: rgba(0, 0, 255, 1)">false</span>
+<span style="color: rgba(0, 128, 128, 1)">29</span> <span style="color: rgba(0, 0, 0, 1)">            };
+</span><span style="color: rgba(0, 128, 128, 1)">30</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (appInfor == <span style="color: rgba(0, 0, 255, 1)">null</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)">31</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">32</span>                 actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, <span style="color: rgba(0, 0, 255, 1)">new</span> HttpError(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">该appKey不存在</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">));
+</span><span style="color: rgba(0, 128, 128, 1)">33</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">34</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">if (!appInfor.IsEnabled)
+</span><span style="color: rgba(0, 128, 128, 1)">35</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)">36</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, new HttpError("该AppKey已被封禁"));
+</span><span style="color: rgba(0, 128, 128, 1)">37</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">}
+</span><span style="color: rgba(0, 128, 128, 1)">38</span> 
+<span style="color: rgba(0, 128, 128, 1)">39</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">3.计算用户输入参数的连接+AppSecret的Md5值 
+</span><span style="color: rgba(0, 128, 128, 1)">40</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">orderedQS就是按照key（参数的名字）进行排序的QueryString集合 </span>
+<span style="color: rgba(0, 128, 128, 1)">41</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> orderedQS = actionContext.Request.GetQueryNameValuePairs().OrderBy(kv =&gt;<span style="color: rgba(0, 0, 0, 1)"> kv.Key);
+</span><span style="color: rgba(0, 128, 128, 1)">42</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">拼接key=value的数组</span>
+<span style="color: rgba(0, 128, 128, 1)">43</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> segments = orderedQS.Select(kv =&gt; kv.Key + <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">=</span><span style="color: rgba(128, 0, 0, 1)">"</span> +<span style="color: rgba(0, 0, 0, 1)"> kv.Value);
+</span><span style="color: rgba(0, 128, 128, 1)">44</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">用&amp;符号拼接起来</span>
+<span style="color: rgba(0, 128, 128, 1)">45</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> queryString = <span style="color: rgba(0, 0, 255, 1)">string</span>.Join(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">&amp;</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, segments);
+</span><span style="color: rgba(0, 128, 128, 1)">46</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">密钥统一用0806表示</span>
+<span style="color: rgba(0, 128, 128, 1)">47</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> finalStr = queryString + <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">&amp;appSecret=</span><span style="color: rgba(128, 0, 0, 1)">"</span> + <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">0806</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">48</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">计算Sign值</span>
+<span style="color: rgba(0, 128, 128, 1)">49</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> computedSign =<span style="color: rgba(0, 0, 0, 1)"> SecurityHelp.CalcMD5(finalStr);
+</span><span style="color: rgba(0, 128, 128, 1)">50</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">4. 用户传进来md5值和计算出来的比对一下，就知道数据是否有被篡改过</span>
+<span style="color: rgba(0, 128, 128, 1)">51</span>             <span style="color: rgba(0, 0, 255, 1)">if</span><span style="color: rgba(0, 0, 0, 1)"> (sign.Equals(computedSign, StringComparison.CurrentCultureIgnoreCase))
+</span><span style="color: rgba(0, 128, 128, 1)">52</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">53</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示检验通过</span>
+<span style="color: rgba(0, 128, 128, 1)">54</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">55</span>             <span style="color: rgba(0, 0, 255, 1)">else</span>
+<span style="color: rgba(0, 128, 128, 1)">56</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">57</span>                 actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, <span style="color: rgba(0, 0, 255, 1)">new</span> HttpError(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">sign校验失败</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">));
+</span><span style="color: rgba(0, 128, 128, 1)">58</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">59</span> 
+<span style="color: rgba(0, 128, 128, 1)">60</span>         }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 模拟订单服务器中的下单接口
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 该接口需要采用 扩展算法(一) 的校验
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 5</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="dic"&gt;&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 6</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 7</span> <span style="color: rgba(0, 0, 0, 1)">        [HttpGet]
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">        [CheckPer1]
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span> CommitOrder(<span style="color: rgba(0, 0, 255, 1)">string</span> userId, <span style="color: rgba(0, 0, 255, 1)">string</span> goodId, <span style="color: rgba(0, 0, 255, 1)">int</span><span style="color: rgba(0, 0, 0, 1)"> money)
+</span><span style="color: rgba(0, 128, 128, 1)">10</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> data = <span style="color: rgba(0, 0, 255, 1)">new</span>
+<span style="color: rgba(0, 128, 128, 1)">12</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>                 stauts = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ok</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">,
+</span><span style="color: rgba(0, 128, 128, 1)">14</span>                 msg = userId + <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">,</span><span style="color: rgba(128, 0, 0, 1)">"</span> + goodId + <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">,</span><span style="color: rgba(128, 0, 0, 1)">"</span> +<span style="color: rgba(0, 0, 0, 1)"> money
+</span><span style="color: rgba(0, 128, 128, 1)">15</span> <span style="color: rgba(0, 0, 0, 1)">            };
+</span><span style="color: rgba(0, 128, 128, 1)">16</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> JsonConvert.SerializeObject(data);
+</span><span style="color: rgba(0, 128, 128, 1)">17</span>         }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><span style="color: rgba(0, 0, 255, 1)"><strong><span style="font-size: 16px">(3). 运行结果</span></strong></span></p>
+<p><span style="font-size: 16px">&nbsp;<img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/1031302-20190317215514543-1914555415.png" alt="" class="medium-zoom-image"></span></p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">三. 扩展算法2</span></p>
+<p><strong><span style="font-size: 16px">1.前提</span></strong></p>
+<p><span style="font-size: 16px">　　有appkey、appSecret、timeStamp这么几个参数，其中appkey和appSecret实现存在数据库里，且一一对应，服务商把appkey和appSecret分发给调用者，</span><span style="font-size: 16px">&nbsp;调用者采用Post请求的方式，提交和返回的数据都为Json格式，Http请求的头文件中要加“content-type: application/json”，字符编码</span><span style="font-size: 16px">&nbsp;统一采用UTF8，签名算法如下：</span></p>
+<p><span style="font-size: 16px">finalStr=（appkey+appSecret+timeStamp)的值全部转换为大写字符</span></p>
+<p><span style="font-size: 16px">sign=MD5(finalStr),</span></p>
+<p><span style="font-size: 16px">每个请求的报文头要有传 appkey、timeStamp(时间戳)、sign(签名)值过来统一校验。时间戳 timestamp是14位标准的时间戳格式，时间戳有效期为 10 分钟，</span><span style="font-size: 16px">&nbsp;服务器时间减时间戳大于 10 分钟的一律视为过期，签名会失败。</span><span style="font-size: 16px">&nbsp;在服务器端进行验证。</span></p>
+<p><strong><span style="font-size: 16px">2. 深度分析</span></strong></p>
+<p><span style="font-size: 16px">　　这种接口的验证规则适用于后台的代码调用，不适用js或其它前端调用，比如js调用的话，appSecret就和加密算法就直接暴露在外面了，非常危险。</span><span style="font-size: 16px">当然你可以对js文件进行混淆来解决这个问题，但是这类接口还是更加适合后台代码调用，这样的话appSecret保存在服务器端，更加安全。</span></p>
+<p><span style="font-size: 16px">　　即使 Appkey、timeStamp(时间戳)、sign(签名)参数被截取了，访问该接口或者其它接口，也只能在10分钟能有效。 </span></p>
+<p><strong><span style="font-size: 16px">3.举一个使用场景</span></strong></p>
+<p><span style="font-size: 16px">　　一个App项目，有两个服务器，一个是业务服务器，一个是下单服务器，app项目请求的是业务服务器，不能直接请求下单服务器，但执行一个下单业务，流程如下：</span><span style="font-size: 16px">app采用jwt算法调用业务服务器→业务服务器进行jwt校验→校验通过→对参数进行组装sign、appkey、timeStamp，调用下单服务器。</span></p>
+<p><span style="color: rgba(128, 0, 128, 1)"><strong><span style="font-size: 16px">注：业务服务器供app调用，采用jwt算法，下单服务器供业务服务器调用，采用上述扩展算法MD5(appkey+appSecret+timestamp)。</span></strong></span></p>
+<p><strong><span style="font-size: 16px">4. 实战测试</span></strong></p>
+<p><span style="font-size: 16px">　　前提：appKey为：ypf 、appSecret为：0806， 这里我们就不再做JWT校验了，直接通过PostMan调用业务服务器，即：用PostMan调用:http://localhost:2131/api/Seventh/BuyGoods2?goodId=001&amp;money=150 模拟客户端请求</span></p>
+<p><span style="font-size: 16px; color: rgba(0, 0, 255, 1)">&nbsp;<strong>(1). 业务服务器代码 和封装的SDKClient2类(对参数进行拼接，发送Post请求)</strong></span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 开放给客户端(模拟购买商品接口)
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 正常和客户端直接应该有验证，比如jwt验证，这里省略了,直接用postMan调用
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 5</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 6</span> <span style="color: rgba(0, 0, 0, 1)">        [HttpGet]
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">async</span> Task&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>&gt; BuyGoods2(<span style="color: rgba(0, 0, 255, 1)">string</span> goodId, <span style="color: rgba(0, 0, 255, 1)">int</span><span style="color: rgba(0, 0, 0, 1)"> money)
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">appKey和appScret分别为：ypf、0806</span>
+<span style="color: rgba(0, 128, 128, 1)">10</span>             SDKClient2 sdk = <span style="color: rgba(0, 0, 255, 1)">new</span> SDKClient2(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ypf</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">0806</span><span style="color: rgba(128, 0, 0, 1)">"</span>, DateTime.Now.ToString(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">yyyyMMddhhmmss</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">));
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">这里的userId正常应该从jwt字符串中解析出来</span>
+<span style="color: rgba(0, 128, 128, 1)">12</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> payload = <span style="color: rgba(0, 0, 255, 1)">new</span>
+<span style="color: rgba(0, 128, 128, 1)">13</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">14</span>                 userId = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">,
+</span><span style="color: rgba(0, 128, 128, 1)">15</span>                 goodId =<span style="color: rgba(0, 0, 0, 1)"> goodId,
+</span><span style="color: rgba(0, 128, 128, 1)">16</span>                 money =<span style="color: rgba(0, 0, 0, 1)"> money
+</span><span style="color: rgba(0, 128, 128, 1)">17</span> <span style="color: rgba(0, 0, 0, 1)">            };
+</span><span style="color: rgba(0, 128, 128, 1)">18</span>             SDKResult sdkResult = <span style="color: rgba(0, 0, 255, 1)">await</span> sdk.PostAsync(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">http://localhost:2131/api/Seventh/CommitOrder2</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, payload);
+</span><span style="color: rgba(0, 128, 128, 1)">19</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> sdkResult.Result;
+</span><span style="color: rgba(0, 128, 128, 1)">20</span>         }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<div class="cnblogs_code"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/ContractedBlock.gif" alt="" id="code_img_closed_14e5b6b0-d01c-41eb-894a-03e1821b22e8" class="code_img_closed"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" alt="" id="code_img_opened_14e5b6b0-d01c-41eb-894a-03e1821b22e8" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_14e5b6b0-d01c-41eb-894a-03e1821b22e8" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>     <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span>     <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 扩展算法二的封装调用
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>     <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 4</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> SDKClient2
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span>         <span style="color: rgba(0, 0, 255, 1)">private</span> <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> appKey;
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(0, 0, 255, 1)">private</span> <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> appSecret;
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span>         <span style="color: rgba(0, 0, 255, 1)">private</span> <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> timeStamp;
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> SDKClient2(<span style="color: rgba(0, 0, 255, 1)">string</span> appKey, <span style="color: rgba(0, 0, 255, 1)">string</span> appSecret,<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> timeStamp)
+</span><span style="color: rgba(0, 128, 128, 1)">10</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>             <span style="color: rgba(0, 0, 255, 1)">this</span>.appKey =<span style="color: rgba(0, 0, 0, 1)"> appKey;
+</span><span style="color: rgba(0, 128, 128, 1)">12</span>             <span style="color: rgba(0, 0, 255, 1)">this</span>.appSecret =<span style="color: rgba(0, 0, 0, 1)"> appSecret;
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>             <span style="color: rgba(0, 0, 255, 1)">this</span>.timeStamp =<span style="color: rgba(0, 0, 0, 1)"> timeStamp;
+</span><span style="color: rgba(0, 128, 128, 1)">14</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">15</span> 
+<span style="color: rgba(0, 128, 128, 1)">16</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">async</span> Task&lt;SDKResult&gt; PostAsync(<span style="color: rgba(0, 0, 255, 1)">string</span> url, <span style="color: rgba(0, 0, 255, 1)">dynamic</span><span style="color: rgba(0, 0, 0, 1)"> data)
+</span><span style="color: rgba(0, 128, 128, 1)">17</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">18</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (data == <span style="color: rgba(0, 0, 255, 1)">null</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)">19</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">20</span>                 <span style="color: rgba(0, 0, 255, 1)">throw</span> <span style="color: rgba(0, 0, 255, 1)">new</span> ArgumentNullException(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">data不能为null</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">21</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">22</span> 
+<span style="color: rgba(0, 128, 128, 1)">23</span>             <span style="color: rgba(0, 0, 255, 1)">using</span> (HttpClient hc = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> HttpClient())
+</span><span style="color: rgba(0, 128, 128, 1)">24</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">25</span>                 <span style="color: rgba(0, 0, 255, 1)">string</span> finalStr = (appKey + appSecret +<span style="color: rgba(0, 0, 0, 1)"> timeStamp).ToUpper();
+</span><span style="color: rgba(0, 128, 128, 1)">26</span>                 <span style="color: rgba(0, 0, 255, 1)">string</span> sign=<span style="color: rgba(0, 0, 0, 1)"> SecurityHelp.CalcMD5(finalStr);
+</span><span style="color: rgba(0, 128, 128, 1)">27</span> 
+<span style="color: rgba(0, 128, 128, 1)">28</span>                 hc.DefaultRequestHeaders.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">appKey</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, appKey);
+</span><span style="color: rgba(0, 128, 128, 1)">29</span>                 hc.DefaultRequestHeaders.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">timeStamp</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, timeStamp);
+</span><span style="color: rgba(0, 128, 128, 1)">30</span>                 hc.DefaultRequestHeaders.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">sign</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, sign);
+</span><span style="color: rgba(0, 128, 128, 1)">31</span> 
+<span style="color: rgba(0, 128, 128, 1)">32</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> content = <span style="color: rgba(0, 0, 255, 1)">new</span> StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">application/json</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">33</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> resp = <span style="color: rgba(0, 0, 255, 1)">await</span><span style="color: rgba(0, 0, 0, 1)"> hc.PostAsync(url, content);
+</span><span style="color: rgba(0, 128, 128, 1)">34</span>                 SDKResult sdkResult = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> SDKResult();
+</span><span style="color: rgba(0, 128, 128, 1)">35</span>                 sdkResult.Result = <span style="color: rgba(0, 0, 255, 1)">await</span><span style="color: rgba(0, 0, 0, 1)"> resp.Content.ReadAsStringAsync();
+</span><span style="color: rgba(0, 128, 128, 1)">36</span>                 sdkResult.StatusCode =<span style="color: rgba(0, 0, 0, 1)"> resp.StatusCode;
+</span><span style="color: rgba(0, 128, 128, 1)">37</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> sdkResult;
+</span><span style="color: rgba(0, 128, 128, 1)">38</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">39</span>         }</pre>
+</div>
+<span class="cnblogs_code_collapse">SDKClient2</span></div>
+<p><span style="font-size: 16px; color: rgba(0, 0, 255, 1)"><strong><strong>(2).&nbsp; 过滤器代码和订单服务器代码</strong></strong></span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>     <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span>     <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">扩展算法二 的过滤器
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>     <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">换一种新的过滤器写法
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span>     <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 5</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> CheckPer2 : FilterAttribute, IAuthorizationFilter
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">async</span> Task&lt;HttpResponseMessage&gt; ExecuteAuthorizationFilterAsync(HttpActionContext actionContext, CancellationToken cancellationToken, Func&lt;Task&lt;HttpResponseMessage&gt;&gt;<span style="color: rgba(0, 0, 0, 1)"> continuation)
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1.获取Appkey、Timestamp(时间戳)、Sign(签名)</span>
+<span style="color: rgba(0, 128, 128, 1)">10</span>             IEnumerable&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>&gt;<span style="color: rgba(0, 0, 0, 1)"> appKeys;
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (!actionContext.Request.Headers.TryGetValues(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">appKey</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(0, 0, 255, 1)">out</span><span style="color: rgba(0, 0, 0, 1)"> appKeys))
+</span><span style="color: rgba(0, 128, 128, 1)">12</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(0, 0, 255, 1)">new</span> HttpResponseMessage(HttpStatusCode.Unauthorized) { Content = <span style="color: rgba(0, 0, 255, 1)">new</span> StringContent(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">报文头中的appKey为空</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">) };
+</span><span style="color: rgba(0, 128, 128, 1)">14</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">15</span>             IEnumerable&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>&gt;<span style="color: rgba(0, 0, 0, 1)"> timestamps;
+</span><span style="color: rgba(0, 128, 128, 1)">16</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (!actionContext.Request.Headers.TryGetValues(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">timeStamp</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(0, 0, 255, 1)">out</span><span style="color: rgba(0, 0, 0, 1)"> timestamps))
+</span><span style="color: rgba(0, 128, 128, 1)">17</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">18</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(0, 0, 255, 1)">new</span> HttpResponseMessage(HttpStatusCode.Unauthorized) { Content = <span style="color: rgba(0, 0, 255, 1)">new</span> StringContent(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">报文头中的timeStamp为空</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">) };
+</span><span style="color: rgba(0, 128, 128, 1)">19</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">20</span>             IEnumerable&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>&gt;<span style="color: rgba(0, 0, 0, 1)"> signs;
+</span><span style="color: rgba(0, 128, 128, 1)">21</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (!actionContext.Request.Headers.TryGetValues(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">sign</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(0, 0, 255, 1)">out</span><span style="color: rgba(0, 0, 0, 1)"> signs))
+</span><span style="color: rgba(0, 128, 128, 1)">22</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">23</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(0, 0, 255, 1)">new</span> HttpResponseMessage(HttpStatusCode.Unauthorized) { Content = <span style="color: rgba(0, 0, 255, 1)">new</span> StringContent(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">报文头中的sign为空</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">) };
+</span><span style="color: rgba(0, 128, 128, 1)">24</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">25</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> Appkey =<span style="color: rgba(0, 0, 0, 1)"> appKeys.First();
+</span><span style="color: rgba(0, 128, 128, 1)">26</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> Timestamp =<span style="color: rgba(0, 0, 0, 1)"> timestamps.First();
+</span><span style="color: rgba(0, 128, 128, 1)">27</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> Sign =<span style="color: rgba(0, 0, 0, 1)"> signs.First();
+</span><span style="color: rgba(0, 128, 128, 1)">28</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">2. 计算Timestamp是否过期（要注意小时制问题, 需要统一下面的这种方式转换）</span>
+<span style="color: rgba(0, 128, 128, 1)">29</span>             <span style="color: rgba(0, 0, 255, 1)">long</span> nowTimeStr = <span style="color: rgba(0, 0, 255, 1)">long</span>.Parse(DateTime.Now.ToString(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">yyyyMMddhhmmss</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">));
+</span><span style="color: rgba(0, 128, 128, 1)">30</span>             <span style="color: rgba(0, 0, 255, 1)">long</span> timeStampStr = <span style="color: rgba(0, 0, 255, 1)">long</span><span style="color: rgba(0, 0, 0, 1)">.Parse(Timestamp);
+</span><span style="color: rgba(0, 128, 128, 1)">31</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (nowTimeStr - timeStampStr &gt; <span style="color: rgba(128, 0, 128, 1)">600</span> || timeStampStr - nowTimeStr &gt; <span style="color: rgba(128, 0, 128, 1)">600</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)">32</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">33</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(0, 0, 255, 1)">new</span> HttpResponseMessage(HttpStatusCode.Unauthorized) { Content = <span style="color: rgba(0, 0, 255, 1)">new</span> StringContent(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">已过期</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">) };
+</span><span style="color: rgba(0, 128, 128, 1)">34</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">35</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">3. 计算Sign值是否合法
+</span><span style="color: rgba(0, 128, 128, 1)">36</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">这里假设秘钥为0806 （实际应该根据appKey去数据库中查）</span>
+<span style="color: rgba(0, 128, 128, 1)">37</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> AppSecret = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">0806</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">38</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> finalStr = (Appkey + AppSecret +<span style="color: rgba(0, 0, 0, 1)"> Timestamp).ToUpper();
+</span><span style="color: rgba(0, 128, 128, 1)">39</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> realSign =<span style="color: rgba(0, 0, 0, 1)"> SecurityHelp.CalcMD5(finalStr);
+</span><span style="color: rgba(0, 128, 128, 1)">40</span>             <span style="color: rgba(0, 0, 255, 1)">if</span><span style="color: rgba(0, 0, 0, 1)"> (realSign.Equals(Sign, StringComparison.OrdinalIgnoreCase))
+</span><span style="color: rgba(0, 128, 128, 1)">41</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">42</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示校验通过</span>
+<span style="color: rgba(0, 128, 128, 1)">43</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(0, 0, 255, 1)">await</span><span style="color: rgba(0, 0, 0, 1)"> continuation();
+</span><span style="color: rgba(0, 128, 128, 1)">44</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">45</span>             <span style="color: rgba(0, 0, 255, 1)">else</span>
+<span style="color: rgba(0, 128, 128, 1)">46</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">47</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示校验未通过 </span>
+<span style="color: rgba(0, 128, 128, 1)">48</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(0, 0, 255, 1)">new</span> HttpResponseMessage(HttpStatusCode.Unauthorized) { Content = <span style="color: rgba(0, 0, 255, 1)">new</span> StringContent(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">sign验证失败</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">) };
+</span><span style="color: rgba(0, 128, 128, 1)">49</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">50</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">51</span>     }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 模拟订单服务器中的下单接口
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 该接口需要采用 扩展算法(二) 的校验
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 5</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="dic"&gt;&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 6</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 7</span> <span style="color: rgba(0, 0, 0, 1)">        [HttpPost]
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">        [CheckPer2]
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> CommitOrder2(orderData orderData)
+</span><span style="color: rgba(0, 128, 128, 1)">10</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> data = <span style="color: rgba(0, 0, 255, 1)">new</span>
+<span style="color: rgba(0, 128, 128, 1)">12</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>                 stauts = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ok</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">,
+</span><span style="color: rgba(0, 128, 128, 1)">14</span>                 msg = orderData.userId + <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">,</span><span style="color: rgba(128, 0, 0, 1)">"</span> + orderData.goodId + <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">,</span><span style="color: rgba(128, 0, 0, 1)">"</span> +<span style="color: rgba(0, 0, 0, 1)"> orderData.money
+</span><span style="color: rgba(0, 128, 128, 1)">15</span> <span style="color: rgba(0, 0, 0, 1)">            };
+</span><span style="color: rgba(0, 128, 128, 1)">16</span> 
+<span style="color: rgba(0, 128, 128, 1)">17</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> JsonConvert.SerializeObject(data);
+</span><span style="color: rgba(0, 128, 128, 1)">18</span>         }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><strong><span style="font-size: 16px; color: rgba(0, 0, 255, 1)">(3). 运行结果</span></strong></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 16px"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/1031302-20190317221213565-1543066642.png" alt="" class="medium-zoom-image"></span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div style="border: 2px dashed rgba(0, 0, 255, 1); border-radius: 10px; height: 120px; width: 1100px; margin-left: 60px">
+<div style="width: 0; height: 0; border-left: 20px solid rgba(0, 0, 0, 0); border-right: 20px solid rgba(0, 0, 0, 0); border-bottom: 30px solid rgba(255, 255, 0, 1); float: left; margin-top: 40px; margin-left: 20px">
+<p style="font-size: 16px; font-weight: bold; margin-top: 8px; margin-left: -2px">!</p>
+</div>
+<div style="float: left; margin-left: 16px">
+<ul style="list-style: none; padding: 0; margin-left: 20px">
+<li style="margin-bottom: 1px; line-height: 28px">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者 : <span style="color: rgba(255, 0, 0, 1)">Yaopengfei(姚鹏飞)</span></li>
+<li style="margin-bottom: 1px; line-height: 28px">博客地址 : <a style="text-decoration: none" href="http://www.cnblogs.com/yaopengfei/"><span style="color: rgba(255, 0, 0, 1)">http://www.cnblogs.com/yaopengfei/</span></a></li>
+<li style="margin-bottom: 1px; line-height: 28px">声&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明1 : 本人才疏学浅，用郭德纲的话说“我是一个小学生”，如有错误，欢迎讨论，请勿谩骂^_^。</li>
+<li style="margin-bottom: 1px; line-height: 28px">声&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明2 : 原创博客请在转载时保留原文链接或在文章开头加上本人博客地址，否则保留追究法律责任的权利。</li>
+</ul>
+</div>
+<div style="clear: both">&nbsp;</div>
+</div>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/yaopengfei/category/1076560.html" target="_blank">06-WebApi(含Core)</a></div>
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(10468728,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;7d349e7e-c080-e611-9fc1-ac853d9f53cc&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/yaopengfei/" target="_blank"><img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/20180828165403.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/yaopengfei/">Yaopengfei</a><br>
+            <a href="https://home.cnblogs.com/u/yaopengfei/followees/">关注 - 18</a><br>
+            <a href="https://home.cnblogs.com/u/yaopengfei/followers/">粉丝 - 828</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;7d349e7e-c080-e611-9fc1-ac853d9f53cc&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(10468728,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(10468728,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/yaopengfei/p/10451189.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/yaopengfei/p/10451189.html" title="发布于 2019-02-28 16:23">第九节：JWT简介和以JS+WebApi为例基于JWT的安全校验</a>
+    <br>
+    <a href="https://www.cnblogs.com/yaopengfei/p/10508566.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/yaopengfei/p/10508566.html" title="发布于 2019-03-11 09:05">第十一节：WebApi的版本管理的几种方式</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2019-03-04 07:52</span>&nbsp;
+<a href="https://www.cnblogs.com/yaopengfei/">Yaopengfei</a>&nbsp;
+阅读(<span id="post_view_count">1364</span>)&nbsp;
+评论(<span id="post_comment_count">2</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=10468728" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(10468728);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;10468728&#39;, targetLink: &#39;https://www.cnblogs.com/yaopengfei/p/10468728.html&#39;, title: &#39;第十节：进一步扩展两种安全校验方式&#39; })">举报</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+
+<script>
+    markdown_highlight()
+    var allowComments = true, cb_blogId = 307315, cb_blogApp = 'yaopengfei', cb_blogUserGuid = '7d349e7e-c080-e611-9fc1-ac853d9f53cc';
+    var cb_entryId = 10468728, cb_entryCreatedDate = '2019-03-04 07:52', cb_postType = 1;
+    updatePostStats(
+        [cb_entryId],
+        function(id, count) { $("#post_view_count").text(count) },
+        function(id, count) { $("#post_comment_count").text(count) })
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+</script>
+<a name="!comments"></a>
+<div id="blog-comments-placeholder"><div style="color:green;margin:50px 0;font-weight:normal;">努力加载评论中...</div></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/yaopengfei/p/10468728.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/yaopengfei/p/10468728.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="cnblogs_ch"><a href="https://c.gridsumdissector.com/r/?gid=gad_545_sf71nlea&amp;ck=1057&amp;adk=10670&amp;autorefresh=__AUTOREFRESH__" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-火山引擎-1203-1209&#39;})">【推荐】字节跳动旗下火山引擎，邀您共同揭秘“云+增长”</a><br><a href="http://www.uccpsoft.com/index.htm" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-ucancode&#39;})">【推荐】跨平台组态\工控\仿真\CAD 50万行C++源码全开放免费下载！</a><br><a href="https://brands.cnblogs.com/huawei/p/2704" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-华为专区&#39;})">【推荐】华为 HarmonyOS 校园极客秀征文活动第1期，秀出你的COOL</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+        <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;"></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/coco1s/p/15627657.html" target="_blank">使用 CSS 轻松实现一些高频出现的奇形怪状按钮</a>
+    <br>
+· <a href="https://www.cnblogs.com/strick/p/15394367.html" target="_blank">带团队后的日常思考（六）</a>
+    <br>
+· <a href="https://www.cnblogs.com/xiao2shiqi/p/15623540.html" target="_blank">聊聊云原生和微服务架构</a>
+    <br>
+· <a href="https://www.cnblogs.com/youzhibing/p/15615272.html" target="_blank">异或运算的巧用：不用额外的变量，如何交换两个变量的值？ </a>
+    <br>
+· <a href="https://www.cnblogs.com/myshowtime/p/15596630.html" target="_blank">OAuth 2.1 带来了哪些变化</a>
+    <br>
+</div></div>
+        <div id="cnblogs_c2" class="under-post-card">
+            <a href="https://c.gridsumdissector.com/r/?gid=gad_545_wrrk6jpf&amp;ck=1057&amp;adk=10673&amp;autorefresh=__AUTOREFRESH__" rel="nofollow" target="_blank">
+                <img src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/volcengine-c2.jpg" alt="" onload="impressC2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_wrrk6jpf&amp;ck=1057&amp;adk=10673&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+            </a>
+        </div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/708335/" target="_blank">滴滴加油、DiDi-Rider两款APP恢复上架系误传（2021-12-03 16:56）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708334/" target="_blank">特斯拉中国召回21599辆国产Model Y，因转向节可能有问题（2021-12-03 16:51）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708333/" target="_blank">因订单延期等因素 蔚来发布购车补贴方案：最高1.8万元（2021-12-03 16:46）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708332/" target="_blank">SpaceX第32批星链发射，猎鹰9号打破年发射次数纪录（2021-12-03 16:40）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708331/" target="_blank">爱奇艺大裁员背后：6年融资500亿，现金流依然紧绷（2021-12-03 16:32）</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card">
+<b>历史上的今天：</b>
+<br>
+
+2017-03-04    <a href="https://www.cnblogs.com/yaopengfei/p/6503209.html">DOM-Document对象</a>
+    <br>
+</div>
+    <script type="text/javascript">
+       var commentManager = new blogCommentManager();
+       commentManager.renderComments(0);
+       fixPostBody();
+
+           window.tocManager.displayDisableTocTips = false
+           window.tocManager.generateToc();
+           setTimeout(function() { incrementViewCount(cb_entryId); }, 50);       deliverT2();
+       deliverC1C2();
+       loadNewsAndKb();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);       LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+       GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+       loadOptUnderPost();
+       GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem"><!--done-->
+<h3 class="catListTitle">公告</h3>
+
+<div id="blog-news">
+    
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/yaopengfei/">
+            Yaopengfei
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/yaopengfei/" title="入园时间：2016-09-22">
+            5年2个月
+        </a>
+        <br>
+        粉丝：
+        <a href="https://home.cnblogs.com/u/yaopengfei/followers/">
+            828
+        </a>
+        <br>
+        关注：
+        <a href="https://home.cnblogs.com/u/yaopengfei/followees/">
+            18
+        </a>
+        <div id="p_b_follow"></div>
+        <script>getFollowStatus('7d349e7e-c080-e611-9fc1-ac853d9f53cc');</script>
+    </div>
+</div>
+
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2021/11/03&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2021年12月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2022/01/03&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">28</td>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                        <td class="" align="center">
+                            2
+                        </td>
+                        <td class="CalTodayDay" align="center">
+                            3
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        4
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            5
+                        </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            11
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            12
+                        </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            18
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            19
+                        </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            25
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            26
+                        </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                            <td class="" align="center">
+                                30
+                            </td>
+                            <td class="" align="center">
+                                31
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            1
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            2
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            8
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2021 Yaopengfei
+<br><span id="poweredby">Powered by .NET 6 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8FO3GXnjClZGrNGr2Ic8Z1qptsrJstbby5hnfWpDR8HitZLuEdoJqTtSzMwtBpxLg7jCm9CMiVrc54mJgxRKPK3-3BFdkjRfYvV8syhFNpUKhVA-EPH4MB4JR8PgYRMKmjqnfKQFoay3yQNZfIP-LjU">
+    <script async="" src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/js"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+    </script>
+    <script defer="" src="./第十节：进一步扩展两种安全校验方式 - Yaopengfei - 博客园_files/hm.js.下载"></script>
+
+</body></html>

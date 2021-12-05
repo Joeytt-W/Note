@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)https://www.cnblogs.com/yaopengfei/p/10975759.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="description" content="一. 各种文件的读取 1.说明 在.Net Core中，各种配置文件的读取都需要依赖【Microsoft.Extensions.Configuration】程序集，当然在Asp.Net Core中已经">
+    <meta property="og:description" content="一. 各种文件的读取 1.说明 在.Net Core中，各种配置文件的读取都需要依赖【Microsoft.Extensions.Configuration】程序集，当然在Asp.Net Core中已经">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([class*="language-"]):not([highlighted]):not(.hljs) {
+        background: rgb(245, 245, 245);
+        padding: 5px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(0, 0, 0);
+        font-family: "Courier New", sans-serif;
+    }:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]) code:not(.hljs) {
+            background: rgb(245, 245, 245) !important;
+            border-color: transparent !important;
+        }</style><link rel="stylesheet" href="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/blog-common.min.css">
+    <link id="MainCss" rel="stylesheet" href="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/bundle-darkgreentrip.min.css">
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/cnblogs.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/bundle-darkgreentrip-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/yaopengfei/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/yaopengfei/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/yaopengfei/wlwmanifest.xml">
+    <script>
+        var currentBlogId = 307315;
+        var currentBlogApp = 'yaopengfei';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'darkgreentrip';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function(){ return ''; } });
+            }
+        } catch(error) { }
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+    </script>
+        <script>
+            var currentPostDateAdded = '2019-06-04 19:58';
+        </script>
+    <script src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/jquery-2.2.0.min.js.下载"></script>
+    <script src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/blog-common.min.js.下载"></script><style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style><script id="hljs-script" async="" data-loaded="error" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/highlight.min.js.下载"></script>
+    
+    
+    
+</head>
+<body class="skin-darkgreentrip has-navbar has-bannerbar">
+    <a name="top"></a>
+        <a href="https://c.gridsumdissector.com/r/?gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__" target="_blank" rel="nofollow" onclick="countClicks(&#39;ad&#39;, &#39;C0-火山引擎&#39;)">
+            <div class="bannerbar forpc" style="display: flex; background-color: #11225a;">
+                <img src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/volcengine-b0c0-1.jpg" onload="impressC0(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)" alt="">
+                <img src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/volcengine-b0c0-2.jpg" alt="">
+                <img style="margin-left: auto;" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/volcengine-b0c0-3.jpg" alt="">
+            </div>
+        </a>
+            <div id="bannerbar" class="bannerbar-mobile formobile">
+                <a href="https://c.gridsumdissector.com/r/?gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__" onclick="countClicks(&#39;ad&#39;, &#39;M2-火山引擎&#39;)" rel="nofollow">
+                    <img src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/volcengine-m2.jpg" alt="" onload="impressM2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+                </a>
+            </div>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding"><a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/logo.svg" alt="博客园Logo"></a></li>
+                <li><a href="https://www.cnblogs.com/" onclick="countClicks(&#39;skin-navbar-sitehome&#39;)">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-brands&#39;)">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-edu&#39;)">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔">
+                        <img id="new_post_icon" class="navbar-icon" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/yaopengfei/"><img id="blogLogo" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/yaopengfei/">奔跑的路上</a>
+</h1>
+<h2>广泛汲取，用心打磨，精益求精。</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/yaopengfei/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/Yaopengfei">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/yaopengfei/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 494&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 1303&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 604717">
+60万</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/yaopengfei/p/10975759.html">
+    <span>第十节：Asp.Net Core 配置详解和选项模式</span>
+    
+
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">一. 各种文件的读取</span></p>
+<p><strong><span style="font-size: 16px">1.说明</span></strong></p>
+<p><span style="font-size: 16px">　　在.Net Core中，各种配置文件的读取都需要依赖【Microsoft.Extensions.Configuration】程序集，当然在Asp.Net Core中已经内置了，然后通过依赖注入</span><span style="font-size: 16px">IConfiguration configuration对象进行配置文件的相关操作。</span></p>
+<p><span style="font-size: 15px; color: rgba(0, 0, 255, 1)">比如在控制器注入该对象：</span></p>
+<p><span style="font-size: 15px; color: rgba(0, 0, 255, 1)"><img src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/1031302-20190709175814453-650083990.png" alt=""></span></p>
+<p><strong><span style="font-size: 16px">相关约定：</span></strong></p>
+<p><span style="font-size: 16px">①：配置键不区分大小写，例如，ConnectionString 和 connectionstring 被视为等效键。</span></p>
+<p><span style="font-size: 16px">②：在配置API中，冒号分隔符(：)适用于所有平台。</span></p>
+<p><span style="font-size: 16px">③：配置值是字符串</span></p>
+<p><span style="font-size: 16px">④：NULL值不能存储在配置中或绑定到对象。</span></p>
+<p><span style="color: rgba(255, 102, 0, 1)"><strong><span style="font-size: 16px">&nbsp;注：</span></strong></span></p>
+<p><span style="color: rgba(255, 102, 0, 1)"><strong><span style="font-size: 16px">　　在Core MVC中，默认识别appsettings.json 文件，如果要添加其它类型的文件，需要通过AddJson、AddXml、AddIniFile、AddInMemoryCollection等方法手动添加进入，</span><span style="font-size: 16px">&nbsp;方便起见通过 config.SetBasePath(Directory.GetCurrentDirectory());将当前目录设置为基础目录。</span></strong></span></p>
+<p><span style="color: rgba(255, 102, 0, 1)"><strong><span style="font-size: 16px">　　&nbsp;这些AddXX方法，可以配置后面两个参数均为true，eg：config.AddJsonFile("Config/ypf1.json", optional: true, reloadOnChange: true);这样的话当配置文件发生变化的时候，</span><span style="font-size: 16px">会自动更新加载，而不必重启整个项目。</span></strong></span></p>
+<p><span style="color: rgba(0, 0, 0, 1)"><strong><span style="font-size: 16px">项目结构：手动新增的配置文件都在Config文件夹下（如下图），然后都在Program类中进行加载进来（代码如下）</span></strong></span></p>
+<p><span style="color: rgba(255, 102, 0, 1)"><strong><span style="font-size: 16px"><img src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/1031302-20190709180219291-279039325.png" alt=""></span></strong></span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>  <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> Program
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">readonly</span> Dictionary&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>, <span style="color: rgba(0, 0, 255, 1)">string</span>&gt; _dict = <span style="color: rgba(0, 0, 255, 1)">new</span> Dictionary&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>, <span style="color: rgba(0, 0, 255, 1)">string</span>&gt;
+<span style="color: rgba(0, 128, 128, 1)"> 4</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span>             {<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">MKey1</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">value1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">},
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span>             {<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">MKey2</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">value2</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">}
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span> <span style="color: rgba(0, 0, 0, 1)">        };
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 9</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">void</span> Main(<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)">[] args)
+</span><span style="color: rgba(0, 128, 128, 1)">10</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">11</span> <span style="color: rgba(0, 0, 0, 1)">            CreateWebHostBuilder(args).Build().Run();
+</span><span style="color: rgba(0, 128, 128, 1)">12</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">13</span> 
+<span style="color: rgba(0, 128, 128, 1)">14</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> IWebHostBuilder CreateWebHostBuilder(<span style="color: rgba(0, 0, 255, 1)">string</span>[] args) =&gt;
+<span style="color: rgba(0, 128, 128, 1)">15</span> <span style="color: rgba(0, 0, 0, 1)">            WebHost.CreateDefaultBuilder(args)
+</span><span style="color: rgba(0, 128, 128, 1)">16</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">配置相关</span>
+<span style="color: rgba(0, 128, 128, 1)">17</span>                 .ConfigureAppConfiguration((hostingContext, config) =&gt;
+<span style="color: rgba(0, 128, 128, 1)">18</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)">19</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1. 设置当前目录为基础目录(后面则可以用相对路径)</span>
+<span style="color: rgba(0, 128, 128, 1)">20</span> <span style="color: rgba(0, 0, 0, 1)">                    config.SetBasePath(Directory.GetCurrentDirectory());
+</span><span style="color: rgba(0, 128, 128, 1)">21</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">2. 加载json文件 (配置后面两个参数为true，当配置文件发生变化的时候，会自动更新加载，而不必重启整个项目)</span>
+<span style="color: rgba(0, 128, 128, 1)">22</span>                     config.AddJsonFile(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Config/ypf1.json</span><span style="color: rgba(128, 0, 0, 1)">"</span>, optional: <span style="color: rgba(0, 0, 255, 1)">true</span>, reloadOnChange: <span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">23</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">3. 加载xml文件</span>
+<span style="color: rgba(0, 128, 128, 1)">24</span>                     config.AddXmlFile(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Config/ypf2.xml</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">25</span>                     config.AddXmlFile(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Config/ypf3.xml</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">26</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">4. 加载ini文件</span>
+<span style="color: rgba(0, 128, 128, 1)">27</span>                     config.AddIniFile(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Config/ypf4.ini</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">28</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">5. 加载内存文件</span>
+<span style="color: rgba(0, 128, 128, 1)">29</span> <span style="color: rgba(0, 0, 0, 1)">                    config.AddInMemoryCollection(_dict);
+</span><span style="color: rgba(0, 128, 128, 1)">30</span> <span style="color: rgba(0, 0, 0, 1)">                })
+</span><span style="color: rgba(0, 128, 128, 1)">31</span>                 .UseStartup&lt;Startup&gt;<span style="color: rgba(0, 0, 0, 1)">();
+</span><span style="color: rgba(0, 128, 128, 1)">32</span>     }</pre>
+</div>
+<p><strong><span style="font-size: 16px">2. Json文件的读取</span></strong></p>
+<p><span style="font-size: 16px">(1).读取规则：</span></p>
+<p><span style="font-size: 16px">A：普通对象直接通过键名来读取； B：对象中套对象通过多个键名(中间通过：连接)来读取；C: 数组对象则可以 键名：0(或1 或2)的方式来读取。 </span></p>
+<p><span style="font-size: 16px">(2).实战演练：</span></p>
+<p><span style="font-size: 16px">① 项目默认的appsettings.json的读取，</span></p>
+<div class="cnblogs_code"><img id="code_img_closed_47497b02-c6fd-4049-bd0b-dfd3379901f9" class="code_img_closed" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/ContractedBlock.gif" alt=""><img id="code_img_opened_47497b02-c6fd-4049-bd0b-dfd3379901f9" class="code_img_opened" style="display: none" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_47497b02-c6fd-4049-bd0b-dfd3379901f9" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">  "Logging": {
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span> <span style="color: rgba(0, 0, 0, 1)">    "LogLevel": {
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span> <span style="color: rgba(0, 0, 0, 1)">      "Default": "Warning"
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span> <span style="color: rgba(0, 0, 0, 1)">  },
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span> <span style="color: rgba(0, 0, 0, 1)">  "AllowedHosts": "*",
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">  //下面自定义一些值，用于测试配置文件的读取
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span> <span style="color: rgba(0, 0, 0, 1)">  "MyFullName": "Maru Li",
+</span><span style="color: rgba(0, 128, 128, 1)">10</span> <span style="color: rgba(0, 0, 0, 1)">  "User": {
+</span><span style="color: rgba(0, 128, 128, 1)">11</span> <span style="color: rgba(0, 0, 0, 1)">    "userName": "ypf",
+</span><span style="color: rgba(0, 128, 128, 1)">12</span> <span style="color: rgba(0, 0, 0, 1)">    "userAge": 15,
+</span><span style="color: rgba(0, 128, 128, 1)">13</span> <span style="color: rgba(0, 0, 0, 1)">    "Child": {
+</span><span style="color: rgba(0, 128, 128, 1)">14</span> <span style="color: rgba(0, 0, 0, 1)">      "childName": "ydb",
+</span><span style="color: rgba(0, 128, 128, 1)">15</span> <span style="color: rgba(0, 0, 0, 1)">      "age": 12
+</span><span style="color: rgba(0, 128, 128, 1)">16</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)">17</span> <span style="color: rgba(0, 0, 0, 1)">  },
+</span><span style="color: rgba(0, 128, 128, 1)">18</span> <span style="color: rgba(0, 0, 0, 1)">  "StudentList": [
+</span><span style="color: rgba(0, 128, 128, 1)">19</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)">20</span> <span style="color: rgba(0, 0, 0, 1)">      "sName": "qdkjdx"
+</span><span style="color: rgba(0, 128, 128, 1)">21</span> <span style="color: rgba(0, 0, 0, 1)">    },
+</span><span style="color: rgba(0, 128, 128, 1)">22</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)">23</span> <span style="color: rgba(0, 0, 0, 1)">      "sName": "bjdx"
+</span><span style="color: rgba(0, 128, 128, 1)">24</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)">25</span> <span style="color: rgba(0, 0, 0, 1)">  ],
+</span><span style="color: rgba(0, 128, 128, 1)">26</span> <span style="color: rgba(0, 0, 0, 1)">  //测试绑定类
+</span><span style="color: rgba(0, 128, 128, 1)">27</span> <span style="color: rgba(0, 0, 0, 1)">  "starship": {
+</span><span style="color: rgba(0, 128, 128, 1)">28</span> <span style="color: rgba(0, 0, 0, 1)">    "name": "USS Enterprise",
+</span><span style="color: rgba(0, 128, 128, 1)">29</span> <span style="color: rgba(0, 0, 0, 1)">    "registry": "NCC-1701",
+</span><span style="color: rgba(0, 128, 128, 1)">30</span> <span style="color: rgba(0, 0, 0, 1)">    "class": "Constitution",
+</span><span style="color: rgba(0, 128, 128, 1)">31</span> <span style="color: rgba(0, 0, 0, 1)">    "length": 304.8,
+</span><span style="color: rgba(0, 128, 128, 1)">32</span> <span style="color: rgba(0, 0, 0, 1)">    "commissioned": false
+</span><span style="color: rgba(0, 128, 128, 1)">33</span> <span style="color: rgba(0, 0, 0, 1)">  },
+</span><span style="color: rgba(0, 128, 128, 1)">34</span> <span style="color: rgba(0, 0, 0, 1)">  //测试绑定数组
+</span><span style="color: rgba(0, 128, 128, 1)">35</span> <span style="color: rgba(0, 0, 0, 1)">  "myArray": ["001","002","003"],
+</span><span style="color: rgba(0, 128, 128, 1)">36</span> <span style="color: rgba(0, 0, 0, 1)">  "json_array": {
+</span><span style="color: rgba(0, 128, 128, 1)">37</span> <span style="color: rgba(0, 0, 0, 1)">    "key": "valueA",
+</span><span style="color: rgba(0, 128, 128, 1)">38</span> <span style="color: rgba(0, 0, 0, 1)">    "subsection": [
+</span><span style="color: rgba(0, 128, 128, 1)">39</span> <span style="color: rgba(0, 0, 0, 1)">      "valueB",
+</span><span style="color: rgba(0, 128, 128, 1)">40</span> <span style="color: rgba(0, 0, 0, 1)">      "valueC",
+</span><span style="color: rgba(0, 128, 128, 1)">41</span> <span style="color: rgba(0, 0, 0, 1)">      "valueD"
+</span><span style="color: rgba(0, 128, 128, 1)">42</span> <span style="color: rgba(0, 0, 0, 1)">    ]
+</span><span style="color: rgba(0, 128, 128, 1)">43</span> <span style="color: rgba(0, 0, 0, 1)">  }
+</span><span style="color: rgba(0, 128, 128, 1)">44</span> 
+<span style="color: rgba(0, 128, 128, 1)">45</span> 
+<span style="color: rgba(0, 128, 128, 1)">46</span> 
+<span style="color: rgba(0, 128, 128, 1)">47</span> }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> <span style="color: rgba(0, 0, 0, 1)"> {
+</span><span style="color: rgba(0, 128, 128, 1)">2</span>      <span style="color: rgba(0, 0, 255, 1)">var</span> f0 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">MyFullName</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">3</span>      <span style="color: rgba(0, 0, 255, 1)">var</span> f1 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">User:userName</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">4</span>      <span style="color: rgba(0, 0, 255, 1)">var</span> f2 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">User:Child:childName</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">5</span>      <span style="color: rgba(0, 0, 255, 1)">var</span> f3 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">StudentList:0:sName</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">6</span>      <span style="color: rgba(0, 0, 255, 1)">var</span> f4 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">StudentList:1:sName</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">7</span> }</pre>
+</div>
+<p><span style="color: rgba(255, 0, 0, 1); font-size: 15px"><strong>注：这里有一种特殊情况,比如数据库连接字符，通常是放在ConnectionStrings节点下的某个节点，所以可以通过 Configuration.GetConnectionString("xxx");来读取，&nbsp;等价于：Configuration["ConnectionStrings:xxx"];</strong></span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)">2</span> <span style="color: rgba(0, 0, 0, 1)">  "ConnectionStrings": {
+</span><span style="color: rgba(0, 128, 128, 1)">3</span> <span style="color: rgba(0, 0, 0, 1)">    "conn1": "sqlServer",
+</span><span style="color: rgba(0, 128, 128, 1)">4</span> <span style="color: rgba(0, 0, 0, 1)">    "conn2": "mySql"
+</span><span style="color: rgba(0, 128, 128, 1)">5</span> <span style="color: rgba(0, 0, 0, 1)">  }
+</span><span style="color: rgba(0, 128, 128, 1)">6</span> }</pre>
+</div>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)">2</span>    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">数据库连接字符串读取</span>
+<span style="color: rgba(0, 128, 128, 1)">3</span>    <span style="color: rgba(0, 0, 255, 1)">var</span> c1 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ConnectionStrings:conn1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">4</span>    <span style="color: rgba(0, 0, 255, 1)">var</span> c2 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ConnectionStrings:conn2</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">5</span>    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">等价于上面的</span>
+<span style="color: rgba(0, 128, 128, 1)">6</span>    <span style="color: rgba(0, 0, 255, 1)">var</span> c3 = Configuration.GetConnectionString(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">conn1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">7</span>    <span style="color: rgba(0, 0, 255, 1)">var</span> c4 = Configuration.GetConnectionString(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">conn2</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">8</span> }</pre>
+</div>
+<p><span style="font-size: 16px">② 在Config文件夹中新增ypf1.json的读取：需要在Program类中通过代码 config.AddJsonFile("Config/ypf1.json"); 加载进来该json文件</span></p>
+<div class="cnblogs_code"><img id="code_img_closed_8a37f159-5f5e-407e-a670-c033eca4edb7" class="code_img_closed" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/ContractedBlock.gif" alt=""><img id="code_img_opened_8a37f159-5f5e-407e-a670-c033eca4edb7" class="code_img_opened" style="display: none" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_8a37f159-5f5e-407e-a670-c033eca4edb7" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)">2</span> <span style="color: rgba(0, 0, 0, 1)">  "FullName": "ypf"
+</span><span style="color: rgba(0, 128, 128, 1)">3</span> }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)">2</span>      <span style="color: rgba(0, 0, 255, 1)">var</span> f0 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">FullName</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">3</span> }</pre>
+</div>
+<p><strong><span style="font-size: 16px">3. xml文件的读取 </span></strong></p>
+<p><span style="font-size: 16px">① 不存在重复节点，如：ypf2.xml 两个节点分别为section0 和 section1，可以明显的区分。</span></p>
+<div class="cnblogs_code"><img id="code_img_closed_67a66073-9e7d-48b5-adac-2910a6f9a468" class="code_img_closed" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/ContractedBlock.gif" alt=""><img id="code_img_opened_67a66073-9e7d-48b5-adac-2910a6f9a468" class="code_img_opened" style="display: none" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_67a66073-9e7d-48b5-adac-2910a6f9a468" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span> <span style="color: rgba(0, 0, 255, 1)">&lt;?</span><span style="color: rgba(255, 0, 255, 1)">xml version="1.0" encoding="UTF-8"</span><span style="color: rgba(0, 0, 255, 1)">?&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">configuration</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 3</span>   <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">section0</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 4</span>     <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">key0</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>value001<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">key0</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 5</span>     <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">key1</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>value002<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">key1</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 6</span>   <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">section0</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 7</span>   <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">section1</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 8</span>     <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">key0</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>value003<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">key0</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 9</span>     <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">key1</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>value004<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">key1</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">10</span>   <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">section1</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">11</span> <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">configuration</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> <span style="color: rgba(0, 0, 0, 1)"> {
+</span><span style="color: rgba(0, 128, 128, 1)">2</span>        <span style="color: rgba(0, 0, 255, 1)">var</span> f0 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">section0:key0</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">3</span>        <span style="color: rgba(0, 0, 255, 1)">var</span> f1 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">section0:key1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">4</span>        <span style="color: rgba(0, 0, 255, 1)">var</span> f2 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">section1:key0</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">5</span>        <span style="color: rgba(0, 0, 255, 1)">var</span> f3 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">section1:key1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">6</span> }</pre>
+</div>
+<p><span style="font-size: 16px">② 存在重复节点，如：ypf3.xml，两个相同section节点，则需要通过name属性来区分，section下两个相同的key节点，也需要通过name来区分</span></p>
+<div class="cnblogs_code"><img id="code_img_closed_d50235ad-d158-4d60-b287-ca7df890ce2a" class="code_img_closed" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/ContractedBlock.gif" alt=""><img id="code_img_opened_d50235ad-d158-4d60-b287-ca7df890ce2a" class="code_img_opened" style="display: none" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_d50235ad-d158-4d60-b287-ca7df890ce2a" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span> <span style="color: rgba(0, 0, 255, 1)">&lt;?</span><span style="color: rgba(255, 0, 255, 1)">xml version="1.0" encoding="UTF-8"</span><span style="color: rgba(0, 0, 255, 1)">?&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">configuration</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 3</span>   <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">section </span><span style="color: rgba(255, 0, 0, 1)">name</span><span style="color: rgba(0, 0, 255, 1)">="section0"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 4</span>     <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">key </span><span style="color: rgba(255, 0, 0, 1)">name</span><span style="color: rgba(0, 0, 255, 1)">="key0"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>value101<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">key</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 5</span>     <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">key </span><span style="color: rgba(255, 0, 0, 1)">name</span><span style="color: rgba(0, 0, 255, 1)">="key1"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>value102<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">key</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 6</span>   <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">section</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 7</span>   <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">section </span><span style="color: rgba(255, 0, 0, 1)">name</span><span style="color: rgba(0, 0, 255, 1)">="section1"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 8</span>     <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">key </span><span style="color: rgba(255, 0, 0, 1)">name</span><span style="color: rgba(0, 0, 255, 1)">="key0"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>value103<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">key</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 9</span>     <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">key </span><span style="color: rgba(255, 0, 0, 1)">name</span><span style="color: rgba(0, 0, 255, 1)">="key1"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>value104<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">key</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">10</span>   <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">section</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">11</span> <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">configuration</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)">2</span>      <span style="color: rgba(0, 0, 255, 1)">var</span> f0 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">section:section0:key:key0</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">3</span>      <span style="color: rgba(0, 0, 255, 1)">var</span> f1 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">section:section0:key:key1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">4</span>      <span style="color: rgba(0, 0, 255, 1)">var</span> f2 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">section:section1:key:key0</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">5</span>      <span style="color: rgba(0, 0, 255, 1)">var</span> f3 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">section:section1:key:key1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">6</span>  }</pre>
+</div>
+<p><strong><span style="font-size: 16px">4. INI 配置文件的读取 </span></strong></p>
+<p><span style="font-size: 16px">结合[]类似特性的标记进行读取，如ypf4.ini。</span></p>
+<div class="cnblogs_code"><img id="code_img_closed_e0c67e3c-e563-4ac1-869d-aa690b96dc00" class="code_img_closed" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/ContractedBlock.gif" alt=""><img id="code_img_opened_e0c67e3c-e563-4ac1-869d-aa690b96dc00" class="code_img_opened" style="display: none" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_e0c67e3c-e563-4ac1-869d-aa690b96dc00" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span> <span style="color: rgba(0, 0, 0, 1)">[section0]
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">key0=value201
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span> <span style="color: rgba(0, 0, 0, 1)">key1=value202
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 5</span> <span style="color: rgba(0, 0, 0, 1)">[section1]
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span> <span style="color: rgba(0, 0, 0, 1)">subsection:key=value203
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">[section2:subsection0]
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span> <span style="color: rgba(0, 0, 0, 1)">key=value204
+</span><span style="color: rgba(0, 128, 128, 1)">10</span> 
+<span style="color: rgba(0, 128, 128, 1)">11</span> <span style="color: rgba(0, 0, 0, 1)">[section2:subsection1]
+</span><span style="color: rgba(0, 128, 128, 1)">12</span> key=value205</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)">2</span>     <span style="color: rgba(0, 0, 255, 1)">var</span> f0 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">section0:key0</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">3</span>     <span style="color: rgba(0, 0, 255, 1)">var</span> f1 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">section0:key1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">4</span>     <span style="color: rgba(0, 0, 255, 1)">var</span> f2 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">section1:subsection:key</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">5</span>     <span style="color: rgba(0, 0, 255, 1)">var</span> f3 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">section2:subsection0:key</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">6</span>     <span style="color: rgba(0, 0, 255, 1)">var</span> f4 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">section2:subsection1:key</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">7</span> }</pre>
+</div>
+<p><strong><span style="font-size: 16px">5. 内存集合的读取</span></strong></p>
+<p><span style="font-size: 16px">通过AddInMemoryCollection添加内存集合，如_dic。</span></p>
+<p>&nbsp;<img src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/1031302-20190709181559445-1605130132.png" alt=""></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> <span style="color: rgba(0, 0, 0, 1)">  {
+</span><span style="color: rgba(0, 128, 128, 1)">2</span>       <span style="color: rgba(0, 0, 255, 1)">var</span> f0 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">MKey1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">3</span>       <span style="color: rgba(0, 0, 255, 1)">var</span> f1 = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">MKey2</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">4</span>   }</pre>
+</div>
+<p><span style="font-size: 16px">&nbsp;另外：还有环境变量、命令行的读取均不常用，这里不详细介绍了。</span></p>
+<p><strong><span style="font-size: 16px">6. 单独封装帮助类</span></strong></p>
+<p><span style="font-size: 16px">　首先要下载一系列程序集，如下图：</span></p>
+<p><span style="color: rgba(255, 0, 0, 1)"><strong><span style="font-size: 16px">注：如果在控制台使用的话，需要将被读取的文件属性改为"始终复制"。</span></strong></span></p>
+<p><span style="font-size: 16px"><img src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/1031302-20190830172611386-690917796.png" alt=""></span></p>
+<p><span style="font-size: 15px; color: rgba(0, 0, 255, 1)"><strong>&nbsp;分享封装代码：</strong></span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>     <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span>     <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 读取配置文件
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>     <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 4</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> ConfigHelp
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 读取Json类型的配置文件
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 9</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="key"&gt;</span><span style="color: rgba(0, 128, 0, 1)">键名</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">10</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="FilePath"&gt;</span><span style="color: rgba(0, 128, 0, 1)">文件路径，默认为：appsettings.json</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">11</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">12</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> GetString(<span style="color: rgba(0, 0, 255, 1)">string</span> key, <span style="color: rgba(0, 0, 255, 1)">string</span> FilePath = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">appsettings.json</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)">13</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">14</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> configurationBuilder = <span style="color: rgba(0, 0, 255, 1)">new</span> ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile(FilePath, optional: <span style="color: rgba(0, 0, 255, 1)">true</span>, reloadOnChange: <span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">15</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> configuration =<span style="color: rgba(0, 0, 0, 1)"> configurationBuilder.Build();
+</span><span style="color: rgba(0, 128, 128, 1)">16</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> configuration[key];
+</span><span style="color: rgba(0, 128, 128, 1)">17</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">18</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">19</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 读取Xml类型的配置文件
+</span><span style="color: rgba(0, 128, 128, 1)">20</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">21</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="key"&gt;</span><span style="color: rgba(0, 128, 0, 1)">键名</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">22</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="FilePath"&gt;</span><span style="color: rgba(0, 128, 0, 1)">文件路径，默认为：myXml.json</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">23</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">24</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> GetXmlString(<span style="color: rgba(0, 0, 255, 1)">string</span> key, <span style="color: rgba(0, 0, 255, 1)">string</span> FilePath = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">myXml.json</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)">25</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">26</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> configurationBuilder = <span style="color: rgba(0, 0, 255, 1)">new</span> ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddXmlFile(FilePath, optional: <span style="color: rgba(0, 0, 255, 1)">true</span>, reloadOnChange: <span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">27</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> configuration =<span style="color: rgba(0, 0, 0, 1)"> configurationBuilder.Build();
+</span><span style="color: rgba(0, 128, 128, 1)">28</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> configuration[key];
+</span><span style="color: rgba(0, 128, 128, 1)">29</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">30</span> 
+<span style="color: rgba(0, 128, 128, 1)">31</span>     }</pre>
+</div>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">二. 方法和绑定</span></p>
+<p><strong><span style="font-size: 16px">1. 常用方法</span></strong></p>
+<p><span style="font-size: 16px">① GetValue&lt;T&gt;：从具有指定键的配置中提取一个值，并将其转换为指定类型。 如果未找到该键，则过载允许你提供默认值。</span></p>
+<p><span style="font-size: 16px">② GetSection：使用指定的子节键提取配置子节,永远不会返回 null。 如果找不到匹配的节，则返回空 IConfigurationSection。如果</span><span style="font-size: 16px">有值，则在后面通过.Value来获取。</span></p>
+<p><span style="font-size: 16px">③ GetChildren：获得 IEnumerable&lt;IConfigurationSection&gt;</span></p>
+<p><span style="font-size: 16px">④ Exits：判断配置节是否存在</span></p>
+<p><span style="color: rgba(0, 0, 255, 1)"><strong>&nbsp;代码分享：</strong></span></p>
+<div class="cnblogs_code"><img id="code_img_closed_6289ade1-ec7c-4c60-b26f-74b7b0dd8279" class="code_img_closed" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/ContractedBlock.gif" alt=""><img id="code_img_opened_6289ade1-ec7c-4c60-b26f-74b7b0dd8279" class="code_img_opened" style="display: none" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_6289ade1-ec7c-4c60-b26f-74b7b0dd8279" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">  "Logging": {
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span> <span style="color: rgba(0, 0, 0, 1)">    "LogLevel": {
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span> <span style="color: rgba(0, 0, 0, 1)">      "Default": "Warning"
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span> <span style="color: rgba(0, 0, 0, 1)">  },
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span> <span style="color: rgba(0, 0, 0, 1)">  "AllowedHosts": "*",
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">  //下面自定义一些值，用于测试配置文件的读取
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span> <span style="color: rgba(0, 0, 0, 1)">  "MyFullName": "Maru Li",
+</span><span style="color: rgba(0, 128, 128, 1)">10</span> <span style="color: rgba(0, 0, 0, 1)">  "User": {
+</span><span style="color: rgba(0, 128, 128, 1)">11</span> <span style="color: rgba(0, 0, 0, 1)">    "userName": "ypf",
+</span><span style="color: rgba(0, 128, 128, 1)">12</span> <span style="color: rgba(0, 0, 0, 1)">    "userAge": 15,
+</span><span style="color: rgba(0, 128, 128, 1)">13</span> <span style="color: rgba(0, 0, 0, 1)">    "Child": {
+</span><span style="color: rgba(0, 128, 128, 1)">14</span> <span style="color: rgba(0, 0, 0, 1)">      "childName": "ydb",
+</span><span style="color: rgba(0, 128, 128, 1)">15</span> <span style="color: rgba(0, 0, 0, 1)">      "age": 12
+</span><span style="color: rgba(0, 128, 128, 1)">16</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)">17</span> <span style="color: rgba(0, 0, 0, 1)">  },
+</span><span style="color: rgba(0, 128, 128, 1)">18</span> <span style="color: rgba(0, 0, 0, 1)">  "StudentList": [
+</span><span style="color: rgba(0, 128, 128, 1)">19</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)">20</span> <span style="color: rgba(0, 0, 0, 1)">      "sName": "qdkjdx"
+</span><span style="color: rgba(0, 128, 128, 1)">21</span> <span style="color: rgba(0, 0, 0, 1)">    },
+</span><span style="color: rgba(0, 128, 128, 1)">22</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)">23</span> <span style="color: rgba(0, 0, 0, 1)">      "sName": "bjdx"
+</span><span style="color: rgba(0, 128, 128, 1)">24</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)">25</span> <span style="color: rgba(0, 0, 0, 1)">  ],
+</span><span style="color: rgba(0, 128, 128, 1)">26</span> <span style="color: rgba(0, 0, 0, 1)">  //测试绑定类
+</span><span style="color: rgba(0, 128, 128, 1)">27</span> <span style="color: rgba(0, 0, 0, 1)">  "starship": {
+</span><span style="color: rgba(0, 128, 128, 1)">28</span> <span style="color: rgba(0, 0, 0, 1)">    "name": "USS Enterprise",
+</span><span style="color: rgba(0, 128, 128, 1)">29</span> <span style="color: rgba(0, 0, 0, 1)">    "registry": "NCC-1701",
+</span><span style="color: rgba(0, 128, 128, 1)">30</span> <span style="color: rgba(0, 0, 0, 1)">    "class": "Constitution",
+</span><span style="color: rgba(0, 128, 128, 1)">31</span> <span style="color: rgba(0, 0, 0, 1)">    "length": 304.8,
+</span><span style="color: rgba(0, 128, 128, 1)">32</span> <span style="color: rgba(0, 0, 0, 1)">    "commissioned": false
+</span><span style="color: rgba(0, 128, 128, 1)">33</span> <span style="color: rgba(0, 0, 0, 1)">  },
+</span><span style="color: rgba(0, 128, 128, 1)">34</span> <span style="color: rgba(0, 0, 0, 1)">  //测试绑定数组
+</span><span style="color: rgba(0, 128, 128, 1)">35</span> <span style="color: rgba(0, 0, 0, 1)">  "myArray": ["001","002","003"],
+</span><span style="color: rgba(0, 128, 128, 1)">36</span> <span style="color: rgba(0, 0, 0, 1)">  "json_array": {
+</span><span style="color: rgba(0, 128, 128, 1)">37</span> <span style="color: rgba(0, 0, 0, 1)">    "key": "valueA",
+</span><span style="color: rgba(0, 128, 128, 1)">38</span> <span style="color: rgba(0, 0, 0, 1)">    "subsection": [
+</span><span style="color: rgba(0, 128, 128, 1)">39</span> <span style="color: rgba(0, 0, 0, 1)">      "valueB",
+</span><span style="color: rgba(0, 128, 128, 1)">40</span> <span style="color: rgba(0, 0, 0, 1)">      "valueC",
+</span><span style="color: rgba(0, 128, 128, 1)">41</span> <span style="color: rgba(0, 0, 0, 1)">      "valueD"
+</span><span style="color: rgba(0, 128, 128, 1)">42</span> <span style="color: rgba(0, 0, 0, 1)">    ]
+</span><span style="color: rgba(0, 128, 128, 1)">43</span> <span style="color: rgba(0, 0, 0, 1)">  }
+</span><span style="color: rgba(0, 128, 128, 1)">44</span> 
+<span style="color: rgba(0, 128, 128, 1)">45</span> }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span> <span style="color: rgba(0, 0, 0, 1)">  {
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">这里使用默认的appsettings.json来进行测试
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1. GetValue</span>
+<span style="color: rgba(0, 128, 128, 1)"> 4</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> f0 = Configuration.GetValue&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>&gt;(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">MyFullName</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">如果没有该键，则赋值noValue</span>
+<span style="color: rgba(0, 128, 128, 1)"> 6</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> f1 = Configuration.GetValue&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>&gt;(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">MyFullName111</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">noValue</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> f2 = Configuration.GetValue&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>&gt;(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">User:userName</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">2. GetSection</span>
+<span style="color: rgba(0, 128, 128, 1)"> 9</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> section0 = Configuration.GetSection(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">User</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">10</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> section1 = Configuration.GetSection(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">User1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> section2 = Configuration.GetSection(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">User:userName</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">12</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> section2Value =<span style="color: rgba(0, 0, 0, 1)"> section2.Value;
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">3. GetChildren</span>
+<span style="color: rgba(0, 128, 128, 1)">14</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> child0 =<span style="color: rgba(0, 0, 0, 1)"> section0.GetChildren();
+</span><span style="color: rgba(0, 128, 128, 1)">15</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">4. Exist</span>
+<span style="color: rgba(0, 128, 128, 1)">16</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> isExist0 = Configuration.GetSection(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">User:userName</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">).Exists();
+</span><span style="color: rgba(0, 128, 128, 1)">17</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> isExist1 = Configuration.GetSection(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">User:userName1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">).Exists();
+</span><span style="color: rgba(0, 128, 128, 1)">18</span>  }</pre>
+</div>
+<p><strong><span style="font-size: 16px">2. 绑定</span></strong></p>
+<p>　<span style="font-size: 16px">借助Bind方法，可以直接读取配置文件中的内容然后赋值给类或对象，如果配置文件是xml文件，不再需要像传统的.Net 那样，解析或者序列化了，可以直接赋值。</span></p>
+<p><span style="font-size: 16px">&nbsp; &nbsp;这里还是用上面的appsetting.json这个文件进行测试。</span></p>
+<p><span style="color: rgba(0, 0, 255, 1)"><strong><span style="font-size: 14px">再次重复appsetting.json代码</span></strong></span></p>
+<div class="cnblogs_code"><img id="code_img_closed_cd819dcf-c873-47ae-a48a-61876524a688" class="code_img_closed" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/ContractedBlock.gif" alt=""><img id="code_img_opened_cd819dcf-c873-47ae-a48a-61876524a688" class="code_img_opened" style="display: none" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_cd819dcf-c873-47ae-a48a-61876524a688" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">  "Logging": {
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span> <span style="color: rgba(0, 0, 0, 1)">    "LogLevel": {
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span> <span style="color: rgba(0, 0, 0, 1)">      "Default": "Warning"
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span> <span style="color: rgba(0, 0, 0, 1)">  },
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span> <span style="color: rgba(0, 0, 0, 1)">  "AllowedHosts": "*",
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">  //下面自定义一些值，用于测试配置文件的读取
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span> <span style="color: rgba(0, 0, 0, 1)">  "MyFullName": "Maru Li",
+</span><span style="color: rgba(0, 128, 128, 1)">10</span> <span style="color: rgba(0, 0, 0, 1)">  "User": {
+</span><span style="color: rgba(0, 128, 128, 1)">11</span> <span style="color: rgba(0, 0, 0, 1)">    "userName": "ypf",
+</span><span style="color: rgba(0, 128, 128, 1)">12</span> <span style="color: rgba(0, 0, 0, 1)">    "userAge": 15,
+</span><span style="color: rgba(0, 128, 128, 1)">13</span> <span style="color: rgba(0, 0, 0, 1)">    "Child": {
+</span><span style="color: rgba(0, 128, 128, 1)">14</span> <span style="color: rgba(0, 0, 0, 1)">      "childName": "ydb",
+</span><span style="color: rgba(0, 128, 128, 1)">15</span> <span style="color: rgba(0, 0, 0, 1)">      "age": 12
+</span><span style="color: rgba(0, 128, 128, 1)">16</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)">17</span> <span style="color: rgba(0, 0, 0, 1)">  },
+</span><span style="color: rgba(0, 128, 128, 1)">18</span> <span style="color: rgba(0, 0, 0, 1)">  "StudentList": [
+</span><span style="color: rgba(0, 128, 128, 1)">19</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)">20</span> <span style="color: rgba(0, 0, 0, 1)">      "sName": "qdkjdx"
+</span><span style="color: rgba(0, 128, 128, 1)">21</span> <span style="color: rgba(0, 0, 0, 1)">    },
+</span><span style="color: rgba(0, 128, 128, 1)">22</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)">23</span> <span style="color: rgba(0, 0, 0, 1)">      "sName": "bjdx"
+</span><span style="color: rgba(0, 128, 128, 1)">24</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)">25</span> <span style="color: rgba(0, 0, 0, 1)">  ],
+</span><span style="color: rgba(0, 128, 128, 1)">26</span> <span style="color: rgba(0, 0, 0, 1)">  //测试绑定类
+</span><span style="color: rgba(0, 128, 128, 1)">27</span> <span style="color: rgba(0, 0, 0, 1)">  "starship": {
+</span><span style="color: rgba(0, 128, 128, 1)">28</span> <span style="color: rgba(0, 0, 0, 1)">    "name": "USS Enterprise",
+</span><span style="color: rgba(0, 128, 128, 1)">29</span> <span style="color: rgba(0, 0, 0, 1)">    "registry": "NCC-1701",
+</span><span style="color: rgba(0, 128, 128, 1)">30</span> <span style="color: rgba(0, 0, 0, 1)">    "class": "Constitution",
+</span><span style="color: rgba(0, 128, 128, 1)">31</span> <span style="color: rgba(0, 0, 0, 1)">    "length": 304.8,
+</span><span style="color: rgba(0, 128, 128, 1)">32</span> <span style="color: rgba(0, 0, 0, 1)">    "commissioned": false
+</span><span style="color: rgba(0, 128, 128, 1)">33</span> <span style="color: rgba(0, 0, 0, 1)">  },
+</span><span style="color: rgba(0, 128, 128, 1)">34</span> <span style="color: rgba(0, 0, 0, 1)">  //测试绑定数组
+</span><span style="color: rgba(0, 128, 128, 1)">35</span> <span style="color: rgba(0, 0, 0, 1)">  "myArray": ["001","002","003"],
+</span><span style="color: rgba(0, 128, 128, 1)">36</span> <span style="color: rgba(0, 0, 0, 1)">  "json_array": {
+</span><span style="color: rgba(0, 128, 128, 1)">37</span> <span style="color: rgba(0, 0, 0, 1)">    "key": "valueA",
+</span><span style="color: rgba(0, 128, 128, 1)">38</span> <span style="color: rgba(0, 0, 0, 1)">    "subsection": [
+</span><span style="color: rgba(0, 128, 128, 1)">39</span> <span style="color: rgba(0, 0, 0, 1)">      "valueB",
+</span><span style="color: rgba(0, 128, 128, 1)">40</span> <span style="color: rgba(0, 0, 0, 1)">      "valueC",
+</span><span style="color: rgba(0, 128, 128, 1)">41</span> <span style="color: rgba(0, 0, 0, 1)">      "valueD"
+</span><span style="color: rgba(0, 128, 128, 1)">42</span> <span style="color: rgba(0, 0, 0, 1)">    ]
+</span><span style="color: rgba(0, 128, 128, 1)">43</span> <span style="color: rgba(0, 0, 0, 1)">  }
+</span><span style="color: rgba(0, 128, 128, 1)">44</span> 
+<span style="color: rgba(0, 128, 128, 1)">45</span> 
+<span style="color: rgba(0, 128, 128, 1)">46</span> 
+<span style="color: rgba(0, 128, 128, 1)">47</span> }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="color: rgba(0, 0, 255, 1)"><strong><span style="font-size: 14px">类代码：</span></strong></span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>   <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> Starship
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span> Name { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)">; }
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span> Registry { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)">; }
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span> Class { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)">; }
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">decimal</span> Length { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)">; }
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">bool</span> Commissioned { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)">; }
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> User
+</span><span style="color: rgba(0, 128, 128, 1)">10</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span> userName { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)">; }
+</span><span style="color: rgba(0, 128, 128, 1)">12</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">int</span> userAge { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)">; }
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> Child child { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)">; }
+</span><span style="color: rgba(0, 128, 128, 1)">14</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)">15</span> 
+<span style="color: rgba(0, 128, 128, 1)">16</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> Child
+</span><span style="color: rgba(0, 128, 128, 1)">17</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)">18</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span> childName { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)">; }
+</span><span style="color: rgba(0, 128, 128, 1)">19</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">int</span> age { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)">; }
+</span><span style="color: rgba(0, 128, 128, 1)">20</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)">21</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> MyArrayExample
+</span><span style="color: rgba(0, 128, 128, 1)">22</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)">23</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span> Key { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)">; }
+</span><span style="color: rgba(0, 128, 128, 1)">24</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span>[] Subsection { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)">; }
+</span><span style="color: rgba(0, 128, 128, 1)">25</span>     }</pre>
+</div>
+<p><span style="color: rgba(0, 0, 255, 1)"><strong><span style="font-size: 14px">绑定代码：</span></strong></span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span> <span style="color: rgba(0, 0, 0, 1)"> {
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1. 绑定到普通类</span>
+<span style="color: rgba(0, 128, 128, 1)"> 3</span>                 Starship startShipModel = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> Starship();
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span>                 Configuration.GetSection(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">starship</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">).Bind(startShipModel);
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 6</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">2. 绑定到对象</span>
+<span style="color: rgba(0, 128, 128, 1)"> 7</span>                 User user = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> User();
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span>                 Configuration.GetSection(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">User</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">).Bind(user);
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span> 
+<span style="color: rgba(0, 128, 128, 1)">10</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">3. 绑定数组到类</span>
+<span style="color: rgba(0, 128, 128, 1)">11</span>                 MyArrayExample myExample = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> MyArrayExample();
+</span><span style="color: rgba(0, 128, 128, 1)">12</span>                 Configuration.GetSection(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">json_array</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">).Bind(myExample);
+</span><span style="color: rgba(0, 128, 128, 1)">13</span> 
+<span style="color: rgba(0, 128, 128, 1)">14</span> } </pre>
+</div>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">三. 选项模式</span></p>
+<p><span style="font-size: 16px">1.&nbsp;声明MyOptions类，与appsetting.json对应。</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span>   <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> MyOptions
+</span><span style="color: rgba(0, 128, 128, 1)">2</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)">3</span>         <span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> MyOptions()
+</span><span style="color: rgba(0, 128, 128, 1)">4</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">5</span>             Option1 = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">value1_from_ctor</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">6</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">7</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span> Option1 { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)">; }
+</span><span style="color: rgba(0, 128, 128, 1)">8</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span> Option2 { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span>; } = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">555</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">9</span>     }</pre>
+</div>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 0, 1)">{
+  /******************************************************下面是选项模式相关的***************************************************/
+  "option1": "I am option1",
+  "option2": "I am option2"
+}</span></pre>
+</div>
+<p><span style="font-size: 16px">2. 然后在Startup类中ConfigureServices中进行选项的相关配置，</span></p>
+<p><span style="font-size: 16px"><img src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/1031302-20190711162829014-1839693460.png" alt=""></span></p>
+<p><span style="font-size: 16px">3. 在HomeController中进行注入，然后使用即可。</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>        <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">下面是选项系统相关的属性或字段声明</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span>         <span style="color: rgba(0, 0, 255, 1)">private</span> <span style="color: rgba(0, 0, 255, 1)">readonly</span><span style="color: rgba(0, 0, 0, 1)"> MyOptions _options;
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> HomeController(IOptions&lt;MyOptions&gt;<span style="color: rgba(0, 0, 0, 1)"> optionsAccessor)
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span>             _options =<span style="color: rgba(0, 0, 0, 1)"> optionsAccessor.Value;
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>        <span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> IActionResult Index2()
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>             <span style="color: rgba(0, 128, 0, 1)">/*</span><span style="color: rgba(0, 128, 0, 1)">************************************** 三.各种配置文件的读取 *********************************************</span><span style="color: rgba(0, 128, 0, 1)">*/</span>
+<span style="color: rgba(0, 128, 128, 1)">10</span> 
+<span style="color: rgba(0, 128, 128, 1)">11</span>             ViewBag.MyOptions= $<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">option1 = {_options.Option1}, option2 = {_options.Option2}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">12</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> View();
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>         }</pre>
+</div>
+<p><strong><span style="color: rgba(0, 0, 255, 1)">页面展示：</span></strong></p>
+<p>&nbsp;<img src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/1031302-20190711163129270-1962002710.png" alt=""></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div style="border: 2px dashed rgba(0, 0, 255, 1); border-radius: 10px; height: 120px; width: 1100px; margin-left: 60px">
+<div style="width: 0; height: 0; border-left: 20px solid rgba(0, 0, 0, 0); border-right: 20px solid rgba(0, 0, 0, 0); border-bottom: 30px solid rgba(255, 255, 0, 1); float: left; margin-top: 40px; margin-left: 20px">
+<p style="font-size: 16px; font-weight: bold; margin-top: 8px; margin-left: -2px">!</p>
+</div>
+<div style="float: left; margin-left: 16px">
+<ul style="list-style: none; padding: 0; margin-left: 20px">
+<li style="margin-bottom: 1px; line-height: 28px">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者 : <span style="color: rgba(255, 0, 0, 1)">Yaopengfei(姚鹏飞)</span></li>
+<li style="margin-bottom: 1px; line-height: 28px">博客地址 : <a style="text-decoration: none" href="http://www.cnblogs.com/yaopengfei/"><span style="color: rgba(255, 0, 0, 1)">http://www.cnblogs.com/yaopengfei/</span></a></li>
+<li style="margin-bottom: 1px; line-height: 28px">声&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明1 : 本人才疏学浅，用郭德纲的话说“我是一个小学生”，如有错误，欢迎讨论，请勿谩骂^_^。</li>
+<li style="margin-bottom: 1px; line-height: 28px">声&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明2 : 原创博客请在转载时保留原文链接或在文章开头加上本人博客地址，否则保留追究法律责任的权利。</li>
+</ul>
+</div>
+<div style="clear: both">&nbsp;</div>
+</div>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2019-06-04 19:58</span>&nbsp;
+<a href="https://www.cnblogs.com/yaopengfei/">Yaopengfei</a>&nbsp;
+阅读(<span id="post_view_count">1032</span>)&nbsp;
+评论(<span id="post_comment_count">3</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=10975759" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(10975759);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;10975759&#39;, targetLink: &#39;https://www.cnblogs.com/yaopengfei/p/10975759.html&#39;, title: &#39;第十节：Asp.Net Core 配置详解和选项模式&#39; })">举报</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+
+<script>
+    markdown_highlight()
+    var allowComments = true, cb_blogId = 307315, cb_blogApp = 'yaopengfei', cb_blogUserGuid = '7d349e7e-c080-e611-9fc1-ac853d9f53cc';
+    var cb_entryId = 10975759, cb_entryCreatedDate = '2019-06-04 19:58', cb_postType = 1;
+    updatePostStats(
+        [cb_entryId],
+        function(id, count) { $("#post_view_count").text(count) },
+        function(id, count) { $("#post_comment_count").text(count) })
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+</script>
+<a name="!comments"></a>
+<div id="blog-comments-placeholder"><div style="color:green;margin:50px 0;font-weight:normal;">努力加载评论中...</div></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/yaopengfei/p/10975759.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/yaopengfei/p/10975759.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><span style="color:red">评论框加载失败，请与管理员联系(contact@cnblogs.com)。</span></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="cnblogs_ch"></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+        <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;"></div>
+    </div>
+    <div id="under_post_card1"></div>
+        <div id="cnblogs_c2" class="under-post-card">
+            <a href="https://c.gridsumdissector.com/r/?gid=gad_545_wrrk6jpf&amp;ck=1057&amp;adk=10673&amp;autorefresh=__AUTOREFRESH__" rel="nofollow" target="_blank">
+                <img src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/volcengine-c2.jpg" alt="" onload="impressC2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_wrrk6jpf&amp;ck=1057&amp;adk=10673&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+            </a>
+        </div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/708325/" target="_blank">达摩院AliceMind上新！首个中文表格预训练模型发布，已向业界开源（2021-12-03 15:55）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708324/" target="_blank">亚马逊中国卖家遭遇最惨“黑五”：销量不及预期，封号仍在继续（2021-12-03 15:48）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708323/" target="_blank">印度人民怀念中国App（2021-12-03 15:40）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708322/" target="_blank">专利申请量超美国、高新企业数增10倍：一图看懂近20年中国科技有多燃（2021-12-03 15:34）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708321/" target="_blank">“大红大紫”的代价！英伟达再也收不了ARM了？（2021-12-03 15:31）</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+       var commentManager = new blogCommentManager();
+       commentManager.renderComments(0);
+       fixPostBody();
+
+           window.tocManager.displayDisableTocTips = false
+           window.tocManager.generateToc();
+           setTimeout(function() { incrementViewCount(cb_entryId); }, 50);       deliverT2();
+       deliverC1C2();
+       loadNewsAndKb();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);       LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+       GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+       loadOptUnderPost();
+       GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem">
+            <script>loadBlogNews();</script>
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2021 Yaopengfei
+<br><span id="poweredby">Powered by .NET 6 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8FO3GXnjClZGrNGr2Ic8Z1rJyy2-hi-Um982iVtnlR0TPwZhGFfd-nCXgsJYYdrNlcqJzRVFMWorr9C31S4HNcvlWQsMzrs03XDhHJpYVhrx2GnteHfueF-Dd-m1ZQBIUgYGu171XjRM_m4mlbK0EHw">
+    <script async="" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/js"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+    </script>
+    <script defer="" src="./第十节：Asp.Net Core 配置详解和选项模式 - Yaopengfei - 博客园_files/hm.js.下载"></script>
+
+</body></html>

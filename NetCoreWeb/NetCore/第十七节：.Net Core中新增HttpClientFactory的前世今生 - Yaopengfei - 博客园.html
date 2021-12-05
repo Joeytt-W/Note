@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)https://www.cnblogs.com/yaopengfei/p/11300888.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="description" content="一. 背景 1.前世 提到HttpClient，在传统的.Net版本中简直臭名昭著，因为我们安装官方用法 using(var httpClient = new HttpClient())，当然可以Di">
+    <meta property="og:description" content="一. 背景 1.前世 提到HttpClient，在传统的.Net版本中简直臭名昭著，因为我们安装官方用法 using(var httpClient = new HttpClient())，当然可以Di">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([class*="language-"]):not([highlighted]):not(.hljs) {
+        background: rgb(245, 245, 245);
+        padding: 5px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(0, 0, 0);
+        font-family: "Courier New", sans-serif;
+    }:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]) code:not(.hljs) {
+            background: rgb(245, 245, 245) !important;
+            border-color: transparent !important;
+        }</style><link rel="stylesheet" href="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/blog-common.min.css">
+    <link id="MainCss" rel="stylesheet" href="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/bundle-darkgreentrip.min.css">
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/cnblogs.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/bundle-darkgreentrip-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/yaopengfei/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/yaopengfei/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/yaopengfei/wlwmanifest.xml">
+    <script type="text/javascript" src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/encoder.js.下载"></script><script type="text/javascript" async="" src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/analytics.js.下载"></script><script>
+        var currentBlogId = 307315;
+        var currentBlogApp = 'yaopengfei';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'darkgreentrip';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function(){ return ''; } });
+            }
+        } catch(error) { }
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+    </script>
+        <script>
+            var currentPostDateAdded = '2019-08-05 07:55';
+        </script>
+    <script src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/jquery-2.2.0.min.js.下载"></script>
+    <script src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/blog-common.min.js.下载"></script><style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style><script id="hljs-script" async="" data-loaded="true" src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/highlight.min.js.下载"></script>
+    
+    
+    
+</head>
+<body class="skin-darkgreentrip has-navbar has-bannerbar">
+    <a name="top"></a>
+        <a href="https://c.gridsumdissector.com/r/?gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__" target="_blank" rel="nofollow" onclick="countClicks(&#39;ad&#39;, &#39;C0-火山引擎&#39;)">
+            <div class="bannerbar forpc" style="display: flex; background-color: #11225a;">
+                <img src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/volcengine-b0c0-1.jpg" onload="impressC0(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)" alt="">
+                <img src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/volcengine-b0c0-2.jpg" alt="">
+                <img style="margin-left: auto;" src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/volcengine-b0c0-3.jpg" alt="">
+            </div>
+        </a>
+            <div id="bannerbar" class="bannerbar-mobile formobile">
+                <a href="https://c.gridsumdissector.com/r/?gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__" onclick="countClicks(&#39;ad&#39;, &#39;M2-火山引擎&#39;)" rel="nofollow">
+                    <img src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/volcengine-m2.jpg" alt="" onload="impressM2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+                </a>
+            </div>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding"><a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/logo.svg" alt="博客园Logo"></a></li>
+                <li><a href="https://www.cnblogs.com/" onclick="countClicks(&#39;skin-navbar-sitehome&#39;)">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-brands&#39;)">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-edu&#39;)">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/yaopengfei/"><img id="blogLogo" src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/yaopengfei/">奔跑的路上</a>
+</h1>
+<h2>广泛汲取，用心打磨，精益求精。</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/yaopengfei/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/Yaopengfei">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/yaopengfei/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<div id="blog_stats_place_holder"><script>loadBlogStats();</script></div>
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/yaopengfei/p/11300888.html">
+    <span>第十七节：.Net Core中新增HttpClientFactory的前世今生</span>
+    
+
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">一. 背景</span></p>
+<p><strong><span style="font-size: 16px">1.前世</span></strong></p>
+<p><span style="font-size: 16px">　　提到HttpClient，在传统的.Net版本中简直臭名昭著，因为我们安装官方用法 using(var httpClient = new HttpClient())，当然可以Dispose，但是在高并发</span><span style="font-size: 16px">的情况下，连接来不及释放，socket被耗尽，然后就会出现一个喜闻乐见的错误：即各种套接字的问题。</span></p>
+<p><span style="font-size: 16px">&nbsp;Unable to connect to the remote serverSystem.Net.Sockets.SocketException: Only one usage of each socket address (protocol/network address/port) is normally permitted.</span></p>
+<p><span style="font-size: 16px; color: rgba(0, 128, 0, 1)">PS：当然我们可以通过修改注册表的默认值，来人为的减少超时时间，但可能会引起其他莫名其妙的问题：</span></p>
+<p><span style="font-size: 16px; color: rgba(0, 128, 0, 1)">&nbsp;[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\TcpTimedWaitDelay]）</span></p>
+<p><strong><span style="font-size: 16px">2.我们之前的解决方案</span></strong></p>
+<p><span style="font-size: 16px">　　把HttpClient做成全局单例的，通过共享一个实例，减少了套接字的浪费，实际上由于套接字重用而传输快一点。</span></p>
+<p><span style="font-size: 16px">&nbsp;关于单例的封装，详见这篇: <a href="https://www.cnblogs.com/yaopengfei/p/10301779.html">https://www.cnblogs.com/yaopengfei/p/10301779.html</a></span></p>
+<p><span style="font-size: 16px">　　封装成单例的也会有些不灵活的地方：</span></p>
+<p><span style="font-size: 16px">(1).因为是复用的 HttpClient，那么一些公共的设置就没办法灵活的调整了，如请求头的自定义。</span></p>
+<p><span style="font-size: 16px">(2).因为 HttpClient 请求每个 url 时，会缓存该url对应的主机 ip，从而会导致 DNS 更新失效（TTL 失效了）。</span></p>
+<p><strong><span style="font-size: 16px">3.HttpClientFactiory应运而生</span></strong></p>
+<p><span style="font-size: 16px">　　HttpClientFactory 是 ASP.NET CORE 2.1 中新增加的功能。顾名思义 HttpClientFactory 就是 HttpClient 的工厂，内部已经帮我们处理好了对 HttpClient 的管理，</span><span style="font-size: 16px">不需要我们人工进行对象释放，同时，支持自定义请求头，支持 DNS 更新。</span></p>
+<p><span style="font-size: 16px; color: rgba(0, 128, 0, 1)">分析：</span></p>
+<p><span style="color: rgba(0, 128, 0, 1)"><span style="font-size: 16px">　　HttpClient 继承自 HttpMessageInvoker，而 HttpMessageInvoker 实质就是HttpClientHandler。HttpClientFactory 创建的 HttpClient，也即是 HttpClientHandler，</span><span style="font-size: 16px">只是这些个 HttpClient 被放到了“池子”中，工厂每次在 create 的时候会自动判断是新建还是复用。(默认生命周期为 2min)。</span><span style="font-size: 16px">简单的理解成 Task 和 Thread 的关系。</span></span></p>
+<p><strong><span style="font-size: 16px">4. 补充请求方式的说明</span></strong></p>
+<p><span style="font-size: 16px">　　其中Post请求有两种，分别是： "application/x-www-form-urlencoded"表单提交的方式 和 "application/json" Json格式提交的方式。</span></p>
+<p><span style="font-size: 16px">(1). Post的表单提交的格式为："userName=admin&amp;pwd=123456"。</span></p>
+<p><span style="font-size: 16px">(2). Post的Json的提交格式为：将实体(类)转换成json字符串。</span></p>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">二. 几种用法</span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)"><strong>用到的服务器端的方法：</strong></span></p>
+<div class="cnblogs_code"><img id="code_img_closed_bdf2f0dd-d9bf-4366-90b2-e9f59c06be04" class="code_img_closed" src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/ContractedBlock.gif" alt=""><img id="code_img_opened_bdf2f0dd-d9bf-4366-90b2-e9f59c06be04" class="code_img_opened" style="display: none" src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_bdf2f0dd-d9bf-4366-90b2-e9f59c06be04" class="cnblogs_code_hide">
+<pre>    <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 充当服务端接口
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> ServerController : Controller
+    {
+        [HttpGet]
+        </span><span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span> CheckLogin(<span style="color: rgba(0, 0, 255, 1)">string</span> userName, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> pwd)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (userName == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">admin</span><span style="color: rgba(128, 0, 0, 1)">"</span> &amp;&amp; pwd == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">123456</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ok</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">else</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">error</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+            }
+        }
+
+        [HttpPost]
+        </span><span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span> Register1(<span style="color: rgba(0, 0, 255, 1)">string</span> userName, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> pwd)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (userName == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">admin</span><span style="color: rgba(128, 0, 0, 1)">"</span> &amp;&amp; pwd == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">123456</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ok</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">else</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">error</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+            }
+        }
+
+        [HttpPost]
+        </span><span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> Register2([FromBody]UserInfor model)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (model.userName == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">admin</span><span style="color: rgba(128, 0, 0, 1)">"</span> &amp;&amp; model.pwd == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">123456</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ok</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">else</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">error</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+            }
+        }
+
+    }</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><strong><span style="font-size: 16px">1. 基本用法</span></strong></p>
+<p><span style="font-size: 16px">A.步骤</span></p>
+<p><span style="font-size: 16px">　　(1).在ConfigService方法中注册服务：services.AddHttpClient();</span></p>
+<p><span style="font-size: 16px">　　(2).通过构造函数全局注入IHttpClientFactory对象，或者通过[FromServices]给某个方法注入。</span></p>
+<p><span style="font-size: 16px">　　(3).利用SendAsync方法和HttpRequestMessage对象(可以配置请求方式、表头、请求内容)进行各种请求的异步和同步发送</span></p>
+<p><span style="font-size: 16px">　　(PS:下面无论哪种用法，这里都通过SendAsync和HttpRequestMessage进行演示)</span></p>
+<p><span style="font-size: 16px">B.适用场景</span></p>
+<p><span style="font-size: 16px">　　</span><span style="font-size: 16px">&nbsp;以这种方式使用 IHttpClientFactory 适合重构现有应用。 这不会影响 HttpClient 的使用方式。 在当前创建HttpClient 实例的位置，</span><span style="font-size: 16px">&nbsp;使用对 CreateClient 的调用替换这些匹配项。</span></p>
+<p><span style="font-size: 16px; color: rgba(0, 0, 255, 1)">特别补充：利用GetAsync和PostAsync方法来发送请求的方式，详见下面代码。</span></p>
+<p><strong><span style="font-size: 16px">2. 命名客户端</span></strong></p>
+<p><span style="font-size: 16px">A.步骤</span></p>
+<p><span style="font-size: 16px">　　(1).在ConfigService方法中注册服务：services.AddHttpClient("client1",c=&gt;{ 相关默认配置 });</span></p>
+<p><span style="font-size: 16px">　　(2).通过构造函数全局注入IHttpClientFactory对象，或者通过[FromServices]给某个方法注入</span></p>
+<p><span style="font-size: 16px">　　(3).创建Client对象的时候指定命名 CreateClient("client1");其它用法都相同了。</span></p>
+<p><span style="font-size: 16px">B.适用场景</span></p>
+<p><span style="font-size: 16px">　　应用需要有许多不同的 HttpClient 用法（每种用法的配置都不同）,可以视情况使用命名客户端。可以在 HttpClient 中注册时指定命名 Startup.ConfigureServices 的配置</span><span style="font-size: 16px">请求地址的公共部分，表头等。</span></p>
+<p><strong><span style="font-size: 16px">3. 类型化客户端</span></strong></p>
+<p><span style="font-size: 16px">A.本质</span></p>
+<p><span style="font-size: 16px">　　新建一个类，在类里注入HttpClient对象，在构造函数中进行配置，或者在Startup中进行配置，然后把请求相关的业务封装到方法中，</span><span style="font-size: 16px">外层直接调用方法即可。</span></p>
+<p><span style="font-size: 16px">B.步骤</span></p>
+<p><span style="font-size: 16px">　　(1).新建UserService类，通过构造函数注入HttpClient对象，然后将请求相关的配置封装在一个方法Login中。</span></p>
+<p><span style="font-size: 16px">　　(2).在ConfigService方法中注册服务：services.AddHttpClient&lt;UserService&gt;();</span></p>
+<p><span style="font-size: 16px">　　(3).通过构造函数全局注入UserService对象，或者通过[FromServices]给某个方法注入。</span></p>
+<p><span style="font-size: 16px">　　(4).调用对应的方法即可。</span></p>
+<p><span style="font-size: 16px">C.适用场景</span></p>
+<p><span style="font-size: 16px">　　根据个人喜好选择即可</span></p>
+<p><span style="font-size: 15px; color: rgba(0, 0, 255, 1)">分享上述全部代码：</span></p>
+<div class="cnblogs_code"><img id="code_img_closed_fc0679f1-94c6-46be-bbaa-08f51ab4cde4" class="code_img_closed" src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/ContractedBlock.gif" alt=""><img id="code_img_opened_fc0679f1-94c6-46be-bbaa-08f51ab4cde4" class="code_img_opened" style="display: none" src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_fc0679f1-94c6-46be-bbaa-08f51ab4cde4" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">void</span><span style="color: rgba(0, 0, 0, 1)"> ConfigureServices(IServiceCollection services)
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>             services.Configure&lt;CookiePolicyOptions&gt;(options =&gt;
+<span style="color: rgba(0, 128, 128, 1)"> 4</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> This lambda determines whether user consent for non-essential cookies is needed for a given request.</span>
+<span style="color: rgba(0, 128, 128, 1)"> 6</span>                 options.CheckConsentNeeded = context =&gt; <span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>                 options.MinimumSameSitePolicy =<span style="color: rgba(0, 0, 0, 1)"> SameSiteMode.None;
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">            });
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span> 
+<span style="color: rgba(0, 128, 128, 1)">10</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">下面是注册HttpClient服务
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1. 基本用法</span>
+<span style="color: rgba(0, 128, 128, 1)">12</span> <span style="color: rgba(0, 0, 0, 1)">            services.AddHttpClient();
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">2. 命名客户端</span>
+<span style="color: rgba(0, 128, 128, 1)">14</span>             services.AddHttpClient(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">client1</span><span style="color: rgba(128, 0, 0, 1)">"</span>, c =&gt;
+<span style="color: rgba(0, 128, 128, 1)">15</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">16</span>                 c.BaseAddress = <span style="color: rgba(0, 0, 255, 1)">new</span> Uri(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">http://localhost:15319/</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">); 
+</span><span style="color: rgba(0, 128, 128, 1)">17</span>                 c.DefaultRequestHeaders.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Accept</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">application/vnd.github.v3+json</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">18</span>                 c.DefaultRequestHeaders.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">User-Agent</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">HttpClientFactory-Sample</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">19</span> <span style="color: rgba(0, 0, 0, 1)">            });
+</span><span style="color: rgba(0, 128, 128, 1)">20</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">3. 类型化客户端</span>
+<span style="color: rgba(0, 128, 128, 1)">21</span>             services.AddHttpClient&lt;UserService&gt;<span style="color: rgba(0, 0, 0, 1)">();
+</span><span style="color: rgba(0, 128, 128, 1)">22</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">可以根据喜好在注册服务的时候配置，就不需要在UserService构造函数中配置了
+</span><span style="color: rgba(0, 128, 128, 1)">23</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">services.AddHttpClient&lt;UserService&gt;(c =&gt;
+</span><span style="color: rgba(0, 128, 128, 1)">24</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)">25</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    c.BaseAddress = new Uri("</span><span style="color: rgba(0, 128, 0, 1); text-decoration: underline">http://localhost</span><span style="color: rgba(0, 128, 0, 1)">:15319/");
+</span><span style="color: rgba(0, 128, 128, 1)">26</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    c.DefaultRequestHeaders.Add("Accept", "application/vnd.github.v3+json");
+</span><span style="color: rgba(0, 128, 128, 1)">27</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    c.DefaultRequestHeaders.Add("User-Agent", "HttpClientFactory-Sample");
+</span><span style="color: rgba(0, 128, 128, 1)">28</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">});</span>
+<span style="color: rgba(0, 128, 128, 1)">29</span> <span style="color: rgba(0, 0, 0, 1)">            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+</span><span style="color: rgba(0, 128, 128, 1)">30</span>         }</pre>
+</div>
+<span class="cnblogs_code_collapse">ConfigureServices</span></div>
+<div class="cnblogs_code"><img id="code_img_closed_435c5ebf-ae6f-4fe3-8d2c-5bd3f13dc7c9" class="code_img_closed" src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/ContractedBlock.gif" alt=""><img id="code_img_opened_435c5ebf-ae6f-4fe3-8d2c-5bd3f13dc7c9" class="code_img_opened" style="display: none" src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_435c5ebf-ae6f-4fe3-8d2c-5bd3f13dc7c9" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)">  1</span>  <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> HomeController : Controller
+</span><span style="color: rgba(0, 128, 128, 1)">  2</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)">  3</span>         <span style="color: rgba(0, 0, 255, 1)">private</span> <span style="color: rgba(0, 0, 255, 1)">readonly</span><span style="color: rgba(0, 0, 0, 1)"> IHttpClientFactory _clientFactory;
+</span><span style="color: rgba(0, 128, 128, 1)">  4</span>         <span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> HomeController(IHttpClientFactory clientFactory)
+</span><span style="color: rgba(0, 128, 128, 1)">  5</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">  6</span>             _clientFactory =<span style="color: rgba(0, 0, 0, 1)"> clientFactory;
+</span><span style="color: rgba(0, 128, 128, 1)">  7</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">  8</span> 
+<span style="color: rgba(0, 128, 128, 1)">  9</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">async</span> Task&lt;IActionResult&gt;<span style="color: rgba(0, 0, 0, 1)"> Index([FromServices] UserService userService)
+</span><span style="color: rgba(0, 128, 128, 1)"> 10</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 11</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> url1 = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">http://localhost:15319/Server/CheckLogin?userName=admin&amp;pwd=123456</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)"> 12</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> url2 = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">http://localhost:15319/Server/Register1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)"> 13</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> url3 = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">http://localhost:15319/Server/Register2</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)"> 14</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 15</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 16</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> url4 = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Server/CheckLogin?userName=admin&amp;pwd=123456</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)"> 17</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 18</span>             <span style="color: rgba(0, 128, 0, 1)">/*</span><span style="color: rgba(0, 128, 0, 1)">********************************************一.基本用法********************************************</span><span style="color: rgba(0, 128, 0, 1)">*/</span>
+<span style="color: rgba(0, 128, 128, 1)"> 19</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 20</span>             <span style="color: rgba(0, 0, 255, 1)">#region</span> 01-基本用法(Get请求)
+<span style="color: rgba(0, 128, 128, 1)"> 21</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)"> 22</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> request = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> HttpRequestMessage(HttpMethod.Get, url1);
+</span><span style="color: rgba(0, 128, 128, 1)"> 23</span>                 request.Headers.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Accept</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">application/vnd.github.v3+json</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 24</span>                 request.Headers.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">User-Agent</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">HttpClientFactory-Sample</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 25</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> client =<span style="color: rgba(0, 0, 0, 1)"> _clientFactory.CreateClient();
+</span><span style="color: rgba(0, 128, 128, 1)"> 26</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> response = <span style="color: rgba(0, 0, 255, 1)">await</span><span style="color: rgba(0, 0, 0, 1)"> client.SendAsync(request);
+</span><span style="color: rgba(0, 128, 128, 1)"> 27</span>                 <span style="color: rgba(0, 0, 255, 1)">string</span> result = <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)"> 28</span>                 <span style="color: rgba(0, 0, 255, 1)">if</span><span style="color: rgba(0, 0, 0, 1)"> (response.IsSuccessStatusCode)
+</span><span style="color: rgba(0, 128, 128, 1)"> 29</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)"> 30</span>                     result = <span style="color: rgba(0, 0, 255, 1)">await</span><span style="color: rgba(0, 0, 0, 1)"> response.Content.ReadAsStringAsync();
+</span><span style="color: rgba(0, 128, 128, 1)"> 31</span> <span style="color: rgba(0, 0, 0, 1)">                }
+</span><span style="color: rgba(0, 128, 128, 1)"> 32</span>                 ViewBag.result =<span style="color: rgba(0, 0, 0, 1)"> result;
+</span><span style="color: rgba(0, 128, 128, 1)"> 33</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 34</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)"> 35</span>             <span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+<span style="color: rgba(0, 128, 128, 1)"> 36</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 37</span>             <span style="color: rgba(0, 0, 255, 1)">#region</span> 02-基本用法(Post请求-表单提交)
+<span style="color: rgba(0, 128, 128, 1)"> 38</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)"> 39</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> request = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> HttpRequestMessage(HttpMethod.Post, url2);
+</span><span style="color: rgba(0, 128, 128, 1)"> 40</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表头的处理</span>
+<span style="color: rgba(0, 128, 128, 1)"> 41</span>                 request.Headers.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Accept</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">application/vnd.github.v3+json</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 42</span>                 request.Headers.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">User-Agent</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">HttpClientFactory-Sample</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 43</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">内容的处理</span>
+<span style="color: rgba(0, 128, 128, 1)"> 44</span>                 request.Content = <span style="color: rgba(0, 0, 255, 1)">new</span> StringContent(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">userName=admin&amp;pwd=123456</span><span style="color: rgba(128, 0, 0, 1)">"</span>, Encoding.UTF8, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">application/x-www-form-urlencoded</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 45</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> client =<span style="color: rgba(0, 0, 0, 1)"> _clientFactory.CreateClient();
+</span><span style="color: rgba(0, 128, 128, 1)"> 46</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> response = <span style="color: rgba(0, 0, 255, 1)">await</span><span style="color: rgba(0, 0, 0, 1)"> client.SendAsync(request);
+</span><span style="color: rgba(0, 128, 128, 1)"> 47</span>                 <span style="color: rgba(0, 0, 255, 1)">string</span> result = <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)"> 48</span>                 <span style="color: rgba(0, 0, 255, 1)">if</span><span style="color: rgba(0, 0, 0, 1)"> (response.IsSuccessStatusCode)
+</span><span style="color: rgba(0, 128, 128, 1)"> 49</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)"> 50</span>                     result = <span style="color: rgba(0, 0, 255, 1)">await</span><span style="color: rgba(0, 0, 0, 1)"> response.Content.ReadAsStringAsync();
+</span><span style="color: rgba(0, 128, 128, 1)"> 51</span> <span style="color: rgba(0, 0, 0, 1)">                }
+</span><span style="color: rgba(0, 128, 128, 1)"> 52</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)"> 53</span>             <span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+<span style="color: rgba(0, 128, 128, 1)"> 54</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 55</span>             <span style="color: rgba(0, 0, 255, 1)">#region</span> 03-基本用法(Post请求-JSON格式提交)
+<span style="color: rgba(0, 128, 128, 1)"> 56</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)"> 57</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> request = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> HttpRequestMessage(HttpMethod.Post, url3);
+</span><span style="color: rgba(0, 128, 128, 1)"> 58</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表头的处理</span>
+<span style="color: rgba(0, 128, 128, 1)"> 59</span>                 request.Headers.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Accept</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">application/vnd.github.v3+json</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 60</span>                 request.Headers.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">User-Agent</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">HttpClientFactory-Sample</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 61</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">内容的处理</span>
+<span style="color: rgba(0, 128, 128, 1)"> 62</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> user = <span style="color: rgba(0, 0, 255, 1)">new</span>
+<span style="color: rgba(0, 128, 128, 1)"> 63</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)"> 64</span>                     userName = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">admin</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">,
+</span><span style="color: rgba(0, 128, 128, 1)"> 65</span>                     pwd = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">123456</span><span style="color: rgba(128, 0, 0, 1)">"</span>
+<span style="color: rgba(0, 128, 128, 1)"> 66</span> <span style="color: rgba(0, 0, 0, 1)">                };
+</span><span style="color: rgba(0, 128, 128, 1)"> 67</span>                 request.Content = <span style="color: rgba(0, 0, 255, 1)">new</span> StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">application/json</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 68</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> client =<span style="color: rgba(0, 0, 0, 1)"> _clientFactory.CreateClient();
+</span><span style="color: rgba(0, 128, 128, 1)"> 69</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> response = <span style="color: rgba(0, 0, 255, 1)">await</span><span style="color: rgba(0, 0, 0, 1)"> client.SendAsync(request);
+</span><span style="color: rgba(0, 128, 128, 1)"> 70</span>                 <span style="color: rgba(0, 0, 255, 1)">string</span> result = <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)"> 71</span>                 <span style="color: rgba(0, 0, 255, 1)">if</span><span style="color: rgba(0, 0, 0, 1)"> (response.IsSuccessStatusCode)
+</span><span style="color: rgba(0, 128, 128, 1)"> 72</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)"> 73</span>                     result = <span style="color: rgba(0, 0, 255, 1)">await</span><span style="color: rgba(0, 0, 0, 1)"> response.Content.ReadAsStringAsync();
+</span><span style="color: rgba(0, 128, 128, 1)"> 74</span> <span style="color: rgba(0, 0, 0, 1)">                }
+</span><span style="color: rgba(0, 128, 128, 1)"> 75</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)"> 76</span>             <span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+<span style="color: rgba(0, 128, 128, 1)"> 77</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 78</span>             <span style="color: rgba(0, 0, 255, 1)">#region</span> 04-补充其他写法
+<span style="color: rgba(0, 128, 128, 1)"> 79</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)"> 80</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">上面的三个方法都是利用SendAsync方法配合HttpRequestMessage类来发送Get和两种post请求的，所有的参数设置都是基于HttpRequestMessage对象。
+</span><span style="color: rgba(0, 128, 128, 1)"> 81</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">在这里再次补充一下直接利用 GetAsync 和 PostAsync 方法直接来发送Get和post请求(直接.Result不异步了)
+</span><span style="color: rgba(0, 128, 128, 1)"> 82</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 83</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1. Get请求</span>
+<span style="color: rgba(0, 128, 128, 1)"> 84</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)"> 85</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> client =<span style="color: rgba(0, 0, 0, 1)"> _clientFactory.CreateClient();
+</span><span style="color: rgba(0, 128, 128, 1)"> 86</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">配置表头</span>
+<span style="color: rgba(0, 128, 128, 1)"> 87</span>                     client.DefaultRequestHeaders.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Accept</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">application/vnd.github.v3+json</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 88</span>                     client.DefaultRequestHeaders.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">User-Agent</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">HttpClientFactory-Sample</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 89</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> response =<span style="color: rgba(0, 0, 0, 1)"> client.GetAsync(url1).Result;
+</span><span style="color: rgba(0, 128, 128, 1)"> 90</span>                     <span style="color: rgba(0, 0, 255, 1)">string</span> result = <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)"> 91</span>                     <span style="color: rgba(0, 0, 255, 1)">if</span><span style="color: rgba(0, 0, 0, 1)"> (response.IsSuccessStatusCode)
+</span><span style="color: rgba(0, 128, 128, 1)"> 92</span> <span style="color: rgba(0, 0, 0, 1)">                    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 93</span>                         result =<span style="color: rgba(0, 0, 0, 1)"> response.Content.ReadAsStringAsync().Result;
+</span><span style="color: rgba(0, 128, 128, 1)"> 94</span> <span style="color: rgba(0, 0, 0, 1)">                    }
+</span><span style="color: rgba(0, 128, 128, 1)"> 95</span> <span style="color: rgba(0, 0, 0, 1)">                }
+</span><span style="color: rgba(0, 128, 128, 1)"> 96</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">2. Post请求-表单提交</span>
+<span style="color: rgba(0, 128, 128, 1)"> 97</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)"> 98</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> client =<span style="color: rgba(0, 0, 0, 1)"> _clientFactory.CreateClient();
+</span><span style="color: rgba(0, 128, 128, 1)"> 99</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">配置表头</span>
+<span style="color: rgba(0, 128, 128, 1)">100</span>                     client.DefaultRequestHeaders.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Accept</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">application/vnd.github.v3+json</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">101</span>                     client.DefaultRequestHeaders.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">User-Agent</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">HttpClientFactory-Sample</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">102</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">配置请求内容</span>
+<span style="color: rgba(0, 128, 128, 1)">103</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> content = <span style="color: rgba(0, 0, 255, 1)">new</span> StringContent(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">userName=admin&amp;pwd=123456</span><span style="color: rgba(128, 0, 0, 1)">"</span>, Encoding.UTF8, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">application/x-www-form-urlencoded</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">104</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> response =<span style="color: rgba(0, 0, 0, 1)"> client.PostAsync(url2, content).Result;
+</span><span style="color: rgba(0, 128, 128, 1)">105</span>                     <span style="color: rgba(0, 0, 255, 1)">string</span> result = <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">106</span>                     <span style="color: rgba(0, 0, 255, 1)">if</span><span style="color: rgba(0, 0, 0, 1)"> (response.IsSuccessStatusCode)
+</span><span style="color: rgba(0, 128, 128, 1)">107</span> <span style="color: rgba(0, 0, 0, 1)">                    {
+</span><span style="color: rgba(0, 128, 128, 1)">108</span>                         result =<span style="color: rgba(0, 0, 0, 1)"> response.Content.ReadAsStringAsync().Result;
+</span><span style="color: rgba(0, 128, 128, 1)">109</span> <span style="color: rgba(0, 0, 0, 1)">                    }
+</span><span style="color: rgba(0, 128, 128, 1)">110</span> 
+<span style="color: rgba(0, 128, 128, 1)">111</span> <span style="color: rgba(0, 0, 0, 1)">                }
+</span><span style="color: rgba(0, 128, 128, 1)">112</span> 
+<span style="color: rgba(0, 128, 128, 1)">113</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">3. Post请求-JSON提交</span>
+<span style="color: rgba(0, 128, 128, 1)">114</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)">115</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> client =<span style="color: rgba(0, 0, 0, 1)"> _clientFactory.CreateClient();
+</span><span style="color: rgba(0, 128, 128, 1)">116</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">配置表头</span>
+<span style="color: rgba(0, 128, 128, 1)">117</span>                     client.DefaultRequestHeaders.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Accept</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">application/vnd.github.v3+json</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">118</span>                     client.DefaultRequestHeaders.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">User-Agent</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">HttpClientFactory-Sample</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">119</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">配置请求内容</span>
+<span style="color: rgba(0, 128, 128, 1)">120</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> user = <span style="color: rgba(0, 0, 255, 1)">new</span>
+<span style="color: rgba(0, 128, 128, 1)">121</span> <span style="color: rgba(0, 0, 0, 1)">                    {
+</span><span style="color: rgba(0, 128, 128, 1)">122</span>                         userName = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">admin</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">,
+</span><span style="color: rgba(0, 128, 128, 1)">123</span>                         pwd = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">123456</span><span style="color: rgba(128, 0, 0, 1)">"</span>
+<span style="color: rgba(0, 128, 128, 1)">124</span> <span style="color: rgba(0, 0, 0, 1)">                    };
+</span><span style="color: rgba(0, 128, 128, 1)">125</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> content = <span style="color: rgba(0, 0, 255, 1)">new</span> StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">application/json</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">126</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> response =<span style="color: rgba(0, 0, 0, 1)"> client.PostAsync(url3, content).Result;
+</span><span style="color: rgba(0, 128, 128, 1)">127</span>                     <span style="color: rgba(0, 0, 255, 1)">string</span> result = <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">128</span>                     <span style="color: rgba(0, 0, 255, 1)">if</span><span style="color: rgba(0, 0, 0, 1)"> (response.IsSuccessStatusCode)
+</span><span style="color: rgba(0, 128, 128, 1)">129</span> <span style="color: rgba(0, 0, 0, 1)">                    {
+</span><span style="color: rgba(0, 128, 128, 1)">130</span>                         result =<span style="color: rgba(0, 0, 0, 1)"> response.Content.ReadAsStringAsync().Result;
+</span><span style="color: rgba(0, 128, 128, 1)">131</span> <span style="color: rgba(0, 0, 0, 1)">                    }
+</span><span style="color: rgba(0, 128, 128, 1)">132</span> <span style="color: rgba(0, 0, 0, 1)">                }
+</span><span style="color: rgba(0, 128, 128, 1)">133</span> 
+<span style="color: rgba(0, 128, 128, 1)">134</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">135</span>             <span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+<span style="color: rgba(0, 128, 128, 1)">136</span> 
+<span style="color: rgba(0, 128, 128, 1)">137</span> 
+<span style="color: rgba(0, 128, 128, 1)">138</span>             <span style="color: rgba(0, 128, 0, 1)">/*</span><span style="color: rgba(0, 128, 0, 1)">********************************************二.命名客户端********************************************</span><span style="color: rgba(0, 128, 0, 1)">*/</span>
+<span style="color: rgba(0, 128, 128, 1)">139</span> 
+<span style="color: rgba(0, 128, 128, 1)">140</span>             <span style="color: rgba(0, 0, 255, 1)">#region</span> 命名客户端(Get请求)
+<span style="color: rgba(0, 128, 128, 1)">141</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">142</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> request = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> HttpRequestMessage(HttpMethod.Get, url4);
+</span><span style="color: rgba(0, 128, 128, 1)">143</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">配置调用的名称</span>
+<span style="color: rgba(0, 128, 128, 1)">144</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> client = _clientFactory.CreateClient(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">client1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">145</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> response = <span style="color: rgba(0, 0, 255, 1)">await</span><span style="color: rgba(0, 0, 0, 1)"> client.SendAsync(request);
+</span><span style="color: rgba(0, 128, 128, 1)">146</span>                 <span style="color: rgba(0, 0, 255, 1)">string</span> result = <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">147</span>                 <span style="color: rgba(0, 0, 255, 1)">if</span><span style="color: rgba(0, 0, 0, 1)"> (response.IsSuccessStatusCode)
+</span><span style="color: rgba(0, 128, 128, 1)">148</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)">149</span>                     result = <span style="color: rgba(0, 0, 255, 1)">await</span><span style="color: rgba(0, 0, 0, 1)"> response.Content.ReadAsStringAsync();
+</span><span style="color: rgba(0, 128, 128, 1)">150</span> <span style="color: rgba(0, 0, 0, 1)">                }
+</span><span style="color: rgba(0, 128, 128, 1)">151</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">152</span>             <span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+<span style="color: rgba(0, 128, 128, 1)">153</span> 
+<span style="color: rgba(0, 128, 128, 1)">154</span>             <span style="color: rgba(0, 128, 0, 1)">/*</span><span style="color: rgba(0, 128, 0, 1)">********************************************三.类型化客户端********************************************</span><span style="color: rgba(0, 128, 0, 1)">*/</span>
+<span style="color: rgba(0, 128, 128, 1)">155</span> 
+<span style="color: rgba(0, 128, 128, 1)">156</span>             <span style="color: rgba(0, 0, 255, 1)">#region</span> 类型化客户端(Get请求)
+<span style="color: rgba(0, 128, 128, 1)">157</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">158</span>                 <span style="color: rgba(0, 0, 255, 1)">string</span> result = <span style="color: rgba(0, 0, 255, 1)">await</span><span style="color: rgba(0, 0, 0, 1)"> userService.Login(url4);
+</span><span style="color: rgba(0, 128, 128, 1)">159</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">160</span>             <span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+<span style="color: rgba(0, 128, 128, 1)">161</span> 
+<span style="color: rgba(0, 128, 128, 1)">162</span> 
+<span style="color: rgba(0, 128, 128, 1)">163</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> View();
+</span><span style="color: rgba(0, 128, 128, 1)">164</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">165</span>     }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<div class="cnblogs_code"><img id="code_img_closed_817fde0a-5aa5-4272-a22e-b1204f732dd9" class="code_img_closed" src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/ContractedBlock.gif" alt=""><img id="code_img_opened_817fde0a-5aa5-4272-a22e-b1204f732dd9" class="code_img_opened" style="display: none" src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_817fde0a-5aa5-4272-a22e-b1204f732dd9" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>  <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span>     <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 类型化客户端
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>     <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 4</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> UserService
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span>         <span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> HttpClient _client;
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> UserService(HttpClient client)
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>             client.BaseAddress = <span style="color: rgba(0, 0, 255, 1)">new</span> Uri(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">http://localhost:15319/</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">10</span>             client.DefaultRequestHeaders.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Accept</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">application/vnd.github.v3+json</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>             client.DefaultRequestHeaders.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">User-Agent</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">HttpClientFactory-Sample</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">12</span>             _client =<span style="color: rgba(0, 0, 0, 1)"> client;
+</span><span style="color: rgba(0, 128, 128, 1)">13</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">14</span> 
+<span style="color: rgba(0, 128, 128, 1)">15</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">async</span> Task&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>&gt; Login(<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> urlContent)
+</span><span style="color: rgba(0, 128, 128, 1)">16</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">17</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> response = <span style="color: rgba(0, 0, 255, 1)">await</span><span style="color: rgba(0, 0, 0, 1)"> _client.GetAsync(urlContent);
+</span><span style="color: rgba(0, 128, 128, 1)">18</span> <span style="color: rgba(0, 0, 0, 1)">            response.EnsureSuccessStatusCode();
+</span><span style="color: rgba(0, 128, 128, 1)">19</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> result = <span style="color: rgba(0, 0, 255, 1)">await</span><span style="color: rgba(0, 0, 0, 1)"> response.Content.ReadAsStringAsync();
+</span><span style="color: rgba(0, 128, 128, 1)">20</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> result;
+</span><span style="color: rgba(0, 128, 128, 1)">21</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">22</span>     }</pre>
+</div>
+<span class="cnblogs_code_collapse">类型化客户端-UserService</span></div>
+<p><strong><span style="font-size: 16px">4. 总结</span></strong></p>
+<p><span style="font-size: 16px">　　它们之间不存在严格的优先级。 最佳方法取决于应用的约束条件。</span></p>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">三. 与Refit结合</span></p>
+<p><span style="font-size: 16px">&nbsp;不做深入研究，可参考：</span></p>
+<p><span style="font-size: 16px">　　&nbsp;https://www.xcode.me/code/refit-the-automatic-type-safe-rest-library</span><br><span style="font-size: 16px">&nbsp;　　https://docs.microsoft.com/zh-cn/aspnet/core/fundamentals/http-requests?view=aspnetcore-2.1#outgoing-request-middleware</span></p>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">四. 结合框架进行封装</span></p>
+<p><span style="font-size: 16px">　　封装思路：将内容和请求方式等一系列操作封装到方法里，如果需要配置表头，建议采用命名客户端的方式在ConfigureService中进行配置，</span><span style="font-size: 16px">&nbsp;需要事先注册好服务，然后把实例化好的IHttpClientFactory对象传入到方法里。</span></p>
+<p><span style="font-size: 16px">　　封装了三个方法，分别来处理：Get、两种Post请求</span></p>
+<p><span style="font-size: 16px">　　需要用到：<strong>【Microsoft.Extensions.Http】</strong>程序集，Core MVC中已经默认引入了。</span></p>
+<p><span style="font-size: 15px; color: rgba(0, 0, 255, 1)">&nbsp;代码分享：</span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>     <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span>     <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 基于HttpClientFactory的请求封装
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>     <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 4</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> RequestHelp
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> Get请求
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 9</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="clientFactory"&gt;</span><span style="color: rgba(0, 128, 0, 1)">实例化好的HttpClientFactory对象</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">10</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="url"&gt;</span><span style="color: rgba(0, 128, 0, 1)">请求地址</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">11</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="clientName"&gt;</span><span style="color: rgba(0, 128, 0, 1)">注册名称，默认不指定</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">12</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">13</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> MyGetRequest(IHttpClientFactory clientFactory, <span style="color: rgba(0, 0, 255, 1)">string</span> url, <span style="color: rgba(0, 0, 255, 1)">string</span> clientName = <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)">14</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">15</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> request = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> HttpRequestMessage(HttpMethod.Get, url);
+</span><span style="color: rgba(0, 128, 128, 1)">16</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> client = clientName == <span style="color: rgba(128, 0, 0, 1)">""</span> ?<span style="color: rgba(0, 0, 0, 1)"> clientFactory.CreateClient() : clientFactory.CreateClient(clientName);
+</span><span style="color: rgba(0, 128, 128, 1)">17</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> response =<span style="color: rgba(0, 0, 0, 1)"> client.SendAsync(request).Result;
+</span><span style="color: rgba(0, 128, 128, 1)">18</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> myResult =<span style="color: rgba(0, 0, 0, 1)"> response.Content.ReadAsStringAsync().Result;
+</span><span style="color: rgba(0, 128, 128, 1)">19</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> myResult;
+</span><span style="color: rgba(0, 128, 128, 1)">20</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">21</span> 
+<span style="color: rgba(0, 128, 128, 1)">22</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">23</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> Post请求-表单形式
+</span><span style="color: rgba(0, 128, 128, 1)">24</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">25</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="clientFactory"&gt;</span><span style="color: rgba(0, 128, 0, 1)">实例化好的HttpClientFactory对象</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">26</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="url"&gt;</span><span style="color: rgba(0, 128, 0, 1)">请求地址</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">27</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="content"&gt;</span><span style="color: rgba(0, 128, 0, 1)">请求内容</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">28</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="clientName"&gt;</span><span style="color: rgba(0, 128, 0, 1)">注册名称，默认不指定</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">29</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">30</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> MyPostRequest(IHttpClientFactory clientFactory, <span style="color: rgba(0, 0, 255, 1)">string</span> url,<span style="color: rgba(0, 0, 255, 1)">string</span> content, <span style="color: rgba(0, 0, 255, 1)">string</span> clientName = <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)">31</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">32</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> request = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> HttpRequestMessage(HttpMethod.Post, url);
+</span><span style="color: rgba(0, 128, 128, 1)">33</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">内容的处理</span>
+<span style="color: rgba(0, 128, 128, 1)">34</span>              request.Content = <span style="color: rgba(0, 0, 255, 1)">new</span> StringContent(content, Encoding.UTF8, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">application/x-www-form-urlencoded</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">35</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> client = clientName == <span style="color: rgba(128, 0, 0, 1)">""</span> ?<span style="color: rgba(0, 0, 0, 1)"> clientFactory.CreateClient() : clientFactory.CreateClient(clientName);
+</span><span style="color: rgba(0, 128, 128, 1)">36</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> response =<span style="color: rgba(0, 0, 0, 1)"> client.SendAsync(request).Result;
+</span><span style="color: rgba(0, 128, 128, 1)">37</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> myResult =<span style="color: rgba(0, 0, 0, 1)"> response.Content.ReadAsStringAsync().Result;
+</span><span style="color: rgba(0, 128, 128, 1)">38</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> myResult;
+</span><span style="color: rgba(0, 128, 128, 1)">39</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">40</span> 
+<span style="color: rgba(0, 128, 128, 1)">41</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">42</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> Post请求-Json形式
+</span><span style="color: rgba(0, 128, 128, 1)">43</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">44</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="clientFactory"&gt;</span><span style="color: rgba(0, 128, 0, 1)">实例化好的HttpClientFactory对象</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">45</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="url"&gt;</span><span style="color: rgba(0, 128, 0, 1)">请求地址</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">46</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="content"&gt;</span><span style="color: rgba(0, 128, 0, 1)">请求内容</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">47</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="clientName"&gt;</span><span style="color: rgba(0, 128, 0, 1)">注册名称，默认不指定</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">48</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">49</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> MyPostRequestJson(IHttpClientFactory clientFactory, <span style="color: rgba(0, 0, 255, 1)">string</span> url, <span style="color: rgba(0, 0, 255, 1)">object</span> content, <span style="color: rgba(0, 0, 255, 1)">string</span> clientName = <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)">50</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">51</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> request = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> HttpRequestMessage(HttpMethod.Post, url);
+</span><span style="color: rgba(0, 128, 128, 1)">52</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">内容的处理</span>
+<span style="color: rgba(0, 128, 128, 1)">53</span>             request.Content = <span style="color: rgba(0, 0, 255, 1)">new</span> StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">application/json</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">54</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> client = clientName == <span style="color: rgba(128, 0, 0, 1)">""</span> ?<span style="color: rgba(0, 0, 0, 1)"> clientFactory.CreateClient() : clientFactory.CreateClient(clientName);
+</span><span style="color: rgba(0, 128, 128, 1)">55</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> response =<span style="color: rgba(0, 0, 0, 1)"> client.SendAsync(request).Result;
+</span><span style="color: rgba(0, 128, 128, 1)">56</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> myResult =<span style="color: rgba(0, 0, 0, 1)"> response.Content.ReadAsStringAsync().Result;
+</span><span style="color: rgba(0, 128, 128, 1)">57</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> myResult;
+</span><span style="color: rgba(0, 128, 128, 1)">58</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">59</span> 
+<span style="color: rgba(0, 128, 128, 1)">60</span>     }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>   <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> HomeController : Controller
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>         <span style="color: rgba(0, 0, 255, 1)">private</span> <span style="color: rgba(0, 0, 255, 1)">readonly</span><span style="color: rgba(0, 0, 0, 1)"> IHttpClientFactory _clientFactory;
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span>         <span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> HomeController(IHttpClientFactory clientFactory)
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span>             _clientFactory =<span style="color: rgba(0, 0, 0, 1)"> clientFactory;
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 9</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">async</span> Task&lt;IActionResult&gt;<span style="color: rgba(0, 0, 0, 1)"> Index([FromServices] UserService userService)
+</span><span style="color: rgba(0, 128, 128, 1)">10</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> url1 = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">http://localhost:15319/Server/CheckLogin?userName=admin&amp;pwd=123456</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">12</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> url2 = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">http://localhost:15319/Server/Register1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> url3 = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">http://localhost:15319/Server/Register2</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">14</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> url4 = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Server/CheckLogin?userName=admin&amp;pwd=123456</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">15</span> 
+<span style="color: rgba(0, 128, 128, 1)">16</span> 
+<span style="color: rgba(0, 128, 128, 1)">17</span>             <span style="color: rgba(0, 128, 0, 1)">/*</span><span style="color: rgba(0, 128, 0, 1)">********************************************测试框架封装********************************************</span><span style="color: rgba(0, 128, 0, 1)">*/</span>
+<span style="color: rgba(0, 128, 128, 1)">18</span> 
+<span style="color: rgba(0, 128, 128, 1)">19</span>             <span style="color: rgba(0, 0, 255, 1)">#region</span> 测试框架封装
+<span style="color: rgba(0, 128, 128, 1)">20</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">21</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> result1 =<span style="color: rgba(0, 0, 0, 1)"> RequestHelp.MyGetRequest(_clientFactory, url1);
+</span><span style="color: rgba(0, 128, 128, 1)">22</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> result2 = RequestHelp.MyGetRequest(_clientFactory, url4, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">client1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">23</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">Post-表单提交</span>
+<span style="color: rgba(0, 128, 128, 1)">24</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> result3 = RequestHelp.MyPostRequest(_clientFactory, url2, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">userName=admin&amp;pwd=123456</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">25</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">Post-Json提交</span>
+<span style="color: rgba(0, 128, 128, 1)">26</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> user = <span style="color: rgba(0, 0, 255, 1)">new</span>
+<span style="color: rgba(0, 128, 128, 1)">27</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)">28</span>                     userName = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">admin</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">,
+</span><span style="color: rgba(0, 128, 128, 1)">29</span>                     pwd = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">123456</span><span style="color: rgba(128, 0, 0, 1)">"</span>
+<span style="color: rgba(0, 128, 128, 1)">30</span> <span style="color: rgba(0, 0, 0, 1)">                };
+</span><span style="color: rgba(0, 128, 128, 1)">31</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> result4 =<span style="color: rgba(0, 0, 0, 1)"> RequestHelp.MyPostRequestJson(_clientFactory, url3, user);
+</span><span style="color: rgba(0, 128, 128, 1)">32</span> 
+<span style="color: rgba(0, 128, 128, 1)">33</span> <span style="color: rgba(0, 0, 0, 1)">            } 
+</span><span style="color: rgba(0, 128, 128, 1)">34</span>             <span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+<span style="color: rgba(0, 128, 128, 1)">35</span> 
+<span style="color: rgba(0, 128, 128, 1)">36</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> View();
+</span><span style="color: rgba(0, 128, 128, 1)">37</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">38</span>     }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">五. 如何在客户端调用</span></p>
+<p>&nbsp;<span style="font-size: 16px">　　前面的介绍都是基于Core MVC来发送请求，然后可以注入&nbsp;IHttpClientFactory 对象，那么如何在控制台上调用呢？ 这是一类通用的问题，看下面代码，获取&nbsp;IHttpClientFactory 对象，然后后续的Get和Post请求的写法和前面介绍的完全相同，可以根据自己的喜好进行选择。</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 255, 1)">var</span> serviceProvider = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> ServiceCollection().AddHttpClient().BuildServiceProvider();
+IHttpClientFactory httpClientFactory </span>= serviceProvider.GetService&lt;IHttpClientFactory&gt;();</pre>
+</div>
+<p><span style="font-size: 16px; color: rgba(0, 0, 255, 1)">分享一个完整的客户端请求写法：</span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre>             <span style="color: rgba(0, 0, 255, 1)">var</span> serviceProvider = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> ServiceCollection().AddHttpClient().BuildServiceProvider();
+            IHttpClientFactory httpClientFactory </span>= serviceProvider.GetService&lt;IHttpClientFactory&gt;<span style="color: rgba(0, 0, 0, 1)">();
+            </span><span style="color: rgba(0, 0, 255, 1)">string</span> url2 = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">http://XXX:8055/Home/SendAllMsg</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> client =<span style="color: rgba(0, 0, 0, 1)"> httpClientFactory.CreateClient();
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> content = <span style="color: rgba(0, 0, 255, 1)">new</span> StringContent(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">msg=123</span><span style="color: rgba(128, 0, 0, 1)">"</span>, Encoding.UTF8, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">application/x-www-form-urlencoded</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> response =<span style="color: rgba(0, 0, 0, 1)"> client.PostAsync(url2, content).Result;
+            </span><span style="color: rgba(0, 0, 255, 1)">string</span> result = <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)">;
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span><span style="color: rgba(0, 0, 0, 1)"> (response.IsSuccessStatusCode)
+            {
+                result </span>=<span style="color: rgba(0, 0, 0, 1)"> response.Content.ReadAsStringAsync().Result;
+            }</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div style="border: 2px dashed rgba(0, 0, 255, 1); border-radius: 10px; height: 120px; width: 1100px; margin-left: 60px">
+<div style="width: 0; height: 0; border-left: 20px solid rgba(0, 0, 0, 0); border-right: 20px solid rgba(0, 0, 0, 0); border-bottom: 30px solid rgba(255, 255, 0, 1); float: left; margin-top: 40px; margin-left: 20px">
+<p style="font-size: 16px; font-weight: bold; margin-top: 8px; margin-left: -2px">!</p>
+</div>
+<div style="float: left; margin-left: 16px">
+<ul style="list-style: none; padding: 0; margin-left: 20px">
+<li style="margin-bottom: 1px; line-height: 28px">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者 : <span style="color: rgba(255, 0, 0, 1)">Yaopengfei(姚鹏飞)</span></li>
+<li style="margin-bottom: 1px; line-height: 28px">博客地址 : <a style="text-decoration: none" href="http://www.cnblogs.com/yaopengfei/"><span style="color: rgba(255, 0, 0, 1)">http://www.cnblogs.com/yaopengfei/</span></a></li>
+<li style="margin-bottom: 1px; line-height: 28px">声&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明1 : 本人才疏学浅，用郭德纲的话说“我是一个小学生”，如有错误，欢迎讨论，请勿谩骂^_^。</li>
+<li style="margin-bottom: 1px; line-height: 28px">声&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明2 : 原创博客请在转载时保留原文链接或在文章开头加上本人博客地址，否则保留追究法律责任的权利。</li>
+</ul>
+</div>
+<div style="clear: both">&nbsp;</div>
+</div>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(11300888,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;7d349e7e-c080-e611-9fc1-ac853d9f53cc&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/yaopengfei/" target="_blank"><img src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/20180828165403.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/yaopengfei/">Yaopengfei</a><br>
+            <a href="https://home.cnblogs.com/u/yaopengfei/followees/">关注 - 18</a><br>
+            <a href="https://home.cnblogs.com/u/yaopengfei/followers/">粉丝 - 828</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;7d349e7e-c080-e611-9fc1-ac853d9f53cc&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(11300888,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(11300888,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">1</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2019-08-05 07:55</span>&nbsp;
+<a href="https://www.cnblogs.com/yaopengfei/">Yaopengfei</a>&nbsp;
+阅读(<span id="post_view_count">846</span>)&nbsp;
+评论(<span id="post_comment_count">2</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=11300888" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(11300888);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;11300888&#39;, targetLink: &#39;https://www.cnblogs.com/yaopengfei/p/11300888.html&#39;, title: &#39;第十七节：.Net Core中新增HttpClientFactory的前世今生&#39; })">举报</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+
+<script>
+    markdown_highlight()
+    var allowComments = true, cb_blogId = 307315, cb_blogApp = 'yaopengfei', cb_blogUserGuid = '7d349e7e-c080-e611-9fc1-ac853d9f53cc';
+    var cb_entryId = 11300888, cb_entryCreatedDate = '2019-08-05 07:55', cb_postType = 1;
+    updatePostStats(
+        [cb_entryId],
+        function(id, count) { $("#post_view_count").text(count) },
+        function(id, count) { $("#post_comment_count").text(count) })
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+</script>
+<a name="!comments"></a>
+<div id="blog-comments-placeholder"><div style="color:green;margin:50px 0;font-weight:normal;">努力加载评论中...</div></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/yaopengfei/p/11300888.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/yaopengfei/p/11300888.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="cnblogs_ch"><a href="https://c.gridsumdissector.com/r/?gid=gad_545_sf71nlea&amp;ck=1057&amp;adk=10670&amp;autorefresh=__AUTOREFRESH__" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-火山引擎-1203-1209&#39;})">【推荐】字节跳动旗下火山引擎，邀您共同揭秘“云+增长”</a><br><a href="http://www.uccpsoft.com/index.htm" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-ucancode&#39;})">【推荐】跨平台组态\工控\仿真\CAD 50万行C++源码全开放免费下载！</a><br><a href="https://brands.cnblogs.com/huawei/p/2704" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-华为专区&#39;})">【推荐】华为 HarmonyOS 校园极客秀征文活动第1期，秀出你的COOL</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+        <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;"></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/coco1s/p/15627657.html" target="_blank">使用 CSS 轻松实现一些高频出现的奇形怪状按钮</a>
+    <br>
+· <a href="https://www.cnblogs.com/strick/p/15394367.html" target="_blank">带团队后的日常思考（六）</a>
+    <br>
+· <a href="https://www.cnblogs.com/xiao2shiqi/p/15623540.html" target="_blank">聊聊云原生和微服务架构</a>
+    <br>
+· <a href="https://www.cnblogs.com/youzhibing/p/15615272.html" target="_blank">异或运算的巧用：不用额外的变量，如何交换两个变量的值？ </a>
+    <br>
+· <a href="https://www.cnblogs.com/myshowtime/p/15596630.html" target="_blank">OAuth 2.1 带来了哪些变化</a>
+    <br>
+</div></div>
+        <div id="cnblogs_c2" class="under-post-card">
+            <a href="https://c.gridsumdissector.com/r/?gid=gad_545_wrrk6jpf&amp;ck=1057&amp;adk=10673&amp;autorefresh=__AUTOREFRESH__" rel="nofollow" target="_blank">
+                <img src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/volcengine-c2.jpg" alt="" onload="impressC2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_wrrk6jpf&amp;ck=1057&amp;adk=10673&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+            </a>
+        </div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/708325/" target="_blank">达摩院AliceMind上新！首个中文表格预训练模型发布，已向业界开源（2021-12-03 15:55）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708324/" target="_blank">亚马逊中国卖家遭遇最惨“黑五”：销量不及预期，封号仍在继续（2021-12-03 15:48）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708323/" target="_blank">印度人民怀念中国App（2021-12-03 15:40）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708322/" target="_blank">专利申请量超美国、高新企业数增10倍：一图看懂近20年中国科技有多燃（2021-12-03 15:34）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708321/" target="_blank">“大红大紫”的代价！英伟达再也收不了ARM了？（2021-12-03 15:31）</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+       var commentManager = new blogCommentManager();
+       commentManager.renderComments(0);
+       fixPostBody();
+
+           window.tocManager.displayDisableTocTips = false
+           window.tocManager.generateToc();
+           setTimeout(function() { incrementViewCount(cb_entryId); }, 50);       deliverT2();
+       deliverC1C2();
+       loadNewsAndKb();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);       LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+       GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+       loadOptUnderPost();
+       GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem">
+            <script>loadBlogNews();</script>
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2021/11/03&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2021年12月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2022/01/03&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">28</td>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                        <td class="" align="center">
+                            2
+                        </td>
+                        <td class="CalTodayDay" align="center">
+                            3
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        4
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            5
+                        </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            11
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            12
+                        </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            18
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            19
+                        </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            25
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            26
+                        </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                            <td class="" align="center">
+                                30
+                            </td>
+                            <td class="" align="center">
+                                31
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            1
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            2
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            8
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2021 Yaopengfei
+<br><span id="poweredby">Powered by .NET 6 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8FO3GXnjClZGrNGr2Ic8Z1pURlKVvd_Q42C7G2xfD4qmGfEU6RxhmK8D2ctoYhmHedOhKQ5KsN6fG3Oo4_wXKpWVAkTxfzu6ZW6lgAkQnxDtVq8lth7J5dsNM8cTYekLKgPTKFL9tx1J4Q59nq8KQPk">
+    <script async="" src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/js"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+    </script>
+    <script defer="" src="./第十七节：.Net Core中新增HttpClientFactory的前世今生 - Yaopengfei - 博客园_files/hm.js.下载"></script>
+
+</body></html>

@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)https://www.cnblogs.com/yaopengfei/p/14307822.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="description" content="一.&amp;#160;接口设计 1.&amp;#160;说明 设计异步方法，这里采用文件流的形式进行存储,设计两个接口,分别用来处理单文件上传和多文件上传. 2. 大致思路 获取文件→判空→获取文件名和扩展名→设置">
+    <meta property="og:description" content="一.&amp;#160;接口设计 1.&amp;#160;说明 设计异步方法，这里采用文件流的形式进行存储,设计两个接口,分别用来处理单文件上传和多文件上传. 2. 大致思路 获取文件→判空→获取文件名和扩展名→设置">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>  第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([class*="language-"]):not([highlighted]):not(.hljs) {
+        background: rgb(245, 245, 245);
+        padding: 5px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(0, 0, 0);
+        font-family: "Courier New", sans-serif;
+    }:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]) code:not(.hljs) {
+            background: rgb(245, 245, 245) !important;
+            border-color: transparent !important;
+        }</style><link rel="stylesheet" href="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/blog-common.min.css">
+    <link id="MainCss" rel="stylesheet" href="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/bundle-darkgreentrip.min.css">
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/cnblogs.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/bundle-darkgreentrip-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/yaopengfei/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/yaopengfei/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/yaopengfei/wlwmanifest.xml">
+    <script>
+        var currentBlogId = 307315;
+        var currentBlogApp = 'yaopengfei';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'darkgreentrip';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function(){ return ''; } });
+            }
+        } catch(error) { }
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+    </script>
+        <script>
+            var currentPostDateAdded = '2021-01-21 14:28';
+        </script>
+    <script src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/jquery-2.2.0.min.js.下载"></script>
+    <script src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/blog-common.min.js.下载"></script><style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style><script id="hljs-script" async="" data-loaded="true" src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/highlight.min.js.下载"></script>
+    
+    
+    
+</head>
+<body class="skin-darkgreentrip has-navbar has-bannerbar">
+    <a name="top"></a>
+        <a href="https://c.gridsumdissector.com/r/?gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__" target="_blank" rel="nofollow" onclick="countClicks(&#39;ad&#39;, &#39;C0-火山引擎&#39;)">
+            <div class="bannerbar forpc" style="display: flex; background-color: #11225a;">
+                <img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/volcengine-b0c0-1.jpg" onload="impressC0(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)" alt="">
+                <img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/volcengine-b0c0-2.jpg" alt="">
+                <img style="margin-left: auto;" src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/volcengine-b0c0-3.jpg" alt="">
+            </div>
+        </a>
+            <div id="bannerbar" class="bannerbar-mobile formobile">
+                <a href="https://c.gridsumdissector.com/r/?gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__" onclick="countClicks(&#39;ad&#39;, &#39;M2-火山引擎&#39;)" rel="nofollow">
+                    <img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/volcengine-m2.jpg" alt="" onload="impressM2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+                </a>
+            </div>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding"><a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/logo.svg" alt="博客园Logo"></a></li>
+                <li><a href="https://www.cnblogs.com/" onclick="countClicks(&#39;skin-navbar-sitehome&#39;)">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-brands&#39;)">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-edu&#39;)">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔">
+                        <img id="new_post_icon" class="navbar-icon" src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/yaopengfei/"><img id="blogLogo" src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/yaopengfei/">奔跑的路上</a>
+</h1>
+<h2>广泛汲取，用心打磨，精益求精。</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/yaopengfei/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/Yaopengfei">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/yaopengfei/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 494&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 1303&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 604717">
+60万</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/yaopengfei/p/14307822.html">
+    <span>  第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传</span>
+    
+
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">一.&nbsp;接口设计</span></p>
+<p><strong><span style="font-size: 16px">1.&nbsp;说明</span></strong></p>
+<p><span style="font-size: 15px">　设计异步方法，这里采用文件流的形式进行存储,设计两个接口,分别用来处理单文件上传和多文件上传.</span></p>
+<p><strong><span style="font-size: 16px">2. 大致思路</span></strong></p>
+<p><span style="font-size: 15px">　获取文件→判空→获取文件名和扩展名→设置存放绝对路径(若不存在,则新建)→编辑文件保存名称(这里随机命名,所以不用判重)&nbsp;→拼接最终路径进行保存→DB中存储相对路径→返回前端成功和相对路径.</span></p>
+<p><strong><span style="font-size: 16px">3.&nbsp;其它</span></strong></p>
+<p><span style="font-size: 15px">　可以通过 .Length，来获取文件的大小 </span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码分享：&nbsp;</span></p>
+<div class="cnblogs_code"><img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_54cd1926-dbb9-4b56-ade4-8ce92c8d61f4" class="code_img_closed"><img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_54cd1926-dbb9-4b56-ade4-8ce92c8d61f4" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_54cd1926-dbb9-4b56-ade4-8ce92c8d61f4" class="cnblogs_code_hide">
+<pre>        <span style="color: rgba(0, 0, 255, 1)">#region</span> 01-单文件上传
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 单文件上传
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="_hostingEnvironment"&gt;&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">async</span> Task&lt;IActionResult&gt;<span style="color: rgba(0, 0, 0, 1)"> SingleSaveFile([FromServices] IWebHostEnvironment _hostingEnvironment)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">try</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">long</span> size = <span style="color: rgba(128, 0, 128, 1)">0</span>;   <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">统计上传文件的大小(单位b)</span>
+                <span style="color: rgba(0, 0, 255, 1)">var</span> files = Request.Form.Files;  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">获取文件</span>
+                <span style="color: rgba(0, 0, 255, 1)">if</span> (files.Count == <span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">)
+                {
+                    </span><span style="color: rgba(0, 0, 255, 1)">return</span> Json(<span style="color: rgba(0, 0, 255, 1)">new</span> { status = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">error</span><span style="color: rgba(128, 0, 0, 1)">"</span>, msg = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">上传内容为空</span><span style="color: rgba(128, 0, 0, 1)">"</span>, data = <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)"> });
+                }
+
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">获取文件扩展名</span>
+                <span style="color: rgba(0, 0, 255, 1)">var</span> fileName = files[<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">].FileName;
+                </span><span style="color: rgba(0, 0, 255, 1)">int</span> idxStart = fileName.LastIndexOf(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">.</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                </span><span style="color: rgba(0, 0, 255, 1)">string</span> areviation = fileName.Substring(idxStart, fileName.Length -<span style="color: rgba(0, 0, 0, 1)"> idxStart);
+
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">编辑文件的存储路径</span>
+                <span style="color: rgba(0, 0, 255, 1)">var</span> filePath = _hostingEnvironment.ContentRootPath + <span style="color: rgba(128, 0, 0, 1)">@"</span><span style="color: rgba(128, 0, 0, 1)">\DownLoad\Picture\</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+                </span><span style="color: rgba(0, 0, 255, 1)">if</span> (!<span style="color: rgba(0, 0, 0, 1)">Directory.Exists(filePath))
+                {
+                    Directory.CreateDirectory(filePath);
+                }
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">编辑文件的名称(目前是随机命名,如果用原名保存,需要判重)</span>
+                <span style="color: rgba(0, 0, 255, 1)">var</span> myFileName = $<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{Guid.NewGuid().ToString()}{areviation}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">最终路径</span>
+                <span style="color: rgba(0, 0, 255, 1)">var</span> finalPath = filePath +<span style="color: rgba(0, 0, 0, 1)"> myFileName;
+                size </span>+= files[<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">].Length;
+                </span><span style="color: rgba(0, 0, 255, 1)">using</span> (FileStream fs =<span style="color: rgba(0, 0, 0, 1)"> System.IO.File.Create(finalPath))
+                {
+                    </span><span style="color: rgba(0, 0, 255, 1)">await</span> files[<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">].CopyToAsync(fs);
+                    </span><span style="color: rgba(0, 0, 255, 1)">await</span><span style="color: rgba(0, 0, 0, 1)"> fs.FlushAsync();
+                }
+
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">DB中存储的或者返回给前端的都是相对路径</span>
+                <span style="color: rgba(0, 0, 255, 1)">string</span> relativeUrl = $<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">/DownLoad/Picture/{myFileName}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> Json(<span style="color: rgba(0, 0, 255, 1)">new</span> { status = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ok</span><span style="color: rgba(128, 0, 0, 1)">"</span>, msg = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">上传成功</span><span style="color: rgba(128, 0, 0, 1)">"</span>, data =<span style="color: rgba(0, 0, 0, 1)"> relativeUrl });
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (Exception ex)
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> Json(<span style="color: rgba(0, 0, 255, 1)">new</span> { status = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">error</span><span style="color: rgba(128, 0, 0, 1)">"</span>, msg = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">上传失败</span><span style="color: rgba(128, 0, 0, 1)">"</span>, data = <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)"> });
+            };
+        }
+        </span><span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">#region</span> 02-多文件上传
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 多文件上传
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="_hostingEnvironment"&gt;&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">async</span> Task&lt;IActionResult&gt;<span style="color: rgba(0, 0, 0, 1)"> ManySaveFile([FromServices] IWebHostEnvironment _hostingEnvironment)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">try</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">long</span> size = <span style="color: rgba(128, 0, 128, 1)">0</span>;   <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">统计上传文件的大小(单位b)</span>
+                <span style="color: rgba(0, 0, 255, 1)">var</span> files = Request.Form.Files;  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">获取文件</span>
+                <span style="color: rgba(0, 0, 255, 1)">if</span> (files.Count == <span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">)
+                {
+                    </span><span style="color: rgba(0, 0, 255, 1)">return</span> Json(<span style="color: rgba(0, 0, 255, 1)">new</span> { status = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">error</span><span style="color: rgba(128, 0, 0, 1)">"</span>, msg = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">上传内容为空</span><span style="color: rgba(128, 0, 0, 1)">"</span>, data = <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)"> });
+                }
+                List</span>&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>&gt; rUrlList = <span style="color: rgba(0, 0, 255, 1)">new</span> List&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>&gt;<span style="color: rgba(0, 0, 0, 1)">();
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">多文件遍历上传</span>
+                <span style="color: rgba(0, 0, 255, 1)">foreach</span> (<span style="color: rgba(0, 0, 255, 1)">var</span> file <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> files)
+                {
+                    </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">获取文件扩展名</span>
+                    <span style="color: rgba(0, 0, 255, 1)">var</span> fileName =<span style="color: rgba(0, 0, 0, 1)"> file.FileName;
+                    </span><span style="color: rgba(0, 0, 255, 1)">int</span> idxStart = fileName.LastIndexOf(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">.</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                    </span><span style="color: rgba(0, 0, 255, 1)">string</span> areviation = fileName.Substring(idxStart, fileName.Length -<span style="color: rgba(0, 0, 0, 1)"> idxStart);
+
+                    </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">编辑文件的存储路径</span>
+                    <span style="color: rgba(0, 0, 255, 1)">var</span> filePath = _hostingEnvironment.ContentRootPath + <span style="color: rgba(128, 0, 0, 1)">@"</span><span style="color: rgba(128, 0, 0, 1)">\DownLoad\Picture\</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+                    </span><span style="color: rgba(0, 0, 255, 1)">if</span> (!<span style="color: rgba(0, 0, 0, 1)">Directory.Exists(filePath))
+                    {
+                        Directory.CreateDirectory(filePath);
+                    }
+                    </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">编辑文件的名称(目前是随机命名,如果用原名保存,需要判重)</span>
+                    <span style="color: rgba(0, 0, 255, 1)">var</span> myFileName = $<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{Guid.NewGuid().ToString()}{areviation}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+                    </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">最终路径</span>
+                    <span style="color: rgba(0, 0, 255, 1)">var</span> finalPath = filePath +<span style="color: rgba(0, 0, 0, 1)"> myFileName;
+                    size </span>+=<span style="color: rgba(0, 0, 0, 1)"> file.Length;
+                    </span><span style="color: rgba(0, 0, 255, 1)">using</span> (FileStream fs =<span style="color: rgba(0, 0, 0, 1)"> System.IO.File.Create(finalPath))
+                    {
+                        </span><span style="color: rgba(0, 0, 255, 1)">await</span><span style="color: rgba(0, 0, 0, 1)"> file.CopyToAsync(fs);
+                        </span><span style="color: rgba(0, 0, 255, 1)">await</span><span style="color: rgba(0, 0, 0, 1)"> fs.FlushAsync();
+                    }
+
+                    </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">DB中存储的或者返回给前端的都是相对路径</span>
+                    <span style="color: rgba(0, 0, 255, 1)">string</span> relativeUrl = $<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">/DownLoad/Picture/{myFileName}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+                    rUrlList.Add(relativeUrl);
+
+                }
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> Json(<span style="color: rgba(0, 0, 255, 1)">new</span> { status = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ok</span><span style="color: rgba(128, 0, 0, 1)">"</span>, msg = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">上传成功</span><span style="color: rgba(128, 0, 0, 1)">"</span>, data =<span style="color: rgba(0, 0, 0, 1)"> rUrlList });
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (Exception ex)
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> Json(<span style="color: rgba(0, 0, 255, 1)">new</span> { status = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">error</span><span style="color: rgba(128, 0, 0, 1)">"</span>, msg = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">上传失败</span><span style="color: rgba(128, 0, 0, 1)">"</span>, data = <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)"> });
+            };
+        } 
+        </span><span style="color: rgba(0, 0, 255, 1)">#endregion</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">二.&nbsp;基于LayUI文件上传</span></p>
+<p><strong><span style="font-size: 16px">1.相关地址</span></strong></p>
+<p><span style="font-size: 15px">　官方文档：https://www.layui.com/doc/modules/upload.html</span></p>
+<p><span style="font-size: 15px">　官方样例：https://www.layui.com/demo/upload.html</span></p>
+<p><strong><span style="font-size: 16px">2. 各种样例</span></strong></p>
+<p><strong><span style="font-size: 15px">(1). 单文件上传</span></strong></p>
+<p><span style="font-size: 15px">　A.基础配置：Header表头、data参数、acceptMime筛选文件类型、accept+exts允许上传的文件和后缀、Size最大上传大小等</span></p>
+<p><span style="font-size: 15px">　B.几个回调：choose选择文件后回调、before文件提交前回调、done上传成功后回调、error请求异常回调</span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码分享：</span></p>
+<div class="cnblogs_code"><img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_c08abe96-cf50-4a54-8adb-e709a13d5ff0" class="code_img_closed"><img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_c08abe96-cf50-4a54-8adb-e709a13d5ff0" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_c08abe96-cf50-4a54-8adb-e709a13d5ff0" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 0, 0, 1)">@{
+    Layout = null;
+}
+
+</span><span style="color: rgba(0, 0, 255, 1)">&lt;!</span><span style="color: rgba(255, 0, 255, 1)">DOCTYPE html</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+<span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">html</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">head</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">meta </span><span style="color: rgba(255, 0, 0, 1)">name</span><span style="color: rgba(0, 0, 255, 1)">="viewport"</span><span style="color: rgba(255, 0, 0, 1)"> content</span><span style="color: rgba(0, 0, 255, 1)">="width=device-width"</span> <span style="color: rgba(0, 0, 255, 1)">/&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">title</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>文件上传<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">title</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">meta </span><span style="color: rgba(255, 0, 0, 1)">name</span><span style="color: rgba(0, 0, 255, 1)">="renderer"</span><span style="color: rgba(255, 0, 0, 1)"> content</span><span style="color: rgba(0, 0, 255, 1)">="webkit"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">meta </span><span style="color: rgba(255, 0, 0, 1)">http-equiv</span><span style="color: rgba(0, 0, 255, 1)">="X-UA-Compatible"</span><span style="color: rgba(255, 0, 0, 1)"> content</span><span style="color: rgba(0, 0, 255, 1)">="IE=edge,chrome=1"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">meta </span><span style="color: rgba(255, 0, 0, 1)">name</span><span style="color: rgba(0, 0, 255, 1)">="viewport"</span><span style="color: rgba(255, 0, 0, 1)"> content</span><span style="color: rgba(0, 0, 255, 1)">="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">link </span><span style="color: rgba(255, 0, 0, 1)">href</span><span style="color: rgba(0, 0, 255, 1)">="~/src/layuiadmin/layui/css/layui.css"</span><span style="color: rgba(255, 0, 0, 1)"> rel</span><span style="color: rgba(0, 0, 255, 1)">="stylesheet"</span> <span style="color: rgba(0, 0, 255, 1)">/&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">link </span><span style="color: rgba(255, 0, 0, 1)">href</span><span style="color: rgba(0, 0, 255, 1)">="~/src/layuiadmin/style/admin.css"</span><span style="color: rgba(255, 0, 0, 1)"> rel</span><span style="color: rgba(0, 0, 255, 1)">="stylesheet"</span> <span style="color: rgba(0, 0, 255, 1)">/&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">style</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(128, 0, 0, 1)">
+        .c1 </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">{</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+            width</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 500px</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+            height</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 280px</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+            border</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 1px solid black</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+            padding</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 20px</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+            float</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> left</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span>
+        <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">}</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(128, 0, 0, 1)">
+
+        img </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">{</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+            width</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 200px</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+            height</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 200px</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span>
+        <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">}</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">style</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">head</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">body</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">div </span><span style="color: rgba(255, 0, 0, 1)">class</span><span style="color: rgba(0, 0, 255, 1)">="c1"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">button </span><span style="color: rgba(255, 0, 0, 1)">type</span><span style="color: rgba(0, 0, 255, 1)">="button"</span><span style="color: rgba(255, 0, 0, 1)"> class</span><span style="color: rgba(0, 0, 255, 1)">="layui-btn"</span><span style="color: rgba(255, 0, 0, 1)"> id</span><span style="color: rgba(0, 0, 255, 1)">="test1"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+            单文件上传(各种属性)
+        </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">button</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">br </span><span style="color: rgba(0, 0, 255, 1)">/&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">div</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+            <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">img </span><span style="color: rgba(255, 0, 0, 1)">src</span><span style="color: rgba(0, 0, 255, 1)">="/DownLoad/Picture/demo.png"</span><span style="color: rgba(255, 0, 0, 1)"> id</span><span style="color: rgba(0, 0, 255, 1)">="j_img1"</span> <span style="color: rgba(0, 0, 255, 1)">/&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">div</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+    <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">div</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+    
+
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">script </span><span style="color: rgba(255, 0, 0, 1)">src</span><span style="color: rgba(0, 0, 255, 1)">="~/src/layuiadmin/layui/layui.js"</span><span style="color: rgba(0, 0, 255, 1)">&gt;&lt;/</span><span style="color: rgba(128, 0, 0, 1)">script</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">script</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">
+        layui.use([</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">upload</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">jquery</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">], </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> () {
+            </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">var</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> $ </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">=</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> layui.$;
+            </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">var</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> upload </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">=</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> layui.upload;
+
+            </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">1.单文件上传</span>
+            <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">var</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> uploadInst1 </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">=</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> upload.render({
+                elem: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">#test1</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,               </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">绑定元素</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                url: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">SingleSaveFile</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">上传接口</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                headers: { auth: window.localStorage.getItem(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">token</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">) },  </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">表头</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                data: {},                     </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">额外参数</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                acceptMime: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">image/*</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">选择框筛选文件类型(不是很准确)</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                accept: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">file</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,               </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">允许上传所有文件</span>
+                <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">exts:"zip|rar|7z",                    //允许上传的后缀的类型,和accept配合使用</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                size: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">0</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,                      </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">设置文件最大可允许上传的大小，单位 KB, 0表示不限制</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                choose: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> (obj) {
+                    </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">选择文件后回调</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                },
+                before: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> () {
+                    </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">文件提交前回调</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    layer.load(); </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">上传loading</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                },
+                done: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> (res) {
+                    </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">上传成功后回调</span>
+                    <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">if</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> (res.status </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">==</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">ok</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">) {
+                        alert(res.msg);
+                        $(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">#j_img1</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">).attr(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">src</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, res.data);
+
+                        layer.closeAll(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">loading</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">); </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">关闭loading</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    }
+                },
+                error: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> (index, upload) {
+                    </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">请求异常回调</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">
+                    layer.closeAll(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">loading</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">); </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">关闭loading</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                }
+            });
+
+          
+
+        });
+    </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">script</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+
+<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">body</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">html</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">运行效果：</span></p>
+<p><img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/1031302-20210122142451154-2031742720.png" alt="" loading="lazy" style="display: block; margin-left: auto; margin-right: auto"></p>
+<p><strong><span style="font-size: 15px">(2).多文件上传</span></strong></p>
+<p><span style="font-size: 15px">A. 原理</span></p>
+<p><span style="font-size: 15px">　LayUI的多文件上传只是一次可以选多个文件而已,是通过调用多次接口实现的,目前没有实现调用一次接口,所以这里还是调用SingleSaveFile，</span><span style="font-size: 15px">对于前端而言done回调每成功1个文件回调1次, allDone当所有文件提交后才能被触发，会返回文件总数、成功文件数、失败文件数。</span></p>
+<p><span style="font-size: 15px">B. 核心配置</span></p>
+<p><span style="font-size: 15px">&nbsp;(1). multiple: true,&nbsp; //允许多文件上传</span></p>
+<p><span style="font-size: 15px">&nbsp;(2). number: 2,&nbsp; //允许上传的文件数量,配合multiple使用</span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码分享：</span></p>
+<div class="cnblogs_code"><img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_7462280b-1a0b-4bb9-8344-8e2f8bec2527" class="code_img_closed"><img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_7462280b-1a0b-4bb9-8344-8e2f8bec2527" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_7462280b-1a0b-4bb9-8344-8e2f8bec2527" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 0, 0, 1)">@{
+    Layout = null;
+}
+
+</span><span style="color: rgba(0, 0, 255, 1)">&lt;!</span><span style="color: rgba(255, 0, 255, 1)">DOCTYPE html</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+<span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">html</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">head</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">meta </span><span style="color: rgba(255, 0, 0, 1)">name</span><span style="color: rgba(0, 0, 255, 1)">="viewport"</span><span style="color: rgba(255, 0, 0, 1)"> content</span><span style="color: rgba(0, 0, 255, 1)">="width=device-width"</span> <span style="color: rgba(0, 0, 255, 1)">/&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">title</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>文件上传<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">title</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">meta </span><span style="color: rgba(255, 0, 0, 1)">name</span><span style="color: rgba(0, 0, 255, 1)">="renderer"</span><span style="color: rgba(255, 0, 0, 1)"> content</span><span style="color: rgba(0, 0, 255, 1)">="webkit"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">meta </span><span style="color: rgba(255, 0, 0, 1)">http-equiv</span><span style="color: rgba(0, 0, 255, 1)">="X-UA-Compatible"</span><span style="color: rgba(255, 0, 0, 1)"> content</span><span style="color: rgba(0, 0, 255, 1)">="IE=edge,chrome=1"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">meta </span><span style="color: rgba(255, 0, 0, 1)">name</span><span style="color: rgba(0, 0, 255, 1)">="viewport"</span><span style="color: rgba(255, 0, 0, 1)"> content</span><span style="color: rgba(0, 0, 255, 1)">="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">link </span><span style="color: rgba(255, 0, 0, 1)">href</span><span style="color: rgba(0, 0, 255, 1)">="~/src/layuiadmin/layui/css/layui.css"</span><span style="color: rgba(255, 0, 0, 1)"> rel</span><span style="color: rgba(0, 0, 255, 1)">="stylesheet"</span> <span style="color: rgba(0, 0, 255, 1)">/&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">link </span><span style="color: rgba(255, 0, 0, 1)">href</span><span style="color: rgba(0, 0, 255, 1)">="~/src/layuiadmin/style/admin.css"</span><span style="color: rgba(255, 0, 0, 1)"> rel</span><span style="color: rgba(0, 0, 255, 1)">="stylesheet"</span> <span style="color: rgba(0, 0, 255, 1)">/&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">style</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(128, 0, 0, 1)">
+        .c1 </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">{</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+            width</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 500px</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+            height</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 280px</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+            border</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 1px solid black</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+            padding</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 20px</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+            float</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> left</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span>
+        <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">}</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(128, 0, 0, 1)">
+
+        img </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">{</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+            width</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 200px</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+            height</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 200px</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span>
+        <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">}</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">style</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">head</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">body</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">div </span><span style="color: rgba(255, 0, 0, 1)">class</span><span style="color: rgba(0, 0, 255, 1)">="c1"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">button </span><span style="color: rgba(255, 0, 0, 1)">type</span><span style="color: rgba(0, 0, 255, 1)">="button"</span><span style="color: rgba(255, 0, 0, 1)"> class</span><span style="color: rgba(0, 0, 255, 1)">="layui-btn"</span><span style="color: rgba(255, 0, 0, 1)"> id</span><span style="color: rgba(0, 0, 255, 1)">="test2"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+            多文件上传
+        </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">button</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">br </span><span style="color: rgba(0, 0, 255, 1)">/&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">div </span><span style="color: rgba(255, 0, 0, 1)">id</span><span style="color: rgba(0, 0, 255, 1)">="j2"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">div</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">div</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+  
+
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">script </span><span style="color: rgba(255, 0, 0, 1)">src</span><span style="color: rgba(0, 0, 255, 1)">="~/src/layuiadmin/layui/layui.js"</span><span style="color: rgba(0, 0, 255, 1)">&gt;&lt;/</span><span style="color: rgba(128, 0, 0, 1)">script</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">script</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">
+        layui.use([</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">upload</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">jquery</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">], </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> () {
+            </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">var</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> $ </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">=</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> layui.$;
+            </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">var</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> upload </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">=</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> layui.upload;
+         
+            </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">2.多文件上传</span>
+            <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">var</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> uploadInst2 </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">=</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> upload.render({
+                elem: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">#test2</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,               </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">绑定元素</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                url: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">SingleSaveFile</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">上传接口</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                headers: { auth: window.localStorage.getItem(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">token</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">) },  </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">表头</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                data: {},                     </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">额外参数</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                acceptMime: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">image/*</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">选择框筛选文件类型(不是很准确)</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                accept: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">file</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,               </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">允许上传所有文件</span>
+                <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">exts:"zip|rar|7z",          //允许上传的后缀的类型,和accept配合使用</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                size: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">0</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,                      </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">设置文件最大可允许上传的大小，单位 KB, 0表示不限制</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                multiple: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">true</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,               </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">允许多文件上传</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                number: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">2</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,                    </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">允许上传的文件数量,配合multiple使用</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                choose: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> (obj) {
+                    </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">选择文件后回调</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                },
+                before: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> () {
+                    </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">文件提交前回调</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    layer.load(); </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">上传loading</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                },
+                allDone: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> (obj) {
+                    </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">当文件全部被提交后，才触发</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    console.log(obj.total); </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">得到总文件数</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    console.log(obj.successful); </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">请求成功的文件数</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    console.log(obj.aborted); </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">请求失败的文件数</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">
+                    layer.closeAll(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">loading</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">); </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">关闭loading</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                },
+                done: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> (res) {
+                    </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">上传成功后回调(每成功一个文件,回调一次)</span>
+                    <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">if</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> (res.status </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">==</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">ok</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">) {
+                        $(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">#j2</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">).append(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">&lt;img src="</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">+</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> res.data </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">+</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"/&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">);
+                    }
+                },
+                error: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> (index, upload) {
+                    </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">请求异常回调</span>
+                    <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">当上传失败时，你可以生成一个“重新上传”的按钮，点击该按钮时，执行 upload() 方法即可实现重新上传</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">
+                    layer.closeAll(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">loading</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">); </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">关闭loading</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                }
+            });
+
+        
+        });
+    </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">script</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+
+<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">body</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">html</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">运行效果：</span></p>
+<p><span style="font-size: 15px"><img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/1031302-20210122142507068-610553353.png" alt="" loading="lazy" style="display: block; margin-left: auto; margin-right: auto" class="medium-zoom-image"></span></p>
+<p><strong><span style="font-size: 15px">(3).非自动上传+队列</span></strong></p>
+<p><span style="font-size: 15px">大致流程：</span></p>
+<p><span style="font-size: 15px">　通过 auto: false设置不自动上传，然后通过 bindAction: '#test33' 指向一个按钮绑定上传，选择文件后进入choose回调，将文件存放到本地队列中，</span><span style="font-size: 15px">并且可以操作DOM，用于提前预览，上传成功后，修改本地DOM或者删除; 上传失败后,将本地DOM改为重新上传。</span></p>
+<p><span style="color: rgba(0, 0, 255, 1); font-size: 14px">代码分享：</span></p>
+<div class="cnblogs_code"><img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_66ee51c3-c88f-43a5-9e05-e3003535e3fd" class="code_img_closed"><img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_66ee51c3-c88f-43a5-9e05-e3003535e3fd" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_66ee51c3-c88f-43a5-9e05-e3003535e3fd" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 0, 0, 1)">@{
+    Layout = null;
+}
+
+</span><span style="color: rgba(0, 0, 255, 1)">&lt;!</span><span style="color: rgba(255, 0, 255, 1)">DOCTYPE html</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+<span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">html</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">head</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">meta </span><span style="color: rgba(255, 0, 0, 1)">name</span><span style="color: rgba(0, 0, 255, 1)">="viewport"</span><span style="color: rgba(255, 0, 0, 1)"> content</span><span style="color: rgba(0, 0, 255, 1)">="width=device-width"</span> <span style="color: rgba(0, 0, 255, 1)">/&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">title</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>文件上传<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">title</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">meta </span><span style="color: rgba(255, 0, 0, 1)">name</span><span style="color: rgba(0, 0, 255, 1)">="renderer"</span><span style="color: rgba(255, 0, 0, 1)"> content</span><span style="color: rgba(0, 0, 255, 1)">="webkit"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">meta </span><span style="color: rgba(255, 0, 0, 1)">http-equiv</span><span style="color: rgba(0, 0, 255, 1)">="X-UA-Compatible"</span><span style="color: rgba(255, 0, 0, 1)"> content</span><span style="color: rgba(0, 0, 255, 1)">="IE=edge,chrome=1"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">meta </span><span style="color: rgba(255, 0, 0, 1)">name</span><span style="color: rgba(0, 0, 255, 1)">="viewport"</span><span style="color: rgba(255, 0, 0, 1)"> content</span><span style="color: rgba(0, 0, 255, 1)">="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">link </span><span style="color: rgba(255, 0, 0, 1)">href</span><span style="color: rgba(0, 0, 255, 1)">="~/src/layuiadmin/layui/css/layui.css"</span><span style="color: rgba(255, 0, 0, 1)"> rel</span><span style="color: rgba(0, 0, 255, 1)">="stylesheet"</span> <span style="color: rgba(0, 0, 255, 1)">/&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">link </span><span style="color: rgba(255, 0, 0, 1)">href</span><span style="color: rgba(0, 0, 255, 1)">="~/src/layuiadmin/style/admin.css"</span><span style="color: rgba(255, 0, 0, 1)"> rel</span><span style="color: rgba(0, 0, 255, 1)">="stylesheet"</span> <span style="color: rgba(0, 0, 255, 1)">/&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">style</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(128, 0, 0, 1)">
+        .c1 </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">{</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+            width</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 500px</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+            height</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 280px</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+            border</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 1px solid black</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+            padding</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 20px</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+            float</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> left</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span>
+        <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">}</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(128, 0, 0, 1)">
+
+        img </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">{</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+            width</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 200px</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+            height</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 200px</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span>
+        <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">}</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">style</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">head</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">body</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">div </span><span style="color: rgba(255, 0, 0, 1)">class</span><span style="color: rgba(0, 0, 255, 1)">="c1"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">button </span><span style="color: rgba(255, 0, 0, 1)">type</span><span style="color: rgba(0, 0, 255, 1)">="button"</span><span style="color: rgba(255, 0, 0, 1)"> class</span><span style="color: rgba(0, 0, 255, 1)">="layui-btn"</span><span style="color: rgba(255, 0, 0, 1)"> id</span><span style="color: rgba(0, 0, 255, 1)">="test3"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+            非自动上传+队列
+        </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">button</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">button </span><span style="color: rgba(255, 0, 0, 1)">type</span><span style="color: rgba(0, 0, 255, 1)">="button"</span><span style="color: rgba(255, 0, 0, 1)"> class</span><span style="color: rgba(0, 0, 255, 1)">="layui-btn"</span><span style="color: rgba(255, 0, 0, 1)"> id</span><span style="color: rgba(0, 0, 255, 1)">="test33"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+            点我上传
+        </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">button</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">br </span><span style="color: rgba(0, 0, 255, 1)">/&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">div </span><span style="color: rgba(255, 0, 0, 1)">id</span><span style="color: rgba(0, 0, 255, 1)">="j3"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">div</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">div</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">script </span><span style="color: rgba(255, 0, 0, 1)">src</span><span style="color: rgba(0, 0, 255, 1)">="~/src/layuiadmin/layui/layui.js"</span><span style="color: rgba(0, 0, 255, 1)">&gt;&lt;/</span><span style="color: rgba(128, 0, 0, 1)">script</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">script</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">
+        layui.use([</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">upload</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">jquery</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">], </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> () {
+            </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">var</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> $ </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">=</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> layui.$;
+            </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">var</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> upload </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">=</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> layui.upload;
+
+            </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">3.非自动上传+队列</span>
+            <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">var</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> uploadInst3 </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">=</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> upload.render({
+                elem: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">#test3</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,               </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">绑定元素</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                url: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">SingleSaveFile</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">上传接口</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                headers: { auth: window.localStorage.getItem(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">token</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">) },  </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">表头</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                data: {},                     </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">额外参数</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                acceptMime: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">image/*</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">选择框筛选文件类型(不是很准确)</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                accept: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">file</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,               </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">允许上传所有文件</span>
+                <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">exts:"zip|rar|7z",          //允许上传的后缀的类型,和accept配合使用</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                size: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">0</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,                      </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">设置文件最大可允许上传的大小，单位 KB, 0表示不限制</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                multiple: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">true</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,               </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">允许多文件上传</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                number: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">2</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,                    </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">允许上传的文件数量,配合multiple使用</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                auto: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">false</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,                   </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">选择文件后不自动上传</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                bindAction: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">#test33</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">指向一个按钮触发上传</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                choose: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> (obj) {
+                    </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">选择文件后回调</span>
+                    <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">将每次选择的文件追加到文件队列</span>
+                    <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">var</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> files </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">=</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> obj.pushFile();
+                    </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    obj.preview(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> (index, file, result) {
+                        console.log(index); </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">得到文件索引</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                        console.log(file); </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">得到文件对象</span>
+                        <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">console.log(result); //得到文件base64编码，比如图片</span>
+                        <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">obj.resetFile(index, file, '123.jpg'); //重命名文件名，layui 2.3.0 开始新增</span>
+
+                        <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">这里还可以做一些 append 文件列表 DOM 的操作</span>
+                        <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">var</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> tr </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">=</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> $([</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">&lt;tr id="upload-</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">+</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> index </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">+</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">
+                            , </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">&lt;td&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">+</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> file.name </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">+</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">&lt;/td&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">
+                            , </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">&lt;td&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">+</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> (file.size </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">/</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">1024</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">).toFixed(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">1</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">) </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">+</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">kb&lt;/td&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">
+                            , </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">&lt;td&gt;等待上传&lt;/td&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">
+                            , </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">&lt;td&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">
+                            , </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">&lt;button class="layui-btn layui-btn-xs demo-reload layui-hide"&gt;单个重传&lt;/button&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">
+                            , </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">&lt;button class="layui-btn layui-btn-xs layui-btn-danger demo-delete"&gt;删除&lt;/button&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">
+                            , </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">&lt;/td&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">
+                            , </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">&lt;/tr&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">].join(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">''</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">));
+
+                        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">单个重传（上传失败的时候配置成显示）</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                        tr.find(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">.demo-reload</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">).on(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">click</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> () {
+                            obj.upload(index, file);
+                        });
+
+                        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">删除</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                        tr.find(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">.demo-delete</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">).on(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">click</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> () {
+                            </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">delete</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> files[index]; </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">删除对应的文件</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                            tr.remove();
+                            uploadInst3.config.elem.next()[</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">0</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">].value </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">=</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">''</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">; </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">清空 input file 值，以免删除后出现同名文件不可选</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                        });
+
+                        $(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">#j3</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">).append(tr);
+
+
+                        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">obj.upload(index, file); //对上传失败的单个文件重新上传，一般在某个事件中使用</span>
+                        <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">delete files[index]; //删除列表中对应的文件，一般在某个事件中使用</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    });
+
+
+                },
+                before: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> () {
+                    </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">文件提交前回调</span>
+                    <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">layer.load(); //上传loading</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                },
+                allDone: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> (obj) {
+                    </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">当文件全部被提交后，才触发</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">
+                },
+                done: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> (res) {
+                    </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">上传成功后回调(每成功一个文件,回调一次)</span>
+                    <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">if</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> (res.status </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">==</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">ok</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">) {
+                        $(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">#j3</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">).append(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">&lt;img src="</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">+</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> res.data </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">+</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"/&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">);
+
+                        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">删除列表中待上传的文件(或者改里面的内容，改成上传成功)</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    }
+                },
+                error: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> (index, upload) {
+                    </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">请求异常回调</span>
+                   <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">配置上面显示重传按钮</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">
+                }
+            });
+
+        });
+    </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">script</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+
+<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">body</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">html</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="color: rgba(0, 0, 255, 1); font-size: 14px">运行效果：&nbsp;</span></p>
+<p><img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/1031302-20210122142521012-681314945.png" alt="" loading="lazy" style="display: block; margin-left: auto; margin-right: auto"></p>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">三.&nbsp;基于dropzonejs文件上传</span></p>
+<p><strong><span style="font-size: 16px">1. 相关地址</span></strong></p>
+<p><span style="font-size: 15px">　官网：https://www.dropzonejs.com/ （含文档和下载地址）</span></p>
+<p><strong><span style="font-size: 16px">2. 各种样例</span></strong></p>
+<p><span style="font-size: 15px">(1).单文件上传</span></p>
+<p><span style="font-size: 15px">　maxFiles: 1 将该属性设置为1,只能选择一个文件上传。</span></p>
+<p><span style="font-size: 15px">　<span style="color: rgba(255, 102, 0, 1)">另外：该控件默认会生成一个缩略图框，我们很多情况下不需要，可以采用下面的方式来解决。</span></span></p>
+<p><span style="font-size: 15px">　previewsContainer: '#hid', //将缩略图存放到指定位置(然后将该位置隐藏，则不显示缩略图了)</span></p>
+<p><span style="font-size: 15px">(2).多文件上传</span></p>
+<p><strong><span style="font-size: 15px; color: rgba(128, 0, 128, 1)">A.原理：这里的多文件上传只调用一次接口！！</span></strong></p>
+<p><span style="font-size: 15px">B.核心配置：</span></p>
+<p><span style="font-size: 15px">　uploadMultiple: true, //开启单次请求上传多个文件, 配合下面的parallelUploads适用</span></p>
+<p><span style="font-size: 15px">　parallelUploads: 6, //并行允许上传文件的个数</span></p>
+<p><span style="font-size: 15px">　maxFiles: 6, //一次性上传的文件数量上限</span></p>
+<p><span style="font-size: 15px">　successmultiple和errormultiple //多文件成功回调 和 失败回调 (只调一次)</span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码分享：</span></p>
+<div class="cnblogs_code"><img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_6722bcc3-0d70-46cb-bf35-62da32e3f429" class="code_img_closed"><img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_6722bcc3-0d70-46cb-bf35-62da32e3f429" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_6722bcc3-0d70-46cb-bf35-62da32e3f429" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 0, 255, 1)">&lt;!</span><span style="color: rgba(255, 0, 255, 1)">DOCTYPE html</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">html</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">head</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">meta </span><span style="color: rgba(255, 0, 0, 1)">charset</span><span style="color: rgba(0, 0, 255, 1)">="utf-8"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">title</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>样例1<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">title</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">style</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(128, 0, 0, 1)">
+            .c1 </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">{</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+                    width</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 600px</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+                    height</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 280px</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+                    border</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 1px solid black</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+                    padding</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 20px</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+                    float</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> left</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span>
+                <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">}</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(128, 0, 0, 1)">
+        
+             img </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">{</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+                    width</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 150px</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(255, 0, 0, 1)">
+                    height</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)"> 150px</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;</span>
+                <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">}</span>
+            <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">style</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">script </span><span style="color: rgba(255, 0, 0, 1)">src</span><span style="color: rgba(0, 0, 255, 1)">="../../../js/easyui/jquery.min.js"</span><span style="color: rgba(255, 0, 0, 1)"> type</span><span style="color: rgba(0, 0, 255, 1)">="text/javascript"</span><span style="color: rgba(255, 0, 0, 1)"> charset</span><span style="color: rgba(0, 0, 255, 1)">="utf-8"</span><span style="color: rgba(0, 0, 255, 1)">&gt;&lt;/</span><span style="color: rgba(128, 0, 0, 1)">script</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">script </span><span style="color: rgba(255, 0, 0, 1)">src</span><span style="color: rgba(0, 0, 255, 1)">="../../../js/utils/dropzone.js"</span><span style="color: rgba(255, 0, 0, 1)"> type</span><span style="color: rgba(0, 0, 255, 1)">="text/javascript"</span><span style="color: rgba(255, 0, 0, 1)"> charset</span><span style="color: rgba(0, 0, 255, 1)">="utf-8"</span><span style="color: rgba(0, 0, 255, 1)">&gt;&lt;/</span><span style="color: rgba(128, 0, 0, 1)">script</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">script </span><span style="color: rgba(255, 0, 0, 1)">type</span><span style="color: rgba(0, 0, 255, 1)">="text/javascript"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">
+            $(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">() {
+                </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)"> 单文件上传</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                $(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">#test1</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">).dropzone({
+                    url: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">http://localhost:29793/Demo_Areas/Demo1/SingleSaveFile</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,
+                    method: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">post</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,
+                    createImageThumbnails: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">false</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">前端不生成缩略图（只是不生成图，但缩略框还在）</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    headers: {
+                        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">auth</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">: window.localStorage.getItem(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">token</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">)
+                    },
+                    timeout: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">1000000</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">超时时间，单位毫秒, 默认30s</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    maxFiles: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">1</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">一次性上传的文件数量上限(选择的时候最多选1个文件，无法多选)        </span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    maxFilesize: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">10</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">最大文件上传大小 单位: MB</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    previewsContainer: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">#hid</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">将缩略图存放到指定位置(将该位置隐藏，则不显示缩略图了)                </span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    acceptedFiles: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">image/*,application/pdf,.psd,.txt</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">上传的类型    </span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    dictMaxFilesExceeded: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">您最多只能一次上传n个文件</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">替换文件数量超限的限制</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    dictInvalidFileType: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">不支持该文件类型上传</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">替换不支持类型上传的文案</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    dictFileTooBig: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">您上传的文件太大,最大允许10M</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">替换文件太大的文案</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    dictFallbackMessage: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">您的浏览器不支持该上传控件</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">替换浏览器不支持的文案</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    init:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">(){        
+                        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">var</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> that</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">=</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">this</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;
+                        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">this</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">.on(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">complete</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">(file){
+                            </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)"> that.removeFile(file);</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                            that.removeAllFiles();     </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">执行完毕后，删除本地记录，使其可以继续上传（类似重置控件）</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                        });
+                    },
+                    sending: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">(x1, x2, x3) {
+                        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">发送文件之前调用，参数详见文档</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    },
+                    success: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">(file, res, e) {
+                        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">if</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> (res.status </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">==</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">ok</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">) {
+                            </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">var</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> myUrl </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">=</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">http://localhost:29793</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">+</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> res.data;
+                            $(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">#j1</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">).append(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">&lt;img src="</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">+</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> myUrl </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">+</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"/&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">);
+                        }
+                    },
+                    error: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">(x1, errorMsg, xhr) {
+                        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">if</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> (x1.status </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">==</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">error</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">) {
+                            alert(errorMsg);
+                        }
+                    }
+                });
+                </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">多文件上传</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                $(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">#test2</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">).dropzone({
+                    url: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">http://localhost:29793/Demo_Areas/Demo1/ManySaveFile</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,
+                    method: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">post</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,
+                    createImageThumbnails: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">false</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">前端不生成缩略图（只是不生成图，但缩略框还在）</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    headers: {
+                        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">auth</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">: window.localStorage.getItem(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">token</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">)
+                    },
+                    timeout: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">1000000</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">超时时间，单位毫秒, 默认30s</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    uploadMultiple: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">true</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">开启单次请求上传多个文件, 配合下面的parallelUploads适用</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    parallelUploads: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">6</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">并行允许上传文件的个数</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    maxFiles: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">3</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">一次性上传的文件数量上限        </span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    maxFilesize: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">10</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">最大文件上传大小 单位: MB</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    previewsContainer: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">#hid</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">将缩略图存放到指定位置(将该位置隐藏，则不显示缩略图了)                </span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    acceptedFiles: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">image/*,application/pdf,.psd,.txt</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">上传的类型        </span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    dictMaxFilesExceeded: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">您最多只能一次上传n个文件</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">替换文件数量超限的限制</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    dictInvalidFileType: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">不支持该文件类型上传</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">替换不支持类型上传的文案</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    dictFileTooBig: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">您上传的文件太大,最大允许10M</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">替换文件太大的文案</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    dictFallbackMessage: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">您的浏览器不支持该上传控件</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">, </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">替换浏览器不支持的文案</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    init:</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">(){
+                        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">var</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> that</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">=</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">this</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">;
+                        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">this</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">.on(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">complete</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">,</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">(file){
+                            that.removeAllFiles();    </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">执行完毕后，删除本地记录，使其可以继续上传（类似重置控件）</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                        });
+                    },
+                    sendingmultiple: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">(x1, x2, x3) {
+                        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">发送文件之前调用，参数详见文档</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    },
+                    </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">//</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 128, 0, 1)">多文件成功回调, 不能适用success回调，success会触发多次</span>
+<span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">                    successmultiple: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">(file, res, e) {
+                        console.log(res);
+                        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">if</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> (res.status </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">==</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">ok</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">) {
+                            </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">for</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> (</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">var</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> i </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">=</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">0</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">; i </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">&lt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> res.data.length; i</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">++</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">) {
+                                </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">var</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> myUrl </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">=</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">http://localhost:29793</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">+</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> res.data[i];
+                                $(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">#j2</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">).append(</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">&lt;img src="</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">+</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> myUrl </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">+</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"/&gt;</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">'</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">);
+                            }
+                        }
+                    },
+                    errormultiple: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">(x1, errorMsg, xhr) {
+                        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">if</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> (x1.status </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">==</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">error</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">) {
+                            alert(errorMsg);
+                        }
+                    },
+                    error: </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">function</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">(x1, errorMsg, xhr) {
+                        </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 255, 1)">if</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)"> (x1.status </span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">==</span> <span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">error</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">"</span><span style="background-color: rgba(245, 245, 245, 1); color: rgba(0, 0, 0, 1)">) {
+                            alert(errorMsg);
+                        }
+                    }
+                });
+
+
+
+            });
+        </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">script</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">head</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">body</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">p</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>图片上传dropzone样例<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">p</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">div </span><span style="color: rgba(255, 0, 0, 1)">class</span><span style="color: rgba(0, 0, 255, 1)">="c1"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+            <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">button </span><span style="color: rgba(255, 0, 0, 1)">type</span><span style="color: rgba(0, 0, 255, 1)">="button"</span><span style="color: rgba(255, 0, 0, 1)"> class</span><span style="color: rgba(0, 0, 255, 1)">="layui-btn"</span><span style="color: rgba(255, 0, 0, 1)"> id</span><span style="color: rgba(0, 0, 255, 1)">="test1"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+                单文件上传(各种属性)
+            </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">button</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+            <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">br </span><span style="color: rgba(0, 0, 255, 1)">/&gt;</span>
+            <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">div </span><span style="color: rgba(255, 0, 0, 1)">id</span><span style="color: rgba(0, 0, 255, 1)">="j1"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+            <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">div</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">div</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">div </span><span style="color: rgba(255, 0, 0, 1)">class</span><span style="color: rgba(0, 0, 255, 1)">="c1"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+            <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">button </span><span style="color: rgba(255, 0, 0, 1)">type</span><span style="color: rgba(0, 0, 255, 1)">="button"</span><span style="color: rgba(255, 0, 0, 1)"> class</span><span style="color: rgba(0, 0, 255, 1)">="layui-btn"</span><span style="color: rgba(255, 0, 0, 1)"> id</span><span style="color: rgba(0, 0, 255, 1)">="test2"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+                多文件上传
+            </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">button</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+            <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">br </span><span style="color: rgba(0, 0, 255, 1)">/&gt;</span>
+            <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">div </span><span style="color: rgba(255, 0, 0, 1)">id</span><span style="color: rgba(0, 0, 255, 1)">="j2"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+            <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">div</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">div</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">div </span><span style="color: rgba(255, 0, 0, 1)">id</span><span style="color: rgba(0, 0, 255, 1)">="hid"</span><span style="color: rgba(255, 0, 0, 1)"> style</span><span style="color: rgba(0, 0, 255, 1)">="display: none;"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+            用来存放缩略图，但不显示，目前没有找到直接关闭缩略图的属性
+        </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">div</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">body</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">html</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p>&nbsp;<span style="font-size: 14px; color: rgba(0, 0, 255, 1)">运行截图：</span></p>
+<p><img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/1031302-20210125134717691-121055518.png" alt="" loading="lazy" style="display: block; margin-left: auto; margin-right: auto"></p>
+<p><strong><span style="font-size: 16px">3. 其它</span></strong></p>
+<p><span style="font-size: 15px">　支持队列上传、文件分块上传、拖拽、其它各种情况的回调等等。</span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div style="border: 2px dashed rgba(0, 0, 255, 1); border-radius: 10px; height: 120px; width: 1100px; margin-left: 60px">
+<div style="width: 0; height: 0; border-left: 20px solid rgba(0, 0, 0, 0); border-right: 20px solid rgba(0, 0, 0, 0); border-bottom: 30px solid rgba(255, 255, 0, 1); float: left; margin-top: 40px; margin-left: 20px">
+<p style="font-size: 16px; font-weight: bold; margin-top: 8px; margin-left: -2px">!</p>
+</div>
+<div style="float: left; margin-left: 16px">
+<ul style="list-style: none; padding: 0; margin-left: 20px">
+<li style="margin-bottom: 1px; line-height: 28px">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者 : <span style="color: rgba(255, 0, 0, 1)">Yaopengfei(姚鹏飞)</span></li>
+<li style="margin-bottom: 1px; line-height: 28px">博客地址 : <a style="text-decoration: none" href="http://www.cnblogs.com/yaopengfei/"><span style="color: rgba(255, 0, 0, 1)">http://www.cnblogs.com/yaopengfei/</span></a></li>
+<li style="margin-bottom: 1px; line-height: 28px">声&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明1 : 如有错误，欢迎讨论，请勿谩骂^_^。</li>
+<li style="margin-bottom: 1px; line-height: 28px">声&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明2 : 原创博客请在转载时保留原文链接或在文章开头加上本人博客地址，否则保留追究法律责任的权利。</li>
+</ul>
+</div>
+<div style="clear: both">&nbsp;</div>
+</div>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/yaopengfei/category/1896660.html" target="_blank">19-后台管理框架搭建系列</a></div>
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(14307822,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;7d349e7e-c080-e611-9fc1-ac853d9f53cc&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/yaopengfei/" target="_blank"><img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/20180828165403.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/yaopengfei/">Yaopengfei</a><br>
+            <a href="https://home.cnblogs.com/u/yaopengfei/followees/">关注 - 18</a><br>
+            <a href="https://home.cnblogs.com/u/yaopengfei/followers/">粉丝 - 828</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;7d349e7e-c080-e611-9fc1-ac853d9f53cc&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(14307822,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(14307822,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/yaopengfei/p/14293103.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/yaopengfei/p/14293103.html" title="发布于 2021-01-18 15:49"> 第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试</a>
+    <br>
+    <a href="https://www.cnblogs.com/yaopengfei/p/14328515.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/yaopengfei/p/14328515.html" title="发布于 2021-01-26 08:09">第七节：栈简介、手撸顺序栈、手撸链栈和栈的应用</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2021-01-21 14:28</span>&nbsp;
+<a href="https://www.cnblogs.com/yaopengfei/">Yaopengfei</a>&nbsp;
+阅读(<span id="post_view_count">292</span>)&nbsp;
+评论(<span id="post_comment_count">3</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=14307822" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(14307822);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;14307822&#39;, targetLink: &#39;https://www.cnblogs.com/yaopengfei/p/14307822.html&#39;, title: &#39;  第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传&#39; })">举报</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+
+<script>
+    markdown_highlight()
+    var allowComments = true, cb_blogId = 307315, cb_blogApp = 'yaopengfei', cb_blogUserGuid = '7d349e7e-c080-e611-9fc1-ac853d9f53cc';
+    var cb_entryId = 14307822, cb_entryCreatedDate = '2021-01-21 14:28', cb_postType = 1;
+    updatePostStats(
+        [cb_entryId],
+        function(id, count) { $("#post_view_count").text(count) },
+        function(id, count) { $("#post_comment_count").text(count) })
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+</script>
+<a name="!comments"></a>
+<div id="blog-comments-placeholder"><div style="color:green;margin:50px 0;font-weight:normal;">努力加载评论中...</div></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/yaopengfei/p/14307822.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/yaopengfei/p/14307822.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="cnblogs_ch"><a href="https://c.gridsumdissector.com/r/?gid=gad_545_sf71nlea&amp;ck=1057&amp;adk=10670&amp;autorefresh=__AUTOREFRESH__" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-火山引擎-1203-1209&#39;})">【推荐】字节跳动旗下火山引擎，邀您共同揭秘“云+增长”</a><br><a href="http://www.uccpsoft.com/index.htm" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-ucancode&#39;})">【推荐】跨平台组态\工控\仿真\CAD 50万行C++源码全开放免费下载！</a><br><a href="https://brands.cnblogs.com/huawei/p/2704" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-华为专区&#39;})">【推荐】华为 HarmonyOS 校园极客秀征文活动第1期，秀出你的COOL</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+        <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;"></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/coco1s/p/15627657.html" target="_blank">使用 CSS 轻松实现一些高频出现的奇形怪状按钮</a>
+    <br>
+· <a href="https://www.cnblogs.com/strick/p/15394367.html" target="_blank">带团队后的日常思考（六）</a>
+    <br>
+· <a href="https://www.cnblogs.com/xiao2shiqi/p/15623540.html" target="_blank">聊聊云原生和微服务架构</a>
+    <br>
+· <a href="https://www.cnblogs.com/youzhibing/p/15615272.html" target="_blank">异或运算的巧用：不用额外的变量，如何交换两个变量的值？ </a>
+    <br>
+· <a href="https://www.cnblogs.com/myshowtime/p/15596630.html" target="_blank">OAuth 2.1 带来了哪些变化</a>
+    <br>
+</div></div>
+        <div id="cnblogs_c2" class="under-post-card">
+            <a href="https://c.gridsumdissector.com/r/?gid=gad_545_wrrk6jpf&amp;ck=1057&amp;adk=10673&amp;autorefresh=__AUTOREFRESH__" rel="nofollow" target="_blank">
+                <img src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/volcengine-c2.jpg" alt="" onload="impressC2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_wrrk6jpf&amp;ck=1057&amp;adk=10673&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+            </a>
+        </div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/708325/" target="_blank">达摩院AliceMind上新！首个中文表格预训练模型发布，已向业界开源（2021-12-03 15:55）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708324/" target="_blank">亚马逊中国卖家遭遇最惨“黑五”：销量不及预期，封号仍在继续（2021-12-03 15:48）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708323/" target="_blank">印度人民怀念中国App（2021-12-03 15:40）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708322/" target="_blank">专利申请量超美国、高新企业数增10倍：一图看懂近20年中国科技有多燃（2021-12-03 15:34）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708321/" target="_blank">“大红大紫”的代价！英伟达再也收不了ARM了？（2021-12-03 15:31）</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+       var commentManager = new blogCommentManager();
+       commentManager.renderComments(0);
+       fixPostBody();
+
+           window.tocManager.displayDisableTocTips = false
+           window.tocManager.generateToc();
+           setTimeout(function() { incrementViewCount(cb_entryId); }, 50);       deliverT2();
+       deliverC1C2();
+       loadNewsAndKb();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);       LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+       GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+       loadOptUnderPost();
+       GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem"><!--done-->
+<h3 class="catListTitle">公告</h3>
+
+<div id="blog-news">
+    
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/yaopengfei/">
+            Yaopengfei
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/yaopengfei/" title="入园时间：2016-09-22">
+            5年2个月
+        </a>
+        <br>
+        粉丝：
+        <a href="https://home.cnblogs.com/u/yaopengfei/followers/">
+            828
+        </a>
+        <br>
+        关注：
+        <a href="https://home.cnblogs.com/u/yaopengfei/followees/">
+            18
+        </a>
+        <div id="p_b_follow"></div>
+        <script>getFollowStatus('7d349e7e-c080-e611-9fc1-ac853d9f53cc');</script>
+    </div>
+</div>
+
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2021 Yaopengfei
+<br><span id="poweredby">Powered by .NET 6 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8FO3GXnjClZGrNGr2Ic8Z1oKRvGuvHrY__zxDvG4m9_P7QkKUJAXIyhrL0S595NhP1528Nppmz5RucTlJHOZ_oUH7fTH9Y_aovgIJsxe3hukZiSlGv42EyhD1bVenovRQfA8DL90_sReN98st35o-mU">
+    <script async="" src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/js"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+    </script>
+    <script defer="" src="./第六节：基于LayUI组件的文件上传 和 基于dropzonejs的文件上传 - Yaopengfei - 博客园_files/hm.js.下载"></script>
+
+</body></html>

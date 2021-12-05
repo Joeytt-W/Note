@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)https://www.cnblogs.com/yaopengfei/p/14261414.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="description" content="一.&amp;#160;简介 1. 说明 Serilog是一个用于.net应用程序的诊断日志库。它易于设置，拥有简介的API，并且可以在所有最新的.net平台上运行。虽然它甚至在最简单的应用程序中也很有用，但">
+    <meta property="og:description" content="一.&amp;#160;简介 1. 说明 Serilog是一个用于.net应用程序的诊断日志库。它易于设置，拥有简介的API，并且可以在所有最新的.net平台上运行。虽然它甚至在最简单的应用程序中也很有用，但">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([class*="language-"]):not([highlighted]):not(.hljs) {
+        background: rgb(245, 245, 245);
+        padding: 5px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(0, 0, 0);
+        font-family: "Courier New", sans-serif;
+    }:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]) code:not(.hljs) {
+            background: rgb(245, 245, 245) !important;
+            border-color: transparent !important;
+        }</style><link rel="stylesheet" href="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/blog-common.min.css">
+    <link id="MainCss" rel="stylesheet" href="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/bundle-darkgreentrip.min.css">
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/cnblogs.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/bundle-darkgreentrip-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/yaopengfei/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/yaopengfei/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/yaopengfei/wlwmanifest.xml">
+    <script type="text/javascript" src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/encoder.js.下载"></script><script type="text/javascript" async="" src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/analytics.js.下载"></script><script>
+        var currentBlogId = 307315;
+        var currentBlogApp = 'yaopengfei';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'darkgreentrip';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function(){ return ''; } });
+            }
+        } catch(error) { }
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+    </script>
+        <script>
+            var currentPostDateAdded = '2021-01-11 11:45';
+        </script>
+    <script src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/jquery-2.2.0.min.js.下载"></script>
+    <script src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/blog-common.min.js.下载"></script><style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style><script id="hljs-script" async="" data-loaded="true" src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/highlight.min.js.下载"></script>
+    
+    
+    
+</head>
+<body class="skin-darkgreentrip has-navbar has-bannerbar">
+    <a name="top"></a>
+        <a href="https://c.gridsumdissector.com/r/?gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__" target="_blank" rel="nofollow" onclick="countClicks(&#39;ad&#39;, &#39;C0-火山引擎&#39;)">
+            <div class="bannerbar forpc" style="display: flex; background-color: #11225a;">
+                <img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/volcengine-b0c0-1.jpg" onload="impressC0(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)" alt="">
+                <img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/volcengine-b0c0-2.jpg" alt="">
+                <img style="margin-left: auto;" src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/volcengine-b0c0-3.jpg" alt="">
+            </div>
+        </a>
+            <div id="bannerbar" class="bannerbar-mobile formobile">
+                <a href="https://c.gridsumdissector.com/r/?gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__" onclick="countClicks(&#39;ad&#39;, &#39;M2-火山引擎&#39;)" rel="nofollow">
+                    <img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/volcengine-m2.jpg" alt="" onload="impressM2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+                </a>
+            </div>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding"><a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/logo.svg" alt="博客园Logo"></a></li>
+                <li><a href="https://www.cnblogs.com/" onclick="countClicks(&#39;skin-navbar-sitehome&#39;)">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-brands&#39;)">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-edu&#39;)">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/yaopengfei/"><img id="blogLogo" src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/yaopengfei/">奔跑的路上</a>
+</h1>
+<h2>广泛汲取，用心打磨，精益求精。</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/yaopengfei/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/Yaopengfei">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/yaopengfei/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 494&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 1303&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 604717">
+60万</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/yaopengfei/p/14261414.html">
+    <span>第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成</span>
+    
+
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">一.&nbsp;简介</span></p>
+<p><strong><span style="font-size: 16px">1. 说明</span></strong></p>
+<p><span style="font-size: 15px">　Serilog是一个用于.net应用程序的诊断日志库。它易于设置，拥有简介的API，并且可以在所有最新的.net平台上运行。虽然它甚至在最简单的应用程序中也很有用，但Serilog对结构化日志记录的支持在检测复杂、分布式和异步的应用程序和系统时非常出色。 和其它日志类库一样，Serilog可以输出到控制台、文件、数据库等多种载体。</span></p>
+<p><strong><span style="font-size: 16px">2. 各种输出载体</span></strong></p>
+<p><span style="font-size: 15px">　下面是各种载体对应的程序集（很多，下面仅列出部分，可去Nuget上查找），本节重点介绍：控制台、各种文件(同步和异步)、SQLServer的写入。</span></p>
+<p><span style="font-size: 15px">&nbsp;【Serilog.Sinks.Console】</span></p>
+<p><span style="font-size: 15px">&nbsp;【Serilog.Sinks.File】</span></p>
+<p><span style="font-size: 15px">&nbsp;【Serilog.Sinks.Async】 异步写入文件，需要配合File程序集一块使用</span></p>
+<p><span style="font-size: 15px">&nbsp;【Serilog.Sinks.MSSqlServer】</span></p>
+<p><span style="font-size: 15px">&nbsp;【Serilog.Sinks.MySQL】</span></p>
+<p><span style="font-size: 15px">&nbsp;【Serilog.Sinks.Seq】</span></p>
+<p><span style="font-size: 15px">&nbsp;【Serilog.Sinks.Elasticsearch】</span></p>
+<p><span style="font-size: 15px">-----下面是Core Mvc专用的，内含多个程序集</span></p>
+<p><span style="font-size: 15px">&nbsp;【Serilog.AspNetCore】</span></p>
+<p><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/1031302-20210112104913061-1046388837.png" alt="" loading="lazy"></p>
+<p><strong><span style="font-size: 16px">3. 参考地址</span></strong></p>
+<p><span style="font-size: 15px">&nbsp;(1).GitHub: https://github.com/serilog/serilog&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; https://github.com/serilog/serilog-aspnetcore </span></p>
+<p><span style="font-size: 15px">&nbsp;(2).官网：https://serilog.net/</span></p>
+<p><span style="font-size: 15px">&nbsp;(3).参考博客：https://www.cnblogs.com/RainFate/p/12073662.html</span></p>
+<p><span style="font-size: 15px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; https://www.cnblogs.com/diwu0510/p/12828519.html</span></p>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">二.&nbsp;各种实操测试</span></p>
+<p><strong><span style="font-size: 16px">1. 前言</span></strong></p>
+<p><span style="font-size: 15px">(1). 日志级别</span></p>
+<p><span style="font-size: 15px">　FATAL(致命错误) &gt; ERROR（一般错误） &gt; Warning（警告） &gt; Information（一般信息） &gt; DEBUG（调试信息）&gt;Verbose（详细模式，即全部）</span></p>
+<p><span style="font-size: 15px">　代码中通过MinimumLevel.Debug()来设置日志级别，设置后只能捕获该级别和高于该级别的日志信息了</span></p>
+<p><span style="font-size: 15px">(2). 日志模板</span></p>
+<p><span style="font-size: 15px">　框架定义的参数有：LogLevel日志级别、Message日志信息、Exception异常信息、NewLine换行，可以自定义格式如下：</span></p>
+<p><span style="font-size: 15px">&nbsp;"{NewLine}Date：{Timestamp:yyyy-MM-dd HH:mm:ss.fff}{NewLine}LogLevel：{Level}{NewLine}Message：{Message}{NewLine}{Exception}" + new string('-', 100);</span></p>
+<p><strong><span style="font-size: 16px">2. 输出控制台</span></strong></p>
+<p><span style="font-size: 15px">(1). 通过Nuget安装程序集：【Serilog 2.10】【Serilog.Sinks.Console 3.1.1】</span></p>
+<p><span style="font-size: 15px">(2). 设置日志捕获级别、日志模板、输出途径（WriteTo.Console），并且createLogger即可</span></p>
+<p><span style="font-size: 15px">(3). 通过各种方法进行调用</span></p>
+<p><strong><span style="font-size: 15px; color: rgba(255, 0, 0, 1)">注： Log.CloseAndFlush();就销毁了该对象，再次使用需要重新创建了。</span></strong></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)"><strong>代码分析：</strong></span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 0, 0, 1)">            {
+                </span><span style="color: rgba(0, 0, 255, 1)">string</span> SerilogOutputTemplate = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{NewLine}Date：{Timestamp:yyyy-MM-dd HH:mm:ss.fff}{NewLine}LogLevel：{Level}{NewLine}Message：{Message}{NewLine}{Exception}</span><span style="color: rgba(128, 0, 0, 1)">"</span> + <span style="color: rgba(0, 0, 255, 1)">new</span> <span style="color: rgba(0, 0, 255, 1)">string</span>(<span style="color: rgba(128, 0, 0, 1)">'</span><span style="color: rgba(128, 0, 0, 1)">-</span><span style="color: rgba(128, 0, 0, 1)">'</span>, <span style="color: rgba(128, 0, 128, 1)">100</span><span style="color: rgba(0, 0, 0, 1)">);
+                Log.Logger </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> LoggerConfiguration()
+                            .MinimumLevel.Debug() </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 捕获的最小日志级别</span>
+<span style="color: rgba(0, 0, 0, 1)">                            .WriteTo.Console(LogEventLevel.Verbose, SerilogOutputTemplate)
+                            .CreateLogger();
+                Log.Information(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">123456789</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                </span><span style="color: rgba(0, 0, 255, 1)">try</span><span style="color: rgba(0, 0, 0, 1)">
+                {
+                    </span><span style="color: rgba(0, 0, 255, 1)">int</span>.Parse(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">sfsdfsf</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                }
+                </span><span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (Exception ex)
+                {
+                    Log.Error(ex, ex.Message);
+                }
+                Log.CloseAndFlush();
+            }</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><strong><span style="font-size: 16px">3. 输入文件-同步</span></strong></p>
+<p><span style="font-size: 15px">(1). 通过Nuget安装程序集：【Serilog 2.10】【Serilog.Sinks.File 4.1.0】</span></p>
+<p><span style="font-size: 15px">(2). 设置日志捕获级别、日志模板、输出途径（WriteTo.File），并且createLogger即可</span></p>
+<p><span style="font-size: 15px">(3). 通过各种方法进行调用 </span></p>
+<p><span style="font-size: 15px; color: rgba(128, 0, 128, 1)">PS：WriteTo.File详解</span></p>
+<p><span style="font-size: 15px; color: rgba(128, 0, 128, 1)">　path：默认路径是程序的bin目录+path参数，当然也可以写绝对路径，只需要写入参数就可以了</span></p>
+<p><span style="font-size: 15px; color: rgba(128, 0, 128, 1)">　rollingInterval：创建文件的类别，可以是分钟，小时，天，月。 此参数可以让创建的log文件名 + 时间。例如ApiLog20210109.log</span></p>
+<p><span style="font-size: 15px; color: rgba(128, 0, 128, 1)">　outputTemplate：日志模板，可以自定义</span></p>
+<p><span style="font-size: 15px; color: rgba(128, 0, 128, 1)">　retainedFileCountLimit：设置日志文件个数最大值，默认31，意思就是只保留最近的31个日志文件,等于null时永远保留文件。</span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码分享：</span></p>
+<div class="cnblogs_code"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_1c281c81-b845-4646-a68f-3e0893c95f5c" class="code_img_closed"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_1c281c81-b845-4646-a68f-3e0893c95f5c" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_1c281c81-b845-4646-a68f-3e0893c95f5c" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 0, 0, 1)">            {
+                </span><span style="color: rgba(0, 0, 255, 1)">string</span> SerilogOutputTemplate = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{NewLine}Date：{Timestamp:yyyy-MM-dd HH:mm:ss.fff}{NewLine}LogLevel：{Level}{NewLine}Message：{Message}{NewLine}{Exception}</span><span style="color: rgba(128, 0, 0, 1)">"</span> + <span style="color: rgba(0, 0, 255, 1)">new</span> <span style="color: rgba(0, 0, 255, 1)">string</span>(<span style="color: rgba(128, 0, 0, 1)">'</span><span style="color: rgba(128, 0, 0, 1)">-</span><span style="color: rgba(128, 0, 0, 1)">'</span>, <span style="color: rgba(128, 0, 128, 1)">100</span><span style="color: rgba(0, 0, 0, 1)">);
+                Log.Logger </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> LoggerConfiguration()
+                            .MinimumLevel.Debug() </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 捕获的最小日志级别</span>
+                            .WriteTo.File(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">MyLogs\\ApiLog.txt</span><span style="color: rgba(128, 0, 0, 1)">"</span>, rollingInterval: RollingInterval.Day, outputTemplate: SerilogOutputTemplate, retainedFileCountLimit: <span style="color: rgba(0, 0, 255, 1)">null</span><span style="color: rgba(0, 0, 0, 1)">)
+                            .CreateLogger();
+                Log.Information(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">123456789</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                </span><span style="color: rgba(0, 0, 255, 1)">try</span><span style="color: rgba(0, 0, 0, 1)">
+                {
+                    </span><span style="color: rgba(0, 0, 255, 1)">int</span>.Parse(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">sfsdfsf</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                }
+                </span><span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (Exception ex)
+                {
+                    Log.Error(ex, ex.Message);
+
+                }
+                Log.CloseAndFlush();
+            }</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">日志文件内容：</span></p>
+<p><strong><span style="font-size: 16px"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/1031302-20210112113414761-29948397.png" alt="" width="1273" height="305" loading="lazy" style="display: block; margin-left: auto; margin-right: auto"></span></strong></p>
+<p><strong><span style="font-size: 16px">4. 输入文件-异步（推荐）</span></strong></p>
+<p><span style="font-size: 15px">(1). 通过Nuget安装程序集：【Serilog 2.10】【Serilog.Sinks.File 4.1.0】【Serilog.Sinks.Async 1.4.0】</span></p>
+<p><span style="font-size: 15px">(2). 设置日志捕获级别、日志模板、输出途径（WriteTo.Async(a =&gt; a.File())），并且createLogger即可</span></p>
+<p><span style="font-size: 15px">(3). 通过各种方法进行调用</span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码分享：</span></p>
+<div class="cnblogs_code"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_2afbb0f8-cbe4-4976-8154-6dd0d703762f" class="code_img_closed"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_2afbb0f8-cbe4-4976-8154-6dd0d703762f" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_2afbb0f8-cbe4-4976-8154-6dd0d703762f" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 0, 0, 1)">            {
+                </span><span style="color: rgba(0, 0, 255, 1)">string</span> SerilogOutputTemplate = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{NewLine}Date：{Timestamp:yyyy-MM-dd HH:mm:ss.fff}{NewLine}LogLevel：{Level}{NewLine}Message：{Message}{NewLine}{Exception}</span><span style="color: rgba(128, 0, 0, 1)">"</span> + <span style="color: rgba(0, 0, 255, 1)">new</span> <span style="color: rgba(0, 0, 255, 1)">string</span>(<span style="color: rgba(128, 0, 0, 1)">'</span><span style="color: rgba(128, 0, 0, 1)">-</span><span style="color: rgba(128, 0, 0, 1)">'</span>, <span style="color: rgba(128, 0, 128, 1)">100</span><span style="color: rgba(0, 0, 0, 1)">);
+                Log.Logger </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> LoggerConfiguration()
+                            .MinimumLevel.Debug() </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 捕获的最小日志级别</span>
+                            .WriteTo.Async(a =&gt; a.File(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">My_Logs\\ApiLog.txt</span><span style="color: rgba(128, 0, 0, 1)">"</span>, rollingInterval: RollingInterval.Day, outputTemplate: SerilogOutputTemplate, retainedFileCountLimit: <span style="color: rgba(0, 0, 255, 1)">null</span><span style="color: rgba(0, 0, 0, 1)">))
+                            .CreateLogger();
+                Log.Information(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">123456789</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                </span><span style="color: rgba(0, 0, 255, 1)">try</span><span style="color: rgba(0, 0, 0, 1)">
+                {
+                    </span><span style="color: rgba(0, 0, 255, 1)">int</span>.Parse(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">sfsdfsf</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                }
+                </span><span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (Exception ex)
+                {
+                    Log.Error(ex, ex.Message);
+                }
+                Log.CloseAndFlush();
+            }</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><strong><span style="font-size: 16px">5. 按照日志级别存放到不同文件夹-(同步、异步）</span></strong></p>
+<p><span style="font-size: 15px">(1). 通过Nuget安装程序集：【Serilog 2.10】【Serilog.Sinks.File 4.1.0】【Serilog.Sinks.Async 1.4.0】</span></p>
+<p><span style="font-size: 15px">(2). 通过Filter设置日志级别，其它类似</span></p>
+<p><span style="font-size: 15px">(3). 通过各种方法进行调用</span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码分享：</span></p>
+<div class="cnblogs_code"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_fc6497ec-d426-4876-be5d-7af863930d85" class="code_img_closed"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_fc6497ec-d426-4876-be5d-7af863930d85" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_fc6497ec-d426-4876-be5d-7af863930d85" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 0, 0, 1)">            {
+                </span><span style="color: rgba(0, 0, 255, 1)">string</span> LogFilePath(<span style="color: rgba(0, 0, 255, 1)">string</span> LogEvent) =&gt; $<span style="color: rgba(128, 0, 0, 1)">@"</span><span style="color: rgba(128, 0, 0, 1)">ALL_Logs\{LogEvent}\log.log</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+                </span><span style="color: rgba(0, 0, 255, 1)">string</span> SerilogOutputTemplate = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{NewLine}Date：{Timestamp:yyyy-MM-dd HH:mm:ss.fff}{NewLine}LogLevel：{Level}{NewLine}Message：{Message}{NewLine}{Exception}</span><span style="color: rgba(128, 0, 0, 1)">"</span> + <span style="color: rgba(0, 0, 255, 1)">new</span> <span style="color: rgba(0, 0, 255, 1)">string</span>(<span style="color: rgba(128, 0, 0, 1)">'</span><span style="color: rgba(128, 0, 0, 1)">-</span><span style="color: rgba(128, 0, 0, 1)">'</span>, <span style="color: rgba(128, 0, 128, 1)">100</span><span style="color: rgba(0, 0, 0, 1)">);
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">同步写法
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">Log.Logger = new LoggerConfiguration()
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">            .Enrich.FromLogContext()
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">            .MinimumLevel.Debug() </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 所有Sink的最小记录级别
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">            .WriteTo.Logger(lg =&gt; lg.Filter.ByIncludingOnly(p =&gt; p.Level == LogEventLevel.Debug).WriteTo.File(LogFilePath("Debug"), rollingInterval: RollingInterval.Day, outputTemplate: SerilogOutputTemplate))
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">            .WriteTo.Logger(lg =&gt; lg.Filter.ByIncludingOnly(p =&gt; p.Level == LogEventLevel.Information).WriteTo.File(LogFilePath("Information"), rollingInterval: RollingInterval.Day, outputTemplate: SerilogOutputTemplate))
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">            .WriteTo.Logger(lg =&gt; lg.Filter.ByIncludingOnly(p =&gt; p.Level == LogEventLevel.Warning).WriteTo.File(LogFilePath("Warning"), rollingInterval: RollingInterval.Day, outputTemplate: SerilogOutputTemplate))
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">            .WriteTo.Logger(lg =&gt; lg.Filter.ByIncludingOnly(p =&gt; p.Level == LogEventLevel.Error).WriteTo.File(LogFilePath("Error"), rollingInterval: RollingInterval.Day, outputTemplate: SerilogOutputTemplate))
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">            .WriteTo.Logger(lg =&gt; lg.Filter.ByIncludingOnly(p =&gt; p.Level == LogEventLevel.Fatal).WriteTo.File(LogFilePath("Fatal"), rollingInterval: RollingInterval.Day, outputTemplate: SerilogOutputTemplate))
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">            .CreateLogger();
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">异步写法</span>
+                Log.Logger = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> LoggerConfiguration()
+                            .Enrich.FromLogContext()
+                            .MinimumLevel.Debug() </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 所有Sink的最小记录级别</span>
+                            .WriteTo.Logger(lg =&gt; lg.Filter.ByIncludingOnly(p =&gt; p.Level == LogEventLevel.Debug).WriteTo.Async(a =&gt; a.File(LogFilePath(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Debug</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">), rollingInterval: RollingInterval.Day, outputTemplate: SerilogOutputTemplate)))
+                            .WriteTo.Logger(lg </span>=&gt; lg.Filter.ByIncludingOnly(p =&gt; p.Level == LogEventLevel.Information).WriteTo.Async(a =&gt; a.File(LogFilePath(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Information</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">), rollingInterval: RollingInterval.Day, outputTemplate: SerilogOutputTemplate)))
+                            .WriteTo.Logger(lg </span>=&gt; lg.Filter.ByIncludingOnly(p =&gt; p.Level == LogEventLevel.Warning).WriteTo.Async(a =&gt; a.File(LogFilePath(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Warning</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">), rollingInterval: RollingInterval.Day, outputTemplate: SerilogOutputTemplate)))
+                            .WriteTo.Logger(lg </span>=&gt; lg.Filter.ByIncludingOnly(p =&gt; p.Level == LogEventLevel.Error).WriteTo.Async(a =&gt; a.File(LogFilePath(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Error</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">), rollingInterval: RollingInterval.Day, outputTemplate: SerilogOutputTemplate)))
+                            .WriteTo.Logger(lg </span>=&gt; lg.Filter.ByIncludingOnly(p =&gt; p.Level == LogEventLevel.Fatal).WriteTo.Async(a =&gt; a.File(LogFilePath(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Fatal</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">), rollingInterval: RollingInterval.Day, outputTemplate: SerilogOutputTemplate)))
+                            .CreateLogger();
+
+                Log.Debug(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">111111111</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                Log.Information(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">22222222222</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                Log.Warning(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">33333333333</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                Log.Error(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">44444444444</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                Log.Fatal(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">5555555555555</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                </span><span style="color: rgba(0, 0, 255, 1)">try</span><span style="color: rgba(0, 0, 0, 1)">
+                {
+                    </span><span style="color: rgba(0, 0, 255, 1)">int</span>.Parse(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">sfsdfsf</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                }
+                </span><span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (Exception ex)
+                {
+                    Log.Error(ex, ex.Message);
+                }
+                Log.CloseAndFlush();
+            }</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><strong><span style="font-size: 16px">6. 自定义输出到指定文件夹（推荐）</span></strong></p>
+<p><span style="font-size: 15px">　思路：这里采用过滤器的来实现,需要在日志内容中定义一个属性,比如下面的{position},然后通过ByIncludingOnly(Matching.WithProperty&lt;string&gt;("position", p =&gt; p == "WebLog"))来筛选，</span><span style="font-size: 15px">然后再指定存放到那个文件夹下。</span></p>
+<p><strong><span style="font-size: 15px; color: rgba(255, 0, 0, 1)">注：如果加上$符号，还要定义过滤器属性，则需要用{{}}</span></strong></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码分享：</span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 0, 0, 1)">{
+                </span><span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> LogFilePath(<span style="color: rgba(0, 0, 255, 1)">string</span> FileName) =&gt; $<span style="color: rgba(128, 0, 0, 1)">@"</span><span style="color: rgba(128, 0, 0, 1)">ALL_Logs\{FileName}\log.log</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+                </span><span style="color: rgba(0, 0, 255, 1)">string</span> SerilogOutputTemplate = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{NewLine}Date：{Timestamp:yyyy-MM-dd HH:mm:ss.fff}{NewLine}LogLevel：{Level}{NewLine}Message：{Message}{NewLine}{Exception}</span><span style="color: rgba(128, 0, 0, 1)">"</span> + <span style="color: rgba(0, 0, 255, 1)">new</span> <span style="color: rgba(0, 0, 255, 1)">string</span>(<span style="color: rgba(128, 0, 0, 1)">'</span><span style="color: rgba(128, 0, 0, 1)">-</span><span style="color: rgba(128, 0, 0, 1)">'</span>, <span style="color: rgba(128, 0, 128, 1)">100</span><span style="color: rgba(0, 0, 0, 1)">);
+                Log.Logger </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> LoggerConfiguration()
+                            .Enrich.FromLogContext()
+                            .MinimumLevel.Debug() </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 所有Sink的最小记录级别</span>
+                            .WriteTo.Logger(lg =&gt; lg.Filter.ByIncludingOnly(Matching.WithProperty&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>&gt;(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">position</span><span style="color: rgba(128, 0, 0, 1)">"</span>, p =&gt; p == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">WebLog</span><span style="color: rgba(128, 0, 0, 1)">"</span>)).WriteTo.Async(a =&gt; a.File(LogFilePath(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">WebLog</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">), rollingInterval: RollingInterval.Day, outputTemplate: SerilogOutputTemplate)))
+                            .WriteTo.Logger(lg </span>=&gt; lg.Filter.ByIncludingOnly(Matching.WithProperty&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>&gt;(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">position</span><span style="color: rgba(128, 0, 0, 1)">"</span>, p =&gt; p == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ApiLog</span><span style="color: rgba(128, 0, 0, 1)">"</span>)).WriteTo.Async(a =&gt; a.File(LogFilePath(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ApiLog</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">), rollingInterval: RollingInterval.Day, outputTemplate: SerilogOutputTemplate)))
+                            .WriteTo.Logger(lg </span>=&gt; lg.Filter.ByIncludingOnly(Matching.WithProperty&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>&gt;(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">position</span><span style="color: rgba(128, 0, 0, 1)">"</span>, p =&gt; p == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ErrorLog</span><span style="color: rgba(128, 0, 0, 1)">"</span>)).WriteTo.Async(a =&gt; a.File(LogFilePath(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ErrorLog</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">), rollingInterval: RollingInterval.Day, outputTemplate: SerilogOutputTemplate)))
+                            .CreateLogger();
+                Log.Information(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{position}:111111</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">WebLog</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                Log.Information(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{position}:222222</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ApiLog</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                Log.Information($</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{position}:333333</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ErrorLog</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                </span><span style="color: rgba(0, 0, 255, 1)">try</span><span style="color: rgba(0, 0, 0, 1)">
+                {
+                    </span><span style="color: rgba(0, 0, 255, 1)">int</span>.Parse(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">sfsdfsf</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                }
+                </span><span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (Exception ex)
+                {
+                    Log.Error(ex, </span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{position}:</span><span style="color: rgba(128, 0, 0, 1)">"</span> + ex.Message, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ErrorLog</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+
+                }
+                Log.CloseAndFlush();
+}</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><strong><span style="font-size: 16px">7. 输入SQLServer(未完成)</span></strong></p>
+<p><span style="font-size: 15px">　可参考：https://www.cnblogs.com/RainFate/p/12073662.html</span></p>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">三.&nbsp;与Core&nbsp;MVC集成</span></p>
+<p><span style="font-size: 15px; color: rgba(0, 0, 255, 1)">前提：</span></p>
+<p><span style="font-size: 15px; color: rgba(0, 0, 255, 1)">　通过Nuget安装程序集：【Serilog.AspNetCore 3.4.0】,该程序集涵盖了多个子程序，可以自己封装，你可以和控制台那样自行选择需要的程序集进行使用。</span></p>
+<p><strong><span style="font-size: 16px">1. 写法1</span></strong></p>
+<p><span style="font-size: 15px">　类似控制台的形式，直接调用即可，可以自行封装一下, 然后在ConfigureService中实例化, 使用的时候直接通过log对象调用即可。这里封装LogUtils帮助类，<strong><span style="color: rgba(255, 102, 0, 1)">可以分文件夹存储</span></strong>，包括普通信息的记录和Error错误，其它可自行封装。</span></p>
+<p><strong><span style="font-size: 15px; color: rgba(128, 0, 128, 1)">PS：这种写法和上述控制台的类似,根据需要引入需要的程序集即可。</span></strong></p>
+<p><span style="color: rgba(0, 0, 255, 1)"><span style="font-size: 15px">日志帮助类封装代码：</span></span></p>
+<div class="cnblogs_code"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_e4aa0725-971d-4897-b9ca-f99228de45c3" class="code_img_closed"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_e4aa0725-971d-4897-b9ca-f99228de45c3" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_e4aa0725-971d-4897-b9ca-f99228de45c3" class="cnblogs_code_hide">
+<pre>   <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 日志帮助类
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> LogUtils
+    {
+        </span><span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> log1Name = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">WebLog</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+        </span><span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> log2Name = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ApiLog</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+        </span><span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> log3Name = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ErrorLog</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 初始化日志
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">void</span><span style="color: rgba(0, 0, 0, 1)"> InitLog()
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> LogFilePath(<span style="color: rgba(0, 0, 255, 1)">string</span> FileName) =&gt; $<span style="color: rgba(128, 0, 0, 1)">@"</span><span style="color: rgba(128, 0, 0, 1)">{AppContext.BaseDirectory}ALL_Logs\{FileName}\log.log</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+            </span><span style="color: rgba(0, 0, 255, 1)">string</span> SerilogOutputTemplate = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{NewLine}Date：{Timestamp:yyyy-MM-dd HH:mm:ss.fff}{NewLine}LogLevel：{Level}{NewLine}Message：{Message}{NewLine}{Exception}</span><span style="color: rgba(128, 0, 0, 1)">"</span> + <span style="color: rgba(0, 0, 255, 1)">new</span> <span style="color: rgba(0, 0, 255, 1)">string</span>(<span style="color: rgba(128, 0, 0, 1)">'</span><span style="color: rgba(128, 0, 0, 1)">-</span><span style="color: rgba(128, 0, 0, 1)">'</span>, <span style="color: rgba(128, 0, 128, 1)">100</span><span style="color: rgba(0, 0, 0, 1)">);
+            Log.Logger </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> LoggerConfiguration()
+                        .Enrich.FromLogContext()
+                        .MinimumLevel.Debug() </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 所有Sink的最小记录级别</span>
+                        .WriteTo.Logger(lg =&gt; lg.Filter.ByIncludingOnly(Matching.WithProperty&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>&gt;(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">position</span><span style="color: rgba(128, 0, 0, 1)">"</span>, p =&gt; p == log1Name)).WriteTo.Async(a =&gt;<span style="color: rgba(0, 0, 0, 1)"> a.File(LogFilePath(log1Name), rollingInterval: RollingInterval.Day, outputTemplate: SerilogOutputTemplate)))
+                        .WriteTo.Logger(lg </span>=&gt; lg.Filter.ByIncludingOnly(Matching.WithProperty&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>&gt;(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">position</span><span style="color: rgba(128, 0, 0, 1)">"</span>, p =&gt; p == log2Name)).WriteTo.Async(a =&gt;<span style="color: rgba(0, 0, 0, 1)"> a.File(LogFilePath(log2Name), rollingInterval: RollingInterval.Day, outputTemplate: SerilogOutputTemplate)))
+                        .WriteTo.Logger(lg </span>=&gt; lg.Filter.ByIncludingOnly(Matching.WithProperty&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>&gt;(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">position</span><span style="color: rgba(128, 0, 0, 1)">"</span>, p =&gt; p == log3Name)).WriteTo.Async(a =&gt;<span style="color: rgba(0, 0, 0, 1)"> a.File(LogFilePath(log3Name), rollingInterval: RollingInterval.Day, outputTemplate: SerilogOutputTemplate)))
+                        .CreateLogger();
+        }
+
+
+        </span><span style="color: rgba(0, 128, 0, 1)">/*</span><span style="color: rgba(0, 128, 0, 1)">****************************下面是不同日志级别********************************************</span><span style="color: rgba(0, 128, 0, 1)">*/</span>
+        <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> FATAL(致命错误) &gt; ERROR（一般错误） &gt; Warning（警告） &gt; Information（一般信息） &gt; DEBUG（调试信息）&gt;Verbose（详细模式，即全部）</span>
+
+
+
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 普通日志
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="msg"&gt;&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="fileName"&gt;&lt;/param&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">void</span> Info(<span style="color: rgba(0, 0, 255, 1)">string</span> msg, <span style="color: rgba(0, 0, 255, 1)">string</span> fileName=<span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)">)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (fileName==<span style="color: rgba(128, 0, 0, 1)">""</span>|| fileName ==<span style="color: rgba(0, 0, 0, 1)"> log1Name)
+            {
+                Log.Information($</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{{position}}:{msg}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, log1Name);
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">else</span> <span style="color: rgba(0, 0, 255, 1)">if</span> (fileName ==<span style="color: rgba(0, 0, 0, 1)"> log2Name)
+            {
+                Log.Information($</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{{position}}:{msg}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, log2Name);
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">else</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">输入其他的话，还是存放到第一个文件夹</span>
+                Log.Information($<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{{position}}:{msg}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, log1Name);
+            }
+        }
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> Error方法统一存放到ErrorLog文件夹
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="msg"&gt;&lt;/param&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">void</span><span style="color: rgba(0, 0, 0, 1)"> Error(Exception ex)
+        {
+            Log.Error(ex, </span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{position}:</span><span style="color: rgba(128, 0, 0, 1)">"</span> +<span style="color: rgba(0, 0, 0, 1)"> ex.Message, log3Name);
+        }
+
+
+    }</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="color: rgba(0, 0, 255, 1)"><span style="font-size: 15px">ConfigureService注册：</span></span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre> <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">void</span><span style="color: rgba(0, 0, 0, 1)"> ConfigureServices(IServiceCollection services)
+ {
+      </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">日志初始化</span>
+<span style="color: rgba(0, 0, 0, 1)">      LogUtils.InitLog();
+
+      services.AddControllersWithViews();
+ }</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><span style="color: rgba(0, 0, 255, 1)"><span style="font-size: 15px">调用代码：</span></span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre> <span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> IActionResult Index()
+ {
+      LogUtils.Info(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">111111111</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">WebLog</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+      LogUtils.Info(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">222222222</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ApiLog</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+
+       </span><span style="color: rgba(0, 0, 255, 1)">try</span><span style="color: rgba(0, 0, 0, 1)">
+       {
+             </span><span style="color: rgba(0, 0, 255, 1)">int</span>.Parse(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">sfsdfafd</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+        }
+        </span><span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (Exception ex)
+        {
+                LogUtils.Error(ex);
+         }
+         </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> View();
+}</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><strong><span style="font-size: 16px">2. 写法2</span></strong></p>
+<p><span style="font-size: 15px">(1). 在Program中通过UseSerilog进行初始化日志，和上述基本类似，<span style="color: rgba(255, 102, 0, 1)">特别注意，这里要重写一下系统自带的日志捕捉，可以写为MinimumLevel.Override("Microsoft", LogEventLevel.Fatal)&nbsp;</span>否则，生成的日志文件中会生成很多我们不需要的日志信息。</span></p>
+<p><span style="font-size: 15px">(2). 在控制器中注入ILogger对象，使用即可。</span></p>
+<p><strong><span style="color: rgba(255, 0, 0, 1); font-size: 15px">注：这里实际上覆盖系统自带的日志。</span></strong></p>
+<p><span style="color: rgba(0, 0, 255, 1)">program代码分享：&nbsp;</span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre>        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> IHostBuilder CreateHostBuilder(<span style="color: rgba(0, 0, 255, 1)">string</span>[] args) =&gt;<span style="color: rgba(0, 0, 0, 1)">
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder </span>=&gt;<span style="color: rgba(0, 0, 0, 1)">
+                {
+                    webBuilder.UseStartup</span>&lt;Startup&gt;<span style="color: rgba(0, 0, 0, 1)">();
+
+                    </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">初始化日志</span>
+                    webBuilder.UseSerilog((hostingContext, loggerConfiguration) =&gt;<span style="color: rgba(0, 0, 0, 1)">
+                    {
+                        </span><span style="color: rgba(0, 0, 255, 1)">string</span> SerilogOutputTemplate = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{NewLine}Date：{Timestamp:yyyy-MM-dd HH:mm:ss.fff}{NewLine}LogLevel：</span><span style="color: rgba(128, 0, 0, 1)">"</span> +
+                                                       <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{Level}{NewLine}Message：{Message}{NewLine}{Exception}</span><span style="color: rgba(128, 0, 0, 1)">"</span> + <span style="color: rgba(0, 0, 255, 1)">new</span> <span style="color: rgba(0, 0, 255, 1)">string</span>(<span style="color: rgba(128, 0, 0, 1)">'</span><span style="color: rgba(128, 0, 0, 1)">-</span><span style="color: rgba(128, 0, 0, 1)">'</span>, <span style="color: rgba(128, 0, 128, 1)">100</span><span style="color: rgba(0, 0, 0, 1)">);
+                        loggerConfiguration
+                        .MinimumLevel.Debug()
+                        .MinimumLevel.Override(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Microsoft</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, LogEventLevel.Fatal)
+                        .Enrich.FromLogContext()
+                       .WriteTo.File($</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{AppContext.BaseDirectory}MyLogs\\log.log</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, rollingInterval: RollingInterval.Day, outputTemplate: SerilogOutputTemplate);
+                    });
+
+                });</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><span style="color: rgba(0, 0, 255, 1)">调用代码分享：</span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> Home2Controller : Controller
+    {
+        </span><span style="color: rgba(0, 0, 255, 1)">private</span> <span style="color: rgba(0, 0, 255, 1)">readonly</span> ILogger&lt;Home2Controller&gt;<span style="color: rgba(0, 0, 0, 1)"> _logger;
+        </span><span style="color: rgba(0, 0, 255, 1)">public</span> Home2Controller(ILogger&lt;Home2Controller&gt;<span style="color: rgba(0, 0, 0, 1)"> logger)
+        {
+            _logger </span>=<span style="color: rgba(0, 0, 0, 1)"> logger;
+        }
+
+        </span><span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> Index()
+        {
+
+            </span><span style="color: rgba(0, 0, 255, 1)">for</span> (<span style="color: rgba(0, 0, 255, 1)">int</span> i = <span style="color: rgba(128, 0, 128, 1)">0</span>; i &lt; <span style="color: rgba(128, 0, 128, 1)">50</span>; i++<span style="color: rgba(0, 0, 0, 1)">)
+            {
+                Task.Run(() </span>=&gt;<span style="color: rgba(0, 0, 0, 1)">
+                {
+                    _logger.LogInformation($</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">测试日志信息：{Guid.NewGuid().ToString(</span><span style="color: rgba(128, 0, 0, 1)">"</span>N<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">)}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+
+                });
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ok</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+        }
+    }</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div style="border: 2px dashed rgba(0, 0, 255, 1); border-radius: 10px; height: 120px; width: 1100px; margin-left: 60px">
+<div style="width: 0; height: 0; border-left: 20px solid rgba(0, 0, 0, 0); border-right: 20px solid rgba(0, 0, 0, 0); border-bottom: 30px solid rgba(255, 255, 0, 1); float: left; margin-top: 40px; margin-left: 20px">
+<p style="font-size: 16px; font-weight: bold; margin-top: 8px; margin-left: -2px">!</p>
+</div>
+<div style="float: left; margin-left: 16px">
+<ul style="list-style: none; padding: 0; margin-left: 20px">
+<li style="margin-bottom: 1px; line-height: 28px">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者 : <span style="color: rgba(255, 0, 0, 1)">Yaopengfei(姚鹏飞)</span></li>
+<li style="margin-bottom: 1px; line-height: 28px">博客地址 : <a style="text-decoration: none" href="http://www.cnblogs.com/yaopengfei/"><span style="color: rgba(255, 0, 0, 1)">http://www.cnblogs.com/yaopengfei/</span></a></li>
+<li style="margin-bottom: 1px; line-height: 28px">声&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明1 : 如有错误，欢迎讨论，请勿谩骂^_^。</li>
+<li style="margin-bottom: 1px; line-height: 28px">声&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明2 : 原创博客请在转载时保留原文链接或在文章开头加上本人博客地址，否则保留追究法律责任的权利。</li>
+</ul>
+</div>
+<div style="clear: both">&nbsp;</div>
+</div>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/yaopengfei/category/1239348.html" target="_blank">03-Asp.Net Core</a></div>
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(14261414,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;7d349e7e-c080-e611-9fc1-ac853d9f53cc&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/yaopengfei/" target="_blank"><img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/20180828165403.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/yaopengfei/">Yaopengfei</a><br>
+            <a href="https://home.cnblogs.com/u/yaopengfei/followees/">关注 - 18</a><br>
+            <a href="https://home.cnblogs.com/u/yaopengfei/followers/">粉丝 - 828</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;7d349e7e-c080-e611-9fc1-ac853d9f53cc&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(14261414,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(14261414,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/yaopengfei/p/14244416.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/yaopengfei/p/14244416.html" title="发布于 2021-01-07 08:15">第三节：必备中间件集成2(缓存、认证授权、自定义黑名单、日志等)</a>
+    <br>
+    <a href="https://www.cnblogs.com/yaopengfei/p/14274402.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/yaopengfei/p/14274402.html" title="发布于 2021-01-13 20:55">第四节：DB支持SQLServer和MySQL及BaseService大数据处理封装、常规封装</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2021-01-11 11:45</span>&nbsp;
+<a href="https://www.cnblogs.com/yaopengfei/">Yaopengfei</a>&nbsp;
+阅读(<span id="post_view_count">998</span>)&nbsp;
+评论(<span id="post_comment_count">3</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=14261414" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(14261414);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;14261414&#39;, targetLink: &#39;https://www.cnblogs.com/yaopengfei/p/14261414.html&#39;, title: &#39;第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成&#39; })">举报</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+
+<script>
+    markdown_highlight()
+    var allowComments = true, cb_blogId = 307315, cb_blogApp = 'yaopengfei', cb_blogUserGuid = '7d349e7e-c080-e611-9fc1-ac853d9f53cc';
+    var cb_entryId = 14261414, cb_entryCreatedDate = '2021-01-11 11:45', cb_postType = 1;
+    updatePostStats(
+        [cb_entryId],
+        function(id, count) { $("#post_view_count").text(count) },
+        function(id, count) { $("#post_comment_count").text(count) })
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+</script>
+<a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/yaopengfei/p/14261414.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/yaopengfei/p/14261414.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="cnblogs_ch"><a href="https://c.gridsumdissector.com/r/?gid=gad_545_sf71nlea&amp;ck=1057&amp;adk=10670&amp;autorefresh=__AUTOREFRESH__" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-火山引擎-1203-1209&#39;})">【推荐】字节跳动旗下火山引擎，邀您共同揭秘“云+增长”</a><br><a href="http://www.uccpsoft.com/index.htm" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-ucancode&#39;})">【推荐】跨平台组态\工控\仿真\CAD 50万行C++源码全开放免费下载！</a><br><a href="https://brands.cnblogs.com/huawei/p/2704" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-华为专区&#39;})">【推荐】华为 HarmonyOS 校园极客秀征文活动第1期，秀出你的COOL</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+        <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;"></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/coco1s/p/15627657.html" target="_blank">使用 CSS 轻松实现一些高频出现的奇形怪状按钮</a>
+    <br>
+· <a href="https://www.cnblogs.com/strick/p/15394367.html" target="_blank">带团队后的日常思考（六）</a>
+    <br>
+· <a href="https://www.cnblogs.com/xiao2shiqi/p/15623540.html" target="_blank">聊聊云原生和微服务架构</a>
+    <br>
+· <a href="https://www.cnblogs.com/youzhibing/p/15615272.html" target="_blank">异或运算的巧用：不用额外的变量，如何交换两个变量的值？ </a>
+    <br>
+· <a href="https://www.cnblogs.com/myshowtime/p/15596630.html" target="_blank">OAuth 2.1 带来了哪些变化</a>
+    <br>
+</div></div>
+        <div id="cnblogs_c2" class="under-post-card">
+            <a href="https://c.gridsumdissector.com/r/?gid=gad_545_wrrk6jpf&amp;ck=1057&amp;adk=10673&amp;autorefresh=__AUTOREFRESH__" rel="nofollow" target="_blank">
+                <img src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/volcengine-c2.jpg" alt="" onload="impressC2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_wrrk6jpf&amp;ck=1057&amp;adk=10673&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+            </a>
+        </div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/708325/" target="_blank">达摩院AliceMind上新！首个中文表格预训练模型发布，已向业界开源（2021-12-03 15:55）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708324/" target="_blank">亚马逊中国卖家遭遇最惨“黑五”：销量不及预期，封号仍在继续（2021-12-03 15:48）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708323/" target="_blank">印度人民怀念中国App（2021-12-03 15:40）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708322/" target="_blank">专利申请量超美国、高新企业数增10倍：一图看懂近20年中国科技有多燃（2021-12-03 15:34）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708321/" target="_blank">“大红大紫”的代价！英伟达再也收不了ARM了？（2021-12-03 15:31）</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card">
+<b>历史上的今天：</b>
+<br>
+
+2017-01-11    <a href="https://www.cnblogs.com/yaopengfei/p/6273379.html">标准文档流</a>
+    <br>
+</div>
+    <script type="text/javascript">
+       var commentManager = new blogCommentManager();
+       commentManager.renderComments(0);
+       fixPostBody();
+
+           window.tocManager.displayDisableTocTips = false
+           window.tocManager.generateToc();
+           setTimeout(function() { incrementViewCount(cb_entryId); }, 50);       deliverT2();
+       deliverC1C2();
+       loadNewsAndKb();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);       LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+       GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+       loadOptUnderPost();
+       GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem"><!--done-->
+<h3 class="catListTitle">公告</h3>
+
+<div id="blog-news">
+    
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/yaopengfei/">
+            Yaopengfei
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/yaopengfei/" title="入园时间：2016-09-22">
+            5年2个月
+        </a>
+        <br>
+        粉丝：
+        <a href="https://home.cnblogs.com/u/yaopengfei/followers/">
+            828
+        </a>
+        <br>
+        关注：
+        <a href="https://home.cnblogs.com/u/yaopengfei/followees/">
+            18
+        </a>
+        <div id="p_b_follow">
+<a href="javascript:void(0)" onclick="follow(&#39;7d349e7e-c080-e611-9fc1-ac853d9f53cc&#39;)">+加关注</a></div>
+        <script>getFollowStatus('7d349e7e-c080-e611-9fc1-ac853d9f53cc');</script>
+    </div>
+</div>
+
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2021/11/03&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2021年12月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2022/01/03&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">28</td>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                        <td class="" align="center">
+                            2
+                        </td>
+                        <td class="CalTodayDay" align="center">
+                            3
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        4
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            5
+                        </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            11
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            12
+                        </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            18
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            19
+                        </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            25
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            26
+                        </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                            <td class="" align="center">
+                                30
+                            </td>
+                            <td class="" align="center">
+                                31
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            1
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            2
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            8
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            <div id="widget_my_google" class="div_my_zzk">
+                <input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+
+
+<!-- 最新随笔 -->
+
+
+<!-- 我的标签 -->
+
+
+<!-- 积分与排名 -->
+<div id="sidebar_scorerank" class="sidebar-block"><div class="catListBlogRank">
+<h3 class="catListTitle">积分与排名</h3>
+<ul>
+	<li class="liScore">
+		积分 -	
+490240
+	</li>
+	<li class="liRank">
+		排名 -	
+1007
+	</li>
+</ul>
+</div>
+
+
+
+</div>
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔分类
+<span style="font-size:11px;font-weight:normal">(493)</span>
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1010867.html" class="category-item-link" rel="" target="">00-个人计划(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1005494.html" class="category-item-link" rel="" target="">01-DotNet基础进阶(21)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1087077.html" class="category-item-link" rel="" target="">02-ASP.NET (17)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1239348.html" class="category-item-link" rel="" target="">03-Asp.Net Core(40)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1076556.html" class="category-item-link" rel="" target="">04-EF(22)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1239350.html" class="category-item-link" rel="" target="">05-EF Core(23)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1076560.html" class="category-item-link" rel="" target="">06-WebApi(含Core)(16)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1202154.html" class="category-item-link" rel="" target="">07-实时通讯(WebSocket、Signalr、Core Signalr)(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1133264.html" class="category-item-link" rel="" target="">08-多线程和异步(19)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1570309.html" class="category-item-link" rel="" target="">09-Vue全家桶(43)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1594192.html" class="category-item-link" rel="" target="">10-Redis系列(19)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1879386.html" class="category-item-link" rel="" target="">11-MySQL专题(17)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/885832.html" class="category-item-link" rel="" target="">11-SQLServer专题(16)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1609238.html" class="category-item-link" rel="" target="">12-数据结构和算法(12)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1023541.html" class="category-item-link" rel="" target="">13-设计模式(19)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1164016.html" class="category-item-link" rel="" target="">14-Quarzt.Net系列(13)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/912576.html" class="category-item-link" rel="" target="">15-CSS基础(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/942408.html" class="category-item-link" rel="" target="">16-JS、TS、Nodejs(19)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1985692.html" class="category-item-link" rel="" target="">17-Java基础(19)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/886200.html" class="category-item-link" rel="" target="">18-框架搭建(old)(11)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1896660.html" class="category-item-link" rel="" target="">19-后台管理框架搭建系列(16)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/912575.html" class="category-item-link" rel="" target="">20-三方平台对接(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1081236.html" class="category-item-link" rel="" target="">21-各类配置(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1005495.html" class="category-item-link" rel="" target="">22-IOC和DI(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/885872.html" class="category-item-link" rel="" target="">23-系统运维(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1764508.html" class="category-item-link" rel="" target="">24-微服务(24)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1833379.html" class="category-item-link" rel="" target="">26-Linux专题(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1838847.html" class="category-item-link" rel="" target="">27-Linux+Docker+K8s(12)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1860633.html" class="category-item-link" rel="" target="">28-高并发秒杀方案(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1960769.html" class="category-item-link" rel="" target="">31-中间件(RabbitMq/Kafka/MongonDB)(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1972839.html" class="category-item-link" rel="" target="">32-电商项目剖析专题(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1668199.html" class="category-item-link" rel="" target="">33-云开发(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/category/1211239.html" class="category-item-link" rel="" target="">999-废弃被替代的文章(39)</a>
+ 
+                </li>                
+            <li>
+                <a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a>
+            </li>
+        </ul>
+
+
+    </div>    
+    <div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔档案
+<span style="font-size:11px;font-weight:normal">(494)</span>
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2021/11.html" class="category-item-link" rel="" target="">2021年11月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2021/10.html" class="category-item-link" rel="" target="">2021年10月(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2021/09.html" class="category-item-link" rel="" target="">2021年9月(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2021/08.html" class="category-item-link" rel="" target="">2021年8月(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2021/07.html" class="category-item-link" rel="" target="">2021年7月(10)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2021/06.html" class="category-item-link" rel="" target="">2021年6月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2021/05.html" class="category-item-link" rel="" target="">2021年5月(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2021/04.html" class="category-item-link" rel="" target="">2021年4月(16)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2021/03.html" class="category-item-link" rel="" target="">2021年3月(15)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2021/02.html" class="category-item-link" rel="" target="">2021年2月(11)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2021/01.html" class="category-item-link" rel="" target="">2021年1月(11)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/12.html" class="category-item-link" rel="" target="">2020年12月(12)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/11.html" class="category-item-link" rel="" target="">2020年11月(13)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/10.html" class="category-item-link" rel="" target="">2020年10月(19)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/09.html" class="category-item-link" rel="" target="">2020年9月(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/08.html" class="category-item-link" rel="" target="">2020年8月(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/07.html" class="category-item-link" rel="" target="">2020年7月(11)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/06.html" class="category-item-link" rel="" target="">2020年6月(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/05.html" class="category-item-link" rel="" target="">2020年5月(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/04.html" class="category-item-link" rel="" target="">2020年4月(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/03.html" class="category-item-link" rel="" target="">2020年3月(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/02.html" class="category-item-link" rel="" target="">2020年2月(10)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2020/01.html" class="category-item-link" rel="" target="">2020年1月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/12.html" class="category-item-link" rel="" target="">2019年12月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/11.html" class="category-item-link" rel="" target="">2019年11月(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/10.html" class="category-item-link" rel="" target="">2019年10月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/09.html" class="category-item-link" rel="" target="">2019年9月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/08.html" class="category-item-link" rel="" target="">2019年8月(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/07.html" class="category-item-link" rel="" target="">2019年7月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/06.html" class="category-item-link" rel="" target="">2019年6月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/05.html" class="category-item-link" rel="" target="">2019年5月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/04.html" class="category-item-link" rel="" target="">2019年4月(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/03.html" class="category-item-link" rel="" target="">2019年3月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/02.html" class="category-item-link" rel="" target="">2019年2月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2019/01.html" class="category-item-link" rel="" target="">2019年1月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/12.html" class="category-item-link" rel="" target="">2018年12月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/11.html" class="category-item-link" rel="" target="">2018年11月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/10.html" class="category-item-link" rel="" target="">2018年10月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/09.html" class="category-item-link" rel="" target="">2018年9月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/08.html" class="category-item-link" rel="" target="">2018年8月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/07.html" class="category-item-link" rel="" target="">2018年7月(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/06.html" class="category-item-link" rel="" target="">2018年6月(13)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/05.html" class="category-item-link" rel="" target="">2018年5月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/04.html" class="category-item-link" rel="" target="">2018年4月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/03.html" class="category-item-link" rel="" target="">2018年3月(12)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/02.html" class="category-item-link" rel="" target="">2018年2月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2018/01.html" class="category-item-link" rel="" target="">2018年1月(13)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2017/12.html" class="category-item-link" rel="" target="">2017年12月(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2017/11.html" class="category-item-link" rel="" target="">2017年11月(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2017/10.html" class="category-item-link" rel="" target="">2017年10月(10)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2017/09.html" class="category-item-link" rel="" target="">2017年9月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2017/08.html" class="category-item-link" rel="" target="">2017年8月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2017/07.html" class="category-item-link" rel="" target="">2017年7月(25)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2017/06.html" class="category-item-link" rel="" target="">2017年6月(13)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2017/05.html" class="category-item-link" rel="" target="">2017年5月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2017/03.html" class="category-item-link" rel="" target="">2017年3月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2017/02.html" class="category-item-link" rel="" target="">2017年2月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2017/01.html" class="category-item-link" rel="" target="">2017年1月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2016/12.html" class="category-item-link" rel="" target="">2016年12月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2016/11.html" class="category-item-link" rel="" target="">2016年11月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/yaopengfei/archive/2016/09.html" class="category-item-link" rel="" target="">2016年9月(6)</a>
+ 
+                </li>                
+            <li>
+                <a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a>
+            </li>
+        </ul>
+
+
+    </div>    
+</div>
+
+<!-- 最新评论 -->
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block"><div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/9249390.html">
+                            1. 第十五节：深入理解async和await的作用及各种适用场景和用法(旧，详见最新两篇)(26533)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/9201989.html">
+                            2. ASP.NET MVC深入浅出系列(9856)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/9226328.html">
+                            3. 第二十三节: EF性能篇(三)之基于开源组件 Z.EntityFrameWork.Plus.EF6解决EF性能问题(9348)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/9196962.html">
+                            4. ORM系列之Entity FrameWork详解(9302)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/9263950.html">
+                            5. 第一节：.Net版基于WebSocket的聊天室样例(8607)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/8853590.html">
+                            6. DotNet进阶系列(8462)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/9216229.html">
+                            7. 定时调度系列之Quartz.Net详解(7972)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/8183530.html">
+                            8. 第四节：Task的启动的四种方式以及Task、TaskFactory的线程等待和线程延续的解决方案(7899)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/8229175.html">
+                            9. 第七节：利用CancellationTokenSource实现任务取消和利用CancellationToken类检测取消异常。(7874)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/6093316.html">
+                            10. .Net版微信支付(7380)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block"><div class="catListFeedback">
+<h3 class="catListTitle">评论排行榜</h3>
+	<div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/9249390.html">
+                            1. 第十五节：深入理解async和await的作用及各种适用场景和用法(旧，详见最新两篇)(49)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/9428206.html">
+                            2. 第一节：框架前期准备篇之Log4Net日志详解(39)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/9518725.html">
+                            3. 第三节：框架前期准备篇之利用Newtonsoft.Json改造MVC默认的JsonResult(36)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/9479268.html">
+                            4. 第二节：框架前期准备篇之AutoFac常见用法总结(31)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/yaopengfei/p/9304308.html">
+                            5. 第四节：SignalR灵魂所在Hub模型及再探聊天室样例(31)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block">
+<div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">推荐排行榜</h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/yaopengfei/p/9428206.html">
+                                1. 第一节：框架前期准备篇之Log4Net日志详解(41)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/yaopengfei/p/9249390.html">
+                                2. 第十五节：深入理解async和await的作用及各种适用场景和用法(旧，详见最新两篇)(38)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/yaopengfei/p/9216229.html">
+                                3. 定时调度系列之Quartz.Net详解(32)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/yaopengfei/p/8853590.html">
+                                4. DotNet进阶系列(32)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/yaopengfei/p/9479268.html">
+                                5. 第二节：框架前期准备篇之AutoFac常见用法总结(28)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div></div><div id="sidebar_recentcomments" class="sidebar-block"><div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+
+	<div class="RecentCommentBlock">
+        <ul>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/yaopengfei/p/14211883.html">1. Re: 第十四节：基于CSRedisCore程序集调用redis各个功能详解</a></li>
+                    <li class="recent_comment_body"><p>Cluster集群模式当停止一个redis时，就会报错，有什么办法吗？</p>
+</li>
+                    <li class="recent_comment_author">--xiaoshi657</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/yaopengfei/p/13330482.html">2. Re:第十九节：SQLServer通过发布订阅实现主从同步(读写分离)详解</a></li>
+                    <li class="recent_comment_body">我在订阅选择发布的时候出现了对象名sysservers无效的错误 SQL Server 无法检索有关发布“rwtest”的信息。 (新建订阅向导) 有关帮助信息，请单击: 对象名 'sysserver...</li>
+                    <li class="recent_comment_author">--prettyboyzhuo</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/yaopengfei/p/15573314.html">3. Re:第二节：三方库集成和配置(vue cli-webpack、element-plus、axios、vscode、区分不同环境)</a></li>
+                    <li class="recent_comment_body"><p>补充了axios的封装</p>
+</li>
+                    <li class="recent_comment_author">--Yaopengfei</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/yaopengfei/p/14945185.html">4. Re:第五节：使用TortoiseGit管理Git操作 、IDEA集成Git、使用SSH协议传数据</a></li>
+                    <li class="recent_comment_body"><p>补充了几个git可视化操作</p>
+</li>
+                    <li class="recent_comment_author">--Yaopengfei</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/yaopengfei/p/11121984.html">5. Re:第十二节：Asp.Net Core 之分布式缓存(SQLServer和Redis)</a></li>
+                    <li class="recent_comment_body"><p>mark</p>
+</li>
+                    <li class="recent_comment_author">--leavind</li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+
+</div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2021 Yaopengfei
+<br><span id="poweredby">Powered by .NET 6 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8FO3GXnjClZGrNGr2Ic8Z1pt7Y-pCgUU600ODHCpjokeFe5boLwv8nGXEYB-filaDRXrUthqpe646ZCE3koW0z8m2tCvjPDCpG9Z-M-wxb8hD11xeghmEvYZq8yoza6LHu_YHqpEtqyofreQu-KwvHM">
+    <script async="" src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/js"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+    </script>
+    <script defer="" src="./第三十八节：SeriLog日志的各种用法以及与Core MVC封装集成 - Yaopengfei - 博客园_files/hm.js.下载"></script>
+
+</body></html>

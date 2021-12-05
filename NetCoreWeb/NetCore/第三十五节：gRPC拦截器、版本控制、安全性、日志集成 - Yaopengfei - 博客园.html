@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)https://www.cnblogs.com/yaopengfei/p/13379197.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="description" content="一.&amp;#160;拦截器 1. 工作原理 (1).流程：客户端发送信息 → 经过客户端拦截器 → 到达服务端拦截器 → 到达服务端方法。 如下图： (2).实现：都要新建1个类, 实现Intercept">
+    <meta property="og:description" content="一.&amp;#160;拦截器 1. 工作原理 (1).流程：客户端发送信息 → 经过客户端拦截器 → 到达服务端拦截器 → 到达服务端方法。 如下图： (2).实现：都要新建1个类, 实现Intercept">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([class*="language-"]):not([highlighted]):not(.hljs) {
+        background: rgb(245, 245, 245);
+        padding: 5px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(0, 0, 0);
+        font-family: "Courier New", sans-serif;
+    }:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]) code:not(.hljs) {
+            background: rgb(245, 245, 245) !important;
+            border-color: transparent !important;
+        }</style><link rel="stylesheet" href="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/blog-common.min.css">
+    <link id="MainCss" rel="stylesheet" href="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/bundle-darkgreentrip.min.css">
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/cnblogs.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/bundle-darkgreentrip-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/yaopengfei/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/yaopengfei/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/yaopengfei/wlwmanifest.xml">
+    <script>
+        var currentBlogId = 307315;
+        var currentBlogApp = 'yaopengfei';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'darkgreentrip';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function(){ return ''; } });
+            }
+        } catch(error) { }
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+    </script>
+        <script>
+            var currentPostDateAdded = '2020-07-26 08:55';
+        </script>
+    <script src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/jquery-2.2.0.min.js.下载"></script>
+    <script src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/blog-common.min.js.下载"></script><style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style><script id="hljs-script" async="" data-loaded="true" src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/highlight.min.js.下载"></script>
+    
+    
+    
+</head>
+<body class="skin-darkgreentrip has-navbar has-bannerbar">
+    <a name="top"></a>
+        <a href="https://c.gridsumdissector.com/r/?gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__" target="_blank" rel="nofollow" onclick="countClicks(&#39;ad&#39;, &#39;C0-火山引擎&#39;)">
+            <div class="bannerbar forpc" style="display: flex; background-color: #11225a;">
+                <img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/volcengine-b0c0-1.jpg" onload="impressC0(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)" alt="">
+                <img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/volcengine-b0c0-2.jpg" alt="">
+                <img style="margin-left: auto;" src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/volcengine-b0c0-3.jpg" alt="">
+            </div>
+        </a>
+            <div id="bannerbar" class="bannerbar-mobile formobile">
+                <a href="https://c.gridsumdissector.com/r/?gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__" onclick="countClicks(&#39;ad&#39;, &#39;M2-火山引擎&#39;)" rel="nofollow">
+                    <img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/volcengine-m2.jpg" alt="" onload="impressM2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+                </a>
+            </div>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding"><a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/logo.svg" alt="博客园Logo"></a></li>
+                <li><a href="https://www.cnblogs.com/" onclick="countClicks(&#39;skin-navbar-sitehome&#39;)">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-brands&#39;)">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-edu&#39;)">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔">
+                        <img id="new_post_icon" class="navbar-icon" src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/yaopengfei/"><img id="blogLogo" src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/yaopengfei/">奔跑的路上</a>
+</h1>
+<h2>广泛汲取，用心打磨，精益求精。</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/yaopengfei/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/Yaopengfei">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/yaopengfei/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 494&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 1303&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 604717">
+60万</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/yaopengfei/p/13379197.html">
+    <span>第三十五节：gRPC拦截器、版本控制、安全性、日志集成</span>
+    
+
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">一.&nbsp;拦截器</span></p>
+<p><strong><span style="font-size: 16px">1. 工作原理</span></strong></p>
+<p><span style="font-size: 15px">(1).流程：客户端发送信息 → 经过客户端拦截器 → 到达服务端拦截器 → 到达服务端方法。</span></p>
+<p><span style="font-size: 15px">如下图：</span></p>
+<p><span style="font-size: 15px"><img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/1031302-20200730105255475-1748203359.png" alt="" loading="lazy" class="medium-zoom-image"></span></p>
+<p><span style="font-size: 15px">(2).实现：都要新建1个类, 实现Interceptors接口, 但对于客户端、服务端是 一元写法还是流式写法, 需要重写的方法不同哦</span></p>
+<p><span style="font-size: 15px"> 　A.一元写法：客户端重写<span style="color: rgba(0, 0, 255, 1)"><strong>AsyncUnaryCall</strong></span>方法, 服务端重写<strong><span style="color: rgba(0, 0, 255, 1)">UnaryServerHandler</span></strong>方法</span></p>
+<p><span style="font-size: 15px"> 　B.单向流写法：客户端重写<strong><span style="color: rgba(0, 0, 255, 1)">AsyncClientStreamingCall</span></strong>方法, 服务端重写<span style="color: rgba(0, 0, 255, 1)"><strong>ServerStreamingServerHandler</strong></span>方法</span></p>
+<p><span style="font-size: 15px"> 　C.双向流写法：客户端重写<span style="color: rgba(0, 0, 255, 1)"><strong>AsyncDuplexStreamingCall</strong></span>方法, 服务端重写<span style="color: rgba(0, 0, 255, 1)"><strong>DuplexStreamingServerHandler</strong></span>方法</span></p>
+<p><span style="color: rgba(0, 0, 255, 1)"><strong><span style="font-size: 15px">详见下图表格：</span></strong></span></p>
+<p><span style="font-size: 15px"><img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/1031302-20200730113503730-301593893.png" alt="" loading="lazy" class="medium-zoom-image"></span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 16px"><strong>2. 客户端拦截器(一元)</strong></span></p>
+<p><span style="font-size: 15px">(1).控制台写法</span></p>
+<p><span style="font-size: 15px">　A.新建MyClientInterceptor1类,实现Interceptor接口,重写AsyncUnaryCall方法</span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码分享：</span></p>
+<div class="cnblogs_code"><img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_814f2b39-9cc4-4c82-848a-567c7be8d16a" class="code_img_closed"><img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_814f2b39-9cc4-4c82-848a-567c7be8d16a" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_814f2b39-9cc4-4c82-848a-567c7be8d16a" class="cnblogs_code_hide">
+<pre> <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 客户端拦截器1
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> MyClientInterceptor1:Interceptor
+    {
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 重写AsyncUnaryCall,一元模式的拦截
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">override</span> AsyncUnaryCall&lt;TResponse&gt; AsyncUnaryCall&lt;TRequest, TResponse&gt;(TRequest request, ClientInterceptorContext&lt;TRequest, TResponse&gt; context, AsyncUnaryCallContinuation&lt;TRequest, TResponse&gt;<span style="color: rgba(0, 0, 0, 1)"> continuation)
+        {
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">服务于SayHello方法</span>
+            <span style="color: rgba(0, 0, 255, 1)">if</span> (request <span style="color: rgba(0, 0, 255, 1)">is</span><span style="color: rgba(0, 0, 0, 1)"> HelloRequest)
+            {
+                HelloRequest helloRequest </span>= request <span style="color: rgba(0, 0, 255, 1)">as</span><span style="color: rgba(0, 0, 0, 1)"> HelloRequest;
+                helloRequest.UserName </span>= $<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">[{ DateTime.Now}]：{helloRequest.UserName}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+            }
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">服务于CommitUserInfor方法</span>
+            <span style="color: rgba(0, 0, 255, 1)">if</span> (request <span style="color: rgba(0, 0, 255, 1)">is</span><span style="color: rgba(0, 0, 0, 1)"> UserInfor)
+            {
+                UserInfor uInfor </span>= request <span style="color: rgba(0, 0, 255, 1)">as</span><span style="color: rgba(0, 0, 0, 1)"> UserInfor;
+                uInfor.UserName </span>= $<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">[{ DateTime.Now}]：{uInfor.UserName}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+                uInfor.UserAge </span>= $<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">[{ DateTime.Now}]：{uInfor.UserAge}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+                uInfor.UserAddress </span>= $<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">[{ DateTime.Now}]：{uInfor.UserAddress}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+            }
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">添加表头信息</span>
+            <span style="color: rgba(0, 0, 255, 1)">var</span> headers =<span style="color: rgba(0, 0, 0, 1)"> context.Options.Headers;
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (headers == <span style="color: rgba(0, 0, 255, 1)">null</span><span style="color: rgba(0, 0, 0, 1)">)
+            {
+                headers </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> Metadata();
+                </span><span style="color: rgba(0, 0, 255, 1)">var</span> options =<span style="color: rgba(0, 0, 0, 1)"> context.Options.WithHeaders(headers);
+                context </span>= <span style="color: rgba(0, 0, 255, 1)">new</span> ClientInterceptorContext&lt;TRequest, TResponse&gt;<span style="color: rgba(0, 0, 0, 1)">(context.Method, context.Host, options);
+            }
+            headers.Add(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">caller-user</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, Environment.UserName);
+            headers.Add(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">caller-machine</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, Environment.MachineName);
+            headers.Add(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">caller-os</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, Environment.OSVersion.ToString());
+
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(0, 0, 255, 1)">base</span><span style="color: rgba(0, 0, 0, 1)">.AsyncUnaryCall(request, context, continuation);
+        }
+    }</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="font-size: 15px">　B.给指定客户添加过滤器： channel.Intercept(new MyClientInterceptor1());</span></p>
+<p><span style="font-size: 15px"> 　　　　　　　　　　　　　var client1 = new Greeter.GreeterClient(intercept);</span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码分享：</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 255, 1)">　　　　　　　　　using</span> <span style="color: rgba(0, 0, 255, 1)">var</span> channel = GrpcChannel.ForAddress(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">https://localhost:5001</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">添加拦截器</span>
+                <span style="color: rgba(0, 0, 255, 1)">var</span> intercept = channel.Intercept(<span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> MyClientInterceptor1());
+                </span><span style="color: rgba(0, 0, 255, 1)">var</span> client1 = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> Greeter.GreeterClient(intercept);
+                </span><span style="color: rgba(0, 0, 255, 1)">var</span> reply = <span style="color: rgba(0, 0, 255, 1)">await</span> client1.SayHelloAsync(<span style="color: rgba(0, 0, 255, 1)">new</span> HelloRequest { UserName = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ypf</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)"> });
+                Console.WriteLine(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">返回的消息为: </span><span style="color: rgba(128, 0, 0, 1)">"</span> + reply.ReplyMsg);</pre>
+</div>
+<p><span style="font-size: 15px">(2).Core Mvc写法</span></p>
+<p><span style="font-size: 15px">　A.新建MyClientInterceptor1类，实现Interceptor接口，重写AsyncUnaryCall方法。</span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码分享：</span></p>
+<div class="cnblogs_code"><img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_e4a2de16-a250-46cc-8404-00f77a50d215" class="code_img_closed"><img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_e4a2de16-a250-46cc-8404-00f77a50d215" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_e4a2de16-a250-46cc-8404-00f77a50d215" class="cnblogs_code_hide">
+<pre>   <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 客户端拦截器1
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> MyClientInterceptor1:Interceptor
+    {
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 重写AsyncUnaryCall,一元模式的拦截
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">override</span> AsyncUnaryCall&lt;TResponse&gt; AsyncUnaryCall&lt;TRequest, TResponse&gt;(TRequest request, ClientInterceptorContext&lt;TRequest, TResponse&gt; context, AsyncUnaryCallContinuation&lt;TRequest, TResponse&gt;<span style="color: rgba(0, 0, 0, 1)"> continuation)
+        {
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">服务于SayHello方法</span>
+            <span style="color: rgba(0, 0, 255, 1)">if</span> (request <span style="color: rgba(0, 0, 255, 1)">is</span><span style="color: rgba(0, 0, 0, 1)"> HelloRequest)
+            {
+                HelloRequest helloRequest </span>= request <span style="color: rgba(0, 0, 255, 1)">as</span><span style="color: rgba(0, 0, 0, 1)"> HelloRequest;
+                helloRequest.UserName </span>=$<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">[{ DateTime.Now}]：{helloRequest.UserName}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+            }
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">服务于CommitUserInfor方法</span>
+            <span style="color: rgba(0, 0, 255, 1)">if</span> (request <span style="color: rgba(0, 0, 255, 1)">is</span><span style="color: rgba(0, 0, 0, 1)"> UserInfor)
+            {
+                UserInfor uInfor </span>= request <span style="color: rgba(0, 0, 255, 1)">as</span><span style="color: rgba(0, 0, 0, 1)"> UserInfor;
+                uInfor.UserName </span>= $<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">[{ DateTime.Now}]：{uInfor.UserName}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+                uInfor.UserAge </span>= $<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">[{ DateTime.Now}]：{uInfor.UserAge}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+                uInfor.UserAddress </span>= $<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">[{ DateTime.Now}]：{uInfor.UserAddress}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+            }
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">添加表头信息</span>
+            <span style="color: rgba(0, 0, 255, 1)">var</span> headers =<span style="color: rgba(0, 0, 0, 1)"> context.Options.Headers;
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (headers == <span style="color: rgba(0, 0, 255, 1)">null</span><span style="color: rgba(0, 0, 0, 1)">)
+            {
+                headers </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> Metadata();
+                </span><span style="color: rgba(0, 0, 255, 1)">var</span> options =<span style="color: rgba(0, 0, 0, 1)"> context.Options.WithHeaders(headers);
+                context </span>= <span style="color: rgba(0, 0, 255, 1)">new</span> ClientInterceptorContext&lt;TRequest, TResponse&gt;<span style="color: rgba(0, 0, 0, 1)">(context.Method, context.Host, options);
+            }
+            headers.Add(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">caller-user</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, Environment.UserName);
+            headers.Add(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">caller-machine</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, Environment.MachineName);
+            headers.Add(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">caller-os</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, Environment.OSVersion.ToString());
+
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(0, 0, 255, 1)">base</span><span style="color: rgba(0, 0, 0, 1)">.AsyncUnaryCall(request, context, continuation);
+        }
+    }</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="font-size: 15px">　B.给指定客户端添加过滤器,两种方式,详见ConfigureService</span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码分享：</span></p>
+<div class="cnblogs_code">
+<pre> <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">void</span><span style="color: rgba(0, 0, 0, 1)"> ConfigureServices(IServiceCollection services)
+  {
+            services.AddControllersWithViews();
+
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">注册grpc指定客户端 + 添加拦截器模式1</span>
+            services.AddGrpcClient&lt;GreeterClient&gt;(o =&gt;<span style="color: rgba(0, 0, 0, 1)">
+            {
+                o.Address </span>= <span style="color: rgba(0, 0, 255, 1)">new</span> Uri(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">https://localhost:5001</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+            }).AddInterceptor(() </span>=&gt; <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> MyClientInterceptor1());
+
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">注册grpc指定客户端 + 添加拦截器模式2
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">services.AddSingleton(new MyClientInterceptor1());
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">services.AddGrpcClient&lt;GreeterClient&gt;(o =&gt;
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">{
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    o.Address = new Uri("</span><span style="color: rgba(0, 128, 0, 1); text-decoration: underline">https://localhost</span><span style="color: rgba(0, 128, 0, 1)">:5001");
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">}).AddInterceptor&lt;MyClientInterceptor1&gt;(); </span>
+<span style="color: rgba(0, 0, 0, 1)">
+    }</span></pre>
+</div>
+<p><strong><span style="font-size: 16px">3. 服务端拦截器(一元)</span></strong></p>
+<p><span style="font-size: 15px">　A.新建MyServerInterceptor1类,实现Interceptor接口,重写UnaryServerHandler方法</span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码分享：</span></p>
+<div class="cnblogs_code"><img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_35bf6935-63f1-4fdb-9241-da0a544c4408" class="code_img_closed"><img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_35bf6935-63f1-4fdb-9241-da0a544c4408" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_35bf6935-63f1-4fdb-9241-da0a544c4408" class="cnblogs_code_hide">
+<pre>    <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 服务端拦截器1
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> MyServerInterceptor1 : Interceptor
+    {
+        </span><span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">override</span> Task&lt;TResponse&gt; UnaryServerHandler&lt;TRequest, TResponse&gt;(TRequest request, ServerCallContext context, UnaryServerMethod&lt;TRequest, TResponse&gt;<span style="color: rgba(0, 0, 0, 1)"> continuation)
+        {
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">拦截到SayHello方法</span>
+            <span style="color: rgba(0, 0, 255, 1)">if</span> (request <span style="color: rgba(0, 0, 255, 1)">is</span><span style="color: rgba(0, 0, 0, 1)"> HelloRequest)
+            {
+                HelloRequest helloRequest </span>= request <span style="color: rgba(0, 0, 255, 1)">as</span><span style="color: rgba(0, 0, 0, 1)"> HelloRequest;
+                Console.WriteLine($</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">【{DateTime.Now}】我是服务端拦截下来SayHello内容：{helloRequest.UserName}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+            }
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">拦截到CommitUserInfor方法</span>
+            <span style="color: rgba(0, 0, 255, 1)">if</span> (request <span style="color: rgba(0, 0, 255, 1)">is</span><span style="color: rgba(0, 0, 0, 1)"> UserInfor)
+            {
+                UserInfor uInfor </span>= request <span style="color: rgba(0, 0, 255, 1)">as</span><span style="color: rgba(0, 0, 0, 1)"> UserInfor;
+                Console.WriteLine($</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">【{DateTime.Now}】我是服务端拦截下来SayHello内容：{uInfor.UserName}，{uInfor.UserAge}，{uInfor.UserAddress}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+            }
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">拦截到表头信息</span>
+            <span style="color: rgba(0, 0, 255, 1)">foreach</span> (<span style="color: rgba(0, 0, 255, 1)">var</span> header <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> context.RequestHeaders)
+            {
+                Console.WriteLine($</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">【{DateTime.Now}】我是服务端拦截表头的内容：{header.Key}:{header.Value}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(0, 0, 255, 1)">base</span><span style="color: rgba(0, 0, 0, 1)">.UnaryServerHandler(request, context, continuation);
+        }
+    }</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="font-size: 15px">　B.在ConfigureService中可以全局拦截 和 单个服务拦截</span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码分享：</span></p>
+<div class="cnblogs_code">
+<pre>        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">void</span><span style="color: rgba(0, 0, 0, 1)"> ConfigureServices(IServiceCollection services)
+        {
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">注册gRPC服务 + 全局拦截</span>
+            services.AddGrpc(options =&gt;<span style="color: rgba(0, 0, 0, 1)">
+            {
+                options.Interceptors.Add</span>&lt;MyServerInterceptor1&gt;<span style="color: rgba(0, 0, 0, 1)">();
+            });
+
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">注册gRPC服务 + 单个服务拦截
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">services.AddGrpc().AddServiceOptions&lt;GreeterService&gt;(options =&gt; {
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    options.Interceptors.Add&lt;MyServerInterceptor1&gt;();
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">});</span>
+<span style="color: rgba(0, 0, 0, 1)">
+        }:</span></pre>
+</div>
+<p><strong><span style="font-size: 16px">4. 测试</span></strong></p>
+<p><span style="font-size: 15px">　分别把GrpcClient1和GrpcService1设置为一起启动、GrpcClient2和GrpcService1设置为一起启动，观察结果。</span></p>
+<p><strong><span style="font-size: 15px">测试1：</span></strong></p>
+<p><span style="font-size: 15px"><img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/1031302-20200730110924078-1502697257.png" alt="" loading="lazy" style="display: block; margin-left: auto; margin-right: auto"></span></p>
+<p><strong><span style="font-size: 15px">测试2：</span></strong></p>
+<p>&nbsp;<img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/1031302-20200730113922464-498925554.png" alt="" loading="lazy" style="display: block; margin-left: auto; margin-right: auto"></p>
+<p>&nbsp;</p>
+<p>&nbsp;<img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/1031302-20200730113938049-552251738.png" alt="" loading="lazy" style="display: block; margin-left: auto; margin-right: auto"></p>
+<p>&nbsp;</p>
+<p>&nbsp;<img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/1031302-20200730113946506-197713446.png" alt="" loading="lazy" style="display: block; margin-left: auto; margin-right: auto"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">二.&nbsp;其它</span></p>
+<p><strong><span style="font-size: 16px">1. 版本控制</span></strong></p>
+<p><span style="font-size: 15px">(1). package greet.v1;</span></p>
+<p><span style="font-size: 15px">(2). endpoints.MapGrpcService&lt;GreeterServiceV1&gt;();</span></p>
+<p><span style="font-size: 15px"> 　&nbsp; endpoints.MapGrpcService&lt;GreeterServiceV2&gt;();</span></p>
+<p><strong><span style="font-size: 16px">2. 安全性</span></strong></p>
+<p><span style="font-size: 15px"> 　gRPC 消息使用 HTTP/2 进行发送和接收,所以建议使用传输层安全性 (TLS) 以保护生产 gRPC 应用中的消息,gRPC 服务应仅侦听并响应受保护的端口,TLS 是在 Kestrel 中配置的。</span></p>
+<p><span style="font-size: 15px">详见 GrpcService1服务端中的Program程序</span></p>
+<div class="cnblogs_code">
+<pre>  <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> IHostBuilder CreateHostBuilder(<span style="color: rgba(0, 0, 255, 1)">string</span>[] args) =&gt;<span style="color: rgba(0, 0, 0, 1)">
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder </span>=&gt;<span style="color: rgba(0, 0, 0, 1)">
+                {
+                    </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">TLS加密传输配置</span>
+                    webBuilder.ConfigureKestrel(serverOptions =&gt;<span style="color: rgba(0, 0, 0, 1)">
+                    {
+                        serverOptions.ConfigureHttpsDefaults(listenOptions </span>=&gt;<span style="color: rgba(0, 0, 0, 1)">
+                        {
+                            listenOptions.SslProtocols </span>=<span style="color: rgba(0, 0, 0, 1)"> SslProtocols.Tls12;
+                        });
+                    });
+                    webBuilder.UseStartup</span>&lt;Startup&gt;<span style="color: rgba(0, 0, 0, 1)">();
+                });</span></pre>
+</div>
+<p><strong><span style="font-size: 16px">3. 日志</span></strong></p>
+<p><span style="font-size: 15px">(1).说明</span></p>
+<p><span style="font-size: 15px"> 　gRPC 服务和 gRPC 客户端使用 .NET Core 日志记录编写日志。</span></p>
+<p><span style="font-size: 15px">(2).服务端日志</span></p>
+<p><span style="font-size: 15px"> 　由于 gRPC 服务托管在 ASP.NET Core 上，因此它使用 ASP.NET Core 日志记录系统。 在默认配置中，gRPC 只记录很少的信息，但这可以进行配置。　　</span></p>
+<p><span style="font-size: 15px"> 在GrpcService1中Program类中进行配置，代码如下：</span></p>
+<div class="cnblogs_code">
+<pre>  <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> IHostBuilder CreateHostBuilder(<span style="color: rgba(0, 0, 255, 1)">string</span>[] args) =&gt;<span style="color: rgba(0, 0, 0, 1)">
+            Host.CreateDefaultBuilder(args)
+                 </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">配置grpc日志级别</span>
+                 .ConfigureLogging(logging =&gt;<span style="color: rgba(0, 0, 0, 1)">
+                 {
+                     logging.AddFilter(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Grpc</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, LogLevel.Debug);
+                 })
+                .ConfigureWebHostDefaults(webBuilder </span>=&gt;<span style="color: rgba(0, 0, 0, 1)">
+                {
+                    webBuilder.UseStartup</span>&lt;Startup&gt;<span style="color: rgba(0, 0, 0, 1)">();
+                });</span></pre>
+</div>
+<p><span style="font-size: 15px">运行结果如下：</span></p>
+<p><span style="font-size: 15px"><img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/1031302-20200730100953114-1701230145.png" alt="" loading="lazy"></span></p>
+<p><span style="font-size: 15px">(3).客户端日志</span></p>
+<p><span style="font-size: 15px">A. 无DI</span></p>
+<p><span style="font-size: 15px"> 　　安装【Microsoft.Extensions.Logging】【Microsoft.Extensions.Logging.Console】,代码和运行效果如下</span></p>
+<div class="cnblogs_code">
+<pre> 　　　　　　　　<span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">日志</span>
+                <span style="color: rgba(0, 0, 255, 1)">var</span> loggerFactory = LoggerFactory.Create(logging =&gt;<span style="color: rgba(0, 0, 0, 1)">
+                {
+                    logging.AddConsole();
+                    logging.SetMinimumLevel(LogLevel.Debug);
+                });
+                </span><span style="color: rgba(0, 0, 255, 1)">using</span> <span style="color: rgba(0, 0, 255, 1)">var</span> channel = GrpcChannel.ForAddress(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">https://localhost:5001</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">,
+                                                            </span><span style="color: rgba(0, 0, 255, 1)">new</span> GrpcChannelOptions { LoggerFactory =<span style="color: rgba(0, 0, 0, 1)"> loggerFactory });
+
+                </span><span style="color: rgba(0, 0, 255, 1)">var</span> client1 = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> Greeter.GreeterClient(channel);
+                </span><span style="color: rgba(0, 0, 255, 1)">var</span> reply = <span style="color: rgba(0, 0, 255, 1)">await</span> client1.SayHelloAsync(<span style="color: rgba(0, 0, 255, 1)">new</span> HelloRequest { UserName = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ypf</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)"> });
+                Console.WriteLine(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">返回的消息为: </span><span style="color: rgba(128, 0, 0, 1)">"</span> + reply.ReplyMsg);</pre>
+</div>
+<p><span style="font-size: 15px"><img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/1031302-20200730100924588-611061429.png" alt="" loading="lazy"></span></p>
+<p><span style="font-size: 15px">B. 有DI</span></p>
+<div class="cnblogs_code">
+<pre>  <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> HomeController : Controller
+    {
+        </span><span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> GreeterClient _client;
+        </span><span style="color: rgba(0, 0, 255, 1)">private</span><span style="color: rgba(0, 0, 0, 1)"> ILoggerFactory _loggerFactory;
+        </span><span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> HomeController(GreeterClient client, ILoggerFactory loggerFactory)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">this</span>._client =<span style="color: rgba(0, 0, 0, 1)"> client;
+            _loggerFactory </span>=<span style="color: rgba(0, 0, 0, 1)"> loggerFactory;
+        }
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 客户端调用grpc方法
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">async</span> Task&lt;IActionResult&gt;<span style="color: rgba(0, 0, 0, 1)"> Index()
+        {
+                </span><span style="color: rgba(0, 0, 255, 1)">var</span> channel = GrpcChannel.ForAddress(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">https://localhost:5001</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">,
+                                     </span><span style="color: rgba(0, 0, 255, 1)">new</span> GrpcChannelOptions { LoggerFactory =<span style="color: rgba(0, 0, 0, 1)"> _loggerFactory });
+                </span><span style="color: rgba(0, 0, 255, 1)">var</span> _client = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> Greeter.GreeterClient(channel);
+                </span><span style="color: rgba(0, 0, 255, 1)">var</span> reply = <span style="color: rgba(0, 0, 255, 1)">await</span> _client.SayHelloAsync(<span style="color: rgba(0, 0, 255, 1)">new</span> HelloRequest { UserName = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ypf</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)"> });
+                ViewBag.msg1 </span>= $<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">返回的消息为:{ reply.ReplyMsg}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+                </span><span style="color: rgba(0, 0, 255, 1)">var</span> reply2 = <span style="color: rgba(0, 0, 255, 1)">await</span> _client.CommitUserInforAsync(<span style="color: rgba(0, 0, 255, 1)">new</span> UserInfor() { UserName = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ypf</span><span style="color: rgba(128, 0, 0, 1)">"</span>, UserAge = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">20</span><span style="color: rgba(128, 0, 0, 1)">"</span>, UserAddress = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">China</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)"> });
+                ViewBag.msg2 </span>= $<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">返回的消息为:status={reply2.Status},msg={reply2.Msg}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> View();
+        }
+    }</span></pre>
+</div>
+<p><span style="font-size: 15px">(4).日志指标</span></p>
+<p><span style="font-size: 15px">服务端指标：</span></p>
+<p><span style="font-size: 15px"><img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/1031302-20200730100531620-841446401.png" alt="" loading="lazy" style="display: block; margin-left: auto; margin-right: auto"></span></p>
+<p><span style="font-size: 15px">客户端指标：</span></p>
+<p>&nbsp;<img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/1031302-20200730100545221-123418266.png" alt="" loading="lazy" style="display: block; margin-left: auto; margin-right: auto"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div style="border: 2px dashed rgba(0, 0, 255, 1); border-radius: 10px; height: 120px; width: 1100px; margin-left: 60px">
+<div style="width: 0; height: 0; border-left: 20px solid rgba(0, 0, 0, 0); border-right: 20px solid rgba(0, 0, 0, 0); border-bottom: 30px solid rgba(255, 255, 0, 1); float: left; margin-top: 40px; margin-left: 20px">
+<p style="font-size: 16px; font-weight: bold; margin-top: 8px; margin-left: -2px">!</p>
+</div>
+<div style="float: left; margin-left: 16px">
+<ul style="list-style: none; padding: 0; margin-left: 20px">
+<li style="margin-bottom: 1px; line-height: 28px">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者 : <span style="color: rgba(255, 0, 0, 1)">Yaopengfei(姚鹏飞)</span></li>
+<li style="margin-bottom: 1px; line-height: 28px">博客地址 : <a style="text-decoration: none" href="http://www.cnblogs.com/yaopengfei/"><span style="color: rgba(255, 0, 0, 1)">http://www.cnblogs.com/yaopengfei/</span></a></li>
+<li style="margin-bottom: 1px; line-height: 28px">声&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明1 : 如有错误，欢迎讨论，请勿谩骂^_^。</li>
+<li style="margin-bottom: 1px; line-height: 28px">声&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明2 : 原创博客请在转载时保留原文链接或在文章开头加上本人博客地址，否则保留追究法律责任的权利。</li>
+</ul>
+</div>
+<div style="clear: both">&nbsp;</div>
+</div>
+<p>&nbsp;</p>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/yaopengfei/category/1239348.html" target="_blank">03-Asp.Net Core</a></div>
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(13379197,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;7d349e7e-c080-e611-9fc1-ac853d9f53cc&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/yaopengfei/" target="_blank"><img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/20180828165403.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/yaopengfei/">Yaopengfei</a><br>
+            <a href="https://home.cnblogs.com/u/yaopengfei/followees/">关注 - 18</a><br>
+            <a href="https://home.cnblogs.com/u/yaopengfei/followers/">粉丝 - 828</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;7d349e7e-c080-e611-9fc1-ac853d9f53cc&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(13379197,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(13379197,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2020-07-26 08:55</span>&nbsp;
+<a href="https://www.cnblogs.com/yaopengfei/">Yaopengfei</a>&nbsp;
+阅读(<span id="post_view_count">822</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=13379197" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(13379197);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;13379197&#39;, targetLink: &#39;https://www.cnblogs.com/yaopengfei/p/13379197.html&#39;, title: &#39;第三十五节：gRPC拦截器、版本控制、安全性、日志集成&#39; })">举报</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+
+<script>
+    markdown_highlight()
+    var allowComments = true, cb_blogId = 307315, cb_blogApp = 'yaopengfei', cb_blogUserGuid = '7d349e7e-c080-e611-9fc1-ac853d9f53cc';
+    var cb_entryId = 13379197, cb_entryCreatedDate = '2020-07-26 08:55', cb_postType = 1;
+    updatePostStats(
+        [cb_entryId],
+        function(id, count) { $("#post_view_count").text(count) },
+        function(id, count) { $("#post_comment_count").text(count) })
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+</script>
+<a name="!comments"></a>
+<div id="blog-comments-placeholder"><div style="color:green;margin:50px 0;font-weight:normal;">努力加载评论中...</div></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/yaopengfei/p/13379197.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/yaopengfei/p/13379197.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="cnblogs_ch"><a href="https://c.gridsumdissector.com/r/?gid=gad_545_sf71nlea&amp;ck=1057&amp;adk=10670&amp;autorefresh=__AUTOREFRESH__" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-火山引擎-1203-1209&#39;})">【推荐】字节跳动旗下火山引擎，邀您共同揭秘“云+增长”</a><br><a href="http://www.uccpsoft.com/index.htm" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-ucancode&#39;})">【推荐】跨平台组态\工控\仿真\CAD 50万行C++源码全开放免费下载！</a><br><a href="https://brands.cnblogs.com/huawei/p/2704" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-华为专区&#39;})">【推荐】华为 HarmonyOS 校园极客秀征文活动第1期，秀出你的COOL</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+        <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;"></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/coco1s/p/15627657.html" target="_blank">使用 CSS 轻松实现一些高频出现的奇形怪状按钮</a>
+    <br>
+· <a href="https://www.cnblogs.com/strick/p/15394367.html" target="_blank">带团队后的日常思考（六）</a>
+    <br>
+· <a href="https://www.cnblogs.com/xiao2shiqi/p/15623540.html" target="_blank">聊聊云原生和微服务架构</a>
+    <br>
+· <a href="https://www.cnblogs.com/youzhibing/p/15615272.html" target="_blank">异或运算的巧用：不用额外的变量，如何交换两个变量的值？ </a>
+    <br>
+· <a href="https://www.cnblogs.com/myshowtime/p/15596630.html" target="_blank">OAuth 2.1 带来了哪些变化</a>
+    <br>
+</div></div>
+        <div id="cnblogs_c2" class="under-post-card">
+            <a href="https://c.gridsumdissector.com/r/?gid=gad_545_wrrk6jpf&amp;ck=1057&amp;adk=10673&amp;autorefresh=__AUTOREFRESH__" rel="nofollow" target="_blank">
+                <img src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/volcengine-c2.jpg" alt="" onload="impressC2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_wrrk6jpf&amp;ck=1057&amp;adk=10673&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+            </a>
+        </div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/708325/" target="_blank">达摩院AliceMind上新！首个中文表格预训练模型发布，已向业界开源（2021-12-03 15:55）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708324/" target="_blank">亚马逊中国卖家遭遇最惨“黑五”：销量不及预期，封号仍在继续（2021-12-03 15:48）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708323/" target="_blank">印度人民怀念中国App（2021-12-03 15:40）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708322/" target="_blank">专利申请量超美国、高新企业数增10倍：一图看懂近20年中国科技有多燃（2021-12-03 15:34）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708321/" target="_blank">“大红大紫”的代价！英伟达再也收不了ARM了？（2021-12-03 15:31）</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+       var commentManager = new blogCommentManager();
+       commentManager.renderComments(0);
+       fixPostBody();
+
+           window.tocManager.displayDisableTocTips = false
+           window.tocManager.generateToc();
+           setTimeout(function() { incrementViewCount(cb_entryId); }, 50);       deliverT2();
+       deliverC1C2();
+       loadNewsAndKb();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);       LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+       GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+       loadOptUnderPost();
+       GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem"><!--done-->
+<h3 class="catListTitle">公告</h3>
+
+<div id="blog-news">
+    
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/yaopengfei/">
+            Yaopengfei
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/yaopengfei/" title="入园时间：2016-09-22">
+            5年2个月
+        </a>
+        <br>
+        粉丝：
+        <a href="https://home.cnblogs.com/u/yaopengfei/followers/">
+            828
+        </a>
+        <br>
+        关注：
+        <a href="https://home.cnblogs.com/u/yaopengfei/followees/">
+            18
+        </a>
+        <div id="p_b_follow"></div>
+        <script>getFollowStatus('7d349e7e-c080-e611-9fc1-ac853d9f53cc');</script>
+    </div>
+</div>
+
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2021 Yaopengfei
+<br><span id="poweredby">Powered by .NET 6 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8FO3GXnjClZGrNGr2Ic8Z1oe1m05QNlxWUKx3eDqIvJiu_sxfd478c-HHeCvShI6gx2oQ37fZq_TNhcqEYEgY_xTmUWEREoHQeFZ1mjhkaaNnlcbn55Z91B1MiAVOtFcTHElok48R9F0akvR-exzQhk">
+    <script async="" src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/js"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+    </script>
+    <script defer="" src="./第三十五节：gRPC拦截器、版本控制、安全性、日志集成 - Yaopengfei - 博客园_files/hm.js.下载"></script>
+
+</body></html>

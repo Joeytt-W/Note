@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)https://www.cnblogs.com/yaopengfei/p/12504514.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="description" content="一. 并发和并行 操作系统扫盲： 1. 对于单核cpu而言(不管单核单线程也好，单核多线程也罢)，同一时间只能干一件事！！为了看起像可以“同时干多件事”，windows操作系统把cpu的时间划分为长短">
+    <meta property="og:description" content="一. 并发和并行 操作系统扫盲： 1. 对于单核cpu而言(不管单核单线程也好，单核多线程也罢)，同一时间只能干一件事！！为了看起像可以“同时干多件事”，windows操作系统把cpu的时间划分为长短">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([class*="language-"]):not([highlighted]):not(.hljs) {
+        background: rgb(245, 245, 245);
+        padding: 5px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(0, 0, 0);
+        font-family: "Courier New", sans-serif;
+    }:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]) code:not(.hljs) {
+            background: rgb(245, 245, 245) !important;
+            border-color: transparent !important;
+        }</style><link rel="stylesheet" href="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/blog-common.min.css">
+    <link id="MainCss" rel="stylesheet" href="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/bundle-darkgreentrip.min.css">
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/cnblogs.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/bundle-darkgreentrip-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/yaopengfei/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/yaopengfei/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/yaopengfei/wlwmanifest.xml">
+    <script type="text/javascript" async="" src="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/analytics.js.下载"></script><script>
+        var currentBlogId = 307315;
+        var currentBlogApp = 'yaopengfei';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'darkgreentrip';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function(){ return ''; } });
+            }
+        } catch(error) { }
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+    </script>
+        <script>
+            var currentPostDateAdded = '2020-03-16 16:06';
+        </script>
+    <script src="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/jquery-2.2.0.min.js.下载"></script>
+    <script src="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/blog-common.min.js.下载"></script><style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style><script id="hljs-script" async="" data-loaded="true" src="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/highlight.min.js.下载"></script>
+    
+    
+    
+</head>
+<body class="skin-darkgreentrip has-navbar has-bannerbar">
+    <a name="top"></a>
+        <a href="https://c.gridsumdissector.com/r/?gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__" target="_blank" rel="nofollow" onclick="countClicks(&#39;ad&#39;, &#39;C0-火山引擎&#39;)">
+            <div class="bannerbar forpc" style="display: flex; background-color: #11225a;">
+                <img src="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/volcengine-b0c0-1.jpg" onload="impressC0(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)" alt="">
+                <img src="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/volcengine-b0c0-2.jpg" alt="">
+                <img style="margin-left: auto;" src="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/volcengine-b0c0-3.jpg" alt="">
+            </div>
+        </a>
+            <div id="bannerbar" class="bannerbar-mobile formobile">
+                <a href="https://c.gridsumdissector.com/r/?gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__" onclick="countClicks(&#39;ad&#39;, &#39;M2-火山引擎&#39;)" rel="nofollow">
+                    <img src="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/volcengine-m2.jpg" alt="" onload="impressM2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+                </a>
+            </div>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding"><a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/logo.svg" alt="博客园Logo"></a></li>
+                <li><a href="https://www.cnblogs.com/" onclick="countClicks(&#39;skin-navbar-sitehome&#39;)">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-brands&#39;)">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-edu&#39;)">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/yaopengfei/"><img id="blogLogo" src="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/yaopengfei/">奔跑的路上</a>
+</h1>
+<h2>广泛汲取，用心打磨，精益求精。</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/yaopengfei/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/Yaopengfei">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/yaopengfei/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 494&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 1303&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 604717">
+60万</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/yaopengfei/p/12504514.html">
+    <span>第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等</span>
+    
+
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">一. 并发和并行</span></p>
+<blockquote style="padding: 15px 20px; background: 9px 0 no-repeat rgba(255, 255, 163, 1); font-size: 17px; font-family: &quot;Microsoft Yahei&quot;; box-shadow: 0 0 8px rgba(170, 170, 170, 1); clear: both; border-radius: 4px">
+<p><strong><span style="color: rgba(0, 128, 0, 1)">操作系统扫盲：</span></strong></p>
+<p>　<span style="font-size: 16px">　1. 对于单核cpu而言(不管单核单线程也好，单核多线程也罢)，同一时间只能干一件事！！为了看起像可以“同时干多件事”，windows操作系统把cpu的时间划分为长短基本相同的时间区间，即“时间片”，通过操作系统的管理，把这些时间片依次轮流分配给各个应用使用。</span></p>
+<p><span style="font-size: 16px">　　2. 操作系统时间片的使用规则：某个作业在cpu分配给它的时间片结束时，整个任务并没完成，那么该作业只能被暂停下来，等待下一轮循环再继续做。由于cpu处理速度非常快，所以只要时间片间隔划分得当，当一个用户作业从用完分配给它的时间片到获得下一个时间片，中间有些许“停顿”，用户是觉察不出来的。　　</span></p>
+<p><span style="font-size: 16px">　　3. 所以在单核cpu中，我们看似可以“同时干很多事”，其实是通过时间片切换技术，并发完成的。 比如在单核cpu下，我们依旧可以一边听歌，一边打游戏，这都是时间片切换技术，让我们觉得是是同时在进行。<br></span></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</blockquote>
+<p><strong><span style="font-size: 16px">&nbsp;1. 并发的概念</span></strong></p>
+<p><span style="font-size: 15px">　　在操作系统中，是指<span style="color: rgba(128, 0, 128, 1)"><strong>一个时间段中</strong></span>有几个程序都处于<span style="color: rgba(128, 0, 128, 1)"><strong>已启动运行</strong></span> 至 <span style="color: rgba(128, 0, 128, 1)"><strong>运行完毕&nbsp;</strong></span>之间，且这几个程序都是在<span style="color: rgba(128, 0, 128, 1)"><strong>同一个处理机</strong></span>上运行。（concurrency）</span></p>
+<p><span style="font-size: 15px">　　类别前面提到的时间片分时调度，<span style="color: rgba(128, 0, 128, 1)"><strong>听歌</strong></span>和<span style="color: rgba(128, 0, 128, 1)"><strong>打游戏</strong></span>两件事在<span style="color: rgba(128, 0, 128, 1)"><strong>同一个时间段</strong></span>在<strong><span style="color: rgba(128, 0, 128, 1)">同一台电脑</span></strong>上完成了从<span style="color: rgba(128, 0, 128, 1)"><strong>开始到结束</strong></span>的动作，那么我们就可以说听歌和打游戏是<strong><span style="color: rgba(128, 0, 128, 1)">并发</span></strong>的。</span></p>
+<p><strong><span style="font-size: 16px">2. 并行的概念</span></strong></p>
+<p><span style="font-size: 15px">　　指多CPU<span style="color: rgba(128, 0, 128, 1)"><strong>核心</strong></span>的时候，一个cpu核心在执行一个任务的同时，其他cpu核心可以执行<span style="color: rgba(128, 0, 128, 1)"><strong>其它任务</strong></span>，多个任务之间互相不抢占cpu资源能同时进行，这种方式称之为并行(Parallel)。<br></span></p>
+<p><span style="font-size: 15px; color: rgba(128, 0, 128, 1)">&nbsp;PS： 决定并行的因素不是cpu的数量，而是cpu的核心数量，比如一个cpu多个核也可以并行，单核cpu不存在并行的一说。</span></p>
+<p><span style="font-size: 15px; color: rgba(128, 0, 128, 1)">　　&nbsp;&nbsp;&nbsp;单核多线程的cpu同一时间点还是能只能干一件事，只不过比单核单线程效率要高，所以单核多线程也不存在并行一说。</span></p>
+<p><span style="font-size: 15px; color: rgba(0, 0, 0, 1)">　　举例：两个人分别在自己的电脑上听歌、打游戏，这<strong>两个人之间</strong>就是<strong>并行的</strong>；但是</span><strong><span style="font-size: 15px">单个人</span></strong><span style="font-size: 15px; color: rgba(0, 0, 0, 1)">听歌和打游戏就是</span><strong><span style="font-size: 15px">并发</span><span style="font-size: 15px; color: rgba(0, 0, 0, 1)">的。</span></strong></p>
+<p><strong><span style="font-size: 16px"><span style="color: rgba(0, 0, 0, 1)">3. 二者对比</span></span></strong></p>
+<p><span style="font-size: 15px; color: rgba(0, 0, 0, 1)">　　并发是指在<strong>一段时间内宏观上</strong>多个程序<strong>"同时"</strong>运行，并行指的是<strong>同一个时刻</strong>，多个任务确实<strong>真的在同时</strong>运行。</span></p>
+<p><span style="font-size: 15px; color: rgba(0, 0, 0, 1)">(1). 并发是指多个事情，在同一个时间段内同时发生了；并行是指多个事情，在同一时间点上同时发生了。</span></p>
+<p><span style="font-size: 15px; color: rgba(0, 0, 0, 1)">(2). 并发的多个任务之间是<strong>互相抢占资源</strong>的，并行的多个任务之间是<strong>不互相抢占</strong>资源的。</span></p>
+<p><span style="font-size: 15px">(3).&nbsp;并发不是并行。并行是让不同的代码片段同时在不同的物理处理器(或不同核心)上执行，并行的关键是同时做很多事情，而并发是指同时管理很多事情，这些事情可能只做了一半就被暂停去做别的事情了。在很多情况下，并发的效果比并行好，因为操作系统和硬件的总资源一般很少，但能支持系统同时做很多事情。</span></p>
+<p><span style="font-size: 15px">(4).&nbsp;并发指宏观上看起来两个程序在同时运行，比如说在单核cpu上的多任务。但是从微观上看两个程序的指令是交织着运行的，你的指令之间穿插着我的指令，我的指令之间穿插着你的，在单个周期内只运行了一个指令。这种并发并不能提高计算机的性能，只能提高效率。</span></p>
+<p><span style="font-size: 15px">　　并行指严格物理意义上的同时运行，比如多核cpu，两个程序分别运行在两个核上，两者之间互不影响，单个周期内每个程序都运行了自己的指令，也就是运行了两条指令。这样说来并行的确提高了计算机的效率。所以现在的cpu都是往多核方面发展。</span></p>
+<p><span style="font-size: 15px">(5).&nbsp;并行的事件或活动一定是并发的，但反之并发的事件或活动未必是并行的。并行性是并发性的特例，而并发性是并行性的扩展。(谨慎理解)</span></p>
+<p><strong><span style="font-size: 16px">4. 图文案例</span></strong></p>
+<p><span style="font-size: 15px">(1). 咖啡机和排队问题</span></p>
+<p><img src="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/1031302-20200417111700564-1051709018.png" alt="" width="461" height="357" style="display: block; margin-left: auto; margin-right: auto"></p>
+<p><span style="font-size: 15px">(2). 地鼠搬东西问题</span></p>
+<p><img src="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/1031302-20200417111743961-1931575639.png" alt="" width="477" height="431" style="display: block; margin-left: auto; margin-right: auto"></p>
+<p><strong><span style="font-size: 16px">&nbsp;5. 一个场景</span></strong></p>
+<p><span style="font-size: 15px">&nbsp;　　在出入库系统中，比如出入库接口，如果没有加锁，或者其它措施，在高并发的情况下会引起数据错误。这里的前提是高并发（这里是宏观意义上的高并发），大量的http请求进入出入库接口，导致查询出来的数据出错。</span></p>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">二. 异步、多线程、并行</span></p>
+<p><span style="font-size: 16px"><strong>1. 案例场景</strong></span></p>
+<div>
+<p><span style="font-size: 15px">　　作为一个北漂，准备结束北漂生涯，谋划如何搬家。其余家当都变买了，就剩下有一辆小轿车，和一辆摩托车需要带回家。</span></p>
+<div>
+<div>
+<p><span style="font-size: 15px">(1). 阻塞式编程</span></p>
+<p><span style="font-size: 15px">　　先开其中一辆回去，再回来开另一辆车回去。</span></p>
+<p><span style="font-size: 15px">(2). 传统异步式编程</span></p>
+<p><span style="font-size: 15px">　　摩托车办理快递，我开汽车回去。注意，快递公司派件（回调）时我不一定已经开车到家，如果必须本人签收，就比较麻烦了。----此种通过回调进行异步编程的方式，没法编写符合思维顺序的代码。</span></p>
+<p><span style="font-size: 15px">(3). 基于多线程的异步编程</span></p>
+<p><span style="font-size: 15px">　　我获得了瞬间移动的超能力（cpu计算速度提升），以毫秒级的速度在汽车与摩托车之间切换驾驶。汽车（主线程）上有车载电话，可以使用处理其它事情。----期间频繁的上下文切换，会造成额外的损耗，造成反应能力比较差，只能开到60迈。</span></p>
+<p><span style="font-size: 15px">(4). 并行编程</span></p>
+<p><span style="font-size: 15px">　　我获得了分身的超能力（多核cpu的出现），两个我同时开两辆车回家。----充分发挥了cpu的能力，没有额外切换上下文的损耗，精力充沛，在120的时速狂飙。</span></p>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+<p><strong><span style="font-size: 16px">2. 异步 和 多线程&nbsp;</span></strong></p>
+<p><span style="font-size: 15px">　　异步是让调用方法的主线程不需要等待完成，从而可以让主线程去其他事，异步通常是相对于同步而言的，异步和多线程并不是同等关系，<strong><span style="color: rgba(128, 0, 128, 1)">异步是最终的目的，多线程是实现异步的一个手段而已</span></strong>，也就是说实现异步可以采用多线程技术或者交给另外的进程来处理。</span></p>
+<p><strong><span style="font-size: 15px; color: rgba(0, 128, 0, 1)">　　这两个概念拿来对比也有点不合适，因为他们不是一个概念，多线程的目的还是为了实现异步，多线程应该是一种实现异步的手段，异步应该去跟同步比较才对。</span></strong></p>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">三. 其它</span></p>
+<p><strong><span style="font-size: 16px">1. 响应和吞吐</span></strong></p>
+<p><span style="font-size: 15px">(1). 响应：表示应答的快慢。响应就像几乎装载不了东西，但速度飞快的赛车。</span></p>
+<p><span style="font-size: 15px">(2). 吞吐：表示处理数量的多少。吞吐就像速度很慢但能装载大量货物的卡车。</span></p>
+<p><span style="font-size: 15px">如：1个人搬运一次货物需要10s，2个人搬运一次货物仍需要10s。 时间就是响应，工作量就是吞吐。</span></p>
+<p><strong><span style="font-size: 16px">2. 负载测试和压力测试</span></strong></p>
+<p><span style="font-size: 15px">(1). 负载测试：为了获得系统正常工作时所能承受的最大负载，容量测试。模拟实际软件系统所承受的负载条件的系统负荷，通过不断增加模拟用户的数量，来观察不同负载下系统的响应和吞吐，系统所占用的资源。</span></p>
+<p><span style="font-size: 15px">(2). 压力测试：可以知道什么极限情况下系统会崩溃、系统是否具有自我恢复性，更多的是为了确定系统的稳定性。压力测试是在强负载下的测试，通过查看系统在峰值使用情况下的操作行为。压力测试是在极端情况下运行时测试应用稳定性，长时间运行。</span></p>
+<p><strong><span style="font-size: 16px">3. 线程和进程</span></strong></p>
+<p><span style="font-size: 15px">(1). 线程：是程序执行流的最小单位，是系统独立调度和分配cpu(独立运行)的基本单位。</span></p>
+<p><span style="font-size: 15px">(2). 进程：是资源分配的基本单位，一个进程包括至少一个线程。&nbsp; &nbsp;所以 进程 &gt;= 线程。</span></p>
+<p><span style="font-size: 15px">(3). 对比：</span></p>
+<p><span style="font-size: 15px">　　A. 线程与资源分配无关，它属于某一个进程，并与进程内的其他线程一起共享进程资源，进程内线程间的通信比进程间的通信更快，因为共享变量啊。</span></p>
+<p><span style="font-size: 15px">　　B. 每个进程都有自己的一套独立资源(数据)，供期内所有的线程共享。</span></p>
+<p><span style="font-size: 15px">(4). 再次说明：</span></p>
+<p><span style="font-size: 15px">　　线程和进程的区别主要在于它们是不同的操作系统资源管理方式。进程有独立的地址空间，<strong>一个进程崩溃后，在保护模式的影响下不会对其他进程产生影响</strong>，而线程只是一个进程中的不同执行路径。线程有自己的堆栈和局部变量，但线程之间没有单独的地址空间，<strong>一个线程死掉就等同于整个进程死掉</strong>，所以多进程的程序要比多线程的程序健壮，但在进程切换时，耗费资源较大，效率要差一些。但对于一些要求同时进行并且又要共享某些变量的并发操作，只能用线程，不能用进程。</span></p>
+<p><span style="font-size: 15px">
+  线程是CPU独立运行和独立调度的基本单位(可以理解为一个进程中执行的代码片段)。</span></p>
+<p><span style="font-size: 15px">
+  进程是资源分配的基本单位(进程是一块包含了某些资源的内存区域)。</span></p>
+<p><span style="font-size: 15px">
+  进程和线程都是由操作系统所体会的程序运行的基本单元，系统利用该基本单元实现系统对应用的并发性。进程是线程的容器，真正完成代码执行的线程，而进程则作为线程的执行环境。一个程序至少包含一个进程，一个进程至少包含一个线程，一个进程中的所有线程共享当前进程所拥有的资源。</span></p>
+<p><strong><span style="font-size: 16px">4. 同步和异步</span></strong></p>
+<p><span style="font-size: 15px">同步和异步关注的是消息通信机制。</span></p>
+<p><span style="font-size: 15px">(1). 同步：调用某个方法的时候，需要等待拿到返回结果才能往后执行，就叫做同步。</span></p>
+<p><span style="font-size: 15px">(2). 异步： 调用发发出调用指令后就可以继续往后执行，不需要等待拿到返回结果，异步基本上都是通过回调来通知调用者。</span></p>
+<p><span style="font-size: 15px; color: rgba(128, 0, 128, 1)">PS：ajax就是典型的异步例子，当然可以把ajax改成同步的，这里改成同步的是指 客户端拿到服务器地址返回的data后，则可以继续往后执行代码，而不是要等待执行完回调中的业务哦。</span></p>
+<p><strong><span style="font-size: 16px">5. 阻塞和非阻塞</span></strong></p>
+<p><span style="font-size: 15px">　　所谓的阻塞和非阻塞是用来描述行为的，在没有任何特征的前提下，是没法判断一个函数是阻塞还是非阻塞的。</span></p>
+<p><span style="font-size: 15px">(1). 阻塞：在该动作或方法没有返回前，则不能进入下一行代码，则为阻塞。但如果你指的阻塞是程序级别或进程级别的，那么判断阻塞的标准将会被你的这个背景知识锁扩大； 扩大为：某一个线程，在某函数没有返回之前，不能执行下一步，则该函数为阻塞，但是该阻塞，其实应当是线程级别的阻塞，而非完全阻塞函数。</span></p>
+<p><span style="font-size: 15px; color: rgba(128, 0, 128, 1)">PS：阻塞式函数：其中一个线程调用的时候，别的线程都不能调用，叫做阻塞式函数。（函数中有lock锁）</span></p>
+<p><span style="font-size: 15px; color: rgba(0, 0, 0, 1)">(2). IO阻塞：根据不同的操作系统而言，windows下某人只允许一个写操作，如果文件句柄打开，则第三方无法删除与使用。</span></p>
+<p><span style="font-size: 15px; color: rgba(0, 0, 0, 1)">(3). 缓存阻塞：标准的针对业务的场景，为了达到即时一致性目的，也就是让Redis成为1写(master) N读(slave)的模式，类似MySql中单Master N slave的模式。</span></p>
+<p><span style="font-size: 15px; color: rgba(0, 0, 0, 1)">(4). 非阻塞：和阻塞相反，异步其实就是不阻塞当前线程，可以让代码继续执行下去。</span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div style="border: 2px dashed rgba(0, 0, 255, 1); border-radius: 10px; height: 120px; width: 1100px; margin-left: 60px">
+<div style="width: 0; height: 0; border-left: 20px solid rgba(0, 0, 0, 0); border-right: 20px solid rgba(0, 0, 0, 0); border-bottom: 30px solid rgba(255, 255, 0, 1); float: left; margin-top: 40px; margin-left: 20px">
+<p style="font-size: 16px; font-weight: bold; margin-top: 8px; margin-left: -2px">!</p>
+
+
+
+
+			</div>
+<div style="float: left; margin-left: 16px">
+<ul style="list-style: none; padding: 0; margin-left: 20px">
+<li style="margin-bottom: 1px; line-height: 28px">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者 : <span style="color: rgba(255, 0, 0, 1)">Yaopengfei(姚鹏飞)</span></li>
+<li style="margin-bottom: 1px; line-height: 28px">博客地址 : <a style="text-decoration: none" href="http://www.cnblogs.com/yaopengfei/"><span style="color: rgba(255, 0, 0, 1)">http://www.cnblogs.com/yaopengfei/</span></a></li>
+<li style="margin-bottom: 1px; line-height: 28px">声&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明1 : 如有错误，欢迎讨论，请勿谩骂^_^。</li>
+<li style="margin-bottom: 1px; line-height: 28px">声&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明2 : 原创博客请在转载时保留原文链接或在文章开头加上本人博客地址，否则保留追究法律责任的权利。</li>
+
+
+
+
+				</ul>
+
+
+
+
+			</div>
+<div style="clear: both">&nbsp;</div>
+
+
+
+
+		</div>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2020-03-16 16:06</span>&nbsp;
+<a href="https://www.cnblogs.com/yaopengfei/">Yaopengfei</a>&nbsp;
+阅读(<span id="post_view_count">659</span>)&nbsp;
+评论(<span id="post_comment_count">2</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=12504514" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(12504514);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;12504514&#39;, targetLink: &#39;https://www.cnblogs.com/yaopengfei/p/12504514.html&#39;, title: &#39;第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等&#39; })">举报</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+
+<script>
+    markdown_highlight()
+    var allowComments = true, cb_blogId = 307315, cb_blogApp = 'yaopengfei', cb_blogUserGuid = '7d349e7e-c080-e611-9fc1-ac853d9f53cc';
+    var cb_entryId = 12504514, cb_entryCreatedDate = '2020-03-16 16:06', cb_postType = 1;
+    updatePostStats(
+        [cb_entryId],
+        function(id, count) { $("#post_view_count").text(count) },
+        function(id, count) { $("#post_comment_count").text(count) })
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+</script>
+<a name="!comments"></a>
+<div id="blog-comments-placeholder"><div style="color:green;margin:50px 0;font-weight:normal;">努力加载评论中...</div></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/yaopengfei/p/12504514.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/yaopengfei/p/12504514.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="cnblogs_ch"><a href="https://c.gridsumdissector.com/r/?gid=gad_545_sf71nlea&amp;ck=1057&amp;adk=10670&amp;autorefresh=__AUTOREFRESH__" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-火山引擎-1203-1209&#39;})">【推荐】字节跳动旗下火山引擎，邀您共同揭秘“云+增长”</a><br><a href="http://www.uccpsoft.com/index.htm" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-ucancode&#39;})">【推荐】跨平台组态\工控\仿真\CAD 50万行C++源码全开放免费下载！</a><br><a href="https://brands.cnblogs.com/huawei/p/2704" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-华为专区&#39;})">【推荐】华为 HarmonyOS 校园极客秀征文活动第1期，秀出你的COOL</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+        <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;"></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/coco1s/p/15627657.html" target="_blank">使用 CSS 轻松实现一些高频出现的奇形怪状按钮</a>
+    <br>
+· <a href="https://www.cnblogs.com/strick/p/15394367.html" target="_blank">带团队后的日常思考（六）</a>
+    <br>
+· <a href="https://www.cnblogs.com/xiao2shiqi/p/15623540.html" target="_blank">聊聊云原生和微服务架构</a>
+    <br>
+· <a href="https://www.cnblogs.com/youzhibing/p/15615272.html" target="_blank">异或运算的巧用：不用额外的变量，如何交换两个变量的值？ </a>
+    <br>
+· <a href="https://www.cnblogs.com/myshowtime/p/15596630.html" target="_blank">OAuth 2.1 带来了哪些变化</a>
+    <br>
+</div></div>
+        <div id="cnblogs_c2" class="under-post-card">
+            <a href="https://c.gridsumdissector.com/r/?gid=gad_545_wrrk6jpf&amp;ck=1057&amp;adk=10673&amp;autorefresh=__AUTOREFRESH__" rel="nofollow" target="_blank">
+                <img src="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/volcengine-c2.jpg" alt="" onload="impressC2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_wrrk6jpf&amp;ck=1057&amp;adk=10673&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+            </a>
+        </div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/708325/" target="_blank">达摩院AliceMind上新！首个中文表格预训练模型发布，已向业界开源（2021-12-03 15:55）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708324/" target="_blank">亚马逊中国卖家遭遇最惨“黑五”：销量不及预期，封号仍在继续（2021-12-03 15:48）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708323/" target="_blank">印度人民怀念中国App（2021-12-03 15:40）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708322/" target="_blank">专利申请量超美国、高新企业数增10倍：一图看懂近20年中国科技有多燃（2021-12-03 15:34）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708321/" target="_blank">“大红大紫”的代价！英伟达再也收不了ARM了？（2021-12-03 15:31）</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+       var commentManager = new blogCommentManager();
+       commentManager.renderComments(0);
+       fixPostBody();
+
+           window.tocManager.displayDisableTocTips = false
+           window.tocManager.generateToc();
+           setTimeout(function() { incrementViewCount(cb_entryId); }, 50);       deliverT2();
+       deliverC1C2();
+       loadNewsAndKb();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);       LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+       GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+       loadOptUnderPost();
+       GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem">
+            <script>loadBlogNews();</script>
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2021 Yaopengfei
+<br><span id="poweredby">Powered by .NET 6 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8FO3GXnjClZGrNGr2Ic8Z1pK4sFVHq5UsbqfKcBWDQYJNNx5-DCwdXt6rMW3CC66lIW928aDGN8Ot2FgM9DZ7AlkIgxKtnUQFBF-fmKYNxZcK6mEBd8O4fqzGknqKrLCHWVEZIR4eEl4WtQTvWXCcEg">
+    <script async="" src="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/js"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+    </script>
+    <script defer="" src="./第三十一节：扫盲并发和并行、同步和异步、进程和线程、阻塞和非阻塞、响应和吞吐等 - Yaopengfei - 博客园_files/hm.js.下载"></script>
+
+</body></html>

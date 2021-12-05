@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)https://www.cnblogs.com/yaopengfei/p/10435032.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="description" content="一. 常见的安全隐患 1. SQL注入 常见的案例： 这个时候，只需要在传递过来的userID后面加上个： or 1=1，即可以获取T_User表中的所有数据了。 解决方案：参数化查询。 2. 跨站脚">
+    <meta property="og:description" content="一. 常见的安全隐患 1. SQL注入 常见的案例： 这个时候，只需要在传递过来的userID后面加上个： or 1=1，即可以获取T_User表中的所有数据了。 解决方案：参数化查询。 2. 跨站脚">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([class*="language-"]):not([highlighted]):not(.hljs) {
+        background: rgb(245, 245, 245);
+        padding: 5px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(0, 0, 0);
+        font-family: "Courier New", sans-serif;
+    }:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]) code:not(.hljs) {
+            background: rgb(245, 245, 245) !important;
+            border-color: transparent !important;
+        }</style><link rel="stylesheet" href="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/blog-common.min.css">
+    <link id="MainCss" rel="stylesheet" href="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/bundle-darkgreentrip.min.css">
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/cnblogs.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/bundle-darkgreentrip-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/yaopengfei/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/yaopengfei/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/yaopengfei/wlwmanifest.xml">
+    <script type="text/javascript" async="" src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/analytics.js.下载"></script><script type="text/javascript" src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/encoder.js.下载"></script><script>
+        var currentBlogId = 307315;
+        var currentBlogApp = 'yaopengfei';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'darkgreentrip';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function(){ return ''; } });
+            }
+        } catch(error) { }
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+    </script>
+        <script>
+            var currentPostDateAdded = '2019-02-26 08:20';
+        </script>
+    <script src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/jquery-2.2.0.min.js.下载"></script>
+    <script src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/blog-common.min.js.下载"></script><style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style><script id="hljs-script" async="" data-loaded="true" src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/highlight.min.js.下载"></script>
+    
+    
+    
+</head>
+<body class="skin-darkgreentrip has-navbar has-bannerbar">
+    <a name="top"></a>
+        <a href="https://c.gridsumdissector.com/r/?gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__" target="_blank" rel="nofollow" onclick="countClicks(&#39;ad&#39;, &#39;C0-火山引擎&#39;)">
+            <div class="bannerbar forpc" style="display: flex; background-color: #11225a;">
+                <img src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/volcengine-b0c0-1.jpg" onload="impressC0(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)" alt="">
+                <img src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/volcengine-b0c0-2.jpg" alt="">
+                <img style="margin-left: auto;" src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/volcengine-b0c0-3.jpg" alt="">
+            </div>
+        </a>
+            <div id="bannerbar" class="bannerbar-mobile formobile">
+                <a href="https://c.gridsumdissector.com/r/?gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__" onclick="countClicks(&#39;ad&#39;, &#39;M2-火山引擎&#39;)" rel="nofollow">
+                    <img src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/volcengine-m2.jpg" alt="" onload="impressM2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+                </a>
+            </div>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding"><a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/logo.svg" alt="博客园Logo"></a></li>
+                <li><a href="https://www.cnblogs.com/" onclick="countClicks(&#39;skin-navbar-sitehome&#39;)">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-brands&#39;)">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-edu&#39;)">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/yaopengfei/"><img id="blogLogo" src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/yaopengfei/">奔跑的路上</a>
+</h1>
+<h2>广泛汲取，用心打磨，精益求精。</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/yaopengfei/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/Yaopengfei">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/yaopengfei/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 494&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 1303&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 604717">
+60万</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/yaopengfei/p/10435032.html">
+    <span>第八节：常见安全隐患和传统的基于Session和Token的安全校验</span>
+    
+
+
+
+</a><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">一. 常见的安全隐患</span></p>
+<p><strong><span style="font-size: 16px">&nbsp;1. SQL注入</span></strong></p>
+<p><span style="font-size: 16px">&nbsp;常见的案例：</span></p>
+<div class="cnblogs_code">
+<pre>String query <span style="color: rgba(128, 128, 128, 1)">=</span> "<span style="color: rgba(0, 0, 255, 1)">SELECT</span> <span style="color: rgba(128, 128, 128, 1)">*</span> <span style="color: rgba(0, 0, 255, 1)">FROM</span> T_User <span style="color: rgba(0, 0, 255, 1)">WHERE</span> userID<span style="color: rgba(128, 128, 128, 1)">=</span><span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(255, 0, 0, 1)">" + Request["userID"] + "</span><span style="color: rgba(255, 0, 0, 1)">'</span>;</pre>
+</div>
+<p><span style="font-size: 16px">这个时候，只需要在传递过来的userID后面加上个： or 1=1，即可以获取T_User表中的所有数据了。</span></p>
+<p><span style="font-size: 16px"><strong><span style="color: rgba(0, 128, 0, 1)">解决方案：参数化查询。</span></strong></span></p>
+<h2 id="xss"><strong><span style="font-size: 16px">2. 跨站脚本攻击(Cross-Site Scripting (XSS))</span></strong><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<p><span style="font-size: 16px">允许跨站脚本是Web 2.0时代网站最普遍的问题。如果网站没有对用户提交的数据加以验证而直接输出至网页，那么恶意用户就可以在网页中注入脚本来窃取用户数据。</span></p>
+<p><span style="font-size: 16px">eg：通过后台代码编写前端代码进行输出</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> string page <span style="color: rgba(128, 128, 128, 1)">+=</span> "<span style="color: rgba(128, 128, 128, 1)">&lt;</span>input name<span style="color: rgba(128, 128, 128, 1)">=</span><span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(255, 0, 0, 1)">userName</span><span style="color: rgba(255, 0, 0, 1)">'</span> type<span style="color: rgba(128, 128, 128, 1)">=</span><span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(255, 0, 0, 1)">TEXT</span><span style="color: rgba(255, 0, 0, 1)">'</span> value<span style="color: rgba(128, 128, 128, 1)">=</span><span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(255, 0, 0, 1)">" + request.getParameter("CC") + "</span><span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(128, 128, 128, 1)">&gt;</span>";</pre>
+</div>
+<p><span style="color: rgba(255, 0, 0, 1)"><strong><span style="font-size: 16px">攻击者只要输入以下数据：</span></strong></span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(255, 0, 0, 1)">&gt;&lt;script&gt;document.location= </span><span style="color: rgba(255, 0, 0, 1)">'</span>http:<span style="color: rgba(128, 128, 128, 1)">//</span>www.attacker.com<span style="color: rgba(128, 128, 128, 1)">/</span>cgi<span style="color: rgba(128, 128, 128, 1)">-</span>bin<span style="color: rgba(128, 128, 128, 1)">/</span>cookie.cgi ?foo<span style="color: rgba(128, 128, 128, 1)">=</span><span style="color: rgba(255, 0, 0, 1)">'</span><span style="color: rgba(255, 0, 0, 1)">+document.cookie&lt;/script&gt;</span><span style="color: rgba(255, 0, 0, 1)">'</span></pre>
+</div>
+<p><strong><span style="color: rgba(255, 0, 0, 1); font-size: 16px">当该数据被输出到页面的时候，每个访问该页面的用户cookie就自动被提交到了攻击者定义好的网站。</span></strong></p>
+<p><span style="color: rgba(0, 128, 0, 1)"><strong><span style="font-size: 16px">解决方案：输入的数据要进行安全校验和转义</span></strong></span></p>
+<h2 id="csrf"><span style="font-size: 16px">3.跨站请求伪造(Cross-Site Request Forgery (CSRF) )</span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<p><span style="font-size: 16px">同样是跨站请求，这种与上面XSS的不同之处在于这个请求是从钓鱼网站上发起的。</span></p>
+<p><span style="font-size: 16px">比如钓鱼网站包含了下面代码：</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">img </span><span style="color: rgba(255, 0, 0, 1)">src</span><span style="color: rgba(0, 0, 255, 1)">="http://example.com/app/transferFunds?amount=1500&amp;amp;destinationAccount=attackersAcct#"</span><span style="color: rgba(255, 0, 0, 1)"> width</span><span style="color: rgba(0, 0, 255, 1)">="0"</span><span style="color: rgba(255, 0, 0, 1)"> height</span><span style="color: rgba(0, 0, 255, 1)">="0"</span> <span style="color: rgba(0, 0, 255, 1)">/&gt;</span></pre>
+</div>
+<p><span style="font-size: 16px">这行代码的作用就是一个在example.com网站的转帐请求，客户访问钓鱼网站时，如果也同时登录了example.com或者保留了example.com的登录状态，那个相应的隐藏请求就会被成功执行。</span></p>
+<p><strong><span style="font-size: 16px; color: rgba(0, 128, 0, 1)">解决方案：</span></strong></p>
+<p><strong><span style="font-size: 16px; color: rgba(0, 128, 0, 1)">　　使用Token校验，保存好Token，比如：JWT校验。</span></strong></p>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">二. 两类系统要解决的常见问题</span></p>
+<p><strong><span style="font-size: 16px"> 1. Web系统 </span></strong></p>
+<p><span style="font-size: 16px">(1).是否登录. 没有登录话是不能进入登录以外的页面，即使访问，也要返回到自动进入登录页面。</span></p>
+<p><span style="font-size: 16px">(2).是否有权限. 权限的展现分两种：a. 没有权限的话直接不显示. b. 没有权限但是显示，单击的时候提示没有权限。</span></p>
+<p><strong><span style="font-size: 16px"> 2.APP接口 </span></strong></p>
+<p><span style="font-size: 16px">(1).接口安全，不是任何人都能访问的，必须登录后才能访问，当然也有一部分不需要登录。</span></p>
+<p><span style="font-size: 16px">(2).防止接口被知道参数后任何能直接访问，要有校验，即使地址暴露别人也访问不通。</span></p>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">三. 传统的基于Session的校验</span></p>
+<p><strong><span style="font-size: 16px">1. 前言</span></strong></p>
+<p><span style="font-size: 16px">　　基于Session的校验，通常是用在管理系统中或者网站上，不适用于APP接口或者前后端分离的项目。<br></span></p>
+<p><strong><span style="font-size: 15px"><span style="color: rgba(128, 0, 128, 1)">PS：复习一下Session的原理：</span><a href="https://www.cnblogs.com/yaopengfei/p/8057176.html">https://www.cnblogs.com/yaopengfei/p/8057176.html</a></span></strong></p>
+<p><span style="color: rgba(0, 0, 0, 1)"><strong><span style="font-size: 16px">    2. 步骤</span></strong></span></p>
+<p><span style="font-size: 16px">①：登录成功，将用户信息(一个实体)和该用户对应的权限信息存放到Session中。</span></p>
+<p><span style="font-size: 16px">②：对所有的页面的展示的地址(前提需要登录后才能显示的),加上一个过滤器，在过滤器中判断该用户是否登录过，没有登录的话直接退回到登录页面。</span></p>
+<p><span style="font-size: 16px">③：对所有的业务操作的方法加上一个过滤器，在过滤器中判断该用户是否该权限，没有的话，直接提示没有权限。</span></p>
+<p><span style="font-size: 15px; color: rgba(255, 0, 0, 1)"><strong>注：以上②和③中的过滤器里，都需要到Session中取值。</strong></span></p>
+<p><strong><span style="font-size: 16px">    3. 基于Session验证的弊端</span></strong></p>
+<p><span style="font-size: 16px">①：Session经常过期回收，导致Session为空，是一些业务操作莫名其妙的没法使用。可以改进为使用数据库的Session，会好很多。</span></p>
+<p><span style="font-size: 16px">②：由于Session的原理可知，在同一个浏览器中，先后用不同账号登录，先登录的账号Session中的信息会被后登陆账号Session中的信息覆盖。</span></p>
+<p><span style="font-size: 16px">③：每个用户登录一次，就需要往Session做一次记录，而Session默认是保存在服务器内存中的，随着认证的用户增多，服务器端开销明显增大。</span></p>
+<p><span style="font-size: 16px">④：不能进行负载均衡，保存在内存中，下次还需要到这台服务器上才能拿到授权。</span></p>
+<p><span style="font-size: 16px">⑤：Session是基于Cookie，如果Cookie被截获，用户很容易受到跨站请求伪造攻击(CSRF)。</span></p>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">四. 传统的基于Token的校验</span></p>
+<p><strong><span style="font-size: 16px">1. 背景</span></strong></p>
+<p><span style="font-size: 16px">　　APP项目或者其它前后端分离的项目，Session验证用不了，只能用基于token的验证。当然Web项目也可以采用这种方式。</span></p>
+<p><strong><span style="font-size: 16px">2. 步骤</span></strong></p>
+<p><span style="font-size: 16px">①：通过账号和密码登录成功，服务端生成一个token(比如：32位不重复的随机字符串)。</span></p>
+<p><span style="font-size: 16px">②：服务端把该token和用户id保存到数据库(SQLServer或Redis)或者Session中，然后把token值返回给前端。</span></p>
+<p><span style="font-size: 16px">③：客户端每次请求都带上该token，服务端根据该token来查询是否合法和过期，然后去数据库中查出来用户id进行使用。</span></p>
+<p><strong><span style="font-size: 16px">3. 弊端</span></strong></p>
+<p><span style="font-size: 16px">①：验证信息如果存在数据库中，每次都要根据token查用户id，增加了数据库的开销。</span></p>
+<p><span style="font-size: 16px">②：验证信息如果存在Session中，则增大了服务器端存储的压力。</span></p>
+<p><span style="font-size: 16px">③：token一旦被截取，就很容易进行跨站请求伪造。</span></p>
+<p><strong><span style="font-size: 16px">4. 鉴于以上弊端进行思考</span></strong></p>
+<p><span style="font-size: 16px">①：如果token遵从一定规律，使用对称加密算法来加密用户id生成token，服务器端只要解密该token，就能知道用户id了，不需要额外的开销。</span><span style="font-size: 16px">&nbsp;但是，如果对称加密算法泄露了，别人也可以伪造token了。</span></p>
+<p><span style="font-size: 16px">②：如果我们用非对称加密算法来做呢，保存好秘钥，就不存在上面的问题了，从而引出JWT类似于该原理。</span></p>
+<p><strong><span style="font-size: 16px">5. 实战案例(基于Token的小升级)</span></strong></p>
+<p><strong><span style="font-size: 16px">A. 步骤</span></strong></p>
+<p><span style="font-size: 16px">(1) 登录成功，将账号和密码按照一定格式进行拼接成字符串，然后进行票据加密（对称加密，这其中可以设置很多东西，比如过期时间），将生成的ticket返回给客户端。</span></p>
+<p><span style="font-size: 16px">(2) 客户端可以把该ticket值存到localstorage中，每次请求在表头进行附加。</span></p>
+<p><span style="font-size: 16px">(3) 服务器端写一个过滤器，对该ticket进行解密，拿到账号和密码，去数据库中查询，是否匹配，如果匹配则验证通过。</span></p>
+<p><strong><span style="font-size: 16px">B. 深度分析</span></strong></p>
+<p><span style="font-size: 16px">同样存在被截取的问题，加密算法如果被人知道，容易被伪造</span></p>
+<p><span style="font-size: 16px">服务器端验证：见CheckPer0.cs</span></p>
+<p><strong><span style="font-size: 16px">C. 代码分享</span></strong></p>
+<p><strong><span style="font-size: 16px; color: rgba(0, 0, 255, 1)">(1). 服务器端校验登录的代码</span></strong></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 模拟登陆
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 4</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="userAccount"&gt;&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 5</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="pwd"&gt;&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 6</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 7</span> <span style="color: rgba(0, 0, 0, 1)">        [HttpGet]
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span> Login0(<span style="color: rgba(0, 0, 255, 1)">string</span> userAccount, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> pwd)
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">10</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">这里实际应该去数据库验证，此处暂时用固定值写死</span>
+<span style="color: rgba(0, 128, 128, 1)">11</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (userAccount == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">admin</span><span style="color: rgba(128, 0, 0, 1)">"</span> &amp;&amp; pwd == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">123456</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)">12</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>                 FormsAuthenticationTicket ticketObject = <span style="color: rgba(0, 0, 255, 1)">new</span> FormsAuthenticationTicket(<span style="color: rgba(128, 0, 128, 1)">0</span>, userAccount, DateTime.Now, DateTime.Now.AddHours(<span style="color: rgba(128, 0, 128, 1)">1</span>), <span style="color: rgba(0, 0, 255, 1)">true</span>, $<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{userAccount}&amp;{pwd}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, FormsAuthentication.FormsCookiePath);
+</span><span style="color: rgba(0, 128, 128, 1)">14</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> result = <span style="color: rgba(0, 0, 255, 1)">new</span> { result = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ok</span><span style="color: rgba(128, 0, 0, 1)">"</span>, ticket =<span style="color: rgba(0, 0, 0, 1)"> FormsAuthentication.Encrypt(ticketObject) };
+</span><span style="color: rgba(0, 128, 128, 1)">15</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> JsonConvert.SerializeObject(result);
+</span><span style="color: rgba(0, 128, 128, 1)">16</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">17</span>             <span style="color: rgba(0, 0, 255, 1)">else</span>
+<span style="color: rgba(0, 128, 128, 1)">18</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">19</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> result = <span style="color: rgba(0, 0, 255, 1)">new</span> { result = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">error</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)"> };
+</span><span style="color: rgba(0, 128, 128, 1)">20</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> JsonConvert.SerializeObject(result);
+</span><span style="color: rgba(0, 128, 128, 1)">21</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">22</span>         }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><strong><span style="font-size: 16px; color: rgba(0, 0, 255, 1)">(2). 客户端调用登录的代码</span></strong></p>
+<p>　　<span style="font-size: 15px; color: rgba(0, 0, 255, 1)">获取成功，将token值存放到localStorage中。</span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>               $.<span style="color: rgba(0, 0, 255, 1)">get</span>(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">/api/Seventh/Login0</span><span style="color: rgba(128, 0, 0, 1)">"</span>, { userAccount: <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">admin</span><span style="color: rgba(128, 0, 0, 1)">"</span>, pwd: <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">123456</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)"> }, function (data) {
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> jsonData =<span style="color: rgba(0, 0, 0, 1)"> JSON.parse(data);
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>                     <span style="color: rgba(0, 0, 255, 1)">if</span> (jsonData.result == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ok</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">) {
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span> <span style="color: rgba(0, 0, 0, 1)">                        console.log(jsonData.ticket);
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span>                         <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">存放到本地缓存中</span>
+<span style="color: rgba(0, 128, 128, 1)"> 6</span>                         window.localStorage.setItem(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">myTicket</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, jsonData.ticket);
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>                         alert(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">登录成功,ticket=</span><span style="color: rgba(128, 0, 0, 1)">"</span> +<span style="color: rgba(0, 0, 0, 1)"> jsonData.ticket);
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span>                     } <span style="color: rgba(0, 0, 255, 1)">else</span><span style="color: rgba(0, 0, 0, 1)"> {
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>                         alert(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">登录失败</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">10</span> <span style="color: rgba(0, 0, 0, 1)">                    }
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>                 });</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><strong><span style="font-size: 16px; color: rgba(0, 0, 255, 1)">(3). 服务器端过滤器代码</span></strong></p>
+<p><strong><span style="font-size: 16px; color: rgba(0, 0, 255, 1)">　　</span></strong><span style="font-size: 15px"><span style="color: rgba(0, 0, 255, 1)">该过滤器中通过&nbsp;</span><span style="color: rgba(0, 0, 255, 1)">actionContext.Request.Headers.Authorization 获取固定的参数位：Authorization，然后通过</span><span style="color: rgba(0, 0, 255, 1)">&nbsp;</span></span><span style="color: rgba(0, 0, 255, 1)">authorizationModel.Parameter 获取参数值，前端需要分割一下，如下：</span></p>
+<p><span style="color: rgba(0, 0, 255, 1)"><img src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/1031302-20190317223232928-173840745.png" alt="" class="medium-zoom-image"></span></p>
+<p>　　<span style="font-size: 15px; color: rgba(0, 0, 255, 1)">当然还有很多别的赋值和获取的方式，详细的见下面章节。</span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>  <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span>     <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 基于token的小升级
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>     <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 过滤器
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span>     <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 5</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> CheckPer0 : AuthorizeAttribute
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">override</span> <span style="color: rgba(0, 0, 255, 1)">void</span><span style="color: rgba(0, 0, 0, 1)"> OnAuthorization(HttpActionContext actionContext)
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1. 获取报文头（固定的参数位 Authorization）</span>
+<span style="color: rgba(0, 128, 128, 1)">10</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> authorizationModel =<span style="color: rgba(0, 0, 0, 1)"> actionContext.Request.Headers.Authorization;
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">2. 如果标注了[AllowAnonymous]特性，则不进行验证</span>
+<span style="color: rgba(0, 128, 128, 1)">12</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (actionContext.ActionDescriptor.GetCustomAttributes&lt;AllowAnonymousAttribute&gt;(<span style="color: rgba(0, 0, 255, 1)">true</span>).Count != <span style="color: rgba(128, 0, 128, 1)">0</span>
+<span style="color: rgba(0, 128, 128, 1)">13</span>                || actionContext.ActionDescriptor.ControllerDescriptor.GetCustomAttributes&lt;AllowAnonymousAttribute&gt;(<span style="color: rgba(0, 0, 255, 1)">true</span>).Count != <span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)">14</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">15</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">base.OnAuthorization(actionContext);</span>
+<span style="color: rgba(0, 128, 128, 1)">16</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">17</span>             <span style="color: rgba(0, 0, 255, 1)">else</span> <span style="color: rgba(0, 0, 255, 1)">if</span> (authorizationModel != <span style="color: rgba(0, 0, 255, 1)">null</span> &amp;&amp; authorizationModel.Parameter != <span style="color: rgba(0, 0, 255, 1)">null</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)">18</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">19</span>                 <span style="color: rgba(0, 0, 255, 1)">try</span>
+<span style="color: rgba(0, 128, 128, 1)">20</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)">21</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">逻辑验证
+</span><span style="color: rgba(0, 128, 128, 1)">22</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">解密 </span>
+<span style="color: rgba(0, 128, 128, 1)">23</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> strTicket =<span style="color: rgba(0, 0, 0, 1)"> FormsAuthentication.Decrypt(authorizationModel.Parameter).UserData;
+</span><span style="color: rgba(0, 128, 128, 1)">24</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">此处应该去数据库验证</span>
+<span style="color: rgba(0, 128, 128, 1)">25</span>                     <span style="color: rgba(0, 0, 255, 1)">if</span> (strTicket.Equals(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">admin&amp;123456</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">))
+</span><span style="color: rgba(0, 128, 128, 1)">26</span> <span style="color: rgba(0, 0, 0, 1)">                    {
+</span><span style="color: rgba(0, 128, 128, 1)">27</span>                         <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示校验通过,用于向控制器中传值</span>
+<span style="color: rgba(0, 128, 128, 1)">28</span>                         actionContext.RequestContext.RouteData.Values.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">auth</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, strTicket);
+</span><span style="color: rgba(0, 128, 128, 1)">29</span> <span style="color: rgba(0, 0, 0, 1)">                    }
+</span><span style="color: rgba(0, 128, 128, 1)">30</span>                     <span style="color: rgba(0, 0, 255, 1)">else</span>
+<span style="color: rgba(0, 128, 128, 1)">31</span> <span style="color: rgba(0, 0, 0, 1)">                    {
+</span><span style="color: rgba(0, 128, 128, 1)">32</span>                         <span style="color: rgba(0, 0, 255, 1)">base</span>.HandleUnauthorizedRequest(actionContext);<span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">返回没有授权</span>
+<span style="color: rgba(0, 128, 128, 1)">33</span> <span style="color: rgba(0, 0, 0, 1)">                    }
+</span><span style="color: rgba(0, 128, 128, 1)">34</span> <span style="color: rgba(0, 0, 0, 1)">                }
+</span><span style="color: rgba(0, 128, 128, 1)">35</span>                 <span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (Exception)
+</span><span style="color: rgba(0, 128, 128, 1)">36</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)">37</span> 
+<span style="color: rgba(0, 128, 128, 1)">38</span>                     <span style="color: rgba(0, 0, 255, 1)">base</span>.HandleUnauthorizedRequest(actionContext);<span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">返回没有授权</span>
+<span style="color: rgba(0, 128, 128, 1)">39</span> <span style="color: rgba(0, 0, 0, 1)">                }
+</span><span style="color: rgba(0, 128, 128, 1)">40</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">41</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">42</span>     }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><strong><span style="font-size: 16px; color: rgba(0, 0, 255, 1)">(4). 服务器端加密后获取信息的代码</span></strong></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 加密后获取信息
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 4</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 5</span> <span style="color: rgba(0, 0, 0, 1)">        [HttpGet]
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span> <span style="color: rgba(0, 0, 0, 1)">        [CheckPer0]
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> GetInfor0()
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> userData = RequestContext.RouteData.Values[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">auth</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">].ToString();
+</span><span style="color: rgba(0, 128, 128, 1)">10</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)">.IsNullOrEmpty(userData))
+</span><span style="color: rgba(0, 128, 128, 1)">11</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">12</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> result = <span style="color: rgba(0, 0, 255, 1)">new</span> { Message = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">error</span><span style="color: rgba(128, 0, 0, 1)">"</span>, data = <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)"> };
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> JsonConvert.SerializeObject(result);
+</span><span style="color: rgba(0, 128, 128, 1)">14</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">15</span>             <span style="color: rgba(0, 0, 255, 1)">else</span>
+<span style="color: rgba(0, 128, 128, 1)">16</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">17</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> result = <span style="color: rgba(0, 0, 255, 1)">new</span> { Message = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ok</span><span style="color: rgba(128, 0, 0, 1)">"</span>, data =<span style="color: rgba(0, 0, 0, 1)"> userData };
+</span><span style="color: rgba(0, 128, 128, 1)">18</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> JsonConvert.SerializeObject(result);
+</span><span style="color: rgba(0, 128, 128, 1)">19</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">20</span>         } </pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><strong><span style="font-size: 16px; color: rgba(0, 0, 255, 1)">(5). 客户端调用获取信息的代码</span></strong></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>                <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">从本地缓存中读取token值</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> myTicket = window.localStorage.getItem(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">myTicket</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span> <span style="color: rgba(0, 0, 0, 1)">                $.ajax({
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span>                     url: <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">/api/Seventh/GetInfor0</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">,
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span>                     type: <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Get</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">,
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span> <span style="color: rgba(0, 0, 0, 1)">                    data: {},
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>                     datatype: <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">json</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">,
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">                    beforeSend: function (xhr) {
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>                         <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">Authorization 是一个固定的参数位置，本来就有这个参数，后台方便获取，当然也可以自己命名
+</span><span style="color: rgba(0, 128, 128, 1)">10</span>                         <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">在myTicket前面加个BasicAuth1 只是为了后台.Parameter能获取到而已，至于叫什么名，没有关系</span>
+<span style="color: rgba(0, 128, 128, 1)">11</span>                         xhr.setRequestHeader(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Authorization</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">'</span><span style="color: rgba(128, 0, 0, 1)">BasicAuth1 </span><span style="color: rgba(128, 0, 0, 1)">'</span> +<span style="color: rgba(0, 0, 0, 1)"> myTicket)
+</span><span style="color: rgba(0, 128, 128, 1)">12</span> <span style="color: rgba(0, 0, 0, 1)">                    },
+</span><span style="color: rgba(0, 128, 128, 1)">13</span> <span style="color: rgba(0, 0, 0, 1)">                    success: function (data) {
+</span><span style="color: rgba(0, 128, 128, 1)">14</span> <span style="color: rgba(0, 0, 0, 1)">                        console.log(data);
+</span><span style="color: rgba(0, 128, 128, 1)">15</span> <span style="color: rgba(0, 0, 0, 1)">                        alert(data);
+</span><span style="color: rgba(0, 128, 128, 1)">16</span> <span style="color: rgba(0, 0, 0, 1)">                    },
+</span><span style="color: rgba(0, 128, 128, 1)">17</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">当安全校验未通过的时候进入这里</span>
+<span style="color: rgba(0, 128, 128, 1)">18</span> <span style="color: rgba(0, 0, 0, 1)">                    error: function (xhr) {
+</span><span style="color: rgba(0, 128, 128, 1)">19</span>                         <span style="color: rgba(0, 0, 255, 1)">if</span> (xhr.status == <span style="color: rgba(128, 0, 128, 1)">401</span><span style="color: rgba(0, 0, 0, 1)">) {
+</span><span style="color: rgba(0, 128, 128, 1)">20</span> <span style="color: rgba(0, 0, 0, 1)">                            console.log(xhr.responseText);
+</span><span style="color: rgba(0, 128, 128, 1)">21</span>                             alert(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">授权未通过</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">22</span> <span style="color: rgba(0, 0, 0, 1)">                        }
+</span><span style="color: rgba(0, 128, 128, 1)">23</span> <span style="color: rgba(0, 0, 0, 1)">                    }
+</span><span style="color: rgba(0, 128, 128, 1)">24</span>                 });</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><span style="color: rgba(0, 0, 255, 1)"><strong><span style="font-size: 16px">(6). 运行结果</span></strong></span></p>
+<p>&nbsp;<img src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/1031302-20190317223538647-1161597729.png" alt=""></p>
+<p><img src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/1031302-20190317223556623-1398224600.png" alt="" class="medium-zoom-image"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div style="border: 2px dashed rgba(0, 0, 255, 1); border-radius: 10px; height: 120px; width: 1100px; margin-left: 60px">
+<div style="width: 0; height: 0; border-left: 20px solid rgba(0, 0, 0, 0); border-right: 20px solid rgba(0, 0, 0, 0); border-bottom: 30px solid rgba(255, 255, 0, 1); float: left; margin-top: 40px; margin-left: 20px">
+<p style="font-size: 16px; font-weight: bold; margin-top: 8px; margin-left: -2px">!</p>
+</div>
+<div style="float: left; margin-left: 16px">
+<ul style="list-style: none; padding: 0; margin-left: 20px">
+<li style="margin-bottom: 1px; line-height: 28px">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者 : <span style="color: rgba(255, 0, 0, 1)">Yaopengfei(姚鹏飞)</span></li>
+<li style="margin-bottom: 1px; line-height: 28px">博客地址 : <a style="text-decoration: none" href="http://www.cnblogs.com/yaopengfei/"><span style="color: rgba(255, 0, 0, 1)">http://www.cnblogs.com/yaopengfei/</span></a></li>
+<li style="margin-bottom: 1px; line-height: 28px">声&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明1 : 本人才疏学浅，用郭德纲的话说“我是一个小学生”，如有错误，欢迎讨论，请勿谩骂^_^。</li>
+<li style="margin-bottom: 1px; line-height: 28px">声&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明2 : 原创博客请在转载时保留原文链接或在文章开头加上本人博客地址，否则保留追究法律责任的权利。</li>
+</ul>
+</div>
+<div style="clear: both">&nbsp;</div>
+</div>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/yaopengfei/category/1076560.html" target="_blank">06-WebApi(含Core)</a></div>
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(10435032,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;7d349e7e-c080-e611-9fc1-ac853d9f53cc&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/yaopengfei/" target="_blank"><img src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/20180828165403.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/yaopengfei/">Yaopengfei</a><br>
+            <a href="https://home.cnblogs.com/u/yaopengfei/followees/">关注 - 18</a><br>
+            <a href="https://home.cnblogs.com/u/yaopengfei/followers/">粉丝 - 828</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;7d349e7e-c080-e611-9fc1-ac853d9f53cc&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(10435032,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">1</span>
+    </div>
+    <div class="buryit" onclick="votePost(10435032,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/yaopengfei/p/10410255.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/yaopengfei/p/10410255.html" title="发布于 2019-02-21 07:58">第七节：WebApi与Unity整合进行依赖注入和AOP的实现</a>
+    <br>
+    <a href="https://www.cnblogs.com/yaopengfei/p/10451189.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/yaopengfei/p/10451189.html" title="发布于 2019-02-28 16:23">第九节：JWT简介和以JS+WebApi为例基于JWT的安全校验</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2019-02-26 08:20</span>&nbsp;
+<a href="https://www.cnblogs.com/yaopengfei/">Yaopengfei</a>&nbsp;
+阅读(<span id="post_view_count">2309</span>)&nbsp;
+评论(<span id="post_comment_count">3</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=10435032" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(10435032);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;10435032&#39;, targetLink: &#39;https://www.cnblogs.com/yaopengfei/p/10435032.html&#39;, title: &#39;第八节：常见安全隐患和传统的基于Session和Token的安全校验&#39; })">举报</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+
+<script>
+    markdown_highlight()
+    var allowComments = true, cb_blogId = 307315, cb_blogApp = 'yaopengfei', cb_blogUserGuid = '7d349e7e-c080-e611-9fc1-ac853d9f53cc';
+    var cb_entryId = 10435032, cb_entryCreatedDate = '2019-02-26 08:20', cb_postType = 1;
+    updatePostStats(
+        [cb_entryId],
+        function(id, count) { $("#post_view_count").text(count) },
+        function(id, count) { $("#post_comment_count").text(count) })
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+</script>
+<a name="!comments"></a>
+<div id="blog-comments-placeholder"><div style="color:green;margin:50px 0;font-weight:normal;">努力加载评论中...</div></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/yaopengfei/p/10435032.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/yaopengfei/p/10435032.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="cnblogs_ch"><a href="https://c.gridsumdissector.com/r/?gid=gad_545_sf71nlea&amp;ck=1057&amp;adk=10670&amp;autorefresh=__AUTOREFRESH__" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-火山引擎-1203-1209&#39;})">【推荐】字节跳动旗下火山引擎，邀您共同揭秘“云+增长”</a><br><a href="http://www.uccpsoft.com/index.htm" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-ucancode&#39;})">【推荐】跨平台组态\工控\仿真\CAD 50万行C++源码全开放免费下载！</a><br><a href="https://brands.cnblogs.com/huawei/p/2704" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-华为专区&#39;})">【推荐】华为 HarmonyOS 校园极客秀征文活动第1期，秀出你的COOL</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+        <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;"></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/coco1s/p/15627657.html" target="_blank">使用 CSS 轻松实现一些高频出现的奇形怪状按钮</a>
+    <br>
+· <a href="https://www.cnblogs.com/strick/p/15394367.html" target="_blank">带团队后的日常思考（六）</a>
+    <br>
+· <a href="https://www.cnblogs.com/xiao2shiqi/p/15623540.html" target="_blank">聊聊云原生和微服务架构</a>
+    <br>
+· <a href="https://www.cnblogs.com/youzhibing/p/15615272.html" target="_blank">异或运算的巧用：不用额外的变量，如何交换两个变量的值？ </a>
+    <br>
+· <a href="https://www.cnblogs.com/myshowtime/p/15596630.html" target="_blank">OAuth 2.1 带来了哪些变化</a>
+    <br>
+</div></div>
+        <div id="cnblogs_c2" class="under-post-card">
+            <a href="https://c.gridsumdissector.com/r/?gid=gad_545_wrrk6jpf&amp;ck=1057&amp;adk=10673&amp;autorefresh=__AUTOREFRESH__" rel="nofollow" target="_blank">
+                <img src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/volcengine-c2.jpg" alt="" onload="impressC2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_wrrk6jpf&amp;ck=1057&amp;adk=10673&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+            </a>
+        </div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/708335/" target="_blank">滴滴加油、DiDi-Rider两款APP恢复上架系误传（2021-12-03 16:56）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708334/" target="_blank">特斯拉中国召回21599辆国产Model Y，因转向节可能有问题（2021-12-03 16:51）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708333/" target="_blank">因订单延期等因素 蔚来发布购车补贴方案：最高1.8万元（2021-12-03 16:46）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708332/" target="_blank">SpaceX第32批星链发射，猎鹰9号打破年发射次数纪录（2021-12-03 16:40）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708331/" target="_blank">爱奇艺大裁员背后：6年融资500亿，现金流依然紧绷（2021-12-03 16:32）</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+       var commentManager = new blogCommentManager();
+       commentManager.renderComments(0);
+       fixPostBody();
+
+           window.tocManager.displayDisableTocTips = false
+           window.tocManager.generateToc();
+           setTimeout(function() { incrementViewCount(cb_entryId); }, 50);       deliverT2();
+       deliverC1C2();
+       loadNewsAndKb();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);       LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+       GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+       loadOptUnderPost();
+       GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem"><!--done-->
+<h3 class="catListTitle">公告</h3>
+
+<div id="blog-news">
+    
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/yaopengfei/">
+            Yaopengfei
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/yaopengfei/" title="入园时间：2016-09-22">
+            5年2个月
+        </a>
+        <br>
+        粉丝：
+        <a href="https://home.cnblogs.com/u/yaopengfei/followers/">
+            828
+        </a>
+        <br>
+        关注：
+        <a href="https://home.cnblogs.com/u/yaopengfei/followees/">
+            18
+        </a>
+        <div id="p_b_follow"></div>
+        <script>getFollowStatus('7d349e7e-c080-e611-9fc1-ac853d9f53cc');</script>
+    </div>
+</div>
+
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2021/11/03&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2021年12月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2022/01/03&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">28</td>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                        <td class="" align="center">
+                            2
+                        </td>
+                        <td class="CalTodayDay" align="center">
+                            3
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        4
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            5
+                        </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            11
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            12
+                        </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            18
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            19
+                        </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            25
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            26
+                        </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                            <td class="" align="center">
+                                30
+                            </td>
+                            <td class="" align="center">
+                                31
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            1
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            2
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            8
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2021 Yaopengfei
+<br><span id="poweredby">Powered by .NET 6 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8FO3GXnjClZGrNGr2Ic8Z1pXGFutyI4YkiVe1_gcd17RaPtZjMDt5yiQGHyy84diaAwgv4OXkxUY5yZpYXrwmqgscJd5h7kTkfKe3Z_s1P2O1IARE1mvdTIk3xL-_guz8o58cU7-C2GeMWQRue7WqOw">
+    <script async="" src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/js"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+    </script>
+    <script defer="" src="./第八节：常见安全隐患和传统的基于Session和Token的安全校验 - Yaopengfei - 博客园_files/hm.js.下载"></script>
+
+</body></html>

@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)https://www.cnblogs.com/yaopengfei/p/12107278.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="description" content="一. 编码解码 1.编码 将信息从一种格式(人能识别)转换成另一种形式(计算机能识别)的过程。&amp;#160;常见的编码：Base64 2.解码 计算机能识别的形式转换成人能识别的形式。 3.字符集和字符">
+    <meta property="og:description" content="一. 编码解码 1.编码 将信息从一种格式(人能识别)转换成另一种形式(计算机能识别)的过程。&amp;#160;常见的编码：Base64 2.解码 计算机能识别的形式转换成人能识别的形式。 3.字符集和字符">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([class*="language-"]):not([highlighted]):not(.hljs) {
+        background: rgb(245, 245, 245);
+        padding: 5px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(0, 0, 0);
+        font-family: "Courier New", sans-serif;
+    }:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]) code:not(.hljs) {
+            background: rgb(245, 245, 245) !important;
+            border-color: transparent !important;
+        }</style><link rel="stylesheet" href="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/blog-common.min.css">
+    <link id="MainCss" rel="stylesheet" href="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/bundle-darkgreentrip.min.css">
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/cnblogs.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/bundle-darkgreentrip-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/yaopengfei/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/yaopengfei/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/yaopengfei/wlwmanifest.xml">
+    <script type="text/javascript" src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/encoder.js.下载"></script><script type="text/javascript" async="" src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/analytics.js.下载"></script><script>
+        var currentBlogId = 307315;
+        var currentBlogApp = 'yaopengfei';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'darkgreentrip';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function(){ return ''; } });
+            }
+        } catch(error) { }
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+    </script>
+        <script>
+            var currentPostDateAdded = '2019-12-27 14:53';
+        </script>
+    <script src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/jquery-2.2.0.min.js.下载"></script>
+    <script src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/blog-common.min.js.下载"></script><style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style><script id="hljs-script" async="" data-loaded="true" src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/highlight.min.js.下载"></script>
+    
+    
+    
+</head>
+<body class="skin-darkgreentrip has-navbar has-bannerbar">
+    <a name="top"></a>
+        <a href="https://c.gridsumdissector.com/r/?gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__" target="_blank" rel="nofollow" onclick="countClicks(&#39;ad&#39;, &#39;C0-火山引擎&#39;)">
+            <div class="bannerbar forpc" style="display: flex; background-color: #11225a;">
+                <img src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/volcengine-b0c0-1.jpg" onload="impressC0(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)" alt="">
+                <img src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/volcengine-b0c0-2.jpg" alt="">
+                <img style="margin-left: auto;" src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/volcengine-b0c0-3.jpg" alt="">
+            </div>
+        </a>
+            <div id="bannerbar" class="bannerbar-mobile formobile">
+                <a href="https://c.gridsumdissector.com/r/?gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__" onclick="countClicks(&#39;ad&#39;, &#39;M2-火山引擎&#39;)" rel="nofollow">
+                    <img src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/volcengine-m2.jpg" alt="" onload="impressM2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+                </a>
+            </div>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding"><a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/logo.svg" alt="博客园Logo"></a></li>
+                <li><a href="https://www.cnblogs.com/" onclick="countClicks(&#39;skin-navbar-sitehome&#39;)">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-brands&#39;)">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-edu&#39;)">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/yaopengfei/"><img id="blogLogo" src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/yaopengfei/">奔跑的路上</a>
+</h1>
+<h2>广泛汲取，用心打磨，精益求精。</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/yaopengfei/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/Yaopengfei">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/yaopengfei/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 494&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 1303&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 604717">
+60万</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/yaopengfei/p/12107278.html">
+    <span>第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA）</span>
+    
+
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">一. 编码解码</span></p>
+<p><strong><span style="font-size: 16px">1.编码</span></strong></p>
+<p><span style="font-size: 16px">　　将信息从一种格式(人能识别)转换成另一种形式(计算机能识别)的过程。</span><span style="font-size: 16px">&nbsp;常见的编码：Base64</span></p>
+<p><strong><span style="font-size: 16px">2.解码</span></strong></p>
+<p><span style="font-size: 16px">　　计算机能识别的形式转换成人能识别的形式。</span></p>
+<p><strong><span style="font-size: 16px">3.字符集和字符编码</span></strong></p>
+<p><span style="font-size: 16px">(1).字符集（Charset）：是一个系统支持的所有抽象字符的集合。字符是各种文字和符号的总称，包括各国家文字、标点符号、图形符号、数字等。</span></p>
+<p><span style="font-size: 16px">(2).字符编码（Character Encoding）：是一套法则，使用该法则能够对自然语言的字符的一个集合（如字母表或音节表），与其他东西的一个集合（如号码或电脉冲）进行配对。</span><span style="font-size: 16px">&nbsp;即在符号集合与数字系统之间建立对应关系，它是信息处理的一项基本技术。通常人们用符号集合（一般情况下就是文字）来表达信息。而以计算机为基础的信息处理系统则是</span><span style="font-size: 16px">&nbsp;利用元件（硬件）不同状态的组合来存储和处理信息的。元件不同状态的组合能代表数字系统的数字，因此字符编码就是将符号转换为计算机可以接受的数字系统的数，称为数字代码。</span></p>
+<p><span style="font-size: 16px">常见的字符集：ASCII、GB2312、BIG5、GB18030 和 Unicode(UTF-32/ UTF-16/ UTF-8) 字符集</span></p>
+<p><span style="font-size: 16px"><a href="https://www.cnblogs.com/skynet/archive/2011/05/03/2035105.html">详见参考：https://www.cnblogs.com/skynet/archive/2011/05/03/2035105.html</a></span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span>                 <span style="color: rgba(0, 0, 255, 1)">string</span> pwd = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">123456</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">2</span>                 <span style="color: rgba(0, 0, 255, 1)">byte</span>[] bytes1 =<span style="color: rgba(0, 0, 0, 1)"> Encoding.Default.GetBytes(pwd);
+</span><span style="color: rgba(0, 128, 128, 1)">3</span>                 <span style="color: rgba(0, 0, 255, 1)">string</span> baseString =<span style="color: rgba(0, 0, 0, 1)"> Convert.ToBase64String(bytes1);
+</span><span style="color: rgba(0, 128, 128, 1)">4</span>                 Console.WriteLine($<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">编码：{baseString}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">5</span>                 <span style="color: rgba(0, 0, 255, 1)">byte</span>[] bytes2 =<span style="color: rgba(0, 0, 0, 1)"> Convert.FromBase64String(baseString);
+</span><span style="color: rgba(0, 128, 128, 1)">6</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> str =<span style="color: rgba(0, 0, 0, 1)"> Encoding.Default.GetString(bytes2);
+</span><span style="color: rgba(0, 128, 128, 1)">7</span>                 Console.WriteLine($<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">解码：{str}</span><span style="color: rgba(128, 0, 0, 1)">"</span>);    </pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">二. 各种算法及其实现(微软的实现)</span></p>
+<p><span style="font-size: 16px; color: rgba(128, 0, 128, 1)">下面的各种算法微软都有实现，都是基于 【System.Security.Cryptography.Algorithms】这个程序集实现的。</span></p>
+<p><span style="font-size: 16px; color: rgba(128, 0, 128, 1)">文档地址：https://docs.microsoft.com/zh-cn/dotnet/api/system.security.cryptography?view=netcore-3.1</span></p>
+<p><span style="font-size: 16px; color: rgba(128, 0, 128, 1)">源码地址：https://github.com/dotnet/corefx/tree/master/src/System.Security.Cryptography.Algorithms </span></p>
+<p><strong><span style="font-size: 16px">1.哈希(散列摘要)算法</span></strong></p>
+<p><span style="font-size: 16px">　　Hash，一般翻译做散列，音译为哈希，是把任意长度的输入通过散列算法变换成固定长度的输出，该输出就是散列值。 简单的说就是一种将任意长度的消息压缩到某一</span></p>
+<p><span style="font-size: 16px">固定长度的消息摘要的算法或者函数，有时也叫摘要算法。</span></p>
+<p><span style="font-size: 16px">　　主流的 Hash 算法有：MD4、MD5 和 SHA系列，其中SHA家族有5个算法：SHA-1，SHA-224，SHA-256，SHA-384 和 SHA-512，其中后 4 者总称 SHA2 算法。</span><span style="font-size: 16px">&nbsp;使用的程序集：【System.Security.Cryptography.Algorithms】（微软），代码见下，和后面开源库的实现相比多了些 -,可以利用replace去掉</span></p>
+<p><span style="font-size: 16px; color: rgba(0, 0, 255, 1)">用途：文件校验、数字签名 和 鉴权协议，建议以后用SHA系列.</span></p>
+<p><span style="font-size: 16px; color: rgba(128, 0, 128, 1)">PS.</span></p>
+<p><span style="font-size: 16px; color: rgba(128, 0, 128, 1)">哈希函数的理解：https://www.jianshu.com/p/bba9b61b80e7</span></p>
+<p><span style="font-size: 16px; color: rgba(128, 0, 128, 1)">哈希一致性算法理解：https://www.jianshu.com/p/6f13156573f4 （了解）</span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">MD5</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> srcString = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ypf001</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">（和后面开源库的实现相比多了些 -,可以利用replace去掉）</span>
+<span style="color: rgba(0, 128, 128, 1)"> 5</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> md5 =<span style="color: rgba(0, 0, 0, 1)"> MD5.Create();
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span>                 <span style="color: rgba(0, 0, 255, 1)">byte</span>[] result =<span style="color: rgba(0, 0, 0, 1)"> md5.ComputeHash(Encoding.UTF8.GetBytes(srcString));
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>                 <span style="color: rgba(0, 0, 255, 1)">string</span> md5String= BitConverter.ToString(result).Replace(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">-</span><span style="color: rgba(128, 0, 0, 1)">"</span>,<span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)">); 
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">SHA系列</span>
+<span style="color: rgba(0, 128, 128, 1)">10</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> srcString = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ypf001</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">12</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">SHA-256，SHA-384 和 SHA-512 用法类似（和后面开源库的实现相比多了些-,可以利用replace去掉）</span>
+<span style="color: rgba(0, 128, 128, 1)">13</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> sha1 =<span style="color: rgba(0, 0, 0, 1)"> SHA1.Create();
+</span><span style="color: rgba(0, 128, 128, 1)">14</span>                 <span style="color: rgba(0, 0, 255, 1)">byte</span>[] result =<span style="color: rgba(0, 0, 0, 1)"> sha1.ComputeHash(Encoding.UTF8.GetBytes(srcString));
+</span><span style="color: rgba(0, 128, 128, 1)">15</span>                 <span style="color: rgba(0, 0, 255, 1)">string</span> sha1HashString = BitConverter.ToString(result).Replace(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">-</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">16</span>             }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><strong><span style="font-size: 16px">2. HMAC算法</span></strong></p>
+<p><span style="font-size: 16px">　　HMAC是具密钥的哈希算法，以一个密钥和一个消息为输入，生成摘要作为输出，消息 + 密钥 + 算法 ==》 输出摘要</span><span style="font-size: 16px">包括：HMAC-MD5、HMAC-SHA1、HMAC-SHA256、HMAC-SHA384、HMAC-SHA512,使用的程序集：【System.Security.Cryptography.Algorithms】（微软），代码见下，</span><span style="font-size: 16px">和后面开源库的实现相比多了些 -,可以利用replace去掉。</span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">HMAC相关</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> secretKey = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">sflkasfkksfs</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> srcString = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ypf001</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">HMAC-SHA384、HMAC-SHA512的用法类似 （和后面开源库的实现相比多了些-，可以利用replace去掉）</span>
+<span style="color: rgba(0, 128, 128, 1)"> 6</span>                 HMACSHA1 hmacsha1 = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> HMACSHA1(Encoding.UTF8.GetBytes(secretKey));
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>                 HMACSHA256 hmacsha2 = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> HMACSHA256(Encoding.UTF8.GetBytes(secretKey));
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span>                 <span style="color: rgba(0, 0, 255, 1)">byte</span>[] bytes1 =<span style="color: rgba(0, 0, 0, 1)"> hmacsha1.ComputeHash(Encoding.UTF8.GetBytes(srcString));
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>                 <span style="color: rgba(0, 0, 255, 1)">byte</span>[] bytes2 =<span style="color: rgba(0, 0, 0, 1)"> hmacsha2.ComputeHash(Encoding.UTF8.GetBytes(srcString));
+</span><span style="color: rgba(0, 128, 128, 1)">10</span>                 <span style="color: rgba(0, 0, 255, 1)">string</span> hmacSha1String = BitConverter.ToString(bytes1).Replace(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">-</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)">); 
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>                 <span style="color: rgba(0, 0, 255, 1)">string</span> hmacSha2String = BitConverter.ToString(bytes2).Replace(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">-</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">12</span>             }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><strong><span style="font-size: 16px">3.对称加密算法</span></strong></p>
+<p><span style="font-size: 16px">　　采用单钥密码系统的加密方法，同一个密钥可以同时用作信息的加密和解密加密，也称为单密钥加密。</span><span style="font-size: 16px">&nbsp;常见的对称加解密算法：AES、DES、RC2、TripleDES 和 Rijndael 算法。</span></p>
+<div class="cnblogs_code"><img id="code_img_closed_26dfcaa5-f1be-4fe9-9710-07094b7d738b" class="code_img_closed" src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/ContractedBlock.gif" alt=""><img id="code_img_opened_26dfcaa5-f1be-4fe9-9710-07094b7d738b" class="code_img_opened" style="display: none" src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_26dfcaa5-f1be-4fe9-9710-07094b7d738b" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>   <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> DesEncrypt
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>         <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">8位长度</span>
+<span style="color: rgba(0, 128, 128, 1)"> 4</span>         <span style="color: rgba(0, 0, 255, 1)">private</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">byte</span>[] rgbKey = ASCIIEncoding.ASCII.GetBytes(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ioeruwoe</span><span style="color: rgba(128, 0, 0, 1)">"</span>);  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">密钥（转为byte数组）</span>
+<span style="color: rgba(0, 128, 128, 1)"> 5</span>         <span style="color: rgba(0, 0, 255, 1)">private</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">byte</span>[] rgbIV = ASCIIEncoding.ASCII.GetBytes(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ypf00001</span><span style="color: rgba(128, 0, 0, 1)">"</span>);   <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">矢量（配合密钥更加安全）</span>
+<span style="color: rgba(0, 128, 128, 1)"> 6</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(0, 0, 255, 1)">#region</span> 01-DES加密
+<span style="color: rgba(0, 128, 128, 1)"> 8</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 9</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> DES 加密
+</span><span style="color: rgba(0, 128, 128, 1)">10</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">11</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="strValue"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要加密的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">12</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">13</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> Encrypt(<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> strValue)
+</span><span style="color: rgba(0, 128, 128, 1)">14</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">15</span>             DESCryptoServiceProvider dsp = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> DESCryptoServiceProvider();
+</span><span style="color: rgba(0, 128, 128, 1)">16</span>             <span style="color: rgba(0, 0, 255, 1)">using</span> (MemoryStream memStream = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> MemoryStream())
+</span><span style="color: rgba(0, 128, 128, 1)">17</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">18</span>                 CryptoStream crypStream = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> CryptoStream(memStream, dsp.CreateEncryptor(rgbKey, rgbIV), CryptoStreamMode.Write);
+</span><span style="color: rgba(0, 128, 128, 1)">19</span>                 <span style="color: rgba(0, 0, 255, 1)">byte</span>[] buffer =<span style="color: rgba(0, 0, 0, 1)"> Encoding.Default.GetBytes(strValue);
+</span><span style="color: rgba(0, 128, 128, 1)">20</span>                 crypStream.Write(buffer, <span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">, buffer.Length);
+</span><span style="color: rgba(0, 128, 128, 1)">21</span> <span style="color: rgba(0, 0, 0, 1)">                crypStream.FlushFinalBlock();
+</span><span style="color: rgba(0, 128, 128, 1)">22</span> <span style="color: rgba(0, 0, 0, 1)">                memStream.Flush();
+</span><span style="color: rgba(0, 128, 128, 1)">23</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span> Convert.ToBase64String(memStream.GetBuffer(), <span style="color: rgba(128, 0, 128, 1)">0</span>, (<span style="color: rgba(0, 0, 255, 1)">int</span><span style="color: rgba(0, 0, 0, 1)">)memStream.Length);
+</span><span style="color: rgba(0, 128, 128, 1)">24</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">25</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">26</span>         <span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+<span style="color: rgba(0, 128, 128, 1)">27</span> 
+<span style="color: rgba(0, 128, 128, 1)">28</span>         <span style="color: rgba(0, 0, 255, 1)">#region</span> 02-DES解密
+<span style="color: rgba(0, 128, 128, 1)">29</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">30</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> DES解密
+</span><span style="color: rgba(0, 128, 128, 1)">31</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">32</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="EncValue"&gt;</span><span style="color: rgba(0, 128, 0, 1)">加密后的结果</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">33</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">34</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> Decrypt(<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> EncValue)
+</span><span style="color: rgba(0, 128, 128, 1)">35</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">36</span>             DESCryptoServiceProvider dsp = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> DESCryptoServiceProvider();
+</span><span style="color: rgba(0, 128, 128, 1)">37</span>             <span style="color: rgba(0, 0, 255, 1)">byte</span>[] buffer =<span style="color: rgba(0, 0, 0, 1)"> Convert.FromBase64String(EncValue);
+</span><span style="color: rgba(0, 128, 128, 1)">38</span> 
+<span style="color: rgba(0, 128, 128, 1)">39</span>             <span style="color: rgba(0, 0, 255, 1)">using</span> (MemoryStream memStream = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> MemoryStream())
+</span><span style="color: rgba(0, 128, 128, 1)">40</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">41</span>                 CryptoStream crypStream = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> CryptoStream(memStream, dsp.CreateDecryptor(rgbKey, rgbIV), CryptoStreamMode.Write);
+</span><span style="color: rgba(0, 128, 128, 1)">42</span>                 crypStream.Write(buffer, <span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">, buffer.Length);
+</span><span style="color: rgba(0, 128, 128, 1)">43</span> <span style="color: rgba(0, 0, 0, 1)">                crypStream.FlushFinalBlock();
+</span><span style="color: rgba(0, 128, 128, 1)">44</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> ASCIIEncoding.UTF8.GetString(memStream.ToArray());
+</span><span style="color: rgba(0, 128, 128, 1)">45</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">46</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">47</span>         <span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+<span style="color: rgba(0, 128, 128, 1)">48</span>     }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">DES算法</span>
+<span style="color: rgba(0, 128, 128, 1)">2</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">3</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">具体实现详见：DesEncrypt </span>
+<span style="color: rgba(0, 128, 128, 1)">4</span>                 <span style="color: rgba(0, 0, 255, 1)">string</span> msg1 = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">mr1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">5</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">密钥写在DesEncrypt类中了</span>
+<span style="color: rgba(0, 128, 128, 1)">6</span>                 <span style="color: rgba(0, 0, 255, 1)">string</span> result1 =<span style="color: rgba(0, 0, 0, 1)"> DesEncrypt.Encrypt(msg1);
+</span><span style="color: rgba(0, 128, 128, 1)">7</span>                 <span style="color: rgba(0, 0, 255, 1)">string</span> result2 =<span style="color: rgba(0, 0, 0, 1)"> DesEncrypt.Decrypt(result1);
+</span><span style="color: rgba(0, 128, 128, 1)">8</span>             }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><strong><span style="font-size: 16px">4.非对称加密算法</span></strong></p>
+<p><span style="font-size: 16px">　　非对称加密算法需要两个密钥：公开密钥（publickey）和私有密钥（privatekey）。公开密钥与私有密钥是一对，如果用公开密钥对数据进行加密，只有用对</span><span style="font-size: 16px">应的私有密钥才能解密；如果用私有密钥对数据进行加密，那么只有用对应的公开密钥才能解密。因为加密和解密使用的是两个不同的密钥，所以这种算法叫作非对称加密算法。</span></p>
+<p><span style="font-size: 16px">　　非对称加密算法实现机密信息交换的基本过程是：甲方生成一对密钥并将其中的一把作为公用密钥向其它方公开；得到该公用密钥的乙方使用该密钥对机密信息进行加密后再发</span><span style="font-size: 16px">送给甲方；甲方再用自己保存的另一把专用密钥对加密后的信息进行解密。</span></p>
+<p><span style="font-size: 16px">常见的非对称加解密算法：DSA 和 RSA</span></p>
+<div class="cnblogs_code"><img id="code_img_closed_385f675a-8fc7-446b-8cce-a122b7be69d7" class="code_img_closed" src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/ContractedBlock.gif" alt=""><img id="code_img_opened_385f675a-8fc7-446b-8cce-a122b7be69d7" class="code_img_opened" style="display: none" src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_385f675a-8fc7-446b-8cce-a122b7be69d7" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> RsaEncrypt
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>         <span style="color: rgba(0, 0, 255, 1)">#region</span> 01-生成公钥和私钥
+<span style="color: rgba(0, 128, 128, 1)"> 4</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 5</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 生成公钥和私钥
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 8</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> KeyValuePair&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>, <span style="color: rgba(0, 0, 255, 1)">string</span>&gt;<span style="color: rgba(0, 0, 0, 1)"> GetKeyPair()
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">10</span>             RSACryptoServiceProvider RSA = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> RSACryptoServiceProvider();
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> publicKey = RSA.ToXmlString(<span style="color: rgba(0, 0, 255, 1)">false</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">12</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> privateKey = RSA.ToXmlString(<span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>             <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(0, 0, 255, 1)">new</span> KeyValuePair&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>, <span style="color: rgba(0, 0, 255, 1)">string</span>&gt;<span style="color: rgba(0, 0, 0, 1)">(publicKey, privateKey);
+</span><span style="color: rgba(0, 128, 128, 1)">14</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">15</span>         <span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+<span style="color: rgba(0, 128, 128, 1)">16</span> 
+<span style="color: rgba(0, 128, 128, 1)">17</span>         <span style="color: rgba(0, 0, 255, 1)">#region</span> 02-加密(传入内容和公钥)
+<span style="color: rgba(0, 128, 128, 1)">18</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">19</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 加密：内容+公钥,事先需要生成公钥和私钥
+</span><span style="color: rgba(0, 128, 128, 1)">20</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">21</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="content"&gt;</span><span style="color: rgba(0, 128, 0, 1)">加密内容</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">22</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="publicKey"&gt;</span><span style="color: rgba(0, 128, 0, 1)">公钥</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">23</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">24</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> Encrypt(<span style="color: rgba(0, 0, 255, 1)">string</span> content, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> publicKey)
+</span><span style="color: rgba(0, 128, 128, 1)">25</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">26</span>             RSACryptoServiceProvider rsa = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> RSACryptoServiceProvider();
+</span><span style="color: rgba(0, 128, 128, 1)">27</span> <span style="color: rgba(0, 0, 0, 1)">            rsa.FromXmlString(publicKey);
+</span><span style="color: rgba(0, 128, 128, 1)">28</span>             UnicodeEncoding ByteConverter = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> UnicodeEncoding();
+</span><span style="color: rgba(0, 128, 128, 1)">29</span>             <span style="color: rgba(0, 0, 255, 1)">byte</span>[] DataToEncrypt =<span style="color: rgba(0, 0, 0, 1)"> ByteConverter.GetBytes(content);
+</span><span style="color: rgba(0, 128, 128, 1)">30</span>             <span style="color: rgba(0, 0, 255, 1)">byte</span>[] resultBytes = rsa.Encrypt(DataToEncrypt, <span style="color: rgba(0, 0, 255, 1)">false</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">31</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> Convert.ToBase64String(resultBytes);
+</span><span style="color: rgba(0, 128, 128, 1)">32</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">33</span>         <span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+<span style="color: rgba(0, 128, 128, 1)">34</span> 
+<span style="color: rgba(0, 128, 128, 1)">35</span>         <span style="color: rgba(0, 0, 255, 1)">#region</span> 03-加密(并返回公钥和私钥)
+<span style="color: rgba(0, 128, 128, 1)">36</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">37</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 加密(并返回公钥和私钥),在该方法中生成了公钥和私钥，并返回
+</span><span style="color: rgba(0, 128, 128, 1)">38</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">39</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="content"&gt;</span><span style="color: rgba(0, 128, 0, 1)">加密内容</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">40</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="publicKey"&gt;</span><span style="color: rgba(0, 128, 0, 1)">返还公钥</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">41</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="privateKey"&gt;</span><span style="color: rgba(0, 128, 0, 1)">返回密钥</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">42</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;</span><span style="color: rgba(0, 128, 0, 1)">加密后结果</span><span style="color: rgba(128, 128, 128, 1)">&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">43</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> Encrypt(<span style="color: rgba(0, 0, 255, 1)">string</span> content, <span style="color: rgba(0, 0, 255, 1)">out</span> <span style="color: rgba(0, 0, 255, 1)">string</span> publicKey, <span style="color: rgba(0, 0, 255, 1)">out</span> <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> privateKey)
+</span><span style="color: rgba(0, 128, 128, 1)">44</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">45</span>             RSACryptoServiceProvider rsaProvider = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> RSACryptoServiceProvider();
+</span><span style="color: rgba(0, 128, 128, 1)">46</span>             publicKey = rsaProvider.ToXmlString(<span style="color: rgba(0, 0, 255, 1)">false</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">47</span>             privateKey = rsaProvider.ToXmlString(<span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">48</span>             UnicodeEncoding ByteConverter = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> UnicodeEncoding();
+</span><span style="color: rgba(0, 128, 128, 1)">49</span>             <span style="color: rgba(0, 0, 255, 1)">byte</span>[] DataToEncrypt =<span style="color: rgba(0, 0, 0, 1)"> ByteConverter.GetBytes(content);
+</span><span style="color: rgba(0, 128, 128, 1)">50</span>             <span style="color: rgba(0, 0, 255, 1)">byte</span>[] resultBytes = rsaProvider.Encrypt(DataToEncrypt, <span style="color: rgba(0, 0, 255, 1)">false</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">51</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> Convert.ToBase64String(resultBytes);
+</span><span style="color: rgba(0, 128, 128, 1)">52</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">53</span>         <span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+<span style="color: rgba(0, 128, 128, 1)">54</span> 
+<span style="color: rgba(0, 128, 128, 1)">55</span>         <span style="color: rgba(0, 0, 255, 1)">#region</span> 04-解密(内容+私钥)
+<span style="color: rgba(0, 128, 128, 1)">56</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">57</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 解密-内容+私钥
+</span><span style="color: rgba(0, 128, 128, 1)">58</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">59</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="content"&gt;&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">60</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="privateKey"&gt;&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">61</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">62</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> Decrypt(<span style="color: rgba(0, 0, 255, 1)">string</span> content, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> privateKey)
+</span><span style="color: rgba(0, 128, 128, 1)">63</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">64</span>             <span style="color: rgba(0, 0, 255, 1)">byte</span>[] dataToDecrypt =<span style="color: rgba(0, 0, 0, 1)"> Convert.FromBase64String(content);
+</span><span style="color: rgba(0, 128, 128, 1)">65</span>             RSACryptoServiceProvider RSA = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> RSACryptoServiceProvider();
+</span><span style="color: rgba(0, 128, 128, 1)">66</span> <span style="color: rgba(0, 0, 0, 1)">            RSA.FromXmlString(privateKey);
+</span><span style="color: rgba(0, 128, 128, 1)">67</span>             <span style="color: rgba(0, 0, 255, 1)">byte</span>[] resultBytes = RSA.Decrypt(dataToDecrypt, <span style="color: rgba(0, 0, 255, 1)">false</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">68</span>             UnicodeEncoding ByteConverter = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> UnicodeEncoding();
+</span><span style="color: rgba(0, 128, 128, 1)">69</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> ByteConverter.GetString(resultBytes);
+</span><span style="color: rgba(0, 128, 128, 1)">70</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">71</span>         <span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+<span style="color: rgba(0, 128, 128, 1)">72</span> 
+<span style="color: rgba(0, 128, 128, 1)">73</span> 
+<span style="color: rgba(0, 128, 128, 1)">74</span>     }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>            <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">RSA算法</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">具体实现详见 RsaEncrypt
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">方式一：先生成公钥和私钥,然后加密和解密
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">KeyValuePair是一个键值对, myKey.Key 代表的公钥；myKey.Value 代表的私钥</span>
+<span style="color: rgba(0, 128, 128, 1)"> 6</span>                 KeyValuePair&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>, <span style="color: rgba(0, 0, 255, 1)">string</span>&gt; myKey =<span style="color: rgba(0, 0, 0, 1)"> RsaEncrypt.GetKeyPair();
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>                 <span style="color: rgba(0, 0, 255, 1)">string</span> msg1 = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">mr1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">加密</span>
+<span style="color: rgba(0, 128, 128, 1)"> 9</span>                 <span style="color: rgba(0, 0, 255, 1)">string</span> result1 =<span style="color: rgba(0, 0, 0, 1)"> RsaEncrypt.Encrypt(msg1, myKey.Key);
+</span><span style="color: rgba(0, 128, 128, 1)">10</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">解密</span>
+<span style="color: rgba(0, 128, 128, 1)">11</span>                 <span style="color: rgba(0, 0, 255, 1)">string</span> result2 =<span style="color: rgba(0, 0, 0, 1)"> RsaEncrypt.Decrypt(result1, myKey.Value);
+</span><span style="color: rgba(0, 128, 128, 1)">12</span>             }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">&nbsp;三. 各种算法开源库(NETCore.Encrypt)</span></p>
+<p><span style="font-size: 16px">　　说明：通过Nuget安装：<strong>【NETCore.Encrypt】</strong>，版本为【2.0.8】,需要依赖Newtonsoft.json的版本 大于等于：12.0.1，包括的算法有：Base64、MD5、SHA系列、</span><span style="font-size: 16px">HAMC系列、AES、DES、RSA。</span></p>
+<p><span style="font-size: 16px">开源地址：https://github.com/myloveCc/NETCore.Encrypt</span></p>
+<p><span style="font-size: 16px; color: rgba(128, 0, 128, 1)">PS：还支持MD5、SHA系列、HMAC系列 对于String类型的扩展，如：var hashed3 = "ypf".MD5(); 大部分算法支持 string和byte[] 两种格式。</span></p>
+<p><strong><span style="font-size: 16px">&nbsp;推荐使用这个第三方库，已经封装好了，直接调用即可</span></strong></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span> <span style="color: rgba(0, 0, 0, 1)">               {
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1. Base64的编码和解码</span>
+<span style="color: rgba(0, 128, 128, 1)"> 3</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> srcString = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ypf001</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> hashed1 = EncryptProvider.Base64Encrypt(srcString);  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">default encoding is UTF-8</span>
+<span style="color: rgba(0, 128, 128, 1)"> 5</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> hashed2 = EncryptProvider.Base64Encrypt(srcString, Encoding.ASCII); <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">按照ascii进行编码</span>
+<span style="color: rgba(0, 128, 128, 1)"> 6</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> strValue1 = EncryptProvider.Base64Decrypt(hashed1);   <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">default encoding is UTF-8</span>
+<span style="color: rgba(0, 128, 128, 1)"> 7</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> strValue2 = EncryptProvider.Base64Decrypt(hashed2, Encoding.ASCII);   <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">按照ascii进行解码</span>
+<span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">                }
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)">10</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">2. MD5</span>
+<span style="color: rgba(0, 128, 128, 1)">11</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> srcString = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ypf001</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">12</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> hashed1 = EncryptProvider.Md5(srcString);  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">默认32位</span>
+<span style="color: rgba(0, 128, 128, 1)">13</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> hashed2 = EncryptProvider.Md5(srcString, MD5Length.L16); <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">16位</span>
+<span style="color: rgba(0, 128, 128, 1)">14</span>                     Console.WriteLine($<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ypf001的MD5加密(32位):{hashed1}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">15</span>                     Console.WriteLine($<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ypf002的MD5加密(64位):{hashed2}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">16</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">扩展用法</span>
+<span style="color: rgba(0, 128, 128, 1)">17</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> hashed3 =<span style="color: rgba(0, 0, 0, 1)"> srcString.MD5();
+</span><span style="color: rgba(0, 128, 128, 1)">18</span> <span style="color: rgba(0, 0, 0, 1)">                }
+</span><span style="color: rgba(0, 128, 128, 1)">19</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)">20</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">3. SHA相关</span>
+<span style="color: rgba(0, 128, 128, 1)">21</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> srcString = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ypf001</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">22</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> hashed1 =<span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.Sha1(srcString);
+</span><span style="color: rgba(0, 128, 128, 1)">23</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> hashed2 =<span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.Sha256(srcString);
+</span><span style="color: rgba(0, 128, 128, 1)">24</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> hashed3 =<span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.Sha384(srcString);
+</span><span style="color: rgba(0, 128, 128, 1)">25</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> hashed4 =<span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.Sha512(srcString);
+</span><span style="color: rgba(0, 128, 128, 1)">26</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">扩展用法(如下，其余类似)</span>
+<span style="color: rgba(0, 128, 128, 1)">27</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> extHash =<span style="color: rgba(0, 0, 0, 1)"> srcString.SHA1();
+</span><span style="color: rgba(0, 128, 128, 1)">28</span> <span style="color: rgba(0, 0, 0, 1)">                }
+</span><span style="color: rgba(0, 128, 128, 1)">29</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)">30</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">4. HAMC相关</span>
+<span style="color: rgba(0, 128, 128, 1)">31</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> secretKey = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">sflkasfkksfs</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">32</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> srcString = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ypf001</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">33</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> hashed1 =<span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.HMACMD5(srcString, secretKey);
+</span><span style="color: rgba(0, 128, 128, 1)">34</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> hashed2 =<span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.HMACSHA1(srcString, secretKey);
+</span><span style="color: rgba(0, 128, 128, 1)">35</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> hashed3 =<span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.HMACSHA256(srcString, secretKey);
+</span><span style="color: rgba(0, 128, 128, 1)">36</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> hashed4 =<span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.HMACSHA384(srcString, secretKey);
+</span><span style="color: rgba(0, 128, 128, 1)">37</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> hashed5 =<span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.HMACSHA512(srcString, secretKey);
+</span><span style="color: rgba(0, 128, 128, 1)">38</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">扩展用法(如下，其余类似)</span>
+<span style="color: rgba(0, 128, 128, 1)">39</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> extHash =<span style="color: rgba(0, 0, 0, 1)"> srcString.HMACSHA1(secretKey);
+</span><span style="color: rgba(0, 128, 128, 1)">40</span> <span style="color: rgba(0, 0, 0, 1)">                }
+</span><span style="color: rgba(0, 128, 128, 1)">41</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)">42</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">5. AES
+</span><span style="color: rgba(0, 128, 128, 1)">43</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">利用算法生成key和iv（32位和16位），当然这里可以自己指定并保存好
+</span><span style="color: rgba(0, 128, 128, 1)">44</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">var aesKey = EncryptProvider.CreateAesKey();
+</span><span style="color: rgba(0, 128, 128, 1)">45</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">var key = aesKey.Key;
+</span><span style="color: rgba(0, 128, 128, 1)">46</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">var iv = aesKey.IV;</span>
+<span style="color: rgba(0, 128, 128, 1)">47</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> secretKey = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">asdfjketjnddkkaakkuyerbdsbgrtsaw</span><span style="color: rgba(128, 0, 0, 1)">"</span>;  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">这里的key得32位</span>
+<span style="color: rgba(0, 128, 128, 1)">48</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> iv = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ioeruwoeruo2aqwe</span><span style="color: rgba(128, 0, 0, 1)">"</span>;  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">加密和解密的过程中可以加上iv矢量，使其安全性更高,这里的iv得16位</span>
+<span style="color: rgba(0, 128, 128, 1)">49</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> srcString = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ypf001</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">50</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">加密</span>
+<span style="color: rgba(0, 128, 128, 1)">51</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> encrypted1 =<span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.AESEncrypt(srcString, secretKey);
+</span><span style="color: rgba(0, 128, 128, 1)">52</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> encrypted2 =<span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.AESEncrypt(srcString, secretKey, iv);
+</span><span style="color: rgba(0, 128, 128, 1)">53</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">解密</span>
+<span style="color: rgba(0, 128, 128, 1)">54</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> decrypted1 =<span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.AESDecrypt(encrypted1, secretKey);
+</span><span style="color: rgba(0, 128, 128, 1)">55</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> decrypted2 =<span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.AESDecrypt(encrypted2, secretKey, iv);
+</span><span style="color: rgba(0, 128, 128, 1)">56</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">PS：这里除了string加密，还可以对byte数组加密</span>
+<span style="color: rgba(0, 128, 128, 1)">57</span> <span style="color: rgba(0, 0, 0, 1)">                }
+</span><span style="color: rgba(0, 128, 128, 1)">58</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)">59</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">6. DES
+</span><span style="color: rgba(0, 128, 128, 1)">60</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">利用算法生成key（24位），当然这里可以自己指定并保存好
+</span><span style="color: rgba(0, 128, 128, 1)">61</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">var desKey = EncryptProvider.CreateDesKey();</span>
+<span style="color: rgba(0, 128, 128, 1)">62</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> secretKey = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">asdfjketjnddkkaakkuyerbd</span><span style="color: rgba(128, 0, 0, 1)">"</span>;  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">这里的key得24位</span>
+<span style="color: rgba(0, 128, 128, 1)">63</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> srcString = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ypf001</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">64</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">加密</span>
+<span style="color: rgba(0, 128, 128, 1)">65</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> encrypted1 =<span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.DESEncrypt(srcString, secretKey);
+</span><span style="color: rgba(0, 128, 128, 1)">66</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">解密</span>
+<span style="color: rgba(0, 128, 128, 1)">67</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> decrypted1 =<span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.DESDecrypt(encrypted1, secretKey);
+</span><span style="color: rgba(0, 128, 128, 1)">68</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">PS：这里除了string加密，还可以对byte数组加密</span>
+<span style="color: rgba(0, 128, 128, 1)">69</span> <span style="color: rgba(0, 0, 0, 1)">                }
+</span><span style="color: rgba(0, 128, 128, 1)">70</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)">71</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">7.RSA
+</span><span style="color: rgba(0, 128, 128, 1)">72</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">利用算法生成公钥和私钥，然后保存；当然这里可以自己指定并保存好</span>
+<span style="color: rgba(0, 128, 128, 1)">73</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> rsaKey = EncryptProvider.CreateRsaKey();    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">default is 2048
+</span><span style="color: rgba(0, 128, 128, 1)">74</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> var rsaKey = EncryptProvider.CreateRsaKey(RsaSize.R3072);</span>
+<span style="color: rgba(0, 128, 128, 1)">75</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> publicKey =<span style="color: rgba(0, 0, 0, 1)"> rsaKey.PublicKey;
+</span><span style="color: rgba(0, 128, 128, 1)">76</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> privateKey =<span style="color: rgba(0, 0, 0, 1)"> rsaKey.PrivateKey;
+</span><span style="color: rgba(0, 128, 128, 1)">77</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> srcString = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ypf001</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">78</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">加密</span>
+<span style="color: rgba(0, 128, 128, 1)">79</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> encrypted1 = EncryptProvider.RSAEncrypt(publicKey, srcString);   <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">公钥加密
+</span><span style="color: rgba(0, 128, 128, 1)">80</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">解密</span>
+<span style="color: rgba(0, 128, 128, 1)">81</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> decrypted = EncryptProvider.RSADecrypt(privateKey, encrypted1);  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">私钥解密</span>
+<span style="color: rgba(0, 128, 128, 1)">82</span> <span style="color: rgba(0, 0, 0, 1)">                }
+</span><span style="color: rgba(0, 128, 128, 1)">83</span>   <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">enum</span><span style="color: rgba(0, 0, 0, 1)"> RsaSize
+</span><span style="color: rgba(0, 128, 128, 1)">84</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)">85</span>         R2048 = <span style="color: rgba(128, 0, 128, 1)">2048</span><span style="color: rgba(0, 0, 0, 1)">,
+</span><span style="color: rgba(0, 128, 128, 1)">86</span>         R3072 = <span style="color: rgba(128, 0, 128, 1)">3072</span><span style="color: rgba(0, 0, 0, 1)">,
+</span><span style="color: rgba(0, 128, 128, 1)">87</span>         R4096 = <span style="color: rgba(128, 0, 128, 1)">4096</span>
+<span style="color: rgba(0, 128, 128, 1)">88</span>     }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><strong><span style="font-size: 16px; color: rgba(0, 0, 255, 1)">&nbsp;框架封装</span></strong></p>
+<div class="cnblogs_code"><img id="code_img_closed_e4f8e9c4-d077-4a60-a310-86262f685451" class="code_img_closed" src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/ContractedBlock.gif" alt=""><img id="code_img_opened_e4f8e9c4-d077-4a60-a310-86262f685451" class="code_img_opened" style="display: none" src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_e4f8e9c4-d077-4a60-a310-86262f685451" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)">  1</span>  <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">  2</span>     <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 各种加密解密算法
+</span><span style="color: rgba(0, 128, 128, 1)">  3</span>     <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 依赖程序集【NETCore.Encrypt】
+</span><span style="color: rgba(0, 128, 128, 1)">  4</span>     <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">  5</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> SecurityHelp
+</span><span style="color: rgba(0, 128, 128, 1)">  6</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)">  7</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">  8</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> Base64编码
+</span><span style="color: rgba(0, 128, 128, 1)">  9</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 10</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="srcString"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要编码的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 11</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 12</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> Base64Encrypt(<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> srcString)
+</span><span style="color: rgba(0, 128, 128, 1)"> 13</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 14</span>             <span style="color: rgba(0, 0, 255, 1)">return</span> EncryptProvider.Base64Encrypt(srcString);  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">default encoding is UTF-8</span>
+<span style="color: rgba(0, 128, 128, 1)"> 15</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)"> 16</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 17</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 18</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> Base64编码
+</span><span style="color: rgba(0, 128, 128, 1)"> 19</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 20</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="encString"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要解码的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 21</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 22</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> Base64Decrypt(<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> encString)
+</span><span style="color: rgba(0, 128, 128, 1)"> 23</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 24</span>             <span style="color: rgba(0, 0, 255, 1)">return</span> EncryptProvider.Base64Decrypt(encString);  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">default encoding is UTF-8</span>
+<span style="color: rgba(0, 128, 128, 1)"> 25</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)"> 26</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 27</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 28</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 29</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> MD5加密
+</span><span style="color: rgba(0, 128, 128, 1)"> 30</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 31</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="srcString"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要加密的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 32</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="num"&gt;</span><span style="color: rgba(0, 128, 0, 1)">位数，默认为32位，也可以是16位</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 33</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 34</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> Md5(<span style="color: rgba(0, 0, 255, 1)">string</span> srcString, <span style="color: rgba(0, 0, 255, 1)">int</span> num = <span style="color: rgba(128, 0, 128, 1)">32</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)"> 35</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 36</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (num == <span style="color: rgba(128, 0, 128, 1)">32</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)"> 37</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)"> 38</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span> EncryptProvider.Md5(srcString);  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">默认32位</span>
+<span style="color: rgba(0, 128, 128, 1)"> 39</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)"> 40</span>             <span style="color: rgba(0, 0, 255, 1)">else</span>
+<span style="color: rgba(0, 128, 128, 1)"> 41</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)"> 42</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span> EncryptProvider.Md5(srcString, MD5Length.L16);   <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">16位</span>
+<span style="color: rgba(0, 128, 128, 1)"> 43</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)"> 44</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)"> 45</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 46</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 47</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 48</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> SHA系列算法
+</span><span style="color: rgba(0, 128, 128, 1)"> 49</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 50</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="srcString"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要加密的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 51</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="kind"&gt;</span><span style="color: rgba(0, 128, 0, 1)">类型</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 52</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 53</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> SHA(<span style="color: rgba(0, 0, 255, 1)">string</span> srcString, <span style="color: rgba(0, 0, 255, 1)">string</span> kind = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Sha512</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)"> 54</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 55</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (kind.Equals(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Sha1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">))
+</span><span style="color: rgba(0, 128, 128, 1)"> 56</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)"> 57</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.Sha1(srcString);
+</span><span style="color: rgba(0, 128, 128, 1)"> 58</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)"> 59</span>             <span style="color: rgba(0, 0, 255, 1)">else</span> <span style="color: rgba(0, 0, 255, 1)">if</span> (kind.Equals(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Sha256</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">))
+</span><span style="color: rgba(0, 128, 128, 1)"> 60</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)"> 61</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.Sha256(srcString);
+</span><span style="color: rgba(0, 128, 128, 1)"> 62</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)"> 63</span>             <span style="color: rgba(0, 0, 255, 1)">else</span> <span style="color: rgba(0, 0, 255, 1)">if</span> (kind.Equals(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Sha384</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">))
+</span><span style="color: rgba(0, 128, 128, 1)"> 64</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)"> 65</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.Sha384(srcString);
+</span><span style="color: rgba(0, 128, 128, 1)"> 66</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)"> 67</span>             <span style="color: rgba(0, 0, 255, 1)">else</span>
+<span style="color: rgba(0, 128, 128, 1)"> 68</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)"> 69</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.Sha512(srcString);
+</span><span style="color: rgba(0, 128, 128, 1)"> 70</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)"> 71</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)"> 72</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 73</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 74</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> HMAC系列算法
+</span><span style="color: rgba(0, 128, 128, 1)"> 75</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 76</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="srcString"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要加密的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 77</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="secretKey"&gt;</span><span style="color: rgba(0, 128, 0, 1)">密钥</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 78</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="kind"&gt;</span><span style="color: rgba(0, 128, 0, 1)">类型</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 79</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 80</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> HMAC(<span style="color: rgba(0, 0, 255, 1)">string</span> srcString, <span style="color: rgba(0, 0, 255, 1)">string</span> secretKey, <span style="color: rgba(0, 0, 255, 1)">string</span> kind = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">HMACSHA512</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)"> 81</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 82</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (kind.Equals(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">HMACMD5</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">))
+</span><span style="color: rgba(0, 128, 128, 1)"> 83</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)"> 84</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.HMACMD5(srcString, secretKey);
+</span><span style="color: rgba(0, 128, 128, 1)"> 85</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)"> 86</span>             <span style="color: rgba(0, 0, 255, 1)">else</span> <span style="color: rgba(0, 0, 255, 1)">if</span> (kind.Equals(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">HMACSHA1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">))
+</span><span style="color: rgba(0, 128, 128, 1)"> 87</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)"> 88</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.HMACSHA1(srcString, secretKey);
+</span><span style="color: rgba(0, 128, 128, 1)"> 89</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)"> 90</span>             <span style="color: rgba(0, 0, 255, 1)">else</span> <span style="color: rgba(0, 0, 255, 1)">if</span> (kind.Equals(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">HMACSHA256</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">))
+</span><span style="color: rgba(0, 128, 128, 1)"> 91</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)"> 92</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.HMACSHA256(srcString, secretKey);
+</span><span style="color: rgba(0, 128, 128, 1)"> 93</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)"> 94</span>             <span style="color: rgba(0, 0, 255, 1)">else</span> <span style="color: rgba(0, 0, 255, 1)">if</span> (kind.Equals(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">HMACSHA384</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">))
+</span><span style="color: rgba(0, 128, 128, 1)"> 95</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)"> 96</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.HMACSHA384(srcString, secretKey);
+</span><span style="color: rgba(0, 128, 128, 1)"> 97</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)"> 98</span>             <span style="color: rgba(0, 0, 255, 1)">else</span>
+<span style="color: rgba(0, 128, 128, 1)"> 99</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">100</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.HMACSHA512(srcString, secretKey);
+</span><span style="color: rgba(0, 128, 128, 1)">101</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">102</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">103</span> 
+<span style="color: rgba(0, 128, 128, 1)">104</span> 
+<span style="color: rgba(0, 128, 128, 1)">105</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">106</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 生成AES算法所需的Key和iv
+</span><span style="color: rgba(0, 128, 128, 1)">107</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> (当然这里可以自己指定并保存好)
+</span><span style="color: rgba(0, 128, 128, 1)">108</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">109</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="key"&gt;</span><span style="color: rgba(0, 128, 0, 1)">加密所需的key</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">110</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="iv"&gt;</span><span style="color: rgba(0, 128, 0, 1)">加密所需的矢量</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">111</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">void</span> CreateAesKey(<span style="color: rgba(0, 0, 255, 1)">ref</span> <span style="color: rgba(0, 0, 255, 1)">string</span> key, <span style="color: rgba(0, 0, 255, 1)">ref</span> <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> iv)
+</span><span style="color: rgba(0, 128, 128, 1)">112</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">113</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">利用算法生成key和iv（32位和16位），当然这里可以自己指定并保存好</span>
+<span style="color: rgba(0, 128, 128, 1)">114</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> aesKey =<span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.CreateAesKey();
+</span><span style="color: rgba(0, 128, 128, 1)">115</span>             key =<span style="color: rgba(0, 0, 0, 1)"> aesKey.Key;
+</span><span style="color: rgba(0, 128, 128, 1)">116</span>             iv =<span style="color: rgba(0, 0, 0, 1)"> aesKey.IV;
+</span><span style="color: rgba(0, 128, 128, 1)">117</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">118</span> 
+<span style="color: rgba(0, 128, 128, 1)">119</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">120</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> AES加密算法
+</span><span style="color: rgba(0, 128, 128, 1)">121</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">122</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="srcString"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要加密的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">123</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="secretKey"&gt;</span><span style="color: rgba(0, 128, 0, 1)">密钥</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">124</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="iv"&gt;</span><span style="color: rgba(0, 128, 0, 1)">矢量（可以不填）</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">125</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">126</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> AESEncrypt(<span style="color: rgba(0, 0, 255, 1)">string</span> srcString, <span style="color: rgba(0, 0, 255, 1)">string</span> secretKey, <span style="color: rgba(0, 0, 255, 1)">string</span> iv = <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)">127</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">128</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)">.IsNullOrEmpty(iv))
+</span><span style="color: rgba(0, 128, 128, 1)">129</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">130</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span> EncryptProvider.AESEncrypt(srcString, secretKey);    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示不需要iv矢量的AES加密算法</span>
+<span style="color: rgba(0, 128, 128, 1)">131</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">132</span>             <span style="color: rgba(0, 0, 255, 1)">else</span>
+<span style="color: rgba(0, 128, 128, 1)">133</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">134</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span> EncryptProvider.AESEncrypt(srcString, secretKey, iv);    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示需要iv矢量的AES加密算法</span>
+<span style="color: rgba(0, 128, 128, 1)">135</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">136</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">137</span> 
+<span style="color: rgba(0, 128, 128, 1)">138</span> 
+<span style="color: rgba(0, 128, 128, 1)">139</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">140</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> AES解密算法
+</span><span style="color: rgba(0, 128, 128, 1)">141</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">142</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="encString"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要解密的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">143</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="secretKey"&gt;</span><span style="color: rgba(0, 128, 0, 1)">密钥</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">144</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="iv"&gt;</span><span style="color: rgba(0, 128, 0, 1)">矢量（可以不填）</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">145</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">146</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> AESDecrypt(<span style="color: rgba(0, 0, 255, 1)">string</span> encString, <span style="color: rgba(0, 0, 255, 1)">string</span> secretKey, <span style="color: rgba(0, 0, 255, 1)">string</span> iv = <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)">147</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">148</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)">.IsNullOrEmpty(iv))
+</span><span style="color: rgba(0, 128, 128, 1)">149</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">150</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span> EncryptProvider.AESDecrypt(encString, secretKey);    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示不需要iv矢量的AES解密算法</span>
+<span style="color: rgba(0, 128, 128, 1)">151</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">152</span>             <span style="color: rgba(0, 0, 255, 1)">else</span>
+<span style="color: rgba(0, 128, 128, 1)">153</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">154</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span> EncryptProvider.AESDecrypt(encString, secretKey, iv);    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示需要iv矢量的AES解密算法</span>
+<span style="color: rgba(0, 128, 128, 1)">155</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">156</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">157</span> 
+<span style="color: rgba(0, 128, 128, 1)">158</span> 
+<span style="color: rgba(0, 128, 128, 1)">159</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">160</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> DES加密算法
+</span><span style="color: rgba(0, 128, 128, 1)">161</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">162</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="srcString"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要加密的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">163</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="secretKey"&gt;</span><span style="color: rgba(0, 128, 0, 1)">密钥（这里的密钥需要是24位）</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">164</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">165</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> EDSEncrypt(<span style="color: rgba(0, 0, 255, 1)">string</span> srcString, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> secretKey)
+</span><span style="color: rgba(0, 128, 128, 1)">166</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">167</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.DESEncrypt(srcString, secretKey);
+</span><span style="color: rgba(0, 128, 128, 1)">168</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">169</span> 
+<span style="color: rgba(0, 128, 128, 1)">170</span> 
+<span style="color: rgba(0, 128, 128, 1)">171</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">172</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> DES解密算法
+</span><span style="color: rgba(0, 128, 128, 1)">173</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">174</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="encString"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要解密的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">175</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="secretKey"&gt;</span><span style="color: rgba(0, 128, 0, 1)">密钥</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">176</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">177</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> DESDecrypt(<span style="color: rgba(0, 0, 255, 1)">string</span> encString, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> secretKey)
+</span><span style="color: rgba(0, 128, 128, 1)">178</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">179</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.DESDecrypt(encString, secretKey);
+</span><span style="color: rgba(0, 128, 128, 1)">180</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">181</span> 
+<span style="color: rgba(0, 128, 128, 1)">182</span> 
+<span style="color: rgba(0, 128, 128, 1)">183</span> 
+<span style="color: rgba(0, 128, 128, 1)">184</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">185</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 生成RSA算法所需的Key和iv
+</span><span style="color: rgba(0, 128, 128, 1)">186</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> (当然这里可以自己指定并保存好)
+</span><span style="color: rgba(0, 128, 128, 1)">187</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">188</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="PublicKey"&gt;</span><span style="color: rgba(0, 128, 0, 1)">公钥</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">189</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="PrivateKey"&gt;</span><span style="color: rgba(0, 128, 0, 1)">私钥</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">190</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">void</span> CreateRsaKey(<span style="color: rgba(0, 0, 255, 1)">ref</span> <span style="color: rgba(0, 0, 255, 1)">string</span> PublicKey, <span style="color: rgba(0, 0, 255, 1)">ref</span> <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> PrivateKey)
+</span><span style="color: rgba(0, 128, 128, 1)">191</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">192</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">利用算法生成公钥和私钥，然后保存；当然这里可以自己指定并保存好</span>
+<span style="color: rgba(0, 128, 128, 1)">193</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> rsaKey = EncryptProvider.CreateRsaKey();    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">default is 2048
+</span><span style="color: rgba(0, 128, 128, 1)">194</span>                                                             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> var rsaKey = EncryptProvider.CreateRsaKey(RsaSize.R3072);</span>
+<span style="color: rgba(0, 128, 128, 1)">195</span>             PublicKey =<span style="color: rgba(0, 0, 0, 1)"> rsaKey.PublicKey;
+</span><span style="color: rgba(0, 128, 128, 1)">196</span>             PrivateKey =<span style="color: rgba(0, 0, 0, 1)"> rsaKey.PrivateKey;
+</span><span style="color: rgba(0, 128, 128, 1)">197</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">198</span> 
+<span style="color: rgba(0, 128, 128, 1)">199</span> 
+<span style="color: rgba(0, 128, 128, 1)">200</span> 
+<span style="color: rgba(0, 128, 128, 1)">201</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">202</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> RSA加密算法
+</span><span style="color: rgba(0, 128, 128, 1)">203</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">204</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="srcString"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要加密的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">205</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="publicKey"&gt;</span><span style="color: rgba(0, 128, 0, 1)">公钥 加密</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">206</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">207</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> RSAEncrypt(<span style="color: rgba(0, 0, 255, 1)">string</span> srcString, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> publicKey)
+</span><span style="color: rgba(0, 128, 128, 1)">208</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">209</span>             <span style="color: rgba(0, 0, 255, 1)">return</span> EncryptProvider.RSAEncrypt(publicKey, srcString);   <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">公钥加密</span>
+<span style="color: rgba(0, 128, 128, 1)">210</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">211</span> 
+<span style="color: rgba(0, 128, 128, 1)">212</span> 
+<span style="color: rgba(0, 128, 128, 1)">213</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">214</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> RSA解密算法
+</span><span style="color: rgba(0, 128, 128, 1)">215</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">216</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="encString"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要解密的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">217</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="privateKey"&gt;</span><span style="color: rgba(0, 128, 0, 1)">私钥 解密</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">218</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">219</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> RSADecrypt(<span style="color: rgba(0, 0, 255, 1)">string</span> encString, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> privateKey)
+</span><span style="color: rgba(0, 128, 128, 1)">220</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">221</span>             <span style="color: rgba(0, 0, 255, 1)">return</span> EncryptProvider.RSADecrypt(privateKey, encString);  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">私钥解密</span>
+<span style="color: rgba(0, 128, 128, 1)">222</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">223</span> 
+<span style="color: rgba(0, 128, 128, 1)">224</span> 
+<span style="color: rgba(0, 128, 128, 1)">225</span> 
+<span style="color: rgba(0, 128, 128, 1)">226</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)">227</span> 
+<span style="color: rgba(0, 128, 128, 1)">228</span> 
+<span style="color: rgba(0, 128, 128, 1)">229</span> 
+<span style="color: rgba(0, 128, 128, 1)">230</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">enum</span><span style="color: rgba(0, 0, 0, 1)"> RsaSize
+</span><span style="color: rgba(0, 128, 128, 1)">231</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)">232</span>         R2048 = <span style="color: rgba(128, 0, 128, 1)">2048</span><span style="color: rgba(0, 0, 0, 1)">,
+</span><span style="color: rgba(0, 128, 128, 1)">233</span>         R3072 = <span style="color: rgba(128, 0, 128, 1)">3072</span><span style="color: rgba(0, 0, 0, 1)">,
+</span><span style="color: rgba(0, 128, 128, 1)">234</span>         R4096 = <span style="color: rgba(128, 0, 128, 1)">4096</span>
+<span style="color: rgba(0, 128, 128, 1)">235</span>     }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div style="border: 2px dashed rgba(0, 0, 255, 1); border-radius: 10px; height: 120px; width: 1100px; margin-left: 60px">
+<div style="width: 0; height: 0; border-left: 20px solid rgba(0, 0, 0, 0); border-right: 20px solid rgba(0, 0, 0, 0); border-bottom: 30px solid rgba(255, 255, 0, 1); float: left; margin-top: 40px; margin-left: 20px">
+<p style="font-size: 16px; font-weight: bold; margin-top: 8px; margin-left: -2px">!</p>
+</div>
+<div style="float: left; margin-left: 16px">
+<ul style="list-style: none; padding: 0; margin-left: 20px">
+<li style="margin-bottom: 1px; line-height: 28px">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者 : <span style="color: rgba(255, 0, 0, 1)">Yaopengfei(姚鹏飞)</span></li>
+<li style="margin-bottom: 1px; line-height: 28px">博客地址 : <a style="text-decoration: none" href="http://www.cnblogs.com/yaopengfei/"><span style="color: rgba(255, 0, 0, 1)">http://www.cnblogs.com/yaopengfei/</span></a></li>
+<li style="margin-bottom: 1px; line-height: 28px">声&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明1 : 本人才疏学浅，用郭德纲的话说“我是一个小学生”，如有错误，欢迎讨论，请勿谩骂^_^。</li>
+<li style="margin-bottom: 1px; line-height: 28px">声&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明2 : 原创博客请在转载时保留原文链接或在文章开头加上本人博客地址，否则保留追究法律责任的权利。</li>
+</ul>
+</div>
+<div style="clear: both">&nbsp;</div>
+</div>
+<p>&nbsp;</p>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2019-12-27 14:53</span>&nbsp;
+<a href="https://www.cnblogs.com/yaopengfei/">Yaopengfei</a>&nbsp;
+阅读(<span id="post_view_count">968</span>)&nbsp;
+评论(<span id="post_comment_count">1</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=12107278" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(12107278);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;12107278&#39;, targetLink: &#39;https://www.cnblogs.com/yaopengfei/p/12107278.html&#39;, title: &#39;第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA）&#39; })">举报</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+
+<script>
+    markdown_highlight()
+    var allowComments = true, cb_blogId = 307315, cb_blogApp = 'yaopengfei', cb_blogUserGuid = '7d349e7e-c080-e611-9fc1-ac853d9f53cc';
+    var cb_entryId = 12107278, cb_entryCreatedDate = '2019-12-27 14:53', cb_postType = 1;
+    updatePostStats(
+        [cb_entryId],
+        function(id, count) { $("#post_view_count").text(count) },
+        function(id, count) { $("#post_comment_count").text(count) })
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+</script>
+<a name="!comments"></a>
+<div id="blog-comments-placeholder"><div style="color:green;margin:50px 0;font-weight:normal;">努力加载评论中...</div></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/yaopengfei/p/12107278.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/yaopengfei/p/12107278.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><span style="color:red">评论框加载失败，请与管理员联系(contact@cnblogs.com)。</span></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="cnblogs_ch"><a href="https://c.gridsumdissector.com/r/?gid=gad_545_sf71nlea&amp;ck=1057&amp;adk=10670&amp;autorefresh=__AUTOREFRESH__" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-火山引擎-1203-1209&#39;})">【推荐】字节跳动旗下火山引擎，邀您共同揭秘“云+增长”</a><br><a href="http://www.uccpsoft.com/index.htm" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-ucancode&#39;})">【推荐】跨平台组态\工控\仿真\CAD 50万行C++源码全开放免费下载！</a><br><a href="https://brands.cnblogs.com/huawei/p/2704" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-华为专区&#39;})">【推荐】华为 HarmonyOS 校园极客秀征文活动第1期，秀出你的COOL</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+        <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;"></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/coco1s/p/15627657.html" target="_blank">使用 CSS 轻松实现一些高频出现的奇形怪状按钮</a>
+    <br>
+· <a href="https://www.cnblogs.com/strick/p/15394367.html" target="_blank">带团队后的日常思考（六）</a>
+    <br>
+· <a href="https://www.cnblogs.com/xiao2shiqi/p/15623540.html" target="_blank">聊聊云原生和微服务架构</a>
+    <br>
+· <a href="https://www.cnblogs.com/youzhibing/p/15615272.html" target="_blank">异或运算的巧用：不用额外的变量，如何交换两个变量的值？ </a>
+    <br>
+· <a href="https://www.cnblogs.com/myshowtime/p/15596630.html" target="_blank">OAuth 2.1 带来了哪些变化</a>
+    <br>
+</div></div>
+        <div id="cnblogs_c2" class="under-post-card">
+            <a href="https://c.gridsumdissector.com/r/?gid=gad_545_wrrk6jpf&amp;ck=1057&amp;adk=10673&amp;autorefresh=__AUTOREFRESH__" rel="nofollow" target="_blank">
+                <img src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/volcengine-c2.jpg" alt="" onload="impressC2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_wrrk6jpf&amp;ck=1057&amp;adk=10673&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+            </a>
+        </div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/708325/" target="_blank">达摩院AliceMind上新！首个中文表格预训练模型发布，已向业界开源（2021-12-03 15:55）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708324/" target="_blank">亚马逊中国卖家遭遇最惨“黑五”：销量不及预期，封号仍在继续（2021-12-03 15:48）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708323/" target="_blank">印度人民怀念中国App（2021-12-03 15:40）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708322/" target="_blank">专利申请量超美国、高新企业数增10倍：一图看懂近20年中国科技有多燃（2021-12-03 15:34）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708321/" target="_blank">“大红大紫”的代价！英伟达再也收不了ARM了？（2021-12-03 15:31）</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+       var commentManager = new blogCommentManager();
+       commentManager.renderComments(0);
+       fixPostBody();
+
+           window.tocManager.displayDisableTocTips = false
+           window.tocManager.generateToc();
+           setTimeout(function() { incrementViewCount(cb_entryId); }, 50);       deliverT2();
+       deliverC1C2();
+       loadNewsAndKb();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);       LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+       GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+       loadOptUnderPost();
+       GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem">
+            <script>loadBlogNews();</script>
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2021 Yaopengfei
+<br><span id="poweredby">Powered by .NET 6 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8FO3GXnjClZGrNGr2Ic8Z1pQJ9S_jevVD-f4r6_yd11kW0MVdJPuhe0jW91t839sh2qXbWYU78wi-nYpckWoRGw2IgZgOZpGlF5XK0DRJ14sqo6HQP2wXL5J2Mui6vcTaM_TPIDzrwWqq-lFtYuc4eA">
+    <script async="" src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/js"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+    </script>
+    <script defer="" src="./第二十四节：编码、解码、加密算法概念及实现（Base64、MD5、SHA、HMAC、DES、AES、RSA） - Yaopengfei - 博客园_files/hm.js.下载"></script>
+
+</body></html>

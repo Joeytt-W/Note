@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)https://www.cnblogs.com/yaopengfei/p/12162507.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="description" content="一. 前言 1.说明 本章节重点介绍JWT的利用不同程序集的几种写法及认证方式，然后复习一下JWT的组成。 其他概念参考：https://www.cnblogs.com/yaopengfei/p/10">
+    <meta property="og:description" content="一. 前言 1.说明 本章节重点介绍JWT的利用不同程序集的几种写法及认证方式，然后复习一下JWT的组成。 其他概念参考：https://www.cnblogs.com/yaopengfei/p/10">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([class*="language-"]):not([highlighted]):not(.hljs) {
+        background: rgb(245, 245, 245);
+        padding: 5px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(0, 0, 0);
+        font-family: "Courier New", sans-serif;
+    }:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]) code:not(.hljs) {
+            background: rgb(245, 245, 245) !important;
+            border-color: transparent !important;
+        }</style><link rel="stylesheet" href="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/blog-common.min.css">
+    <link id="MainCss" rel="stylesheet" href="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/bundle-darkgreentrip.min.css">
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/cnblogs.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/bundle-darkgreentrip-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/yaopengfei/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/yaopengfei/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/yaopengfei/wlwmanifest.xml">
+    <script>
+        var currentBlogId = 307315;
+        var currentBlogApp = 'yaopengfei';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'darkgreentrip';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function(){ return ''; } });
+            }
+        } catch(error) { }
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+    </script>
+        <script>
+            var currentPostDateAdded = '2020-01-07 16:58';
+        </script>
+    <script src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/jquery-2.2.0.min.js.下载"></script>
+    <script src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/blog-common.min.js.下载"></script><style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style><script id="hljs-script" async="" data-loaded="true" src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/highlight.min.js.下载"></script>
+    
+    
+    
+</head>
+<body class="skin-darkgreentrip has-navbar has-bannerbar">
+    <a name="top"></a>
+        <a href="https://c.gridsumdissector.com/r/?gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__" target="_blank" rel="nofollow" onclick="countClicks(&#39;ad&#39;, &#39;C0-火山引擎&#39;)">
+            <div class="bannerbar forpc" style="display: flex; background-color: #11225a;">
+                <img src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/volcengine-b0c0-1.jpg" onload="impressC0(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)" alt="">
+                <img src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/volcengine-b0c0-2.jpg" alt="">
+                <img style="margin-left: auto;" src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/volcengine-b0c0-3.jpg" alt="">
+            </div>
+        </a>
+            <div id="bannerbar" class="bannerbar-mobile formobile">
+                <a href="https://c.gridsumdissector.com/r/?gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__" onclick="countClicks(&#39;ad&#39;, &#39;M2-火山引擎&#39;)" rel="nofollow">
+                    <img src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/volcengine-m2.jpg" alt="" onload="impressM2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+                </a>
+            </div>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding"><a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/logo.svg" alt="博客园Logo"></a></li>
+                <li><a href="https://www.cnblogs.com/" onclick="countClicks(&#39;skin-navbar-sitehome&#39;)">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-brands&#39;)">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-edu&#39;)">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔">
+                        <img id="new_post_icon" class="navbar-icon" src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/yaopengfei/"><img id="blogLogo" src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/yaopengfei/">奔跑的路上</a>
+</h1>
+<h2>广泛汲取，用心打磨，精益求精。</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/yaopengfei/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/Yaopengfei">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/yaopengfei/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<div id="blog_stats_place_holder"><script>loadBlogStats();</script></div>
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/yaopengfei/p/12162507.html">
+    <span>第二十八节：Asp.Net Core中JWT的几种写法和认证方式</span>
+    
+
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">一. 前言</span></p>
+<p><strong><span style="font-size: 16px">1.说明</span></strong></p>
+<p><span style="font-size: 15px">　　本章节重点介绍JWT的利用不同程序集的几种写法及认证方式，然后复习一下JWT的组成。</span></p>
+<p><span style="font-size: 15px">　　其他概念参考：<a href="https://www.cnblogs.com/yaopengfei/p/10451189.html">https://www.cnblogs.com/yaopengfei/p/10451189.html</a></span></p>
+<p><span style="font-size: 15px">　　官网：<a href="https://jwt.io/">https://jwt.io</a></span></p>
+<p><strong><span style="font-size: 16px">2.JWT组成</span></strong></p>
+<p><span style="font-size: 15px">　　样式："xxxxxxxxxxxx.xxxxxxxxxxxxx.xxxxxxxxxxxxxxxx"由三部分组成.</span></p>
+<p><span style="font-size: 15px">(1).Header头部：{\"alg\":\"HS256\",\"typ\":\"JWT\"}基本组成,也可以自己添加别的内容,然后对最后的内容进行Base64编码.</span></p>
+<p><span style="font-size: 15px">(2).Payload负载：iss、sub、aud、exp、nbf、iat、jti基本参数,也可以自己添加别的内容,然后对最后的内容进行Base64编码.</span></p>
+<p><span style="font-size: 15px">(3).Signature签名：将Base64后的Header和Payload通过.组合起来，然后利用Hmacsha256+密钥进行加密。</span></p>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">二. 加解密几种写法</span></p>
+<p><strong><span style="font-size: 16px">1. 写法1</span></strong></p>
+<p><span style="font-size: 15px">　　说明：利用规则自己手动封装，安装【NETCore.Encrypt 2.0.8】程序集，利用里面的HMAC加密算法，声明一个expire用于存放过期时间。校验的时候先验证时间是否过期，再验证签名的准确性。</span></p>
+<p><span style="font-size: 15px">详细代码见：TestJwt1</span></p>
+<div class="cnblogs_code"><img src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/ContractedBlock.gif" alt="" id="code_img_closed_ebbd8db7-2150-45a3-8fc4-4cfeefed1a29" class="code_img_closed"><img src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" alt="" id="code_img_opened_ebbd8db7-2150-45a3-8fc4-4cfeefed1a29" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_ebbd8db7-2150-45a3-8fc4-4cfeefed1a29" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>  <span style="color: rgba(0, 0, 255, 1)">#region</span> Base64编码
+<span style="color: rgba(0, 128, 128, 1)"> 2</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 3</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> Base64编码
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 5</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="text"&gt;</span><span style="color: rgba(0, 128, 0, 1)">待编码的文本字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 6</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;</span><span style="color: rgba(0, 128, 0, 1)">编码的文本字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span> Base64UrlEncode(<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> text)
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> plainTextBytes =<span style="color: rgba(0, 0, 0, 1)"> Encoding.UTF8.GetBytes(text);
+</span><span style="color: rgba(0, 128, 128, 1)">10</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> base64 = Convert.ToBase64String(plainTextBytes).Replace(<span style="color: rgba(128, 0, 0, 1)">'</span><span style="color: rgba(128, 0, 0, 1)">+</span><span style="color: rgba(128, 0, 0, 1)">'</span>, <span style="color: rgba(128, 0, 0, 1)">'</span><span style="color: rgba(128, 0, 0, 1)">-</span><span style="color: rgba(128, 0, 0, 1)">'</span>).Replace(<span style="color: rgba(128, 0, 0, 1)">'</span><span style="color: rgba(128, 0, 0, 1)">/</span><span style="color: rgba(128, 0, 0, 1)">'</span>, <span style="color: rgba(128, 0, 0, 1)">'</span><span style="color: rgba(128, 0, 0, 1)">_</span><span style="color: rgba(128, 0, 0, 1)">'</span>).TrimEnd(<span style="color: rgba(128, 0, 0, 1)">'</span><span style="color: rgba(128, 0, 0, 1)">=</span><span style="color: rgba(128, 0, 0, 1)">'</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> base64;
+</span><span style="color: rgba(0, 128, 128, 1)">12</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>         <span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+<span style="color: rgba(0, 128, 128, 1)">14</span> 
+<span style="color: rgba(0, 128, 128, 1)">15</span>         <span style="color: rgba(0, 0, 255, 1)">#region</span> Base64解码
+<span style="color: rgba(0, 128, 128, 1)">16</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">17</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> Base64解码
+</span><span style="color: rgba(0, 128, 128, 1)">18</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">19</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="base64UrlStr"&gt;&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">20</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">21</span> 
+<span style="color: rgba(0, 128, 128, 1)">22</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span> Base64UrlDecode(<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> base64UrlStr)
+</span><span style="color: rgba(0, 128, 128, 1)">23</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">24</span>             base64UrlStr = base64UrlStr.Replace(<span style="color: rgba(128, 0, 0, 1)">'</span><span style="color: rgba(128, 0, 0, 1)">-</span><span style="color: rgba(128, 0, 0, 1)">'</span>, <span style="color: rgba(128, 0, 0, 1)">'</span><span style="color: rgba(128, 0, 0, 1)">+</span><span style="color: rgba(128, 0, 0, 1)">'</span>).Replace(<span style="color: rgba(128, 0, 0, 1)">'</span><span style="color: rgba(128, 0, 0, 1)">_</span><span style="color: rgba(128, 0, 0, 1)">'</span>, <span style="color: rgba(128, 0, 0, 1)">'</span><span style="color: rgba(128, 0, 0, 1)">/</span><span style="color: rgba(128, 0, 0, 1)">'</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">25</span>             <span style="color: rgba(0, 0, 255, 1)">switch</span> (base64UrlStr.Length % <span style="color: rgba(128, 0, 128, 1)">4</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)">26</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">27</span>                 <span style="color: rgba(0, 0, 255, 1)">case</span> <span style="color: rgba(128, 0, 128, 1)">2</span><span style="color: rgba(0, 0, 0, 1)">:
+</span><span style="color: rgba(0, 128, 128, 1)">28</span>                     base64UrlStr += <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">==</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">29</span>                     <span style="color: rgba(0, 0, 255, 1)">break</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">30</span>                 <span style="color: rgba(0, 0, 255, 1)">case</span> <span style="color: rgba(128, 0, 128, 1)">3</span><span style="color: rgba(0, 0, 0, 1)">:
+</span><span style="color: rgba(0, 128, 128, 1)">31</span>                     base64UrlStr += <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">=</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">32</span>                     <span style="color: rgba(0, 0, 255, 1)">break</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">33</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">34</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> bytes =<span style="color: rgba(0, 0, 0, 1)"> Convert.FromBase64String(base64UrlStr);
+</span><span style="color: rgba(0, 128, 128, 1)">35</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> Encoding.UTF8.GetString(bytes);
+</span><span style="color: rgba(0, 128, 128, 1)">36</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">37</span>         <span style="color: rgba(0, 0, 255, 1)">#endregion</span></pre>
+</div>
+<span class="cnblogs_code_collapse">Base64编码和解码</span></div>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 手写JWT算法
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 4</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">bool</span><span style="color: rgba(0, 0, 0, 1)"> TestJwt1()
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> secretKey = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">SecretKey</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1.加密
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1.1 表头的处理</span>
+<span style="color: rgba(0, 128, 128, 1)"> 9</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> headerBase64Url = <span style="color: rgba(0, 0, 255, 1)">this</span>.Base64UrlEncode(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{\"alg\":\"HS256\",\"typ\":\"JWT\"}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">10</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1.2 PayLoad的处理</span>
+<span style="color: rgba(0, 128, 128, 1)">11</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> jwtPayLoad = <span style="color: rgba(0, 0, 255, 1)">new</span>
+<span style="color: rgba(0, 128, 128, 1)">12</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>                 expire = DateTime.Now.AddMinutes(<span style="color: rgba(128, 0, 128, 1)">15</span><span style="color: rgba(0, 0, 0, 1)">),
+</span><span style="color: rgba(0, 128, 128, 1)">14</span>                 userId = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">00000000001</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">,
+</span><span style="color: rgba(0, 128, 128, 1)">15</span>                 userAccount = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">admin</span><span style="color: rgba(128, 0, 0, 1)">"</span>
+<span style="color: rgba(0, 128, 128, 1)">16</span> <span style="color: rgba(0, 0, 0, 1)">            };
+</span><span style="color: rgba(0, 128, 128, 1)">17</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> payloadBase64Url = <span style="color: rgba(0, 0, 255, 1)">this</span><span style="color: rgba(0, 0, 0, 1)">.Base64UrlEncode(JsonConvert.SerializeObject(jwtPayLoad));
+</span><span style="color: rgba(0, 128, 128, 1)">18</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1.3 Sign的处理</span>
+<span style="color: rgba(0, 128, 128, 1)">19</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> sign = $<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{headerBase64Url}.{payloadBase64Url}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">.HMACSHA256(secretKey);
+</span><span style="color: rgba(0, 128, 128, 1)">20</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1.4 最终的jwt字符串</span>
+<span style="color: rgba(0, 128, 128, 1)">21</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> jwtStr = $<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{headerBase64Url}.{payloadBase64Url}.{sign}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">22</span> 
+<span style="color: rgba(0, 128, 128, 1)">23</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">2.校验token是否正确</span>
+<span style="color: rgba(0, 128, 128, 1)">24</span>             <span style="color: rgba(0, 0, 255, 1)">bool</span> result;   <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">True表示通过，False表示未通过
+</span><span style="color: rgba(0, 128, 128, 1)">25</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">2.1. 获取token中的PayLoad中的值,并做过期校验</span>
+<span style="color: rgba(0, 128, 128, 1)">26</span>             JwtData myData = JsonConvert.DeserializeObject&lt;JwtData&gt;(<span style="color: rgba(0, 0, 255, 1)">this</span>.Base64UrlDecode(jwtStr.Split(<span style="color: rgba(128, 0, 0, 1)">'</span><span style="color: rgba(128, 0, 0, 1)">.</span><span style="color: rgba(128, 0, 0, 1)">'</span>)[<span style="color: rgba(128, 0, 128, 1)">1</span>]));  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">这一步已经获取到了payload中的值，并进行转换了</span>
+<span style="color: rgba(0, 128, 128, 1)">27</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> nowTime =<span style="color: rgba(0, 0, 0, 1)"> DateTime.Now;
+</span><span style="color: rgba(0, 128, 128, 1)">28</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (nowTime &gt;<span style="color: rgba(0, 0, 0, 1)"> myData.expire)
+</span><span style="color: rgba(0, 128, 128, 1)">29</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">30</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示token过期，校验未通过</span>
+<span style="color: rgba(0, 128, 128, 1)">31</span>                 result = <span style="color: rgba(0, 0, 255, 1)">false</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">32</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> result;
+</span><span style="color: rgba(0, 128, 128, 1)">33</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">34</span>             <span style="color: rgba(0, 0, 255, 1)">else</span>
+<span style="color: rgba(0, 128, 128, 1)">35</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">36</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">2.2 做准确性校验</span>
+<span style="color: rgba(0, 128, 128, 1)">37</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> items = jwtStr.Split(<span style="color: rgba(128, 0, 0, 1)">'</span><span style="color: rgba(128, 0, 0, 1)">.</span><span style="color: rgba(128, 0, 0, 1)">'</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">38</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> oldSign = items[<span style="color: rgba(128, 0, 128, 1)">2</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">39</span>                 <span style="color: rgba(0, 0, 255, 1)">string</span> newSign = $<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{items[0]}.{items[1]}</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">.HMACSHA256(secretKey);
+</span><span style="color: rgba(0, 128, 128, 1)">40</span>                 result = oldSign == newSign;  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">true表示检验通过，false表示检验未通过 </span>
+<span style="color: rgba(0, 128, 128, 1)">41</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> result;
+</span><span style="color: rgba(0, 128, 128, 1)">42</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">43</span>         }</pre>
+</div>
+<p><strong><span style="font-size: 16px">2. 写法2（推荐！）</span></strong></p>
+<p><span style="font-size: 15px">　　说明：使用官方JWT程序集【JWT 7.2.1】,封装加密和解密算法，详见：JWTHelp帮助类.其中加密算法的封装将extraHeaders参数作为一个</span><span style="font-size: 15px">可空参数,可以根据自己的需要决定是否在Header头中添加额外的参数。</span></p>
+<p><span style="font-size: 15px; color: rgba(0, 0, 255, 1)">jwt实体类</span></p>
+<div class="cnblogs_code"><img src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/ContractedBlock.gif" alt="" id="code_img_closed_ad45dcad-b81e-4a09-a16b-126b34bbb99c" class="code_img_closed"><img src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" alt="" id="code_img_opened_ad45dcad-b81e-4a09-a16b-126b34bbb99c" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_ad45dcad-b81e-4a09-a16b-126b34bbb99c" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span>    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> JwtData
+</span><span style="color: rgba(0, 128, 128, 1)">2</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)">3</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> DateTime expire { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span>; }  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">代表过期时间</span>
+<span style="color: rgba(0, 128, 128, 1)">4</span> 
+<span style="color: rgba(0, 128, 128, 1)">5</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span> userId { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)">; }
+</span><span style="color: rgba(0, 128, 128, 1)">6</span> 
+<span style="color: rgba(0, 128, 128, 1)">7</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span> userAccount { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)">; }
+</span><span style="color: rgba(0, 128, 128, 1)">8</span>     }</pre>
+</div>
+<span class="cnblogs_code_collapse">JwtData</span></div>
+<p><span style="font-size: 15px; color: rgba(0, 0, 255, 1)">封装加密和解密方法</span></p>
+<div class="cnblogs_code"><img src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_ca2a890c-1ee1-4f58-a98c-bc15885677d7" class="code_img_closed"><img src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_ca2a890c-1ee1-4f58-a98c-bc15885677d7" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_ca2a890c-1ee1-4f58-a98c-bc15885677d7" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 0, 255, 1)">using</span><span style="color: rgba(0, 0, 0, 1)"> JWT;
+</span><span style="color: rgba(0, 0, 255, 1)">using</span><span style="color: rgba(0, 0, 0, 1)"> JWT.Algorithms;
+</span><span style="color: rgba(0, 0, 255, 1)">using</span><span style="color: rgba(0, 0, 0, 1)"> JWT.Exceptions;
+</span><span style="color: rgba(0, 0, 255, 1)">using</span><span style="color: rgba(0, 0, 0, 1)"> JWT.Serializers;
+</span><span style="color: rgba(0, 0, 255, 1)">using</span><span style="color: rgba(0, 0, 0, 1)"> System;
+</span><span style="color: rgba(0, 0, 255, 1)">using</span><span style="color: rgba(0, 0, 0, 1)"> System.Collections.Generic;
+</span><span style="color: rgba(0, 0, 255, 1)">using</span><span style="color: rgba(0, 0, 0, 1)"> System.Text;
+
+</span><span style="color: rgba(0, 0, 255, 1)">namespace</span><span style="color: rgba(0, 0, 0, 1)"> JwtAuth
+{
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> Jwt的加密和解密
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 注：加密和加密用的是用一个密钥
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 依赖程序集：【JWT】
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> JWTHelp
+    {
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> JWT加密算法
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="payload"&gt;</span><span style="color: rgba(0, 128, 0, 1)">负荷部分，存储使用的信息</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="secret"&gt;</span><span style="color: rgba(0, 128, 0, 1)">密钥</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="extraHeaders"&gt;</span><span style="color: rgba(0, 128, 0, 1)">存放表头额外的信息,不需要的话可以不传</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> JWTJiaM(IDictionary&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>, <span style="color: rgba(0, 0, 255, 1)">object</span>&gt; payload, <span style="color: rgba(0, 0, 255, 1)">string</span> secret, IDictionary&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>, <span style="color: rgba(0, 0, 255, 1)">object</span>&gt; extraHeaders = <span style="color: rgba(0, 0, 255, 1)">null</span><span style="color: rgba(0, 0, 0, 1)">)
+        {
+            IJwtAlgorithm algorithm </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> HMACSHA256Algorithm();
+            IJsonSerializer serializer </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> JsonNetSerializer();
+            IBase64UrlEncoder urlEncoder </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> JwtBase64UrlEncoder();
+            IJwtEncoder encoder </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> JwtEncoder(algorithm, serializer, urlEncoder);
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> token =<span style="color: rgba(0, 0, 0, 1)"> encoder.Encode(payload, secret);
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> token;
+        }
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> JWT解密算法(新的7.x版本写法）
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="token"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要解密的token串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="secret"&gt;</span><span style="color: rgba(0, 128, 0, 1)">密钥</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> JWTJieM(<span style="color: rgba(0, 0, 255, 1)">string</span> token, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> secret)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">try</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                IJsonSerializer serializer </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> JsonNetSerializer();
+                IDateTimeProvider provider </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> UtcDateTimeProvider();
+                IJwtValidator validator </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> JwtValidator(serializer, provider);
+                IBase64UrlEncoder urlEncoder </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> JwtBase64UrlEncoder();
+                IJwtAlgorithm algorithm </span>= <span style="color: rgba(0, 0, 255, 1)">new</span> HMACSHA256Algorithm(); <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> symmetric</span>
+                IJwtDecoder decoder = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> JwtDecoder(serializer, validator, urlEncoder, algorithm);
+
+                </span><span style="color: rgba(0, 0, 255, 1)">var</span> json = decoder.Decode(token, secret, <span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">);
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">校验通过，返回解密后的字符串</span>
+                <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> json;
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (TokenExpiredException)
+            {
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示过期</span>
+                <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">expired</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (SignatureVerificationException)
+            {
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示验证不通过</span>
+                <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">invalid</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (Exception)
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">error</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+            }
+        }
+
+
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// JWT解密算法(旧的5.x版本写法）
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;param name="token"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要解密的token串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;param name="secret"&gt;</span><span style="color: rgba(0, 128, 0, 1)">密钥</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">public static string JWTJieM(string token, string secret)
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">{
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    try
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    {
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        IJsonSerializer serializer = new JsonNetSerializer();
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        IDateTimeProvider provider = new UtcDateTimeProvider();
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        IJwtValidator validator = new JwtValidator(serializer, provider);
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        IJwtDecoder decoder = new JwtDecoder(serializer, validator, urlEncoder);
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        var json = decoder.Decode(token, secret, true);
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span>        <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">校验通过，返回解密后的字符串
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        return json;
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    }
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    catch (TokenExpiredException)
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    {
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span>        <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示过期
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        return "expired";
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    }
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    catch (SignatureVerificationException)
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    {
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span>        <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示验证不通过
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        return "invalid";
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    }
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    catch (Exception)
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    {
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        return "error";
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    }
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">}</span>
+<span style="color: rgba(0, 0, 0, 1)">
+    }
+
+}</span></pre>
+</div>
+<span class="cnblogs_code_collapse">JWTHelp</span></div>
+<p><span style="color: rgba(0, 0, 255, 1)">测试</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 利用JWT官方程序集的写法
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 4</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">void</span><span style="color: rgba(0, 0, 0, 1)"> TestJwt2()
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> secretKey = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">SecretKey</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 8</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1.加密
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1.1 额外的header参数也可以不设置</span>
+<span style="color: rgba(0, 128, 128, 1)">10</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> extraHeaders = <span style="color: rgba(0, 0, 255, 1)">new</span> Dictionary&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>, <span style="color: rgba(0, 0, 255, 1)">object</span>&gt;
+<span style="color: rgba(0, 128, 128, 1)">11</span> <span style="color: rgba(0, 0, 0, 1)">                    {
+</span><span style="color: rgba(0, 128, 128, 1)">12</span>                          {<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">myName</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">limaru</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)"> },
+</span><span style="color: rgba(0, 128, 128, 1)">13</span> <span style="color: rgba(0, 0, 0, 1)">                    };
+</span><span style="color: rgba(0, 128, 128, 1)">14</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">过期时间(可以不设置，下面表示签名后 20分钟过期)</span>
+<span style="color: rgba(0, 128, 128, 1)">15</span>             <span style="color: rgba(0, 0, 255, 1)">double</span> exp = (DateTime.UtcNow.AddMinutes(<span style="color: rgba(128, 0, 128, 1)">20</span>) - <span style="color: rgba(0, 0, 255, 1)">new</span> DateTime(<span style="color: rgba(128, 0, 128, 1)">1970</span>, <span style="color: rgba(128, 0, 128, 1)">1</span>, <span style="color: rgba(128, 0, 128, 1)">1</span><span style="color: rgba(0, 0, 0, 1)">)).TotalSeconds;
+</span><span style="color: rgba(0, 128, 128, 1)">16</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">进行组装</span>
+<span style="color: rgba(0, 128, 128, 1)">17</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> payload = <span style="color: rgba(0, 0, 255, 1)">new</span> Dictionary&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>, <span style="color: rgba(0, 0, 255, 1)">object</span>&gt;
+<span style="color: rgba(0, 128, 128, 1)">18</span> <span style="color: rgba(0, 0, 0, 1)">                    {
+</span><span style="color: rgba(0, 128, 128, 1)">19</span>                          {<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">userId</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">00000000001</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)"> },
+</span><span style="color: rgba(0, 128, 128, 1)">20</span>                          {<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">userAccount</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">admin</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)"> },
+</span><span style="color: rgba(0, 128, 128, 1)">21</span>                          {<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">exp</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">,exp }
+</span><span style="color: rgba(0, 128, 128, 1)">22</span> <span style="color: rgba(0, 0, 0, 1)">                    };
+</span><span style="color: rgba(0, 128, 128, 1)">23</span> 
+<span style="color: rgba(0, 128, 128, 1)">24</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1.2 进行JWT签名</span>
+<span style="color: rgba(0, 128, 128, 1)">25</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> token =<span style="color: rgba(0, 0, 0, 1)"> JWTHelp.JWTJiaM(payload, secretKey, extraHeaders);
+</span><span style="color: rgba(0, 128, 128, 1)">26</span> 
+<span style="color: rgba(0, 128, 128, 1)">27</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">2. 解密</span>
+<span style="color: rgba(0, 128, 128, 1)">28</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> result =<span style="color: rgba(0, 0, 0, 1)"> JWTHelp.JWTJieM(token, secretKey);
+</span><span style="color: rgba(0, 128, 128, 1)">29</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">然后在转换一下</span>
+<span style="color: rgba(0, 128, 128, 1)">30</span>             JwtData myData = JsonConvert.DeserializeObject&lt;JwtData&gt;<span style="color: rgba(0, 0, 0, 1)">(result);
+</span><span style="color: rgba(0, 128, 128, 1)">31</span> 
+<span style="color: rgba(0, 128, 128, 1)">32</span>         }</pre>
+</div>
+<p><span style="color: rgba(0, 0, 255, 1)"><strong><span style="font-size: 16px">3. 写法3</span></strong></span></p>
+<p><span style="font-size: 15px">　　说明：使用Identity家的程序集【System.IdentityModel.Tokens.Jwt 5.6.0】,进行加密和解密，详见：TestJwt3。</span></p>
+<p><span style="color: rgba(255, 0, 0, 1)"><strong><span style="font-size: 15px">注：下面代码，解密的时候不验证&nbsp;aud 和 iss，&nbsp;ClockSkew = TimeSpan.Zero&nbsp; 代表校验过期时间的偏移量，即验证过期时间：（expires+该值），该值默认为5min，这里设置为0，表示生成token时的expries即为过期时间 。</span></strong></span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">bool</span><span style="color: rgba(0, 0, 0, 1)"> TestJwt3()
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> secretKey = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">SecretKey</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span>             <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> token;
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">加密</span>
+<span style="color: rgba(0, 128, 128, 1)"> 6</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> tokenHandler = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> JwtSecurityTokenHandler();
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> key =<span style="color: rgba(0, 0, 0, 1)"> Encoding.Default.GetBytes(secretKey);
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> tokenDescriptor = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> SecurityTokenDescriptor()
+</span><span style="color: rgba(0, 128, 128, 1)">10</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>                     Subject = <span style="color: rgba(0, 0, 255, 1)">new</span> ClaimsIdentity(<span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> Claim[] {
+</span><span style="color: rgba(0, 128, 128, 1)">12</span>                          <span style="color: rgba(0, 0, 255, 1)">new</span> Claim(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">userId</span><span style="color: rgba(128, 0, 0, 1)">"</span>,<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">00000000001</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">),
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>                          <span style="color: rgba(0, 0, 255, 1)">new</span> Claim(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">userAccount</span><span style="color: rgba(128, 0, 0, 1)">"</span>,<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">admin</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)">14</span> <span style="color: rgba(0, 0, 0, 1)">                    }),
+</span><span style="color: rgba(0, 128, 128, 1)">15</span>                     Expires = DateTime.UtcNow.AddSeconds(<span style="color: rgba(128, 0, 128, 1)">10</span><span style="color: rgba(0, 0, 0, 1)">),
+</span><span style="color: rgba(0, 128, 128, 1)">16</span>                     SigningCredentials = <span style="color: rgba(0, 0, 255, 1)">new</span> SigningCredentials(<span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+</span><span style="color: rgba(0, 128, 128, 1)">17</span> <span style="color: rgba(0, 0, 0, 1)">                };
+</span><span style="color: rgba(0, 128, 128, 1)">18</span>                 token = tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));           <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">将组装好的格式生成加密后的jwt字符串</span>
+<span style="color: rgba(0, 128, 128, 1)">19</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">20</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">解密</span>
+<span style="color: rgba(0, 128, 128, 1)">21</span>             <span style="color: rgba(0, 0, 255, 1)">bool</span><span style="color: rgba(0, 0, 0, 1)"> result;
+</span><span style="color: rgba(0, 128, 128, 1)">22</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">23</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> tokenHandler = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> JwtSecurityTokenHandler();
+</span><span style="color: rgba(0, 128, 128, 1)">24</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> key =<span style="color: rgba(0, 0, 0, 1)"> Encoding.Default.GetBytes(secretKey);
+</span><span style="color: rgba(0, 128, 128, 1)">25</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> validationParameters = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> TokenValidationParameters
+</span><span style="color: rgba(0, 128, 128, 1)">26</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)">27</span>                     ValidateAudience = <span style="color: rgba(0, 0, 255, 1)">false</span>, <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示不验证aud</span>
+<span style="color: rgba(0, 128, 128, 1)">28</span>                     ValidateIssuer = <span style="color: rgba(0, 0, 255, 1)">false</span>,   <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示不验证iss</span>
+<span style="color: rgba(0, 128, 128, 1)">29</span>                     IssuerSigningKey = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> SymmetricSecurityKey(key),
+</span><span style="color: rgba(0, 128, 128, 1)">30</span>                     ClockSkew = TimeSpan.Zero   <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">代表校验过期时间的偏移量，即验证过期时间：（expires+该值），该值默认为5min，这里设置为0，表示生成token时的expries即为过期时间</span>
+<span style="color: rgba(0, 128, 128, 1)">31</span> <span style="color: rgba(0, 0, 0, 1)">                };
+</span><span style="color: rgba(0, 128, 128, 1)">32</span>                 SecurityToken validatedToken;   <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">解密后的对象</span>
+<span style="color: rgba(0, 128, 128, 1)">33</span>                 <span style="color: rgba(0, 0, 255, 1)">try</span>
+<span style="color: rgba(0, 128, 128, 1)">34</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)">35</span>                     ClaimsPrincipal claimsPrincipal = tokenHandler.ValidateToken(token, validationParameters, <span style="color: rgba(0, 0, 255, 1)">out</span><span style="color: rgba(0, 0, 0, 1)"> validatedToken);
+</span><span style="color: rgba(0, 128, 128, 1)">36</span>                     result = <span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">37</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">获取payload中的数据</span>
+<span style="color: rgba(0, 128, 128, 1)">38</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> jwtPayload =<span style="color: rgba(0, 0, 0, 1)"> ((JwtSecurityToken)validatedToken).Payload.SerializeToJson(); ;
+</span><span style="color: rgba(0, 128, 128, 1)">39</span> <span style="color: rgba(0, 0, 0, 1)">                }
+</span><span style="color: rgba(0, 128, 128, 1)">40</span>                 <span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (SecurityTokenExpiredException)
+</span><span style="color: rgba(0, 128, 128, 1)">41</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)">42</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示过期</span>
+<span style="color: rgba(0, 128, 128, 1)">43</span>                     result = <span style="color: rgba(0, 0, 255, 1)">false</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">44</span> <span style="color: rgba(0, 0, 0, 1)">                }
+</span><span style="color: rgba(0, 128, 128, 1)">45</span>                 <span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (SecurityTokenException)
+</span><span style="color: rgba(0, 128, 128, 1)">46</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)">47</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示token错误</span>
+<span style="color: rgba(0, 128, 128, 1)">48</span>                     result = <span style="color: rgba(0, 0, 255, 1)">false</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">49</span> <span style="color: rgba(0, 0, 0, 1)">                }
+</span><span style="color: rgba(0, 128, 128, 1)">50</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">51</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> result;
+</span><span style="color: rgba(0, 128, 128, 1)">52</span>         } </pre>
+</div>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">三. 校验的几种方式</span></p>
+<p><strong><span style="font-size: 16px">1. 利用过滤器校验</span></strong></p>
+<p><span style="font-size: 15px">　　这里使用override这个方法OnActionExecuting，在action执行之前过滤。</span></p>
+<p><strong><span style="font-size: 15px">(1).涉及到几个技术点：</span></strong></p>
+<p><strong><span style="font-size: 15px">A.判断aciton是否有某个特性：</span></strong></p>
+<p><span style="font-size: 15px">　　context.ActionDescriptor.EndpointMetadata.Any(x =&gt; x.GetType() == typeof(SkipAttribute));</span></p>
+<p><strong><span style="font-size: 15px">B.判断是否是ajax请求：</span></strong></p>
+<p><span style="font-size: 15px">　　判断Headers["X-Requested-With"]的值是不是"XMLHttpRequest".</span></p>
+<p><strong><span style="font-size: 15px">C.获取传递过来的参数：</span></strong></p>
+<p><span style="font-size: 15px">　　</span><span style="font-size: 15px">a. ajax放在Header中传递的参数：context.HttpContext.Request.Headers["auth"].ToString();&nbsp; 判空方式：token == "null" || string.IsNullOrEmpty(token)</span></p>
+<p><span style="font-size: 15px">　　b. 通过href=xxx?auth=xx传递的参数：context.HttpContext.Request.Query["auth"].ToString();&nbsp; &nbsp;判空形式：string.IsNullOrEmpty(token)</span></p>
+<p><span style="font-size: 15px"><span style="color: rgba(128, 0, 128, 1)">PS：现在有一种Bearer认证, 是这样传递的("Authorization" "Bearer token"), 获取方式同上面的a,但是要拿到token的值,还需要截取一下，</span><span style="color: rgba(0, 0, 255, 1)">详见代码xxxx</span></span></p>
+<p><strong><span style="font-size: 15px">D.过滤器中截断返回的几种形式：</span></strong></p>
+<p><span style="font-size: 15px">　　a.非ajax的截断：直接跳转到某个未授权的页面,如:context.Result = new RedirectResult("/Admin/ErrorIndex?isLogin=noPer");</span></p>
+<p><span style="font-size: 15px">　　b.ajax的截断：</span></p>
+<p><span style="font-size: 15px">　　　　①.返回JsonResult,进入ajax中的success回调： context.Result = new JsonResult(new { status = "error", msg = "非法请求，参数已经过期" });</span></p>
+<p><span style="font-size: 15px">　　　　②.只返回状态码,进入ajax中的error回调：context.Result = new StatusCodeResult(401); 或 context.HttpContext.Response.StatusCode = 401;</span></p>
+<p><span style="font-size: 15px">　　　　③.返回ContentResult,进入ajax的error回调，同时回传错误内容：context.Result = new ContentResult { Content = "没有权限哦", StatusCode = 401 };</span></p>
+<p><span style="font-size: 15px">　　<span style="color: rgba(255, 0, 0, 1)"><strong>注：推荐上述③,因为可以和正常的请求返回彻底区分开,特别注意过滤器中要加return; 光context.Result不能截断.。</strong></span></span></p>
+<p><strong><span style="font-size: 15px">E.过滤器中传值和action中取值：</span></strong></p>
+<p><span style="font-size: 15px">　　a.传值：context.RouteData.Values.Add("auth", xxxx);</span></p>
+<p><span style="font-size: 15px">　　b.取值：ControllerContext.RouteData.Values["auth"].ToString()</span></p>
+<p><strong><span style="font-size: 15px">(2).实战测试</span></strong></p>
+<p><span style="font-size: 15px">　　A：auth认证,指Header中传递参数的时候("auth", token),对于ajax返回JsonResult,校验不通过的时候，进入的是ajax中的success回调.</span></p>
+<p><span style="font-size: 15px">　　B：Bearer认证,说白了就是在Header中传递参数的时候("Authorization", "Bearer " + token),在值的前面加了一个Bearer和空格,然后在解析的时候需要隔离拿出来token值.</span></p>
+<p><strong><span style="font-size: 15px; color: rgba(128, 0, 128, 1)">PS：在JwtCheck2中,对于ajax请求验证未通过的时候返回ContextResult，状态码为401,进入ajax的error回调中，非ajax请求和A类似。</span></strong></p>
+<p><span style="font-size: 15px; color: rgba(0, 0, 255, 1)">&nbsp;服务端方法：获取token的代码、auth认证接口、Bearer认证接口、没有权限的页面</span></p>
+<div class="cnblogs_code"><img src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/ContractedBlock.gif" alt="" id="code_img_closed_0cd5b69e-49ef-4d2b-b720-be11dade3028" class="code_img_closed"><img src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" alt="" id="code_img_opened_0cd5b69e-49ef-4d2b-b720-be11dade3028" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_0cd5b69e-49ef-4d2b-b720-be11dade3028" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span>        <span style="color: rgba(0, 0, 255, 1)">#region</span> 获取Token
+<span style="color: rgba(0, 128, 128, 1)"> 2</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 3</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 获取Token
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 5</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 6</span>         <span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> String GetToken()
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> secretKey = Configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">SecretKey</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1.加密
+</span><span style="color: rgba(0, 128, 128, 1)">10</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1.1 额外的header参数也可以不设置</span>
+<span style="color: rgba(0, 128, 128, 1)">11</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> extraHeaders = <span style="color: rgba(0, 0, 255, 1)">new</span> Dictionary&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>, <span style="color: rgba(0, 0, 255, 1)">object</span>&gt;
+<span style="color: rgba(0, 128, 128, 1)">12</span> <span style="color: rgba(0, 0, 0, 1)">                    {
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>                          {<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">myName</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">limaru</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)"> },
+</span><span style="color: rgba(0, 128, 128, 1)">14</span> <span style="color: rgba(0, 0, 0, 1)">                    };
+</span><span style="color: rgba(0, 128, 128, 1)">15</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">过期时间(可以不设置，下面表示签名后 20分钟过期)</span>
+<span style="color: rgba(0, 128, 128, 1)">16</span>             <span style="color: rgba(0, 0, 255, 1)">double</span> exp = (DateTime.UtcNow.AddMinutes(<span style="color: rgba(128, 0, 128, 1)">20</span>) - <span style="color: rgba(0, 0, 255, 1)">new</span> DateTime(<span style="color: rgba(128, 0, 128, 1)">1970</span>, <span style="color: rgba(128, 0, 128, 1)">1</span>, <span style="color: rgba(128, 0, 128, 1)">1</span><span style="color: rgba(0, 0, 0, 1)">)).TotalSeconds;
+</span><span style="color: rgba(0, 128, 128, 1)">17</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">进行组装</span>
+<span style="color: rgba(0, 128, 128, 1)">18</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> payload = <span style="color: rgba(0, 0, 255, 1)">new</span> Dictionary&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>, <span style="color: rgba(0, 0, 255, 1)">object</span>&gt;
+<span style="color: rgba(0, 128, 128, 1)">19</span> <span style="color: rgba(0, 0, 0, 1)">                    {
+</span><span style="color: rgba(0, 128, 128, 1)">20</span>                          {<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">userId</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">00000000001</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)"> },
+</span><span style="color: rgba(0, 128, 128, 1)">21</span>                          {<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">userAccount</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">admin</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)"> },
+</span><span style="color: rgba(0, 128, 128, 1)">22</span>                          {<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">exp</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">,exp }
+</span><span style="color: rgba(0, 128, 128, 1)">23</span> <span style="color: rgba(0, 0, 0, 1)">                    };
+</span><span style="color: rgba(0, 128, 128, 1)">24</span> 
+<span style="color: rgba(0, 128, 128, 1)">25</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1.2 进行JWT签名</span>
+<span style="color: rgba(0, 128, 128, 1)">26</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> token =<span style="color: rgba(0, 0, 0, 1)"> JWTHelp.JWTJiaM(payload, secretKey, extraHeaders);
+</span><span style="color: rgba(0, 128, 128, 1)">27</span>             <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> token;
+</span><span style="color: rgba(0, 128, 128, 1)">28</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">29</span>         <span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+<span style="color: rgba(0, 128, 128, 1)">30</span> 
+<span style="color: rgba(0, 128, 128, 1)">31</span>         <span style="color: rgba(0, 0, 255, 1)">#region</span> JwtCheck1校验(auth认证)
+<span style="color: rgba(0, 128, 128, 1)">32</span>         [TypeFilter(<span style="color: rgba(0, 0, 255, 1)">typeof</span><span style="color: rgba(0, 0, 0, 1)">(JwtCheck1))]
+</span><span style="color: rgba(0, 128, 128, 1)">33</span>         <span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> IActionResult GetMsg1()
+</span><span style="color: rgba(0, 128, 128, 1)">34</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">35</span> 
+<span style="color: rgba(0, 128, 128, 1)">36</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> jwtData = JsonConvert.DeserializeObject&lt;JwtData&gt;(ControllerContext.RouteData.Values[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">auth</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">].ToString());
+</span><span style="color: rgba(0, 128, 128, 1)">37</span>             <span style="color: rgba(0, 0, 255, 1)">return</span> Json(<span style="color: rgba(0, 0, 255, 1)">new</span> { status = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ok</span><span style="color: rgba(128, 0, 0, 1)">"</span>, msg =<span style="color: rgba(0, 0, 0, 1)"> jwtData.userId });
+</span><span style="color: rgba(0, 128, 128, 1)">38</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">39</span>         <span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+<span style="color: rgba(0, 128, 128, 1)">40</span> 
+<span style="color: rgba(0, 128, 128, 1)">41</span>         <span style="color: rgba(0, 0, 255, 1)">#region</span> JwtCheck2校验(Bearer认证)
+<span style="color: rgba(0, 128, 128, 1)">42</span>         [TypeFilter(<span style="color: rgba(0, 0, 255, 1)">typeof</span><span style="color: rgba(0, 0, 0, 1)">(JwtCheck2))]
+</span><span style="color: rgba(0, 128, 128, 1)">43</span>         <span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> IActionResult GetMsg2()
+</span><span style="color: rgba(0, 128, 128, 1)">44</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">45</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> jwtData = JsonConvert.DeserializeObject&lt;JwtData&gt;(ControllerContext.RouteData.Values[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">auth</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">].ToString());
+</span><span style="color: rgba(0, 128, 128, 1)">46</span>             <span style="color: rgba(0, 0, 255, 1)">return</span> Json(<span style="color: rgba(0, 0, 255, 1)">new</span> { status = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ok</span><span style="color: rgba(128, 0, 0, 1)">"</span>, msg =<span style="color: rgba(0, 0, 0, 1)"> jwtData.userId });
+</span><span style="color: rgba(0, 128, 128, 1)">47</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">48</span> 
+<span style="color: rgba(0, 128, 128, 1)">49</span>         <span style="color: rgba(0, 0, 255, 1)">#endregion</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="font-size: 15px; color: rgba(0, 0, 255, 1)">auth认证过滤器,对于ajax返回的是JsonResult，进入ajax的success</span></p>
+<div class="cnblogs_code"><img src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/ContractedBlock.gif" alt="" id="code_img_closed_1edc4843-f87b-4471-b54f-e21b6d5d0bdd" class="code_img_closed"><img src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" alt="" id="code_img_opened_1edc4843-f87b-4471-b54f-e21b6d5d0bdd" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_1edc4843-f87b-4471-b54f-e21b6d5d0bdd" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 128, 128, 1)">  1</span>     <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">  2</span>     <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> auth认证过滤器,进入ajax的success
+</span><span style="color: rgba(0, 128, 128, 1)">  3</span>     <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">  4</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> JwtCheck1 : ActionFilterAttribute
+</span><span style="color: rgba(0, 128, 128, 1)">  5</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)">  6</span> 
+<span style="color: rgba(0, 128, 128, 1)">  7</span>         <span style="color: rgba(0, 0, 255, 1)">private</span><span style="color: rgba(0, 0, 0, 1)"> IConfiguration _configuration;
+</span><span style="color: rgba(0, 128, 128, 1)">  8</span>         <span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> JwtCheck1(IConfiguration configuration)
+</span><span style="color: rgba(0, 128, 128, 1)">  9</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 10</span>             _configuration =<span style="color: rgba(0, 0, 0, 1)"> configuration;
+</span><span style="color: rgba(0, 128, 128, 1)"> 11</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)"> 12</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 13</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 14</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> action执行前执行
+</span><span style="color: rgba(0, 128, 128, 1)"> 15</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 16</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="context"&gt;&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 17</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">override</span> <span style="color: rgba(0, 0, 255, 1)">void</span><span style="color: rgba(0, 0, 0, 1)"> OnActionExecuting(ActionExecutingContext context)
+</span><span style="color: rgba(0, 128, 128, 1)"> 18</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 19</span>             <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1.判断是否需要校验</span>
+<span style="color: rgba(0, 128, 128, 1)"> 20</span>             <span style="color: rgba(0, 0, 255, 1)">var</span> isSkip = context.ActionDescriptor.EndpointMetadata.Any(x =&gt; x.GetType() == <span style="color: rgba(0, 0, 255, 1)">typeof</span><span style="color: rgba(0, 0, 0, 1)">(SkipAttribute));
+</span><span style="color: rgba(0, 128, 128, 1)"> 21</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (isSkip == <span style="color: rgba(0, 0, 255, 1)">false</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)"> 22</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)"> 23</span>                 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">2. 判断是什么请求(ajax or 非ajax)</span>
+<span style="color: rgba(0, 128, 128, 1)"> 24</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> actionContext =<span style="color: rgba(0, 0, 0, 1)"> context.HttpContext;
+</span><span style="color: rgba(0, 128, 128, 1)"> 25</span>                 <span style="color: rgba(0, 0, 255, 1)">if</span><span style="color: rgba(0, 0, 0, 1)"> (IsAjaxRequest(actionContext.Request))
+</span><span style="color: rgba(0, 128, 128, 1)"> 26</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)"> 27</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示是ajax</span>
+<span style="color: rgba(0, 128, 128, 1)"> 28</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> token = context.HttpContext.Request.Headers[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">auth</span><span style="color: rgba(128, 0, 0, 1)">"</span>].ToString();    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">ajax请求传过来</span>
+<span style="color: rgba(0, 128, 128, 1)"> 29</span>                     <span style="color: rgba(0, 0, 255, 1)">if</span> (token == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">null</span><span style="color: rgba(128, 0, 0, 1)">"</span> || <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)">.IsNullOrEmpty(token))
+</span><span style="color: rgba(0, 128, 128, 1)"> 30</span> <span style="color: rgba(0, 0, 0, 1)">                    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 31</span>                         context.Result = <span style="color: rgba(0, 0, 255, 1)">new</span> JsonResult(<span style="color: rgba(0, 0, 255, 1)">new</span> { status = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">error</span><span style="color: rgba(128, 0, 0, 1)">"</span>, msg = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">非法请求，参数为空</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)"> });
+</span><span style="color: rgba(0, 128, 128, 1)"> 32</span>                         <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)"> 33</span> <span style="color: rgba(0, 0, 0, 1)">                    }
+</span><span style="color: rgba(0, 128, 128, 1)"> 34</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">校验auth的正确性</span>
+<span style="color: rgba(0, 128, 128, 1)"> 35</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> result = JWTHelp.JWTJieM(token, _configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">SecretKey</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">]);
+</span><span style="color: rgba(0, 128, 128, 1)"> 36</span>                     <span style="color: rgba(0, 0, 255, 1)">if</span> (result == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">expired</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)"> 37</span> <span style="color: rgba(0, 0, 0, 1)">                    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 38</span>                         context.Result = <span style="color: rgba(0, 0, 255, 1)">new</span> JsonResult(<span style="color: rgba(0, 0, 255, 1)">new</span> { status = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">error</span><span style="color: rgba(128, 0, 0, 1)">"</span>, msg = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">非法请求，参数已经过期</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)"> });
+</span><span style="color: rgba(0, 128, 128, 1)"> 39</span>                         <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)"> 40</span> <span style="color: rgba(0, 0, 0, 1)">                    }
+</span><span style="color: rgba(0, 128, 128, 1)"> 41</span>                     <span style="color: rgba(0, 0, 255, 1)">else</span> <span style="color: rgba(0, 0, 255, 1)">if</span> (result == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">invalid</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)"> 42</span> <span style="color: rgba(0, 0, 0, 1)">                    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 43</span>                         context.Result = <span style="color: rgba(0, 0, 255, 1)">new</span> JsonResult(<span style="color: rgba(0, 0, 255, 1)">new</span> { status = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">error</span><span style="color: rgba(128, 0, 0, 1)">"</span>, msg = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">非法请求，未通过校验</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)"> });
+</span><span style="color: rgba(0, 128, 128, 1)"> 44</span>                         <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)"> 45</span> <span style="color: rgba(0, 0, 0, 1)">                    }
+</span><span style="color: rgba(0, 128, 128, 1)"> 46</span>                     <span style="color: rgba(0, 0, 255, 1)">else</span> <span style="color: rgba(0, 0, 255, 1)">if</span> (result == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">error</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)"> 47</span> <span style="color: rgba(0, 0, 0, 1)">                    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 48</span>                         context.Result = <span style="color: rgba(0, 0, 255, 1)">new</span> JsonResult(<span style="color: rgba(0, 0, 255, 1)">new</span> { status = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">error</span><span style="color: rgba(128, 0, 0, 1)">"</span>, msg = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">非法请求，未通过校验</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)"> });
+</span><span style="color: rgba(0, 128, 128, 1)"> 49</span>                         <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)"> 50</span> <span style="color: rgba(0, 0, 0, 1)">                    }
+</span><span style="color: rgba(0, 128, 128, 1)"> 51</span>                     <span style="color: rgba(0, 0, 255, 1)">else</span>
+<span style="color: rgba(0, 128, 128, 1)"> 52</span> <span style="color: rgba(0, 0, 0, 1)">                    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 53</span>                         <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示校验通过,用于向控制器中传值</span>
+<span style="color: rgba(0, 128, 128, 1)"> 54</span>                         context.RouteData.Values.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">auth</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, result);
+</span><span style="color: rgba(0, 128, 128, 1)"> 55</span> <span style="color: rgba(0, 0, 0, 1)">                    }
+</span><span style="color: rgba(0, 128, 128, 1)"> 56</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 57</span> <span style="color: rgba(0, 0, 0, 1)">                }
+</span><span style="color: rgba(0, 128, 128, 1)"> 58</span>                 <span style="color: rgba(0, 0, 255, 1)">else</span>
+<span style="color: rgba(0, 128, 128, 1)"> 59</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)"> 60</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示是非ajax请求，则auth拼接在参数中传过来</span>
+<span style="color: rgba(0, 128, 128, 1)"> 61</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> token = actionContext.Request.Query[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">auth</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">].ToString();
+</span><span style="color: rgba(0, 128, 128, 1)"> 62</span>                     <span style="color: rgba(0, 0, 255, 1)">if</span> (token == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">null</span><span style="color: rgba(128, 0, 0, 1)">"</span> || <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)">.IsNullOrEmpty(token))
+</span><span style="color: rgba(0, 128, 128, 1)"> 63</span> <span style="color: rgba(0, 0, 0, 1)">                    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 64</span>                         context.Result = <span style="color: rgba(0, 0, 255, 1)">new</span> RedirectResult(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">/Home/NoPerIndex?reason=null</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 65</span>                         <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)"> 66</span> <span style="color: rgba(0, 0, 0, 1)">                    }
+</span><span style="color: rgba(0, 128, 128, 1)"> 67</span>                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">校验auth的正确性</span>
+<span style="color: rgba(0, 128, 128, 1)"> 68</span>                     <span style="color: rgba(0, 0, 255, 1)">var</span> result = JWTHelp.JWTJieM(token, _configuration[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">SecretKey</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">]);
+</span><span style="color: rgba(0, 128, 128, 1)"> 69</span>                     <span style="color: rgba(0, 0, 255, 1)">if</span> (result == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">expired</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)"> 70</span> <span style="color: rgba(0, 0, 0, 1)">                    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 71</span>                         context.Result = <span style="color: rgba(0, 0, 255, 1)">new</span> RedirectResult(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">/Home/NoPerIndex?reason=expired</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 72</span>                         <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)"> 73</span> <span style="color: rgba(0, 0, 0, 1)">                    }
+</span><span style="color: rgba(0, 128, 128, 1)"> 74</span>                     <span style="color: rgba(0, 0, 255, 1)">else</span> <span style="color: rgba(0, 0, 255, 1)">if</span> (result == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">invalid</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)"> 75</span> <span style="color: rgba(0, 0, 0, 1)">                    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 76</span>                         context.Result = <span style="color: rgba(0, 0, 255, 1)">new</span> RedirectResult(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">/Home/NoPerIndex?reason=invalid</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 77</span>                         <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)"> 78</span> <span style="color: rgba(0, 0, 0, 1)">                    }
+</span><span style="color: rgba(0, 128, 128, 1)"> 79</span>                     <span style="color: rgba(0, 0, 255, 1)">else</span> <span style="color: rgba(0, 0, 255, 1)">if</span> (result == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">error</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)"> 80</span> <span style="color: rgba(0, 0, 0, 1)">                    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 81</span>                         context.Result = <span style="color: rgba(0, 0, 255, 1)">new</span> RedirectResult(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">/Home/NoPerIndex?reason=error</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)"> 82</span>                         <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)"> 83</span> <span style="color: rgba(0, 0, 0, 1)">                    }
+</span><span style="color: rgba(0, 128, 128, 1)"> 84</span>                     <span style="color: rgba(0, 0, 255, 1)">else</span>
+<span style="color: rgba(0, 128, 128, 1)"> 85</span> <span style="color: rgba(0, 0, 0, 1)">                    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 86</span>                         <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示校验通过,用于向控制器中传值</span>
+<span style="color: rgba(0, 128, 128, 1)"> 87</span>                         context.RouteData.Values.Add(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">auth</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">, result);
+</span><span style="color: rgba(0, 128, 128, 1)"> 88</span> <span style="color: rgba(0, 0, 0, 1)">                    }
+</span><span style="color: rgba(0, 128, 128, 1)"> 89</span> <span style="color: rgba(0, 0, 0, 1)">                }
+</span><span style="color: rgba(0, 128, 128, 1)"> 90</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)"> 91</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 92</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)"> 93</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 94</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 95</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 判断该请求是否是ajax请求
+</span><span style="color: rgba(0, 128, 128, 1)"> 96</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 97</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="request"&gt;&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 98</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 99</span>         <span style="color: rgba(0, 0, 255, 1)">private</span> <span style="color: rgba(0, 0, 255, 1)">bool</span><span style="color: rgba(0, 0, 0, 1)"> IsAjaxRequest(HttpRequest request)
+</span><span style="color: rgba(0, 128, 128, 1)">100</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)">101</span>             <span style="color: rgba(0, 0, 255, 1)">string</span> header = request.Headers[<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">X-Requested-With</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">];
+</span><span style="color: rgba(0, 128, 128, 1)">102</span>             <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">XMLHttpRequest</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">.Equals(header);
+</span><span style="color: rgba(0, 128, 128, 1)">103</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">104</span>     }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="color: rgba(0, 0, 255, 1)">Bearer认证过滤器，对于ajax返回的是ContentResult，进入的是ajax的error</span></p>
+<div class="cnblogs_code"><img src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/ContractedBlock.gif" alt="" id="code_img_closed_4e9686ed-5df9-40d7-b23c-52d7383ad247" class="code_img_closed"><img src="./第二十八节：Asp.Net Core中JWT的几种写法和认证方式 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" alt="" id="code_img_opened_4e9686ed-5df9-40d7-b23c-52d7383ad247" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_4e9686ed-5df9-40d7-b23c-52d7383ad247" class="cnblogs_code_hide">
+<pre>    <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> Bearer认证,返回ajax中的error
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> JwtCheck2 : ActionFilterAttribute
+    {
+
+        </span><span style="color: rgba(0, 0, 255, 1)">private</span><span style="color: rgba(0, 0, 0, 1)"> IConfiguration _configuration;
+        </span><span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> JwtCheck2(IConfiguration configuration)
+        {
+            _configuration </span>=<span style="color: rgba(0, 0, 0, 1)"> configuration;
+        }
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> action执行前执行
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="context"&gt;&lt;/param&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">override</span> <span style="color: rgba(0, 0, 255, 1)">void</span><span style="color: rgba(0, 0, 0, 1)"> OnActionExecuting(ActionExecutingContext context)
+        {
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1.判断是否需要校验</span>
+            <span style="color: rgba(0, 0, 255, 1)">var</span> isSkip = context.ActionDescriptor.EndpointMetadata.Any(x =&gt; x.GetType() == <span style="color: rgba(0, 0, 255, 1)">typeof</span><span style="color: rgba(0, 0, 0, 1)">(SkipAttribute));
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (isSkip == <span style="color: rgba(0, 0, 255, 1)">false</span><span style="color: rgba(0, 0, 0, 1)">)
+            {
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">2. 判断是什么请求(ajax or 非ajax)</span></pre></div></div></div></div></div></div></div></div></div></div></div></body></html>

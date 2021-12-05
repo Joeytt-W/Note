@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)https://www.cnblogs.com/yaopengfei/p/14293103.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="description" content="一.&amp;#160;集成全局返回值处理 参考： https://www.cnblogs.com/yaopengfei/p/12362554.html 1.&amp;#160;背景 在Core Mvc 3.x版本中">
+    <meta property="og:description" content="一.&amp;#160;集成全局返回值处理 参考： https://www.cnblogs.com/yaopengfei/p/12362554.html 1.&amp;#160;背景 在Core Mvc 3.x版本中">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title> 第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([class*="language-"]):not([highlighted]):not(.hljs) {
+        background: rgb(245, 245, 245);
+        padding: 5px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(0, 0, 0);
+        font-family: "Courier New", sans-serif;
+    }:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]) code:not(.hljs) {
+            background: rgb(245, 245, 245) !important;
+            border-color: transparent !important;
+        }</style><link rel="stylesheet" href="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/blog-common.min.css">
+    <link id="MainCss" rel="stylesheet" href="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/bundle-darkgreentrip.min.css">
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/cnblogs.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/bundle-darkgreentrip-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/yaopengfei/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/yaopengfei/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/yaopengfei/wlwmanifest.xml">
+    <script>
+        var currentBlogId = 307315;
+        var currentBlogApp = 'yaopengfei';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'darkgreentrip';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function(){ return ''; } });
+            }
+        } catch(error) { }
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+    </script>
+        <script>
+            var currentPostDateAdded = '2021-01-18 15:49';
+        </script>
+    <script src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/jquery-2.2.0.min.js.下载"></script>
+    <script src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/blog-common.min.js.下载"></script><style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style><script id="hljs-script" async="" data-loaded="true" src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/highlight.min.js.下载"></script>
+    
+    
+    
+</head>
+<body class="skin-darkgreentrip has-navbar has-bannerbar">
+    <a name="top"></a>
+        <a href="https://c.gridsumdissector.com/r/?gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__" target="_blank" rel="nofollow" onclick="countClicks(&#39;ad&#39;, &#39;C0-火山引擎&#39;)">
+            <div class="bannerbar forpc" style="display: flex; background-color: #11225a;">
+                <img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/volcengine-b0c0-1.jpg" onload="impressC0(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_t8eyuf99&amp;ck=1057&amp;adk=10671&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)" alt="">
+                <img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/volcengine-b0c0-2.jpg" alt="">
+                <img style="margin-left: auto;" src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/volcengine-b0c0-3.jpg" alt="">
+            </div>
+        </a>
+            <div id="bannerbar" class="bannerbar-mobile formobile">
+                <a href="https://c.gridsumdissector.com/r/?gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__" onclick="countClicks(&#39;ad&#39;, &#39;M2-火山引擎&#39;)" rel="nofollow">
+                    <img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/volcengine-m2.jpg" alt="" onload="impressM2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_51wu7ojr&amp;ck=1057&amp;adk=10674&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+                </a>
+            </div>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding"><a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/logo.svg" alt="博客园Logo"></a></li>
+                <li><a href="https://www.cnblogs.com/" onclick="countClicks(&#39;skin-navbar-sitehome&#39;)">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-brands&#39;)">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-edu&#39;)">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔">
+                        <img id="new_post_icon" class="navbar-icon" src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/yaopengfei/"><img id="blogLogo" src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/yaopengfei/">奔跑的路上</a>
+</h1>
+<h2>广泛汲取，用心打磨，精益求精。</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/yaopengfei/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/Yaopengfei">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/yaopengfei/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 494&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 1303&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 604717">
+60万</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/yaopengfei/p/14293103.html">
+    <span> 第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试</span>
+    
+
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">一.&nbsp;集成全局返回值处理</span></p>
+<p><span style="font-size: 15px; color: rgba(0, 0, 255, 1)">　参考：</span></p>
+<p><span style="font-size: 15px; color: rgba(0, 0, 255, 1)">　　https://www.cnblogs.com/yaopengfei/p/12362554.html&nbsp;</span></p>
+<p><strong><span style="font-size: 16px">1.&nbsp;背景</span></strong></p>
+<p><span style="font-size: 15px">　在Core Mvc 3.x版本中,通过return Json的模式返回给前端, DateTime类型不友好(当然可以在后台强转,或者在前端转换),而且会将参数默认成首字母小写, 不是我们想要的,我们需要的是DateTime指定格式,参数名传什么显示什么。</span></p>
+<p><strong><span style="font-size: 16px">2.&nbsp;解决方案</span></strong></p>
+<p><span style="font-size: 15px">&nbsp; &nbsp;我们这里采用基于Core自带的【System.Text.Json】程序集实现，需要额外引入其他程序集。<br></span></p>
+<p><span style="font-size: 15px">(1).&nbsp;在YpfCore.AdminWeb层中Models文件夹下，新增DatetimeJsonConverter类，用于处理需要转换的时间类型。</span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码如下：</span></p>
+<div class="cnblogs_code">
+<pre>    <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 全局日期格式转换类
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 基于【System.Text.Json】程序集
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span> DatetimeJsonConverter : JsonConverter&lt;DateTime&gt;<span style="color: rgba(0, 0, 0, 1)">
+    {
+        </span><span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">override</span> DateTime Read(<span style="color: rgba(0, 0, 255, 1)">ref</span><span style="color: rgba(0, 0, 0, 1)"> Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (reader.TokenType ==<span style="color: rgba(0, 0, 0, 1)"> JsonTokenType.String)
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">if</span> (DateTime.TryParse(reader.GetString(), <span style="color: rgba(0, 0, 255, 1)">out</span><span style="color: rgba(0, 0, 0, 1)"> DateTime date))
+                    </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> date;
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> reader.GetDateTime();
+        }
+        </span><span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">override</span> <span style="color: rgba(0, 0, 255, 1)">void</span><span style="color: rgba(0, 0, 0, 1)"> Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(value.ToString(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">yyyy-MM-dd HH:mm:ss</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">));
+        }
+    }</span></pre>
+</div>
+<p><span style="font-size: 15px">(2).&nbsp;在ConfigureService中进行注册。</span></p>
+<p><span style="font-size: 15px; color: rgba(0, 0, 255, 1)">代码分享：</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 0, 1)"> services.AddControllersWithViews()
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">全局返回格式处理</span>
+            .AddJsonOptions(options =&gt;<span style="color: rgba(0, 0, 0, 1)">
+            {
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">格式化日期时间格式</span>
+                options.JsonSerializerOptions.Converters.Add(<span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> DatetimeJsonConverter());
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">参数格式首字母小写(=null 则表示参数原样输出)
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;  </span>
+                options.JsonSerializerOptions.PropertyNamingPolicy = <span style="color: rgba(0, 0, 255, 1)">null</span><span style="color: rgba(0, 0, 0, 1)">;
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">取消Unicode编码</span>
+                options.JsonSerializerOptions.Encoder =<span style="color: rgba(0, 0, 0, 1)"> JavaScriptEncoder.Create(UnicodeRanges.All);
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">忽略空值</span>
+                options.JsonSerializerOptions.IgnoreNullValues = <span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">;
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">允许额外符号</span>
+                options.JsonSerializerOptions.AllowTrailingCommas = <span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">;
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">反序列化过程中属性名称是否使用不区分大小写的比较</span>
+                options.JsonSerializerOptions.PropertyNameCaseInsensitive = <span style="color: rgba(0, 0, 255, 1)">false</span><span style="color: rgba(0, 0, 0, 1)">;
+            });</span></pre>
+</div>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">二.&nbsp;详解Ypf.Utils帮助类层</span></p>
+<p><span style="font-size: 15px; color: rgba(0, 0, 255, 1)">截图如下：</span></p>
+<p><span style="font-size: 15px"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/1031302-20210118160630388-848066073.png" alt="" loading="lazy"></span></p>
+<p><strong><span style="font-size: 16px">1. Attributes</span></strong></p>
+<p><span style="font-size: 15px">　a．SkipAllAttribute：跨过系统所有校验。</span></p>
+<p><span style="font-size: 15px">　b．SkipLoginAttribute：跨过登录验证。</span></p>
+<p><span style="font-size: 15px">　c．SkipJwtAttribute：跨过JWT验证的特性。</span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码分享：</span></p>
+<div class="cnblogs_code"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_0c729ecc-9372-428d-99ef-aa5fc48c71ba" class="code_img_closed"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_0c729ecc-9372-428d-99ef-aa5fc48c71ba" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_0c729ecc-9372-428d-99ef-aa5fc48c71ba" class="cnblogs_code_hide">
+<pre>    <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 跨过系统所有校验
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> SkipAllAttribute : Attribute
+    {
+    }
+     </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 跨过JWT校验
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> SkipJwtAttribute : Attribute
+    {
+    }
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 跨过登录校验
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> SkipLoginAttribute : Attribute
+    {
+    }</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><strong><span style="font-size: 16px">2. Common</span></strong></p>
+<p><span style="font-size: 15px">　a. ConfigHelp: 读取配置文件类，不依赖Core MVC的注入，支持.json和xml文件的读取。</span></p>
+<p><span style="font-size: 15px">　b. MailHelp: 邮件发送帮助类。</span></p>
+<p><span style="font-size: 15px">　c. RequestHelp: Get和Post请求，Post请求支持表单和JOSN两种格式，不依赖Core MVC注入。</span></p>
+<p><span style="font-size: 15px">　d. SftpHelp: SFTP请求相关的类</span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码分享：</span></p>
+<p><span style="color: rgba(0, 0, 255, 1)">configHelp</span></p>
+<div class="cnblogs_code"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_e9c74adf-1ab1-4aad-bd4a-cc2f60381610" class="code_img_closed"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_e9c74adf-1ab1-4aad-bd4a-cc2f60381610" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_e9c74adf-1ab1-4aad-bd4a-cc2f60381610" class="cnblogs_code_hide">
+<pre> <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 读取配置文件
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 依赖程序集：【 Microsoft.Extensions.Configuration】、【Microsoft.Extensions.Configuration.FileExtensions】
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 【Microsoft.Extensions.Configuration.Json】、【 Microsoft.Extensions.Configuration.xml】
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> ConfigHelp
+    {
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 读取Json类型的配置文件
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="key"&gt;</span><span style="color: rgba(0, 128, 0, 1)">键名</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="FilePath"&gt;</span><span style="color: rgba(0, 128, 0, 1)">文件路径，默认为：appsettings.json</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> GetString(<span style="color: rgba(0, 0, 255, 1)">string</span> key, <span style="color: rgba(0, 0, 255, 1)">string</span> FilePath = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">appsettings.json</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> configurationBuilder = <span style="color: rgba(0, 0, 255, 1)">new</span> ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile(FilePath, optional: <span style="color: rgba(0, 0, 255, 1)">true</span>, reloadOnChange: <span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">);
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> configuration =<span style="color: rgba(0, 0, 0, 1)"> configurationBuilder.Build();
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> configuration[key];
+        }
+
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 读取Xml类型的配置文件
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="key"&gt;</span><span style="color: rgba(0, 128, 0, 1)">键名</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="FilePath"&gt;</span><span style="color: rgba(0, 128, 0, 1)">文件路径，默认为：myXml.json</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> GetXmlString(<span style="color: rgba(0, 0, 255, 1)">string</span> key, <span style="color: rgba(0, 0, 255, 1)">string</span> FilePath = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">myXml.json</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> configurationBuilder = <span style="color: rgba(0, 0, 255, 1)">new</span> ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddXmlFile(FilePath, optional: <span style="color: rgba(0, 0, 255, 1)">true</span>, reloadOnChange: <span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">);
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> configuration =<span style="color: rgba(0, 0, 0, 1)"> configurationBuilder.Build();
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> configuration[key];
+        }
+
+    }</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="color: rgba(0, 0, 255, 1)">MailHelp</span></p>
+<div class="cnblogs_code"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_72e4d749-f5a9-4dd6-b457-27b89a346996" class="code_img_closed"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_72e4d749-f5a9-4dd6-b457-27b89a346996" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_72e4d749-f5a9-4dd6-b457-27b89a346996" class="cnblogs_code_hide">
+<pre><span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> MailHelp
+    {
+
+        </span><span style="color: rgba(0, 0, 255, 1)">#region</span> 01-发送邮件
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 发送邮件
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="subject"&gt;</span><span style="color: rgba(0, 128, 0, 1)">主题</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="content"&gt;</span><span style="color: rgba(0, 128, 0, 1)">内容</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="receiveAddress"&gt;</span><span style="color: rgba(0, 128, 0, 1)">收件人邮箱</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="attachFileList"&gt;</span><span style="color: rgba(0, 128, 0, 1)">附件路径列表</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="senderName"&gt;</span><span style="color: rgba(0, 128, 0, 1)">发件人姓名</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> SendEmail(<span style="color: rgba(0, 0, 255, 1)">string</span> subject, <span style="color: rgba(0, 0, 255, 1)">string</span> content, <span style="color: rgba(0, 0, 255, 1)">string</span> receiveAddress, List&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>&gt; attachFileList = <span style="color: rgba(0, 0, 255, 1)">null</span>,<span style="color: rgba(0, 0, 255, 1)">string</span> senderName = <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)"> )
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">string</span> fromto = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">1111@qq.com</span><span style="color: rgba(128, 0, 0, 1)">"</span>; <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">发件人邮箱地址</span>
+
+            <span style="color: rgba(0, 0, 255, 1)">string</span> name = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">brucelee@qq.com</span><span style="color: rgba(128, 0, 0, 1)">"</span>; <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">发件人用户名</span>
+            <span style="color: rgba(0, 0, 255, 1)">string</span> upass = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">lxxxx</span><span style="color: rgba(128, 0, 0, 1)">"</span>;   <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">发件人密码</span>
+            <span style="color: rgba(0, 0, 255, 1)">string</span> smtp = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">smtp.juttec.com</span><span style="color: rgba(128, 0, 0, 1)">"</span>;      <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">发件SMTP服务器(如果用qq邮箱发,则是：smtp.qq.com)</span>
+<span style="color: rgba(0, 0, 0, 1)">
+            SmtpClient _smtpClient </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> SmtpClient();
+            _smtpClient.DeliveryMethod </span>= SmtpDeliveryMethod.Network;<span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">指定电子邮件发送方式</span>
+            _smtpClient.Host = smtp; <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">指定SMTP服务器</span>
+            _smtpClient.Credentials = <span style="color: rgba(0, 0, 255, 1)">new</span> System.Net.NetworkCredential(name, upass);<span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">用户名和密码</span>
+<span style="color: rgba(0, 0, 0, 1)">
+            MailMessage _mailMessage </span>= <span style="color: rgba(0, 0, 255, 1)">new</span> MailMessage();  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示可以使用SmtpClient发送电子邮件
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">发件人，发件人名 </span>
+            _mailMessage.From = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> MailAddress(fromto, senderName);
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">收件人 </span>
+<span style="color: rgba(0, 0, 0, 1)">            _mailMessage.To.Add(receiveAddress);
+            _mailMessage.SubjectEncoding </span>= Encoding.UTF8;     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">Encoding.GetEncoding("gb2312"); </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">主题内容编码</span>
+            _mailMessage.Subject = subject;<span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">主题</span>
+            _mailMessage.Body = content;<span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">内容
+
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">设置附件</span>
+            <span style="color: rgba(0, 0, 255, 1)">if</span> (attachFileList != <span style="color: rgba(0, 0, 255, 1)">null</span> &amp;&amp; attachFileList.Count &gt; <span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">)
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">foreach</span> (<span style="color: rgba(0, 0, 255, 1)">var</span> item <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> attachFileList)
+                {
+                    _mailMessage.Attachments.Add(</span><span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> Attachment(item));
+                }
+            }
+
+            _mailMessage.BodyEncoding </span>= Encoding.UTF8;     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">Encoding.GetEncoding("gb2312");</span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">正文编码</span>
+            _mailMessage.IsBodyHtml = <span style="color: rgba(0, 0, 255, 1)">true</span>;<span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">设置为HTML格式</span>
+            _mailMessage.Priority = MailPriority.Normal;<span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">MailPriority.High;</span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">优先级   </span>
+            <span style="color: rgba(0, 0, 255, 1)">try</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                _smtpClient.Send(_mailMessage);  </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">将指定的邮件发送到 SMTP 服务器以便传递。</span>
+                <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ok</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (Exception )
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">error</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+            }
+        }
+        </span><span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+
+
+        <span style="color: rgba(0, 0, 255, 1)">#region</span> 复杂发送(暂时注释)
+        <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">private readonly static string SmtpServer = "smtp.wedn.net";
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">private readonly static int SmtpServerPort = 25;
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">private readonly static bool SmtpEnableSsl = false;
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">private readonly static string SmtpUsername = "server@wedn.net";
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">private readonly static string SmtpDisplayName = "Wedn.Net";
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">private readonly static string SmtpPassword = "2014@itcast";</span>
+
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// 发送邮件到指定收件人
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;param name="to"&gt;</span><span style="color: rgba(0, 128, 0, 1)">收件人地址</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;param name="subject"&gt;</span><span style="color: rgba(0, 128, 0, 1)">主题</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;param name="mailBody"&gt;</span><span style="color: rgba(0, 128, 0, 1)">正文内容(支持HTML)</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;param name="copyTos"&gt;</span><span style="color: rgba(0, 128, 0, 1)">抄送地址列表</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;</span><span style="color: rgba(0, 128, 0, 1)">是否发送成功</span><span style="color: rgba(128, 128, 128, 1)">&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">public static bool Send(string to, string subject, string mailBody, params string[] copyTos)
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">{
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    return Send(new[] { to }, subject, mailBody, copyTos, new string[] { }, MailPriority.Normal);
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">}</span>
+
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// 发送邮件到指定收件人
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;remarks&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">//  2013-11-18 18:55 Created By iceStone
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;/remarks&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;param name="tos"&gt;</span><span style="color: rgba(0, 128, 0, 1)">收件人地址列表</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;param name="subject"&gt;</span><span style="color: rgba(0, 128, 0, 1)">主题</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;param name="mailBody"&gt;</span><span style="color: rgba(0, 128, 0, 1)">正文内容(支持HTML)</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;param name="ccs"&gt;</span><span style="color: rgba(0, 128, 0, 1)">抄送地址列表</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;param name="bccs"&gt;</span><span style="color: rgba(0, 128, 0, 1)">密件抄送地址列表</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;param name="priority"&gt;</span><span style="color: rgba(0, 128, 0, 1)">此邮件的优先级</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;param name="attachments"&gt;</span><span style="color: rgba(0, 128, 0, 1)">附件列表</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;</span><span style="color: rgba(0, 128, 0, 1)">是否发送成功</span><span style="color: rgba(128, 128, 128, 1)">&lt;/returns&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;exception cref="System.ArgumentNullException"&gt;</span><span style="color: rgba(0, 128, 0, 1)">attachments</span><span style="color: rgba(128, 128, 128, 1)">&lt;/exception&gt;</span>
+        <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">public static bool Send(string[] tos, string subject, string mailBody, string[] ccs, string[] bccs, MailPriority priority, params Attachment[] attachments)
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">{
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    if (attachments == null) throw new ArgumentNullException("attachments");
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    if (tos.Length == 0) return false;
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span>    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">创建Email实体
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    var message = new MailMessage();
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    message.From = new MailAddress(SmtpUsername, SmtpDisplayName);
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    message.Subject = subject;
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    message.Body = mailBody;
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    message.BodyEncoding = Encoding.UTF8;
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    message.IsBodyHtml = true;
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    message.Priority = priority;
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span>    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">插入附件
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    foreach (var attachment in attachments)
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    {
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        message.Attachments.Add(attachment);
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    }
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span>    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">插入收件人地址,抄送地址和密件抄送地址
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    foreach (var to in tos.Where(c =&gt; !string.IsNullOrEmpty(c)))
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    {
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        message.To.Add(new MailAddress(to));
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    }
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    foreach (var cc in ccs.Where(c =&gt; !string.IsNullOrEmpty(c)))
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    {
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        message.CC.Add(new MailAddress(cc));
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    }
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    foreach (var bcc in bccs.Where(c =&gt; !string.IsNullOrEmpty(c)))
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    {
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        message.CC.Add(new MailAddress(bcc));
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    }
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span>    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">创建SMTP客户端
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    var client = new SmtpClient
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    {
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        Host = SmtpServer,
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        Credentials = new System.Net.NetworkCredential(SmtpUsername, SmtpPassword),
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        DeliveryMethod = SmtpDeliveryMethod.Network,
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        EnableSsl = SmtpEnableSsl,
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        Port = SmtpServerPort
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    };
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span>    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">client.SendCompleted += Client_SendCompleted;
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span>    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">try
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span>    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">{
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span>    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">发送邮件
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    client.Send(message);
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span>    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">client.SendAsync(message,DateTime.Now.ToString());
+
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span>    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">client.Dispose();
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span>    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">message.Dispose();
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    return true;
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span>    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">}
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span>    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">catch (Exception)
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span>    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">{
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span>    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    throw;
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span>    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">}
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">} </span>
+        <span style="color: rgba(0, 0, 255, 1)">#endregion</span><span style="color: rgba(0, 0, 0, 1)">
+
+    }</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="color: rgba(0, 0, 255, 1)">RequestHelp</span></p>
+<div class="cnblogs_code"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_fcbd4bb0-702f-4b95-bbcd-ed755b691ab7" class="code_img_closed"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_fcbd4bb0-702f-4b95-bbcd-ed755b691ab7" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_fcbd4bb0-702f-4b95-bbcd-ed755b691ab7" class="cnblogs_code_hide">
+<pre> <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 基于HttpClientFactory的请求封装
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 依赖【Microsoft.Extensions.DependencyInjection】和 【Microsoft.Extensions.Http】
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 可以直接调用,在CoreMvc中不再需要注入AddHttpClient了，因为下面封装里已Add进去了
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> RequestHelp
+    {
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> Get请求
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="url"&gt;</span><span style="color: rgba(0, 128, 0, 1)">请求地址</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> MyGetRequest(<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> url)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> serviceProvider = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> ServiceCollection().AddHttpClient().BuildServiceProvider();
+            IHttpClientFactory clientFactory </span>= serviceProvider.GetService&lt;IHttpClientFactory&gt;<span style="color: rgba(0, 0, 0, 1)">();
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> request = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> HttpRequestMessage(HttpMethod.Get, url);
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> client =<span style="color: rgba(0, 0, 0, 1)"> clientFactory.CreateClient();
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> response =<span style="color: rgba(0, 0, 0, 1)"> client.SendAsync(request).Result;
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> myResult =<span style="color: rgba(0, 0, 0, 1)"> response.Content.ReadAsStringAsync().Result;
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> myResult;
+        }
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> Post请求-表单形式
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="url"&gt;</span><span style="color: rgba(0, 128, 0, 1)">请求地址</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="content"&gt;</span><span style="color: rgba(0, 128, 0, 1)">请求内容</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> MyPostRequest(<span style="color: rgba(0, 0, 255, 1)">string</span> url, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> content)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> serviceProvider = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> ServiceCollection().AddHttpClient().BuildServiceProvider();
+            IHttpClientFactory clientFactory </span>= serviceProvider.GetService&lt;IHttpClientFactory&gt;<span style="color: rgba(0, 0, 0, 1)">();
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> request = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> HttpRequestMessage(HttpMethod.Post, url);
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">内容的处理</span>
+            request.Content = <span style="color: rgba(0, 0, 255, 1)">new</span> StringContent(content, Encoding.UTF8, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">application/x-www-form-urlencoded</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> client =<span style="color: rgba(0, 0, 0, 1)"> clientFactory.CreateClient();
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> response =<span style="color: rgba(0, 0, 0, 1)"> client.SendAsync(request).Result;
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> myResult =<span style="color: rgba(0, 0, 0, 1)"> response.Content.ReadAsStringAsync().Result;
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> myResult;
+        }
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> Post请求-Json形式
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="url"&gt;</span><span style="color: rgba(0, 128, 0, 1)">请求地址</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="content"&gt;</span><span style="color: rgba(0, 128, 0, 1)">请求内容</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> MyPostRequestJson(<span style="color: rgba(0, 0, 255, 1)">string</span> url, <span style="color: rgba(0, 0, 255, 1)">object</span><span style="color: rgba(0, 0, 0, 1)"> content)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> serviceProvider = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> ServiceCollection().AddHttpClient().BuildServiceProvider();
+            IHttpClientFactory clientFactory </span>= serviceProvider.GetService&lt;IHttpClientFactory&gt;<span style="color: rgba(0, 0, 0, 1)">();
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> request = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> HttpRequestMessage(HttpMethod.Post, url);
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">内容的处理</span>
+            request.Content = <span style="color: rgba(0, 0, 255, 1)">new</span> StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">application/json</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> client =<span style="color: rgba(0, 0, 0, 1)"> clientFactory.CreateClient();
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> response =<span style="color: rgba(0, 0, 0, 1)"> client.SendAsync(request).Result;
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> myResult =<span style="color: rgba(0, 0, 0, 1)"> response.Content.ReadAsStringAsync().Result;
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> myResult;
+        }
+
+    }</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="color: rgba(0, 0, 255, 1)">SftpHelp</span></p>
+<div class="cnblogs_code"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_0d288312-b27e-4900-aaf1-063885689468" class="code_img_closed"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_0d288312-b27e-4900-aaf1-063885689468" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_0d288312-b27e-4900-aaf1-063885689468" class="cnblogs_code_hide">
+<pre> <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> SFTP相关的帮助类
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 依赖程序集：【SSH.NET】
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> SftpHelp
+    {
+        </span><span style="color: rgba(0, 0, 255, 1)">#region</span> 字段或属性
+        <span style="color: rgba(0, 0, 255, 1)">private</span><span style="color: rgba(0, 0, 0, 1)"> SftpClient sftp;
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> SFTP连接状态
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">bool</span> Connected { <span style="color: rgba(0, 0, 255, 1)">get</span> { <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> sftp.IsConnected; } }
+        </span><span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">#region</span> 构造
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 构造
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="host"&gt;</span><span style="color: rgba(0, 128, 0, 1)">host</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="user"&gt;</span><span style="color: rgba(0, 128, 0, 1)">用户名</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="pwd"&gt;</span><span style="color: rgba(0, 128, 0, 1)">密码</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> SftpHelp(<span style="color: rgba(0, 0, 255, 1)">string</span> host, <span style="color: rgba(0, 0, 255, 1)">string</span> user, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> pwd)
+        {
+            sftp </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> SftpClient(host, user, pwd);
+        }
+        </span><span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">#region</span> 连接SFTP
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 连接SFTP
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;</span><span style="color: rgba(0, 128, 0, 1)">true成功</span><span style="color: rgba(128, 128, 128, 1)">&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">bool</span><span style="color: rgba(0, 0, 0, 1)"> Connect()
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (!<span style="color: rgba(0, 0, 0, 1)">Connected)
+            {
+                sftp.Connect();
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">;
+        }
+        </span><span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">#region</span> 断开SFTP
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 断开SFTP
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span> 
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">void</span><span style="color: rgba(0, 0, 0, 1)"> Disconnect()
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">try</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">if</span> (sftp != <span style="color: rgba(0, 0, 255, 1)">null</span> &amp;&amp;<span style="color: rgba(0, 0, 0, 1)"> Connected)
+                {
+                    sftp.Disconnect();
+                }
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (Exception ex)
+            {
+                LogUtils.Error(ex);
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">throw new Exception(string.Format("断开SFTP失败，原因：{0}", ex.Message));</span>
+<span style="color: rgba(0, 0, 0, 1)">            }
+        }
+        </span><span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">#region</span> SFTP上传文件
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> SFTP上传文件
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="localPath"&gt;</span><span style="color: rgba(0, 128, 0, 1)">本地路径</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="remotePath"&gt;</span><span style="color: rgba(0, 128, 0, 1)">远程路径</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">void</span> Put(<span style="color: rgba(0, 0, 255, 1)">string</span> localPath, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> remotePath)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">try</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">using</span> (<span style="color: rgba(0, 0, 255, 1)">var</span> file =<span style="color: rgba(0, 0, 0, 1)"> File.OpenRead(localPath))
+                {
+                    Connect();
+                    sftp.UploadFile(file, remotePath);
+                    Disconnect();
+                }
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (Exception ex)
+            {
+                LogUtils.Error(ex);
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">throw new Exception(string.Format("SFTP文件上传失败，原因：{0}", ex.Message));</span>
+<span style="color: rgba(0, 0, 0, 1)">            }
+        }
+        </span><span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">#region</span> SFTP获取文件
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> SFTP获取文件
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="remotePath"&gt;</span><span style="color: rgba(0, 128, 0, 1)">远程路径</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="localPath"&gt;</span><span style="color: rgba(0, 128, 0, 1)">本地路径</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">bool</span> Get(<span style="color: rgba(0, 0, 255, 1)">string</span> remotePath, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> localPath)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">try</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                Connect();
+                </span><span style="color: rgba(0, 0, 255, 1)">var</span> byt =<span style="color: rgba(0, 0, 0, 1)"> sftp.ReadAllBytes(remotePath);
+                Disconnect();
+                File.WriteAllBytes(localPath, byt);
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">;
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (Exception ex)
+            {
+                LogUtils.Error(ex);
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">throw new Exception(string.Format("SFTP文件获取失败，原因：{0}", ex.Message));</span>
+
+                <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(0, 0, 255, 1)">false</span><span style="color: rgba(0, 0, 0, 1)">;
+            }
+
+        }
+        </span><span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">#region</span> 删除SFTP文件
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 删除SFTP文件 
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="remoteFile"&gt;</span><span style="color: rgba(0, 128, 0, 1)">远程路径</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">bool</span> Delete(<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> remoteFile)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> isDelete = <span style="color: rgba(0, 0, 255, 1)">false</span><span style="color: rgba(0, 0, 0, 1)">;
+            </span><span style="color: rgba(0, 0, 255, 1)">try</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                Connect();
+                sftp.Delete(remoteFile);
+                isDelete </span>= <span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">;
+                Disconnect();
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (Exception ex)
+            {
+                LogUtils.Error(ex);
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">throw new Exception(string.Format("SFTP文件删除失败，原因：{0}", ex.Message));</span>
+<span style="color: rgba(0, 0, 0, 1)">            }
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> isDelete;
+        }
+        </span><span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">#region</span> 获取SFTP文件列表
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 获取SFTP文件列表
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="remotePath"&gt;</span><span style="color: rgba(0, 128, 0, 1)">远程目录</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="fileSuffix"&gt;</span><span style="color: rgba(0, 128, 0, 1)">文件后缀</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> ArrayList GetFileList(<span style="color: rgba(0, 0, 255, 1)">string</span> remotePath, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> fileSuffix)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> objList = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> ArrayList();
+            </span><span style="color: rgba(0, 0, 255, 1)">try</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                Connect();
+                </span><span style="color: rgba(0, 0, 255, 1)">var</span> files =<span style="color: rgba(0, 0, 0, 1)"> sftp.ListDirectory(remotePath);
+                Disconnect();
+                </span><span style="color: rgba(0, 0, 255, 1)">foreach</span> (<span style="color: rgba(0, 0, 255, 1)">var</span> file <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> files)
+                {
+                    </span><span style="color: rgba(0, 0, 255, 1)">string</span> name =<span style="color: rgba(0, 0, 0, 1)"> file.Name;
+                    </span><span style="color: rgba(0, 0, 255, 1)">if</span> (name.Length &gt; (fileSuffix.Length + <span style="color: rgba(128, 0, 128, 1)">1</span>) &amp;&amp; fileSuffix == name.Substring(name.Length -<span style="color: rgba(0, 0, 0, 1)"> fileSuffix.Length))
+                    {
+                        objList.Add(name);
+                    }
+                }
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (Exception ex)
+            {
+                LogUtils.Error(ex);
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">throw new Exception(string.Format("SFTP文件列表获取失败，原因：{0}", ex.Message));</span>
+<span style="color: rgba(0, 0, 0, 1)">            }
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> objList;
+        }
+        </span><span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">#region</span> 移动SFTP文件
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 移动SFTP文件
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="oldRemotePath"&gt;</span><span style="color: rgba(0, 128, 0, 1)">旧远程路径</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="newRemotePath"&gt;</span><span style="color: rgba(0, 128, 0, 1)">新远程路径</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">void</span> Move(<span style="color: rgba(0, 0, 255, 1)">string</span> oldRemotePath, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> newRemotePath)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">try</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                Connect();
+                sftp.RenameFile(oldRemotePath, newRemotePath);
+                Disconnect();
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (Exception ex)
+            {
+                LogUtils.Error(ex);
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">throw new Exception(string.Format("SFTP文件移动失败，原因：{0}", ex.Message));</span>
+<span style="color: rgba(0, 0, 0, 1)">            }
+        }
+        </span><span style="color: rgba(0, 0, 255, 1)">#endregion</span><span style="color: rgba(0, 0, 0, 1)">
+    }</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><strong><span style="font-size: 16px">3. Extensions</span></strong></p>
+<p><span style="font-size: 15px">　a. CacheStrategyExtensions: 定义缓存策略扩展方法，用于选择内存缓存、Redis缓存(提供两种程序集)、或者什么不用。</span></p>
+<p><span style="font-size: 15px">　b. CoreMvcExtensions: 提供Cookie和Session的注册、日志的注册、HttpClient的注册的扩展方法。</span></p>
+<p><span style="font-size: 15px">　c. SERedisHelp:基于程序集StackExchange.Redis的帮助类</span></p>
+<p><span style="font-size: 15px">　d. SessionExtensions: 两种组件的Session扩展方式。</span></p>
+<p><span style="font-size: 15px">　e. SortExtension：根据字段名称进行升序和降序排列的扩展，支持单字段和多字段。</span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码分享：</span></p>
+<p><span style="color: rgba(0, 0, 255, 1)">CacheStrategyExtensions</span></p>
+<div class="cnblogs_code"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_44d79ff4-3d30-41a1-9c00-11d66c61c983" class="code_img_closed"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_44d79ff4-3d30-41a1-9c00-11d66c61c983" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_44d79ff4-3d30-41a1-9c00-11d66c61c983" class="cnblogs_code_hide">
+<pre><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 缓存策略扩展
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> CacheStrategyExtensions
+    {
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 添加缓存类型
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> (最后无论哪种模式，都把AddMemoryCache注入，方便单独使用IMemoryCache)（视情况而定）
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="services"&gt;&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="CacheType"&gt;</span><span style="color: rgba(0, 128, 0, 1)">有4种取值 (Redis：代表基于CSRedisCore使用redis缓存, 并实例化redis相关对象. Memory：代表使用内存缓存; 
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> StackRedis: 代表基于StackExchange.Redis初始化; "null":表示什也不注入)</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> IServiceCollection AddCacheStrategy(<span style="color: rgba(0, 0, 255, 1)">this</span> IServiceCollection services, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> CacheType)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">switch</span><span style="color: rgba(0, 0, 0, 1)"> (CacheType)
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">case</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Memory</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">:
+                    {
+                        services.AddDistributedMemoryCache();
+                    }; </span><span style="color: rgba(0, 0, 255, 1)">break</span><span style="color: rgba(0, 0, 0, 1)">;
+                </span><span style="color: rgba(0, 0, 255, 1)">case</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Redis</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">:
+                    {
+                        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">基于CSRedisCore初始化
+                        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">初始化redis的两种使用方式</span>
+                        <span style="color: rgba(0, 0, 255, 1)">var</span> csredis = <span style="color: rgba(0, 0, 255, 1)">new</span> CSRedisClient(ConfigHelp.GetString(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">RedisStr</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">));
+                        services.AddSingleton(csredis);
+                        RedisHelper.Initialization(csredis);
+
+                        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">初始化缓存基于redis</span>
+                        services.AddSingleton&lt;IDistributedCache&gt;(<span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> CSRedisCache(csredis));
+                    }; </span><span style="color: rgba(0, 0, 255, 1)">break</span><span style="color: rgba(0, 0, 0, 1)">;
+                </span><span style="color: rgba(0, 0, 255, 1)">case</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">StackRedis</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">:
+                    {
+                        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">基于StackExchange.Redis初始化（该程序集这里不初始化缓存）</span>
+                        <span style="color: rgba(0, 0, 255, 1)">var</span> connectionString = ConfigHelp.GetString(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">RedisStr</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                        services.AddSingleton(</span><span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> SERedisHelp(connectionString));
+                    }; </span><span style="color: rgba(0, 0, 255, 1)">break</span><span style="color: rgba(0, 0, 0, 1)">;
+                </span><span style="color: rgba(0, 0, 255, 1)">case</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">null</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">:
+                    {
+                        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">什么也不注入</span>
+                    }; <span style="color: rgba(0, 0, 255, 1)">break</span><span style="color: rgba(0, 0, 0, 1)">;
+                </span><span style="color: rgba(0, 0, 255, 1)">default</span>: <span style="color: rgba(0, 0, 255, 1)">throw</span> <span style="color: rgba(0, 0, 255, 1)">new</span> Exception(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">缓存类型无效</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+            }
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">最后都把AddMemoryCache注入，方便单独使用IMemoryCache进行内存缓存（视情况而定）
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">services.AddMemoryCache();</span>
+
+            <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> services;
+        }
+    }</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="color: rgba(0, 0, 255, 1)">CoreMvcExtensions:</span></p>
+<div class="cnblogs_code"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_2b5de589-5b1a-4f54-8a1c-1bfdd3ed2779" class="code_img_closed"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_2b5de589-5b1a-4f54-8a1c-1bfdd3ed2779" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_2b5de589-5b1a-4f54-8a1c-1bfdd3ed2779" class="cnblogs_code_hide">
+<pre> <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> CoreMvc基础服务注册扩展
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> CoreMvcExtensions
+    {
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> Cookie和Session策略
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> (基于redis的Session策略注释，如果开启，需要把CacheStrategyExtensions中的AddMemoryCache注释掉)
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="services"&gt;&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span>  <span style="color: rgba(128, 128, 128, 1)">&lt;param name="CacheType"&gt;</span><span style="color: rgba(0, 128, 0, 1)">Session载体，Memory基于内存存储,StackRedis基于Redis存储，null什么也不注册</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> IServiceCollection AddCookieAndSession(<span style="color: rgba(0, 0, 255, 1)">this</span> IServiceCollection services, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> CacheType)
+        {
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1.Cookie策略</span>
+            services.Configure&lt;CookiePolicyOptions&gt;(options =&gt;<span style="color: rgba(0, 0, 0, 1)">
+            {
+                options.CheckConsentNeeded </span>= context =&gt; <span style="color: rgba(0, 0, 255, 1)">false</span><span style="color: rgba(0, 0, 0, 1)">;
+                options.MinimumSameSitePolicy </span>=<span style="color: rgba(0, 0, 0, 1)"> SameSiteMode.None;
+            });
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">2. Session相关配置
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">2.1 配置Session相关的载体</span>
+            <span style="color: rgba(0, 0, 255, 1)">switch</span><span style="color: rgba(0, 0, 0, 1)"> (CacheType)
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">case</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Memory</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">:
+                    {
+                        services.AddDistributedMemoryCache();
+                    }; </span><span style="color: rgba(0, 0, 255, 1)">break</span><span style="color: rgba(0, 0, 0, 1)">;
+                </span><span style="color: rgba(0, 0, 255, 1)">case</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">StackRedis</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">:
+                    {
+                        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">需要把其它封装中的AddMemoryCache 或 AddDistributedMemoryCache都注释掉</span>
+                        services.AddStackExchangeRedisCache(options =&gt;<span style="color: rgba(0, 0, 0, 1)">
+                        {
+                            options.Configuration </span>= ConfigHelp.GetString(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">RedisStr</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">options.InstanceName = "SampleInstance";   </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">给key加个前缀</span>
+<span style="color: rgba(0, 0, 0, 1)">                        });
+                    }; </span><span style="color: rgba(0, 0, 255, 1)">break</span><span style="color: rgba(0, 0, 0, 1)">;
+                </span><span style="color: rgba(0, 0, 255, 1)">case</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">null</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">:
+                    {
+                        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">什么也不注册</span>
+                    }; <span style="color: rgba(0, 0, 255, 1)">break</span><span style="color: rgba(0, 0, 0, 1)">;
+                </span><span style="color: rgba(0, 0, 255, 1)">default</span>: <span style="color: rgba(0, 0, 255, 1)">throw</span> <span style="color: rgba(0, 0, 255, 1)">new</span> Exception(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Session载体无效</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+            }
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">2.2 注册Session服务</span>
+            services.AddSession(options =&gt;<span style="color: rgba(0, 0, 0, 1)">
+            {
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">Session的过期时间(多次访问将会被重置，默认过期时间为20分钟)
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">另外IIS的闲置超时选项也需要配置</span>
+                options.IdleTimeout = TimeSpan.FromMinutes(<span style="color: rgba(128, 0, 128, 1)">120</span><span style="color: rgba(0, 0, 0, 1)">);
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">Cookie是必须的(默认是false),可以覆盖上面的cookie策略</span>
+                options.Cookie.IsEssential = <span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">;
+            });
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> services;
+        }
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 注册日志服务
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="services"&gt;&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> IServiceCollection AddLogStrategy(<span style="color: rgba(0, 0, 255, 1)">this</span> IServiceCollection services, <span style="color: rgba(0, 0, 255, 1)">string</span> logType = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">SeriLog</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+        { 
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (logType == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Log4net</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+            {
+                LogUtils2.InitLog();
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">else</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                LogUtils.InitLog();
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> services;
+        }
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 注册HttpClient服务
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="services"&gt;&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> IServiceCollection AddMyHttpClient(<span style="color: rgba(0, 0, 255, 1)">this</span><span style="color: rgba(0, 0, 0, 1)"> IServiceCollection services)
+        {
+
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1.基本用法</span>
+<span style="color: rgba(0, 0, 0, 1)">            services.AddHttpClient();
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">2. 命名客户端（用于指定表头和请求根目录---目前用不到）</span>
+            services.AddHttpClient(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">client1</span><span style="color: rgba(128, 0, 0, 1)">"</span>, c =&gt;<span style="color: rgba(0, 0, 0, 1)">
+            {
+                c.BaseAddress </span>= <span style="color: rgba(0, 0, 255, 1)">new</span> Uri(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">http://localhost:15319/</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                c.DefaultRequestHeaders.Add(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Accept</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">application/vnd.github.v3+json</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+                c.DefaultRequestHeaders.Add(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">User-Agent</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">HttpClientFactory-Sample</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+            });
+
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> services;
+        }
+
+    }</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="color: rgba(0, 0, 255, 1)">SERedisHelp</span></p>
+<div class="cnblogs_code"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_a6b22810-4748-4ad7-8a7f-5d945686dc36" class="code_img_closed"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_a6b22810-4748-4ad7-8a7f-5d945686dc36" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_a6b22810-4748-4ad7-8a7f-5d945686dc36" class="cnblogs_code_hide">
+<pre> <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> redis链接帮助类 
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 基于程序集：StackExchange.Redis
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> SERedisHelp
+    {
+
+        </span><span style="color: rgba(0, 0, 255, 1)">private</span> <span style="color: rgba(0, 0, 255, 1)">string</span> _connectionString; <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">连接字符串</span>
+        <span style="color: rgba(0, 0, 255, 1)">private</span> <span style="color: rgba(0, 0, 255, 1)">int</span> _defaultDB; <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">默认数据库</span>
+        <span style="color: rgba(0, 0, 255, 1)">private</span> <span style="color: rgba(0, 0, 255, 1)">readonly</span><span style="color: rgba(0, 0, 0, 1)"> ConnectionMultiplexer connectionMultiplexer;
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 构造函数
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="connectionString"&gt;&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="defaultDB"&gt;</span><span style="color: rgba(0, 128, 0, 1)">默认使用Redis的0库</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> SERedisHelp(<span style="color: rgba(0, 0, 255, 1)">string</span> connectionString, <span style="color: rgba(0, 0, 255, 1)">int</span> defaultDB = <span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">)
+        {
+            _connectionString </span>=<span style="color: rgba(0, 0, 0, 1)"> connectionString;
+            _defaultDB </span>=<span style="color: rgba(0, 0, 0, 1)"> defaultDB;
+            connectionMultiplexer </span>=<span style="color: rgba(0, 0, 0, 1)"> ConnectionMultiplexer.Connect(_connectionString);
+        }
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 获取数据库
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> IDatabase GetDatabase()
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> connectionMultiplexer.GetDatabase(_defaultDB);
+        }
+    }</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="color: rgba(0, 0, 255, 1)">SessionExtensions:</span></p>
+<div class="cnblogs_code"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_34786b9a-e5d6-4156-95f9-74e135354dfe" class="code_img_closed"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_34786b9a-e5d6-4156-95f9-74e135354dfe" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_34786b9a-e5d6-4156-95f9-74e135354dfe" class="cnblogs_code_hide">
+<pre><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> Session的两种扩展方式
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 依赖程序集：【Microsoft.AspNetCore.Http】和【Microsoft.AspNetCore.Http.Extensions】
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 两种序列化模式：【Newtonsoft.Json】和 【protobuf-net】
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 其中 【protobuf-net】序列化的类名上要加 [ProtoContract]，属性上要加 [ProtoMember(1)] [ProtoMember(2)]
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> SessionExtensions
+    {
+        </span><span style="color: rgba(0, 0, 255, 1)">#region</span> 01-利用Newtonsoft.Json进行扩展
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">void</span> Set&lt;T&gt;(<span style="color: rgba(0, 0, 255, 1)">this</span> ISession session, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> key, T value)
+        {
+            session.SetString(key, JsonConvert.SerializeObject(value));
+        }
+
+        </span><span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> T Get&lt;T&gt;(<span style="color: rgba(0, 0, 255, 1)">this</span> ISession session, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> key)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> value =<span style="color: rgba(0, 0, 0, 1)"> session.GetString(key);
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span> value == <span style="color: rgba(0, 0, 255, 1)">null</span> ? <span style="color: rgba(0, 0, 255, 1)">default</span>(T) : JsonConvert.DeserializeObject&lt;T&gt;<span style="color: rgba(0, 0, 0, 1)">(value);
+        }
+        </span><span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">#region</span> 02-利用protobuf-net进行扩展
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">void</span> Set2&lt;T&gt;(<span style="color: rgba(0, 0, 255, 1)">this</span> ISession session, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> key, T value)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">using</span> (MemoryStream stream = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> MemoryStream())
+            {
+                Serializer.Serialize(stream, value);
+                </span><span style="color: rgba(0, 0, 255, 1)">byte</span>[] byteArrary =<span style="color: rgba(0, 0, 0, 1)"> stream.ToArray();
+                session.Set(key, byteArrary);
+            }
+        }
+
+        </span><span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> T Get2&lt;T&gt;(<span style="color: rgba(0, 0, 255, 1)">this</span> ISession session, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> key)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">byte</span>[] byteArray =<span style="color: rgba(0, 0, 0, 1)"> session.Get(key);
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (byteArray == <span style="color: rgba(0, 0, 255, 1)">null</span><span style="color: rgba(0, 0, 0, 1)">)
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(0, 0, 255, 1)">default</span><span style="color: rgba(0, 0, 0, 1)">(T);
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">else</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">using</span> (MemoryStream stream = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> MemoryStream(byteArray))
+                {
+                    </span><span style="color: rgba(0, 0, 255, 1)">return</span> Serializer.Deserialize&lt;T&gt;<span style="color: rgba(0, 0, 0, 1)">(stream);
+                }
+            }
+        }
+        </span><span style="color: rgba(0, 0, 255, 1)">#endregion</span><span style="color: rgba(0, 0, 0, 1)">
+    }</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="color: rgba(0, 0, 255, 1)">SortExtentsion:</span></p>
+<div class="cnblogs_code"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_ab3042e3-2864-447f-977a-cb812e553d6c" class="code_img_closed"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_ab3042e3-2864-447f-977a-cb812e553d6c" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_ab3042e3-2864-447f-977a-cb812e553d6c" class="cnblogs_code_hide">
+<pre> <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 排序的扩展
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> SortExtension
+    {
+
+        </span><span style="color: rgba(0, 0, 255, 1)">#region</span> 01-根据string名称排序扩展(单字段)
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 根据string名称排序扩展(单字段)
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;typeparam name="T"&gt;&lt;/typeparam&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="source"&gt;</span><span style="color: rgba(0, 128, 0, 1)">排序数据源</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="sortName"&gt;</span><span style="color: rgba(0, 128, 0, 1)">排序名称</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="sortDirection"&gt;</span><span style="color: rgba(0, 128, 0, 1)">排序方式 asc或desc</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> IQueryable&lt;T&gt; DataSorting&lt;T&gt;(<span style="color: rgba(0, 0, 255, 1)">this</span> IQueryable&lt;T&gt; source, <span style="color: rgba(0, 0, 255, 1)">string</span> sortName, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> sortDirection)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">string</span> sortingDir = <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)">.Empty;
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (sortDirection.ToUpper().Trim() == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ASC</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+            {
+                sortingDir </span>= <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">OrderBy</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">else</span> <span style="color: rgba(0, 0, 255, 1)">if</span> (sortDirection.ToUpper().Trim() == <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">DESC</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+            {
+                sortingDir </span>= <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">OrderByDescending</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+            }
+            ParameterExpression param </span>= Expression.Parameter(<span style="color: rgba(0, 0, 255, 1)">typeof</span><span style="color: rgba(0, 0, 0, 1)">(T), sortName);
+            PropertyInfo pi </span>= <span style="color: rgba(0, 0, 255, 1)">typeof</span><span style="color: rgba(0, 0, 0, 1)">(T).GetProperty(sortName);
+            Type[] types </span>= <span style="color: rgba(0, 0, 255, 1)">new</span> Type[<span style="color: rgba(128, 0, 128, 1)">2</span><span style="color: rgba(0, 0, 0, 1)">];
+            types[</span><span style="color: rgba(128, 0, 128, 1)">0</span>] = <span style="color: rgba(0, 0, 255, 1)">typeof</span><span style="color: rgba(0, 0, 0, 1)">(T);
+            types[</span><span style="color: rgba(128, 0, 128, 1)">1</span>] =<span style="color: rgba(0, 0, 0, 1)"> pi.PropertyType;
+            Expression expr </span>= Expression.Call(<span style="color: rgba(0, 0, 255, 1)">typeof</span><span style="color: rgba(0, 0, 0, 1)">(Queryable), sortingDir, types, source.Expression, Expression.Lambda(Expression.Property(param, sortName), param));
+            IQueryable</span>&lt;T&gt; query = source.AsQueryable().Provider.CreateQuery&lt;T&gt;<span style="color: rgba(0, 0, 0, 1)">(expr);
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> query;
+        }
+        </span><span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">#region</span> 02-根据多个string名称排序扩展(多字段)
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">  根据多个string名称排序扩展(多字段)
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;typeparam name="T"&gt;&lt;/typeparam&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="data"&gt;</span><span style="color: rgba(0, 128, 0, 1)">数据源</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="orderParams"&gt;</span><span style="color: rgba(0, 128, 0, 1)">排序类</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> IQueryable&lt;T&gt; DataManySorting&lt;T&gt;(<span style="color: rgba(0, 0, 255, 1)">this</span> IQueryable&lt;T&gt; data, <span style="color: rgba(0, 0, 255, 1)">params</span> FiledOrderParam[] orderParams) <span style="color: rgba(0, 0, 255, 1)">where</span> T : <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)">
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> parameter = Expression.Parameter(<span style="color: rgba(0, 0, 255, 1)">typeof</span>(T), <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">p</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (orderParams != <span style="color: rgba(0, 0, 255, 1)">null</span> &amp;&amp; orderParams.Length &gt; <span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">)
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">for</span> (<span style="color: rgba(0, 0, 255, 1)">int</span> i = <span style="color: rgba(128, 0, 128, 1)">0</span>; i &lt; orderParams.Length; i++<span style="color: rgba(0, 0, 0, 1)">)
+                {
+                    </span><span style="color: rgba(0, 0, 255, 1)">var</span> property = <span style="color: rgba(0, 0, 255, 1)">typeof</span><span style="color: rgba(0, 0, 0, 1)">(T).GetProperty(orderParams[i].PropertyName);
+                    </span><span style="color: rgba(0, 0, 255, 1)">if</span> (property != <span style="color: rgba(0, 0, 255, 1)">null</span><span style="color: rgba(0, 0, 0, 1)">)
+                    {
+                        </span><span style="color: rgba(0, 0, 255, 1)">var</span> propertyAccess =<span style="color: rgba(0, 0, 0, 1)"> Expression.MakeMemberAccess(parameter, property);
+                        </span><span style="color: rgba(0, 0, 255, 1)">var</span> orderByExpr =<span style="color: rgba(0, 0, 0, 1)"> Expression.Lambda(propertyAccess, parameter);
+                        </span><span style="color: rgba(0, 0, 255, 1)">string</span> methodName = i &gt; <span style="color: rgba(128, 0, 128, 1)">0</span> ?<span style="color: rgba(0, 0, 0, 1)">
+                            orderParams[i].IsDesc </span>? <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ThenByDescending</span><span style="color: rgba(128, 0, 0, 1)">"</span> : <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ThenBy</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">
+                            : orderParams[i].IsDesc </span>? <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">OrderByDescending</span><span style="color: rgba(128, 0, 0, 1)">"</span> : <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">OrderBy</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+                        </span><span style="color: rgba(0, 0, 255, 1)">var</span> resultExp =<span style="color: rgba(0, 0, 0, 1)"> Expression.Call(
+                            </span><span style="color: rgba(0, 0, 255, 1)">typeof</span><span style="color: rgba(0, 0, 0, 1)">(Queryable), methodName,
+                            </span><span style="color: rgba(0, 0, 255, 1)">new</span> Type[] { <span style="color: rgba(0, 0, 255, 1)">typeof</span><span style="color: rgba(0, 0, 0, 1)">(T), property.PropertyType },
+                            data.Expression, Expression.Quote(orderByExpr)
+                            );
+                        data </span>= data.Provider.CreateQuery&lt;T&gt;<span style="color: rgba(0, 0, 0, 1)">(resultExp);
+                    }
+                }
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> data;
+        }
+
+        </span><span style="color: rgba(0, 0, 255, 1)">#endregion</span><span style="color: rgba(0, 0, 0, 1)">
+    }
+
+
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 排序类
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> FiledOrderParam
+    {
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">是否降序</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">bool</span> IsDesc { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)">; }
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">排序名称</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span> PropertyName { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)">; }
+    }</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><strong><span style="font-size: 16px">4. Log</span></strong></p>
+<p><span style="font-size: 15px">　a. Log4net: 提供配置文件和帮助类（后续将废弃）</span></p>
+<p><span style="font-size: 15px">　b. SeriLog: 提供LogUtils帮助类</span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码分享：</span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">　　详见前面的日志章节：https://www.cnblogs.com/yaopengfei/p/14244416.html</span></p>
+<p><strong><span style="font-size: 16px">5. Safe</span></strong></p>
+<p><span style="font-size: 15px">　a. JWTHelp:Jwt加密和解密相关的帮助类。</span></p>
+<p><span style="font-size: 15px">　b. SecurityHelp:各种加密、解密相关算法。</span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码分享：</span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">JWTHelp：</span></p>
+<div class="cnblogs_code"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_9d59630f-8218-40e5-945e-ccbc819e545c" class="code_img_closed"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_9d59630f-8218-40e5-945e-ccbc819e545c" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_9d59630f-8218-40e5-945e-ccbc819e545c" class="cnblogs_code_hide">
+<pre><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> Jwt的加密和解密
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 注：加密和加密用的是用一个密钥
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 依赖程序集：【JWT】
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> JWTHelp
+    {
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> JWT加密算法
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="payload"&gt;</span><span style="color: rgba(0, 128, 0, 1)">负荷部分，存储使用的信息</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="secret"&gt;</span><span style="color: rgba(0, 128, 0, 1)">密钥</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="extraHeaders"&gt;</span><span style="color: rgba(0, 128, 0, 1)">存放表头额外的信息,不需要的话可以不传</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> JWTJiaM(IDictionary&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>, <span style="color: rgba(0, 0, 255, 1)">object</span>&gt; payload, <span style="color: rgba(0, 0, 255, 1)">string</span> secret, IDictionary&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>, <span style="color: rgba(0, 0, 255, 1)">object</span>&gt; extraHeaders = <span style="color: rgba(0, 0, 255, 1)">null</span><span style="color: rgba(0, 0, 0, 1)">)
+        {
+            IJwtAlgorithm algorithm </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> HMACSHA256Algorithm();
+            IJsonSerializer serializer </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> JsonNetSerializer();
+            IBase64UrlEncoder urlEncoder </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> JwtBase64UrlEncoder();
+            IJwtEncoder encoder </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> JwtEncoder(algorithm, serializer, urlEncoder);
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> token =<span style="color: rgba(0, 0, 0, 1)"> encoder.Encode(payload, secret);
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> token;
+        }
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> JWT解密算法(新的7.x版本写法）
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="token"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要解密的token串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="secret"&gt;</span><span style="color: rgba(0, 128, 0, 1)">密钥</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> JWTJieM(<span style="color: rgba(0, 0, 255, 1)">string</span> token, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> secret)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">try</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                IJsonSerializer serializer </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> JsonNetSerializer();
+                IDateTimeProvider provider </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> UtcDateTimeProvider();
+                IJwtValidator validator </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> JwtValidator(serializer, provider);
+                IBase64UrlEncoder urlEncoder </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> JwtBase64UrlEncoder();
+                IJwtAlgorithm algorithm </span>= <span style="color: rgba(0, 0, 255, 1)">new</span> HMACSHA256Algorithm(); <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> symmetric</span>
+                IJwtDecoder decoder = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> JwtDecoder(serializer, validator, urlEncoder, algorithm);
+
+                </span><span style="color: rgba(0, 0, 255, 1)">var</span> json = decoder.Decode(token, secret, <span style="color: rgba(0, 0, 255, 1)">true</span><span style="color: rgba(0, 0, 0, 1)">);
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">校验通过，返回解密后的字符串</span>
+                <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> json;
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (TokenExpiredException)
+            {
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示过期</span>
+                <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">expired</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (SignatureVerificationException)
+            {
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示验证不通过</span>
+                <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">invalid</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">catch</span><span style="color: rgba(0, 0, 0, 1)"> (Exception)
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">error</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">;
+            }
+        }
+
+
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// JWT解密算法(旧的5.x版本写法）
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;param name="token"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要解密的token串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;param name="secret"&gt;</span><span style="color: rgba(0, 128, 0, 1)">密钥</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">// </span><span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">public static string JWTJieM(string token, string secret)
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">{
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    try
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    {
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        IJsonSerializer serializer = new JsonNetSerializer();
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        IDateTimeProvider provider = new UtcDateTimeProvider();
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        IJwtValidator validator = new JwtValidator(serializer, provider);
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        IJwtDecoder decoder = new JwtDecoder(serializer, validator, urlEncoder);
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        var json = decoder.Decode(token, secret, true);
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span>        <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">校验通过，返回解密后的字符串
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        return json;
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    }
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    catch (TokenExpiredException)
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    {
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span>        <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示过期
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        return "expired";
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    }
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    catch (SignatureVerificationException)
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    {
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span>        <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示验证不通过
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        return "invalid";
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    }
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    catch (Exception)
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    {
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">        return "error";
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">    }
+        </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">}</span>
+<span style="color: rgba(0, 0, 0, 1)">
+
+    }</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">SecurityHelp：</span></p>
+<div class="cnblogs_code"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_30d9796e-e14e-4f68-9e3f-b924bdbea3dc" class="code_img_closed"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_30d9796e-e14e-4f68-9e3f-b924bdbea3dc" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_30d9796e-e14e-4f68-9e3f-b924bdbea3dc" class="cnblogs_code_hide">
+<pre> <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 各种加密解密算法
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 依赖程序集【NETCore.Encrypt】
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> SecurityHelp
+    {
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> Base64编码
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="srcString"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要编码的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> Base64Encrypt(<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> srcString)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span> EncryptProvider.Base64Encrypt(srcString);  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">default encoding is UTF-8</span>
+<span style="color: rgba(0, 0, 0, 1)">        }
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> Base64编码
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="encString"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要解码的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> Base64Decrypt(<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> encString)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span> EncryptProvider.Base64Decrypt(encString);  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">default encoding is UTF-8</span>
+<span style="color: rgba(0, 0, 0, 1)">        }
+
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> MD5加密
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="srcString"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要加密的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="num"&gt;</span><span style="color: rgba(0, 128, 0, 1)">位数，默认为32位，也可以是16位</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> Md5(<span style="color: rgba(0, 0, 255, 1)">string</span> srcString, <span style="color: rgba(0, 0, 255, 1)">int</span> num = <span style="color: rgba(128, 0, 128, 1)">32</span><span style="color: rgba(0, 0, 0, 1)">)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (num == <span style="color: rgba(128, 0, 128, 1)">32</span><span style="color: rgba(0, 0, 0, 1)">)
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> EncryptProvider.Md5(srcString);  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">默认32位</span>
+<span style="color: rgba(0, 0, 0, 1)">            }
+            </span><span style="color: rgba(0, 0, 255, 1)">else</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> EncryptProvider.Md5(srcString, MD5Length.L16);   <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">16位</span>
+<span style="color: rgba(0, 0, 0, 1)">            }
+        }
+
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> SHA系列算法
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="srcString"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要加密的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="kind"&gt;</span><span style="color: rgba(0, 128, 0, 1)">类型</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> SHA(<span style="color: rgba(0, 0, 255, 1)">string</span> srcString, <span style="color: rgba(0, 0, 255, 1)">string</span> kind = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Sha512</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (kind.Equals(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Sha1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">))
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.Sha1(srcString);
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">else</span> <span style="color: rgba(0, 0, 255, 1)">if</span> (kind.Equals(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Sha256</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">))
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.Sha256(srcString);
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">else</span> <span style="color: rgba(0, 0, 255, 1)">if</span> (kind.Equals(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Sha384</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">))
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.Sha384(srcString);
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">else</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.Sha512(srcString);
+            }
+        }
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> HMAC系列算法
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="srcString"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要加密的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="secretKey"&gt;</span><span style="color: rgba(0, 128, 0, 1)">密钥</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="kind"&gt;</span><span style="color: rgba(0, 128, 0, 1)">类型</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> HMAC(<span style="color: rgba(0, 0, 255, 1)">string</span> srcString, <span style="color: rgba(0, 0, 255, 1)">string</span> secretKey, <span style="color: rgba(0, 0, 255, 1)">string</span> kind = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">HMACSHA512</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (kind.Equals(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">HMACMD5</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">))
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.HMACMD5(srcString, secretKey);
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">else</span> <span style="color: rgba(0, 0, 255, 1)">if</span> (kind.Equals(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">HMACSHA1</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">))
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.HMACSHA1(srcString, secretKey);
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">else</span> <span style="color: rgba(0, 0, 255, 1)">if</span> (kind.Equals(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">HMACSHA256</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">))
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.HMACSHA256(srcString, secretKey);
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">else</span> <span style="color: rgba(0, 0, 255, 1)">if</span> (kind.Equals(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">HMACSHA384</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">))
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.HMACSHA384(srcString, secretKey);
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">else</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.HMACSHA512(srcString, secretKey);
+            }
+        }
+
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 生成AES算法所需的Key和iv
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> (当然这里可以自己指定并保存好)
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="key"&gt;</span><span style="color: rgba(0, 128, 0, 1)">加密所需的key</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="iv"&gt;</span><span style="color: rgba(0, 128, 0, 1)">加密所需的矢量</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">void</span> CreateAesKey(<span style="color: rgba(0, 0, 255, 1)">ref</span> <span style="color: rgba(0, 0, 255, 1)">string</span> key, <span style="color: rgba(0, 0, 255, 1)">ref</span> <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> iv)
+        {
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">利用算法生成key和iv（32位和16位），当然这里可以自己指定并保存好</span>
+            <span style="color: rgba(0, 0, 255, 1)">var</span> aesKey =<span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.CreateAesKey();
+            key </span>=<span style="color: rgba(0, 0, 0, 1)"> aesKey.Key;
+            iv </span>=<span style="color: rgba(0, 0, 0, 1)"> aesKey.IV;
+        }
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> AES加密算法
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="srcString"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要加密的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="secretKey"&gt;</span><span style="color: rgba(0, 128, 0, 1)">密钥</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="iv"&gt;</span><span style="color: rgba(0, 128, 0, 1)">矢量（可以不填）</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> AESEncrypt(<span style="color: rgba(0, 0, 255, 1)">string</span> srcString, <span style="color: rgba(0, 0, 255, 1)">string</span> secretKey, <span style="color: rgba(0, 0, 255, 1)">string</span> iv = <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)">)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)">.IsNullOrEmpty(iv))
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> EncryptProvider.AESEncrypt(srcString, secretKey);    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示不需要iv矢量的AES加密算法</span>
+<span style="color: rgba(0, 0, 0, 1)">            }
+            </span><span style="color: rgba(0, 0, 255, 1)">else</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> EncryptProvider.AESEncrypt(srcString, secretKey, iv);    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示需要iv矢量的AES加密算法</span>
+<span style="color: rgba(0, 0, 0, 1)">            }
+        }
+
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> AES解密算法
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="encString"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要解密的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="secretKey"&gt;</span><span style="color: rgba(0, 128, 0, 1)">密钥</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="iv"&gt;</span><span style="color: rgba(0, 128, 0, 1)">矢量（可以不填）</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> AESDecrypt(<span style="color: rgba(0, 0, 255, 1)">string</span> encString, <span style="color: rgba(0, 0, 255, 1)">string</span> secretKey, <span style="color: rgba(0, 0, 255, 1)">string</span> iv = <span style="color: rgba(128, 0, 0, 1)">""</span><span style="color: rgba(0, 0, 0, 1)">)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)">.IsNullOrEmpty(iv))
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> EncryptProvider.AESDecrypt(encString, secretKey);    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示不需要iv矢量的AES解密算法</span>
+<span style="color: rgba(0, 0, 0, 1)">            }
+            </span><span style="color: rgba(0, 0, 255, 1)">else</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> EncryptProvider.AESDecrypt(encString, secretKey, iv);    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">表示需要iv矢量的AES解密算法</span>
+<span style="color: rgba(0, 0, 0, 1)">            }
+        }
+
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> DES加密算法
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="srcString"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要加密的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="secretKey"&gt;</span><span style="color: rgba(0, 128, 0, 1)">密钥（这里的密钥需要是24位）</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> EDSEncrypt(<span style="color: rgba(0, 0, 255, 1)">string</span> srcString, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> secretKey)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.DESEncrypt(srcString, secretKey);
+        }
+
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> DES解密算法
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="encString"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要解密的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="secretKey"&gt;</span><span style="color: rgba(0, 128, 0, 1)">密钥</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> DESDecrypt(<span style="color: rgba(0, 0, 255, 1)">string</span> encString, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> secretKey)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> EncryptProvider.DESDecrypt(encString, secretKey);
+        }
+
+
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 生成RSA算法所需的Key和iv
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> (当然这里可以自己指定并保存好)
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="PublicKey"&gt;</span><span style="color: rgba(0, 128, 0, 1)">公钥</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="PrivateKey"&gt;</span><span style="color: rgba(0, 128, 0, 1)">私钥</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">void</span> CreateRsaKey(<span style="color: rgba(0, 0, 255, 1)">ref</span> <span style="color: rgba(0, 0, 255, 1)">string</span> PublicKey, <span style="color: rgba(0, 0, 255, 1)">ref</span> <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> PrivateKey)
+        {
+            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">利用算法生成公钥和私钥，然后保存；当然这里可以自己指定并保存好</span>
+            <span style="color: rgba(0, 0, 255, 1)">var</span> rsaKey = EncryptProvider.CreateRsaKey();    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">default is 2048
+                                                            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> var rsaKey = EncryptProvider.CreateRsaKey(RsaSize.R3072);</span>
+            PublicKey =<span style="color: rgba(0, 0, 0, 1)"> rsaKey.PublicKey;
+            PrivateKey </span>=<span style="color: rgba(0, 0, 0, 1)"> rsaKey.PrivateKey;
+        }
+
+
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> RSA加密算法
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="srcString"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要加密的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="publicKey"&gt;</span><span style="color: rgba(0, 128, 0, 1)">公钥 加密</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> RSAEncrypt(<span style="color: rgba(0, 0, 255, 1)">string</span> srcString, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> publicKey)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span> EncryptProvider.RSAEncrypt(publicKey, srcString);   <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">公钥加密</span>
+<span style="color: rgba(0, 0, 0, 1)">        }
+
+
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> RSA解密算法
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="encString"&gt;</span><span style="color: rgba(0, 128, 0, 1)">需要解密的字符串</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="privateKey"&gt;</span><span style="color: rgba(0, 128, 0, 1)">私钥 解密</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> RSADecrypt(<span style="color: rgba(0, 0, 255, 1)">string</span> encString, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> privateKey)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span> EncryptProvider.RSADecrypt(privateKey, encString);  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">私钥解密</span>
+<span style="color: rgba(0, 0, 0, 1)">        }
+
+
+
+    }
+
+
+
+    </span><span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">enum</span><span style="color: rgba(0, 0, 0, 1)"> RsaSize
+    {
+        R2048 </span>= <span style="color: rgba(128, 0, 128, 1)">2048</span><span style="color: rgba(0, 0, 0, 1)">,
+        R3072 </span>= <span style="color: rgba(128, 0, 128, 1)">3072</span><span style="color: rgba(0, 0, 0, 1)">,
+        R4096 </span>= <span style="color: rgba(128, 0, 128, 1)">4096</span><span style="color: rgba(0, 0, 0, 1)">
+    }</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><strong><span style="font-size: 16px">6. Transform</span></strong></p>
+<p><span style="font-size: 15px">　a. JsonHelp: JSON序列化和反序列的方法，目前利用的还是NewTonSoft.Json, 基于Core3.1中 【System.Text.Json】的序列化功能不是很完善，暂时注释。</span></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码分享：</span></p>
+<div class="cnblogs_code"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ContractedBlock.gif" id="code_img_closed_bb21473b-e45e-4533-91ee-f4cdb50eb71b" class="code_img_closed"><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/ExpandedBlockStart.gif" id="code_img_opened_bb21473b-e45e-4533-91ee-f4cdb50eb71b" class="code_img_opened" style="display: none">
+<div id="cnblogs_code_open_bb21473b-e45e-4533-91ee-f4cdb50eb71b" class="cnblogs_code_hide">
+<pre> <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> Json的序列化和反序列化
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 依赖程序集：Newtonsoft.Json; 和 Core 3.x内置的System.Text.Json
+    </span><span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> System.Text.Json 不完善，有很多问题：</span><span style="color: rgba(0, 128, 0, 1); text-decoration: underline">https://www.cnblogs.com/dudu/p/11562019.html</span>
+    <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> JsonHelp
+    {
+ 
+        </span><span style="color: rgba(0, 0, 255, 1)">#region</span> 01-将JSON转换成JSON字符串
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">将JSON转换成JSON字符串
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;typeparam name="T"&gt;&lt;/typeparam&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="obj"&gt;&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> ToJsonString&lt;T&gt;<span style="color: rgba(0, 0, 0, 1)">(T obj)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span> JsonConvert.SerializeObject(obj);  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">Newtonsoft.Json写法</span>
+<span style="color: rgba(0, 0, 0, 1)">        }
+        </span><span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">#region</span> 02-将字符串转换成JSON对象
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 将字符串转换成JSON对象
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;typeparam name="T"&gt;&lt;/typeparam&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="content"&gt;&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> T ToObject&lt;T&gt;(<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> content)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span> JsonConvert.DeserializeObject&lt;T&gt;(content);  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">Newtonsoft.Json写法</span>
+<span style="color: rgba(0, 0, 0, 1)">        }
+        </span><span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+
+
+
+        <span style="color: rgba(0, 0, 255, 1)">#region</span> 03-将JSON转换成JSON字符串（目前不成熟）
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)">将JSON转换成JSON字符串
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;typeparam name="T"&gt;&lt;/typeparam&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="obj"&gt;&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">string</span> ToJsonString2&lt;T&gt;<span style="color: rgba(0, 0, 0, 1)">(T obj)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> System.Text.Json.JsonSerializer.Serialize(obj);
+        }
+        </span><span style="color: rgba(0, 0, 255, 1)">#endregion</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">#region</span> 04-将字符串转换成JSON对象（目前不成熟）
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 将字符串转换成JSON对象
+        </span><span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;typeparam name="T"&gt;&lt;/typeparam&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="content"&gt;&lt;/param&gt;</span>
+        <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">static</span> T ToObject2&lt;T&gt;(<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> content)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span> System.Text.Json.JsonSerializer.Deserialize&lt;T&gt;<span style="color: rgba(0, 0, 0, 1)">(content);
+        }
+        </span><span style="color: rgba(0, 0, 255, 1)">#endregion</span><span style="color: rgba(0, 0, 0, 1)">
+    }</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p>&nbsp;</p>
+<p style="background-color: rgba(64, 108, 164, 1); color: rgba(255, 255, 255, 1); padding-left: 5px"><span style="font-size: 18pt; font-family: &quot;Microsoft YaHei&quot;">三.&nbsp;核心功能测试</span></p>
+<p><strong><span style="font-size: 16px">&nbsp;1.&nbsp;根据字段名称进行升/降序</span></strong></p>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">代码分享：</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 0, 1)"> {
+                </span><span style="color: rgba(0, 0, 255, 1)">int</span> pageIndex = <span style="color: rgba(128, 0, 128, 1)">2</span><span style="color: rgba(0, 0, 0, 1)">;
+                </span><span style="color: rgba(0, 0, 255, 1)">int</span> pageSize = <span style="color: rgba(128, 0, 128, 1)">5</span><span style="color: rgba(0, 0, 0, 1)">;
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">1.分开写法</span>
+                <span style="color: rgba(0, 0, 255, 1)">var</span> list1 = _baseService.Entities&lt;T_SysUser&gt;().Where(u =&gt; u.id != <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">fk</span><span style="color: rgba(128, 0, 0, 1)">"</span>).DataSorting(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">addTime</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">desc</span><span style="color: rgba(128, 0, 0, 1)">"</span>).Skip((pageIndex - <span style="color: rgba(128, 0, 128, 1)">1</span>) *<span style="color: rgba(0, 0, 0, 1)"> pageSize).Take(pageSize).ToList();
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">2. 封装调用</span>
+                <span style="color: rgba(0, 0, 255, 1)">int</span> count = <span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">;
+                </span><span style="color: rgba(0, 0, 255, 1)">var</span> list2 = _baseService.GetPageListByName&lt;T_SysUser&gt;(pageIndex, pageSize, <span style="color: rgba(0, 0, 255, 1)">out</span> count, u =&gt; u.id != <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">fk</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">addTime</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">desc</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+
+                </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">3.多字段排序</span>
+                FiledOrderParam[] param =<span style="color: rgba(0, 0, 0, 1)"> {
+                    </span><span style="color: rgba(0, 0, 255, 1)">new</span> FiledOrderParam(){IsDesc=<span style="color: rgba(0, 0, 255, 1)">false</span>,PropertyName=<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">addTime</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">},
+                    </span><span style="color: rgba(0, 0, 255, 1)">new</span> FiledOrderParam(){IsDesc=<span style="color: rgba(0, 0, 255, 1)">true</span>,PropertyName=<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">id</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">}
+                };
+                </span><span style="color: rgba(0, 0, 255, 1)">var</span> list3 = _baseService.Entities&lt;T_SysUser&gt;().Where(u =&gt; u.id != <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">fk</span><span style="color: rgba(128, 0, 0, 1)">"</span>).DataManySorting(param).Skip((pageIndex - <span style="color: rgba(128, 0, 128, 1)">1</span>) *<span style="color: rgba(0, 0, 0, 1)"> pageSize).Take(pageSize).ToList();
+}</span></pre>
+</div>
+<p><span style="font-size: 14px; color: rgba(0, 0, 255, 1)">对应SQL的语句：</span></p>
+<p><img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/1031302-20210119145225055-234609063.png" alt="" loading="lazy" style="display: block; margin-left: auto; margin-right: auto"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><span style="font-size: 15px">&nbsp;</span></p>
+<p><span style="font-size: 15px">&nbsp;</span></p>
+<p><span style="font-size: 15px">&nbsp;</span></p>
+<p><span style="font-size: 15px">&nbsp;</span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div style="border: 2px dashed rgba(0, 0, 255, 1); border-radius: 10px; height: 120px; width: 1100px; margin-left: 60px">
+<div style="width: 0; height: 0; border-left: 20px solid rgba(0, 0, 0, 0); border-right: 20px solid rgba(0, 0, 0, 0); border-bottom: 30px solid rgba(255, 255, 0, 1); float: left; margin-top: 40px; margin-left: 20px">
+<p style="font-size: 16px; font-weight: bold; margin-top: 8px; margin-left: -2px">!</p>
+</div>
+<div style="float: left; margin-left: 16px">
+<ul style="list-style: none; padding: 0; margin-left: 20px">
+<li style="margin-bottom: 1px; line-height: 28px">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者 : <span style="color: rgba(255, 0, 0, 1)">Yaopengfei(姚鹏飞)</span></li>
+<li style="margin-bottom: 1px; line-height: 28px">博客地址 : <a style="text-decoration: none" href="http://www.cnblogs.com/yaopengfei/"><span style="color: rgba(255, 0, 0, 1)">http://www.cnblogs.com/yaopengfei/</span></a></li>
+<li style="margin-bottom: 1px; line-height: 28px">声&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明1 : 如有错误，欢迎讨论，请勿谩骂^_^。</li>
+<li style="margin-bottom: 1px; line-height: 28px">声&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明2 : 原创博客请在转载时保留原文链接或在文章开头加上本人博客地址，否则保留追究法律责任的权利。</li>
+</ul>
+</div>
+<div style="clear: both">&nbsp;</div>
+</div>
+<p>&nbsp;</p>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2021-01-18 15:49</span>&nbsp;
+<a href="https://www.cnblogs.com/yaopengfei/">Yaopengfei</a>&nbsp;
+阅读(<span id="post_view_count">144</span>)&nbsp;
+评论(<span id="post_comment_count">2</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=14293103" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(14293103);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;14293103&#39;, targetLink: &#39;https://www.cnblogs.com/yaopengfei/p/14293103.html&#39;, title: &#39; 第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试&#39; })">举报</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+
+<script>
+    markdown_highlight()
+    var allowComments = true, cb_blogId = 307315, cb_blogApp = 'yaopengfei', cb_blogUserGuid = '7d349e7e-c080-e611-9fc1-ac853d9f53cc';
+    var cb_entryId = 14293103, cb_entryCreatedDate = '2021-01-18 15:49', cb_postType = 1;
+    updatePostStats(
+        [cb_entryId],
+        function(id, count) { $("#post_view_count").text(count) },
+        function(id, count) { $("#post_comment_count").text(count) })
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+</script>
+<a name="!comments"></a>
+<div id="blog-comments-placeholder"><div style="color:green;margin:50px 0;font-weight:normal;">努力加载评论中...</div></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/yaopengfei/p/14293103.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/yaopengfei/p/14293103.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><span style="color:red">评论框加载失败，请与管理员联系(contact@cnblogs.com)。</span></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="cnblogs_ch"></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+        <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;"></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/coco1s/p/15627657.html" target="_blank">使用 CSS 轻松实现一些高频出现的奇形怪状按钮</a>
+    <br>
+· <a href="https://www.cnblogs.com/strick/p/15394367.html" target="_blank">带团队后的日常思考（六）</a>
+    <br>
+· <a href="https://www.cnblogs.com/xiao2shiqi/p/15623540.html" target="_blank">聊聊云原生和微服务架构</a>
+    <br>
+· <a href="https://www.cnblogs.com/youzhibing/p/15615272.html" target="_blank">异或运算的巧用：不用额外的变量，如何交换两个变量的值？ </a>
+    <br>
+· <a href="https://www.cnblogs.com/myshowtime/p/15596630.html" target="_blank">OAuth 2.1 带来了哪些变化</a>
+    <br>
+</div></div>
+        <div id="cnblogs_c2" class="under-post-card">
+            <a href="https://c.gridsumdissector.com/r/?gid=gad_545_wrrk6jpf&amp;ck=1057&amp;adk=10673&amp;autorefresh=__AUTOREFRESH__" rel="nofollow" target="_blank">
+                <img src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/volcengine-c2.jpg" alt="" onload="impressC2(&#39;火山引擎&#39;, &#39;https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_wrrk6jpf&amp;ck=1057&amp;adk=10673&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__&#39;)">
+            </a>
+        </div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/708325/" target="_blank">达摩院AliceMind上新！首个中文表格预训练模型发布，已向业界开源（2021-12-03 15:55）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708324/" target="_blank">亚马逊中国卖家遭遇最惨“黑五”：销量不及预期，封号仍在继续（2021-12-03 15:48）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708323/" target="_blank">印度人民怀念中国App（2021-12-03 15:40）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708322/" target="_blank">专利申请量超美国、高新企业数增10倍：一图看懂近20年中国科技有多燃（2021-12-03 15:34）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/708321/" target="_blank">“大红大紫”的代价！英伟达再也收不了ARM了？（2021-12-03 15:31）</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+       var commentManager = new blogCommentManager();
+       commentManager.renderComments(0);
+       fixPostBody();
+
+           window.tocManager.displayDisableTocTips = false
+           window.tocManager.generateToc();
+           setTimeout(function() { incrementViewCount(cb_entryId); }, 50);       deliverT2();
+       deliverC1C2();
+       loadNewsAndKb();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);       LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+       GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+       loadOptUnderPost();
+       GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem">
+            <script>loadBlogNews();</script>
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2021 Yaopengfei
+<br><span id="poweredby">Powered by .NET 6 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8FO3GXnjClZGrNGr2Ic8Z1q0UFgvKgml2qZLGt-7eXXvjw0DClZYvP1rTyg_dHP6FXJwGXQm0Q_6j1lVsTqBvZwcdrBX4AWjm5GqQTXJ1hi2kZrj4Bq8AkQyyfzWGhE80v3CcfUli3QVlM4zpNLhaqU">
+    <script async="" src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/js"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+    </script>
+    <script defer="" src="./第五节：集成全局返回值处理、详解Ypf.Utils帮助类层、核心功能测试 - Yaopengfei - 博客园_files/hm.js.下载"></script>
+
+</body></html>
