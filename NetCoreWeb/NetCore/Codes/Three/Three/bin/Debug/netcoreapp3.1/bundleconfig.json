@@ -1,0 +1,25 @@
+/*打包静态文件,需要nuget安装 BuildBundlerMinifier*/
+[
+    {
+        "outputFileName": "wwwroot/css/all.min.css",
+        "inputFiles": [
+            "./node_modules/bootstrap/dist/css/bootstrap.css",
+            "wwwroot/css/site.css"
+        ],
+        "minify": { //压缩
+            "enabled": true
+        }
+    },
+    {
+        "outputFileName": "wwwroot/js/all.min.js",
+        "inputFiles": [
+            "./node_modules/bootstrap/dist/js/bootstrap.js",
+            "wwwroot/js/site.js",
+            "./node_modules/jquery/dist/jquery.js"
+        ],
+        "minify": { //压缩
+            "enabled": true
+        }
+    }
+
+]

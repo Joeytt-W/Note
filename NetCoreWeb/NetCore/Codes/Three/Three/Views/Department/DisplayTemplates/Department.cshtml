@@ -1,0 +1,25 @@
+﻿@using Microsoft.Extensions.Options
+@using Three.Models
+@model Three.Models.Department
+
+
+@inject IOptions<DefaultLog> _options
+
+<tr>
+    @if (_options.Value.LogLevel.Default.Equals("Information"))
+    {
+        <td><strong>@Model.Name</strong></td>
+    }
+    else
+    {
+        <td>@Model.Name</td>
+    }
+
+    <td>@Model.Location</td>
+    <td>@Model.EmployeeCount</td>
+    <td>
+        <a asp-controller="Employee" asp-action="Index" asp-route-departmentId="@Model.Id">
+            Employees
+        </a>
+    </td>
+</tr>

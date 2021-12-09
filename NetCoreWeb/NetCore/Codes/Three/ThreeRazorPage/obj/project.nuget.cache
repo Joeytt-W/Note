@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "qN6a9xZOPmIlZnl/QhsttU8Mt2P4ebUJdq0/0FnCZohQ/GxuMbvPqLx8AiVu+zekHtgDbVXmZ1PqYbIK9sc7aQ==",
+  "success": true,
+  "projectFilePath": "D:\\Work\\WorkSpaces\\Note\\NetCoreWeb\\NetCore\\Codes\\Three\\ThreeRazorPage\\ThreeRazorPage.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\78472\\.nuget\\packages\\buildbundlerminifier\\3.2.449\\buildbundlerminifier.3.2.449.nupkg.sha512",
+    "C:\\Users\\78472\\.nuget\\packages\\microsoft.typescript.msbuild\\4.5.2\\microsoft.typescript.msbuild.4.5.2.nupkg.sha512"
+  ],
+  "logs": []
+}

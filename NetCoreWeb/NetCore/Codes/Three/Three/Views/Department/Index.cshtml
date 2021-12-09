@@ -1,0 +1,28 @@
+﻿@using Three.Models
+@model IEnumerable<Department>
+
+
+<div class="row">
+    <div class="col-md-10 offset-md-2">
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Employee Count</th>
+                <th>操作</th>
+            </tr>
+            @Html.DisplayForModel()
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        @await Component.InvokeAsync("CompanySummary", new { title = "部门列表页" })
+
+        @* 或者用下面这种方式使用ViewComponent  需要在_ViewImports.cshtml中添加   @addTagHelper "*,Three"*@
+        <vc:company-summary title="部门列表页2"></vc:company-summary>
+    </div>
+    <div class="col-md-4 offset-md-2">
+        <a asp-action="Add">Add</a>
+    </div>
+</div>

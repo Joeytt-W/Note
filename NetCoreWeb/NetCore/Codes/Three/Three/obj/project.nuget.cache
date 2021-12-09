@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "AMKpUDflRZFUBO8G5ynQ0Dp7UoOfO2L7UHlw8TNrx3xhBM7hUXlFPdSaGz2oJHUsaqRKJrb/z0AcNA63DyMm4A==",
+  "success": true,
+  "projectFilePath": "D:\\Work\\WorkSpaces\\Note\\NetCoreWeb\\NetCore\\Codes\\Three\\Three\\Three.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\78472\\.nuget\\packages\\buildbundlerminifier\\3.2.449\\buildbundlerminifier.3.2.449.nupkg.sha512",
+    "C:\\Users\\78472\\.nuget\\packages\\microsoft.typescript.msbuild\\4.5.2\\microsoft.typescript.msbuild.4.5.2.nupkg.sha512"
+  ],
+  "logs": []
+}
