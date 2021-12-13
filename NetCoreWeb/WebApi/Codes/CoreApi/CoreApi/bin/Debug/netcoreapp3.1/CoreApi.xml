@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CoreApi</name>
+    </assembly>
+    <members>
+        <member name="M:CoreApi.Controllers.DepartmentController.GetDepartmentById(System.Guid)">
+            <summary>
+            按ID查询部门
+            </summary>
+            <param name="deptId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.DepartmentController.GetDepartments">
+            <summary>
+            查询部门列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.DepartmentController.CreateDepartment(Core.Entity.Dto.DepartmentAddDto)">
+            <summary>
+            添加部门
+            </summary>
+            <param name="departmentDto">实体</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.DepartmentController.UpdateDepartment(Core.Entity.Dto.DepartmentUpdateDto)">
+            <summary>
+            修改部门
+            </summary>
+            <param name="departmentDto">实体</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.DepartmentController.DeleteDepartment(System.Guid)">
+            <summary>
+            删除部门
+            </summary>
+            <param name="deptId">ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.MenuController.GetMenuById(System.Guid)">
+            <summary>
+            按ID获取菜单
+            </summary>
+            <param name="menuId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.MenuController.GetMenus">
+            <summary>
+            获取菜单列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.MenuController.CreateMenu(Core.Entity.Dto.MenuAddDto)">
+            <summary>
+            创建菜单
+            </summary>
+            <param name="menuAddDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.MenuController.UpdateMenu(Core.Entity.Dto.MenuUpdateDto)">
+            <summary>
+            更新菜单
+            </summary>
+            <param name="menuUpdateDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.MenuController.DeleteMenu(System.Guid)">
+            <summary>
+            删除菜单
+            </summary>
+            <param name="menuId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.RoleController.GetRoleById(System.Guid)">
+            <summary>
+            按ID查询角色
+            </summary>
+            <param name="roleId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.RoleController.GetRoles">
+            <summary>
+            条件查询角色列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.RoleController.CreateRole(Core.Entity.Dto.RoleAddDto)">
+            <summary>
+            添加角色
+            </summary>
+            <param name="roleDto">角色实体</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.RoleController.UpdateRole(Core.Entity.Dto.RoleUpdateDto)">
+            <summary>
+            修改角色
+            </summary>
+            <param name="roleDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.RoleController.DeleteRole(System.Guid)">
+            <summary>
+            删除角色
+            </summary>
+            <param name="roleId">角色ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.RoleMenuController.CreateRoleMenus(Core.Entity.Dto.RoleMenuAddDto)">
+            <summary>
+            授权
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.UserController.GetUserById(System.Guid)">
+            <summary>
+            根据ID查询user
+            </summary>
+            <param name="userId"></param>
+            <returns></returns> 
+        </member>
+        <member name="M:CoreApi.Controllers.UserController.GetUsers(Core.Entity.Models.UserQueryParam)">
+            <summary>
+            获取所需用户列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.UserController.CreateUser(Core.Entity.Dto.UserAddDto)">
+            <summary>
+            添加用户
+            </summary>
+            <param name="userAddDto">用户信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.UserController.UpdateUser(Core.Entity.Dto.UserUpdateDto)">
+            <summary>
+            修改用户
+            </summary>
+            <param name="userUpdateDto">用户信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.UserController.DeleteUser(System.Guid)">
+            <summary>
+            删除用户
+            </summary>
+            <param name="userId">用户ID</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

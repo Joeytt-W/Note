@@ -1,0 +1,45 @@
+2021-04-23 10:01:51.3305 | Error | 网站启动初始化数据异常 System.Exception: 网站启动初始化数据异常
+ ---> System.ArgumentNullException: Value cannot be null. (Parameter 'value')
+   at System.Xml.Linq.XAttribute.set_Value(String value)
+   at Core.Utility.NLogUtil.EnsureNlogConfig(String nlogPath, String sqlConnectionStr) in D:\文件\我的\C#\webapi\CoreApi\CoreApi\LogHelper\NLogUtil.cs:line 61
+   at CoreApi.Program.Main(String[] args) in D:\文件\我的\C#\webapi\CoreApi\CoreApi\Program.cs:line 29
+   --- End of inner exception stack trace --- 
+ Program.Main => NLogUtil.WriteFileLog 
+
+2021-04-23 10:04:29.5871 | Error | 网站启动初始化数据异常 System.Exception: 网站启动初始化数据异常
+ ---> System.ArgumentNullException: Value cannot be null. (Parameter 'value')
+   at System.Xml.Linq.XAttribute.set_Value(String value)
+   at Core.Utility.NLogUtil.EnsureNlogConfig(String nlogPath, String sqlConnectionStr) in D:\文件\我的\C#\webapi\CoreApi\CoreApi\LogHelper\NLogUtil.cs:line 61
+   at CoreApi.Program.Main(String[] args) in D:\文件\我的\C#\webapi\CoreApi\CoreApi\Program.cs:line 29
+   --- End of inner exception stack trace --- 
+ Program.Main => NLogUtil.WriteFileLog 
+
+2021-04-23 10:33:09.5242 | Error | 网站启动初始化数据异常 System.Exception: 网站启动初始化数据异常
+ ---> System.Data.SqlClient.SqlException (0x80131904): 不能将值 NULL 插入列 'Id'，表 'TestNLog.dbo.TblLogrecords'；列不允许有 Null 值。INSERT 失败。
+语句已终止。
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite, String method)
+   at System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean asyncWrite, String methodName)
+   at System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at NLog.Targets.DatabaseTarget.ExecuteDbCommandWithParameters(LogEventInfo logEvent, IDbConnection dbConnection, IDbTransaction dbTransaction)
+   at NLog.Targets.DatabaseTarget.WriteLogEventToDatabase(LogEventInfo logEvent, String connectionString)
+   at NLog.Targets.DatabaseTarget.Write(LogEventInfo logEvent)
+   at NLog.Targets.Target.Write(AsyncLogEventInfo logEvent)
+   at NLog.Targets.Target.WriteAsyncThreadSafe(AsyncLogEventInfo logEvent)
+   at NLog.Targets.Target.WriteAsyncLogEvent(AsyncLogEventInfo logEvent)
+   at NLog.LoggerImpl.WriteToTargetWithFilterChain(Target target, FilterResult result, LogEventInfo logEvent, AsyncContinuation onException)
+   at NLog.LoggerImpl.Write(Type loggerType, TargetWithFilterChain targetsForLevel, LogEventInfo logEvent, LogFactory factory)
+   at NLog.Logger.WriteToTargets(LogEventInfo logEvent, TargetWithFilterChain targetsForLevel)
+   at NLog.Logger.Log(LogEventInfo logEvent)
+   at Core.Utility.NLogUtil.WriteDBLog(LogLevel logLevel, LogType logType, String message, Exception exception) in D:\文件\我的\C#\webapi\CoreApi\CoreApi\LogHelper\NLogUtil.cs:line 28
+   at CoreApi.Program.Main(String[] args) in D:\文件\我的\C#\webapi\CoreApi\CoreApi\Program.cs:line 35
+ClientConnectionId:457bcfce-01aa-4005-a88b-61648a732851
+Error Number:515,State:2,Class:16
+   --- End of inner exception stack trace --- 
+ Program.Main => NLogUtil.WriteFileLog 
+
