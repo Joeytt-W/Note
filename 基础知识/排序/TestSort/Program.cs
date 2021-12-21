@@ -11,10 +11,15 @@ namespace TestSort
 
             string[] strArr = new string[] { "mmmm", "mlll", "kil", "afds", "csab", "zmmmlg", "pkg" };
 
-            arr.BubbleSorting();
-            strArr.BubbleSorting();
+            arr.InsertSorting();
+            strArr.InsertSorting();
 
-            foreach(string i in strArr)
+            foreach (int i in arr)
+            {
+                Console.WriteLine(i);
+            }
+
+            foreach (string i in strArr)
             {
                 Console.WriteLine(i);
             }
