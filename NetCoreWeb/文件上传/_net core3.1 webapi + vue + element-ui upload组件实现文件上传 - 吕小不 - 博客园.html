@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<!-- saved from url=(0047)https://www.cnblogs.com/shapman/p/12272120.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="description" content="首先，先看我个人的项目结构。 这个webapi项目是专门作为图片上传的业务处理，而其中分为两个控制器：单图片上传和多图片上传。在接下来的内容主要还是针对单文件上传，对于多文件的上传，我暂且尚未研究成功">
+    <meta property="og:description" content="首先，先看我个人的项目结构。 这个webapi项目是专门作为图片上传的业务处理，而其中分为两个控制器：单图片上传和多图片上传。在接下来的内容主要还是针对单文件上传，对于多文件的上传，我暂且尚未研究成功">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>(oﾟvﾟ)ノ Hi - .net core3.1 webapi + vue + element-ui upload组件实现文件上传</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([class*="language-"]):not([highlighted]):not(.hljs) {
+        background: rgb(245, 245, 245);
+        padding: 5px;
+        border: 0px none rgb(0, 0, 0);
+        border-radius: 0px 0px 4px 4px;
+        border-color: transparent;
+        color: rgb(0, 0, 0);
+        font-family: "Source Code Pro", Consolas, Menlo, Monaco, "Courier New", monospace;
+    }:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]) code:not(.hljs) {
+            background: rgb(245, 245, 245) !important;
+            border-color: transparent !important;
+        }</style><link rel="stylesheet" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/blog-common.min.css">
+    
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/cnblogs.css">
+    <link type="text/css" rel="stylesheet" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/custom.css">
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/bundle-SimpleMemory-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/shapman/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/shapman/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/shapman/wlwmanifest.xml">
+    <script type="text/javascript" async="" src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/analytics.js.下载"></script><script type="text/javascript" src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/encoder.js.下载"></script><script>
+        var currentBlogId = 574774;
+        var currentBlogApp = 'shapman';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'SimpleMemory';
+        var visitorUserId = '';
+        var hasCustomScript = true;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function(){ return ''; } });
+            }
+        } catch(error) { }
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+    </script>
+        <script>
+            var currentPostDateAdded = '2020-02-07 10:22';
+        </script>
+    <script src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/jquery-2.2.0.min.js.下载"></script>
+    <script src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/blog-common.min.js.下载"></script><style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style><script id="hljs-script" async="" data-loaded="true" src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/highlight.min.js.下载"></script>
+    
+    
+    
+<meta http-equiv="origin-trial" content="AxujKG9INjsZ8/gUq8+dTruNvk7RjZQ1oFhhgQbcTJKDnZfbzSTE81wvC2Hzaf3TW4avA76LTZEMdiedF1vIbA4AAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="Azuce85ORtSnWe1MZDTv68qpaW3iHyfL9YbLRy0cwcCZwVnePnOmkUJlG8HGikmOwhZU22dElCcfrfX2HhrBPAkAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A16nvcdeoOAqrJcmjLRpl1I6f3McDD8EfofAYTt/P/H4/AWwB99nxiPp6kA0fXoiZav908Z8etuL16laFPUdfQsAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxBHdr0J44vFBQtZUqX9sjiqf5yWZ/OcHRcRMN3H9TH+t90V/j3ENW6C8+igBZFXMJ7G3Pr8Dd13632aLng42wgAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A88BWHFjcawUfKU3lIejLoryXoyjooBXLgWmGh+hNcqMK44cugvsI5YZbNarYvi3roc1fYbHA1AVbhAtuHZflgEAAAB2eyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IlRydXN0VG9rZW5zIiwiZXhwaXJ5IjoxNjUyNzc0NDAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A8FHS1NmdCwGqD9DwOicnHHY+y27kdWfxKa0YHSGDfv0CSpDKRHTQdQmZVPDUdaFWUsxdgVxlwAd6o+dhJykPA0AAACWeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A8zdXi6dr1hwXEUjQrYiyYQGlU3557y5QWDnN0Lwgj9ePt66XMEvNkVWOEOWPd7TP9sBQ25X0Q15Lr1Nn4oGFQkAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A4/Htern2udN9w3yJK9QgWQxQFruxOXsXL7cW60DyCl0EZFGCSme/J33Q/WzF7bBkVvhEWDlcBiUyZaim5CpFQwAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><script src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/pubads_impl_2022011408.js.下载" async=""></script><link rel="preload" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/f.txt" as="script"><script type="text/javascript" src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/f.txt"></script><link rel="stylesheet" type="text/css" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/page-common-comArticle.f4088f4f.css"><link rel="stylesheet" type="text/css" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/page-article.f4088f4f.css"><link rel="stylesheet" type="text/css" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/comBefore.f4088f4f.css"><link rel="stylesheet" type="text/css" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/fonticon.f4088f4f.css"><link rel="stylesheet" type="text/css" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/google-fonts.f4088f4f.css"></head>
+<body class="skin-simplememory no-navbar" data-bs-spy="scroll" data-bs-target="#articleDirectory" data-bs-offset="0" tabindex="0" style="overflow: auto;"><div id="dayNightSwitch" class="generalWrapper"> <div class="onOff daySwitch"> <div class="star star1"></div> <div class="star star2"></div> <div class="star star3"></div> <div class="star star4"></div> <div class="star star5"></div> <div class="star sky"></div> <div class="sunMoon"> <div class="crater crater1"></div> <div class="crater crater2"></div> <div class="crater crater3"></div> <div class="cloud part1"></div> <div class="cloud part2"></div> </div> </div> </div>
+    <a name="top" style="display: none;"></a>
+    <div id="top_nav" class="navbar forpc navbar-custom">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding"><a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/logo.svg" alt="博客园Logo"></a></li>
+                <li><a href="https://www.cnblogs.com/" onclick="countClicks(&#39;skin-navbar-sitehome&#39;)">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-brands&#39;)">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-edu&#39;)">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    <!--done-->
+<div id="home" style="margin-top: 228px;">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/shapman/"><img id="blogLogo" src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/shapman/">吕小不</a>
+</h1>
+<h2>编程的尽头是哲学</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/shapman/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E5%90%95%E5%B0%8F%E4%B8%8D">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/shapman/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 33&nbsp; </span>
+<span id="stats_article_count">文章 - 1&nbsp; </span>
+<span id="stats-comment_count">评论 - 30&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 43427">
+43427</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle post-del-title" href="https://www.cnblogs.com/shapman/p/12272120.html">
+    <span>.net core3.1 webapi + vue + element-ui upload组件实现文件上传</span>
+    
+
+
+
+</a><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p>首先，先看我个人的项目结构。</p>
+<p><a data-fancybox="gallery" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/1709656-20200207092243079-1274257127.png"><img src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/1709656-20200207092243079-1274257127.png"></a></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;这个webapi项目是专门作为图片上传的业务处理，而其中分为两个控制器：单图片上传和多图片上传。在接下来的内容主要还是针对单文件上传，对于多文件的上传，我暂且尚未研究成功。</p>
+<p>其中pictureoptions类，由于我把关于图片上传相关的配置项（保存路径、限制的文件类型和大小）写在了配置文件中，所以接下来会通过依赖注入的方式，注入到这个类中</p>
+<p>&nbsp;</p>
+<p>接下来，正式开工</p>
+<h3 tid="tid-wthQR4" id="tid-wthQR4">第一步，配置文件的设置<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p><a data-fancybox="gallery" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/1709656-20200207092936615-610351317.png"><img src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/1709656-20200207092936615-610351317.png"></a></p>
+<p>&nbsp;</p>
+<div class="cnblogs_code">
+<code-box id="code-RHQiHA"><button boxid="code-RHQiHA" type="button" class="clipboard code-copay-btn" data-clipboard-action="copy" data-clipboard-target="#code-RHQiHA pre" aria-label="复制代码"><i class="iconfont icon-fuzhi1"></i></button><div class="code-tools" style="background: rgb(245, 245, 250);"></div><pre boxid="code-RHQiHA" style="background: rgb(245, 245, 250);"><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">PictureOptions</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">: {
+</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">FileTypes</span><span style="color: rgba(128, 0, 0, 1)">"</span>: <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">.gif,.jpg,.jpeg,.png,.bmp,.GIF,.JPG,.JPEG,.PNG,.BMP</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">,
+</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">MaxSize</span><span style="color: rgba(128, 0, 0, 1)">"</span>: <span style="color: rgba(128, 0, 128, 1)">10485760</span><span style="color: rgba(0, 0, 0, 1)">,
+</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">ImageBaseUrl</span><span style="color: rgba(128, 0, 0, 1)">"</span>: <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">G:\\dotnet\\imageServer\\evaluate</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">
+}</span></pre></code-box>
+</div>
+<p><span style="background-color: rgba(255, 255, 255, 1)">然后在项目根目录下新建PictureOptions类</span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><a data-fancybox="gallery" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/copycode.gif"><img src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/copycode.gif"></a></a></span></div>
+<code-box id="code-hf2Ykt"><button boxid="code-hf2Ykt" type="button" class="clipboard code-copay-btn" data-clipboard-action="copy" data-clipboard-target="#code-hf2Ykt pre" aria-label="复制代码"><i class="iconfont icon-fuzhi1"></i></button><div class="code-tools" style="background: rgb(245, 245, 250);"></div><pre boxid="code-hf2Ykt" style="background: rgb(245, 245, 250);"><span style="color: rgba(0, 128, 128, 1)"> 1</span>     <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> PictureOptions
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 0, 1)">    {
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 4</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 允许的文件类型
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 6</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span> FileTypes { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)">; }
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 8</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 最大文件大小
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">10</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">int</span> MaxSize { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)">; }
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">12</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 图片的基地址
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">14</span>         <span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span> ImageBaseUrl { <span style="color: rgba(0, 0, 255, 1)">get</span>; <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)">; }
+</span><span style="color: rgba(0, 128, 128, 1)">15</span>     }</pre></code-box>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><a data-fancybox="gallery" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/copycode.gif"><img src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/copycode.gif"></a></a></span></div></div>
+<p>&nbsp;</p>
+<h3 tid="tid-QKrGQR" id="tid-QKrGQR">第二步，依赖注入<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p><a data-fancybox="gallery" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/1709656-20200207093313245-577601564.png"><img src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/1709656-20200207093313245-577601564.png"></a></p>
+<p><span style="background-color: rgba(255, 255, 153, 1)"><span class="cnblogs_code"><span style="color: rgba(0, 128, 128, 1)">1</span> services.Configure&lt;PictureOptions&gt;(Configuration.GetSection(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">PictureOptions</span><span style="color: rgba(128, 0, 0, 1)">"</span>)); </span><br></span></p>
+<h4 tid="tid-bymEGf" id="tid-bymEGf">在SingleImageUploadController中构造注入<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p><a data-fancybox="gallery" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/1709656-20200207093625975-1023332677.png"><img src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/1709656-20200207093625975-1023332677.png"></a></p>
+<p>&nbsp;</p>
+<p>&nbsp;这里要注意，你要把Cors跨域配置好，关于跨域，可以前往阅读我的<span style="background-color: rgba(255, 255, 153, 1)"><a href="https://www.cnblogs.com/shapman/p/12232868.html" target="_blank" rel="noopener"><span style="background-color: rgba(255, 255, 153, 1)">另一篇博文</span></a></span></p>
+<h3 tid="tid-mASGXE" id="tid-mASGXE">第三步，构建POST api<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p>在element-ui中关于upload组件的api说明文档，可以发现一个非常重要的信息</p>
+<p><a data-fancybox="gallery" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/1709656-20200207100825825-1480144498.png"><img src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/1709656-20200207100825825-1480144498.png"></a></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><a data-fancybox="gallery" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/1709656-20200207100721665-2130890439.png"><img src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/1709656-20200207100721665-2130890439.png"></a></p>
+<p>&nbsp;</p>
+<p>&nbsp;upload组件他实际是通过提交form表单的方式去请求url</p>
+<h4 tid="tid-4WzXjc" id="tid-4WzXjc">所以，后台这边，我们也是要通过form表单，获取上传的文件，具体代码如下：<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>&nbsp;</p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><a data-fancybox="gallery" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/copycode.gif"><img src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/copycode.gif"></a></a></span></div>
+<code-box id="code-YQQbaM"><button boxid="code-YQQbaM" type="button" class="clipboard code-copay-btn" data-clipboard-action="copy" data-clipboard-target="#code-YQQbaM pre" aria-label="复制代码"><i class="iconfont icon-fuzhi1"></i></button><div class="code-tools" style="background: rgb(245, 245, 250);"></div><pre boxid="code-YQQbaM" style="background: rgb(245, 245, 250);"><span style="color: rgba(0, 128, 128, 1)"> 1</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 2</span>         <span style="color: rgba(128, 128, 128, 1)">///</span><span style="color: rgba(0, 128, 0, 1)"> 上传文件
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;/summary&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 4</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;param name="file"&gt;</span><span style="color: rgba(0, 128, 0, 1)">来自form表单的文件信息</span><span style="color: rgba(128, 128, 128, 1)">&lt;/param&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 5</span>         <span style="color: rgba(128, 128, 128, 1)">///</span> <span style="color: rgba(128, 128, 128, 1)">&lt;returns&gt;&lt;/returns&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 6</span> <span style="color: rgba(0, 0, 0, 1)">        [HttpPost]
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span>         <span style="color: rgba(0, 0, 255, 1)">public</span><span style="color: rgba(0, 0, 0, 1)"> IActionResult Post([FromForm] IFormFile file)
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">        {
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span>             <span style="color: rgba(0, 0, 255, 1)">if</span> (file.Length &lt;= <span style="color: rgba(0, 0, 255, 1)">this</span>._pictureOptions.MaxSize)<span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">检查文件大小</span>
+<span style="color: rgba(0, 128, 128, 1)">10</span> <span style="color: rgba(0, 0, 0, 1)">            {
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>                 <span style="color: rgba(0, 0, 255, 1)">var</span> suffix = Path.GetExtension(file.FileName);<span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">提取上传的文件文件后缀</span>
+<span style="color: rgba(0, 128, 128, 1)">12</span>                 <span style="color: rgba(0, 0, 255, 1)">if</span> (<span style="color: rgba(0, 0, 255, 1)">this</span>._pictureOptions.FileTypes.IndexOf(suffix) &gt;= <span style="color: rgba(128, 0, 128, 1)">0</span>)<span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">检查文件格式</span>
+<span style="color: rgba(0, 128, 128, 1)">13</span> <span style="color: rgba(0, 0, 0, 1)">                {
+</span><span style="color: rgba(0, 128, 128, 1)">14</span>                     CombineIdHelper combineId = <span style="color: rgba(0, 0, 255, 1)">new</span> CombineIdHelper();<span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">我自己的combine id生成器</span>
+<span style="color: rgba(0, 128, 128, 1)">15</span>                     <span style="color: rgba(0, 0, 255, 1)">using</span> (FileStream fs = System.IO.File.Create($<span style="color: rgba(128, 0, 0, 1)">@"</span><span style="color: rgba(128, 0, 0, 1)">{this._pictureOptions.ImageBaseUrl}\{combineId.CreateId()}{suffix}</span><span style="color: rgba(128, 0, 0, 1)">"</span>))<span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">注意路径里面最好不要有中文</span>
+<span style="color: rgba(0, 128, 128, 1)">16</span> <span style="color: rgba(0, 0, 0, 1)">                    {
+</span><span style="color: rgba(0, 128, 128, 1)">17</span>                         file.CopyTo(fs);<span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">将上传的文件文件流，复制到fs中</span>
+<span style="color: rgba(0, 128, 128, 1)">18</span>                         fs.Flush();<span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">清空文件流</span>
+<span style="color: rgba(0, 128, 128, 1)">19</span> <span style="color: rgba(0, 0, 0, 1)">                    }
+</span><span style="color: rgba(0, 128, 128, 1)">20</span>                     <span style="color: rgba(0, 0, 255, 1)">return</span> StatusCode(<span style="color: rgba(128, 0, 128, 1)">200</span>, <span style="color: rgba(0, 0, 255, 1)">new</span> { newFileName = $<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">{combineId.LastId}{suffix}</span><span style="color: rgba(128, 0, 0, 1)">"</span> });<span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">将新文件文件名回传给前端</span>
+<span style="color: rgba(0, 128, 128, 1)">21</span> <span style="color: rgba(0, 0, 0, 1)">                }
+</span><span style="color: rgba(0, 128, 128, 1)">22</span>                 <span style="color: rgba(0, 0, 255, 1)">else</span>
+<span style="color: rgba(0, 128, 128, 1)">23</span>                     <span style="color: rgba(0, 0, 255, 1)">return</span> StatusCode(<span style="color: rgba(128, 0, 128, 1)">415</span>, <span style="color: rgba(0, 0, 255, 1)">new</span> { msg = <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">不支持此文件类型</span><span style="color: rgba(128, 0, 0, 1)">"</span> });<span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">类型不正确</span>
+<span style="color: rgba(0, 128, 128, 1)">24</span> <span style="color: rgba(0, 0, 0, 1)">            }
+</span><span style="color: rgba(0, 128, 128, 1)">25</span>             <span style="color: rgba(0, 0, 255, 1)">else</span>
+<span style="color: rgba(0, 128, 128, 1)">26</span>                 <span style="color: rgba(0, 0, 255, 1)">return</span> StatusCode(<span style="color: rgba(128, 0, 128, 1)">413</span>, <span style="color: rgba(0, 0, 255, 1)">new</span> { msg = $<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">文件大小不得超过{this._pictureOptions.MaxSize / (1024f * 1024f)}M</span><span style="color: rgba(128, 0, 0, 1)">"</span> });<span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">请求体过大，文件大小超标</span>
+<span style="color: rgba(0, 128, 128, 1)">27</span>         }</pre></code-box>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><a data-fancybox="gallery" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/copycode.gif"><img src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/copycode.gif"></a></a></span></div></div>
+<h3 tid="tid-JnGmfQ" id="tid-JnGmfQ">第四步，配置前端vue项目<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><a data-fancybox="gallery" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/copycode.gif"><img src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/copycode.gif"></a></a></span></div>
+<code-box id="code-kfatDK"><button boxid="code-kfatDK" type="button" class="clipboard code-copay-btn" data-clipboard-action="copy" data-clipboard-target="#code-kfatDK pre" aria-label="复制代码"><i class="iconfont icon-fuzhi1"></i></button><div class="code-tools" style="background: rgb(245, 245, 250);"></div><pre boxid="code-kfatDK" style="background: rgb(245, 245, 250);"><span style="color: rgba(0, 128, 128, 1)"> 1</span>         <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">el-upload
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span>           <span style="color: rgba(255, 0, 0, 1)">action</span><span style="color: rgba(0, 0, 255, 1)">="http://192.168.43.73:5008/api/SingleImageUpload"</span>
+<span style="color: rgba(0, 128, 128, 1)"> 3</span> <span style="color: rgba(255, 0, 0, 1)">          list-type</span><span style="color: rgba(0, 0, 255, 1)">="picture-card"</span>
+<span style="color: rgba(0, 128, 128, 1)"> 4</span> <span style="color: rgba(255, 0, 0, 1)">          :on-preview</span><span style="color: rgba(0, 0, 255, 1)">="handlePictureCardPreview"</span>
+<span style="color: rgba(0, 128, 128, 1)"> 5</span> <span style="color: rgba(255, 0, 0, 1)">          :on-remove</span><span style="color: rgba(0, 0, 255, 1)">="handleRemove"</span>
+<span style="color: rgba(0, 128, 128, 1)"> 6</span> <span style="color: rgba(255, 0, 0, 1)">          :on-success</span><span style="color: rgba(0, 0, 255, 1)">="handleUploadSuccess"</span>
+<span style="color: rgba(0, 128, 128, 1)"> 7</span> <span style="color: rgba(255, 0, 0, 1)">          :on-error</span><span style="color: rgba(0, 0, 255, 1)">="handleUploadError"</span>
+<span style="color: rgba(0, 128, 128, 1)"> 8</span>         <span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)"> 9</span>           <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">i </span><span style="color: rgba(255, 0, 0, 1)">class</span><span style="color: rgba(0, 0, 255, 1)">="el-icon-plus"</span><span style="color: rgba(0, 0, 255, 1)">&gt;&lt;/</span><span style="color: rgba(128, 0, 0, 1)">i</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">10</span>         <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">el-upload</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">11</span>         <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">el-dialog </span><span style="color: rgba(255, 0, 0, 1)">:visible.sync</span><span style="color: rgba(0, 0, 255, 1)">="dialogVisible"</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">12</span>           <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">img </span><span style="color: rgba(255, 0, 0, 1)">width</span><span style="color: rgba(0, 0, 255, 1)">="100%"</span><span style="color: rgba(255, 0, 0, 1)"> :src</span><span style="color: rgba(0, 0, 255, 1)">="dialogImageUrl"</span><span style="color: rgba(255, 0, 0, 1)"> alt </span><span style="color: rgba(0, 0, 255, 1)">/&gt;</span>
+<span style="color: rgba(0, 128, 128, 1)">13</span>         <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">el-dialog</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span></pre></code-box>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><a data-fancybox="gallery" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/copycode.gif"><img src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/copycode.gif"></a></a></span></div></div>
+<p>然后是method</p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><a data-fancybox="gallery" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/copycode.gif"><img src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/copycode.gif"></a></a></span></div>
+<code-box id="code-xtkXpr"><button boxid="code-xtkXpr" type="button" class="clipboard code-copay-btn" data-clipboard-action="copy" data-clipboard-target="#code-xtkXpr pre" aria-label="复制代码"><i class="iconfont icon-fuzhi1"></i></button><div class="code-tools" style="background: rgb(245, 245, 250);"></div><pre boxid="code-xtkXpr" style="background: rgb(245, 245, 250);"><span style="color: rgba(0, 128, 128, 1)"> 1</span> <span style="color: rgba(0, 0, 0, 1)">  data () {
+</span><span style="color: rgba(0, 128, 128, 1)"> 2</span>     <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> {
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span>       dialogImageUrl: ''<span style="color: rgba(0, 0, 0, 1)">,
+</span><span style="color: rgba(0, 128, 128, 1)"> 4</span>       dialogVisible: <span style="color: rgba(0, 0, 255, 1)">false</span><span style="color: rgba(0, 0, 0, 1)">,
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span> <span style="color: rgba(0, 0, 0, 1)">      images: []
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span> <span style="color: rgba(0, 0, 0, 1)">  },
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 0, 1)">  methods: {
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span> <span style="color: rgba(0, 0, 0, 1)">    handleRemove (file, fileList) {
+</span><span style="color: rgba(0, 128, 128, 1)">10</span>       <span style="color: rgba(0, 0, 255, 1)">this</span>.images.forEach((element, index, arr) =&gt;<span style="color: rgba(0, 0, 0, 1)"> {
+</span><span style="color: rgba(0, 128, 128, 1)">11</span>         <span style="color: rgba(0, 0, 255, 1)">if</span> (file.name ===<span style="color: rgba(0, 0, 0, 1)"> element.oldFile.name) {
+</span><span style="color: rgba(0, 128, 128, 1)">12</span>           arr.splice(index, 1<span style="color: rgba(0, 0, 0, 1)">)
+</span><span style="color: rgba(0, 128, 128, 1)">13</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">14</span> <span style="color: rgba(0, 0, 0, 1)">      })
+</span><span style="color: rgba(0, 128, 128, 1)">15</span>       console.log(<span style="color: rgba(0, 0, 255, 1)">this</span><span style="color: rgba(0, 0, 0, 1)">.images)
+</span><span style="color: rgba(0, 128, 128, 1)">16</span> <span style="color: rgba(0, 0, 0, 1)">    },
+</span><span style="color: rgba(0, 128, 128, 1)">17</span> <span style="color: rgba(0, 0, 0, 1)">    handlePictureCardPreview (file) {
+</span><span style="color: rgba(0, 128, 128, 1)">18</span>       <span style="color: rgba(0, 0, 255, 1)">this</span>.dialogImageUrl =<span style="color: rgba(0, 0, 0, 1)"> file.url
+</span><span style="color: rgba(0, 128, 128, 1)">19</span>       <span style="color: rgba(0, 0, 255, 1)">this</span>.dialogVisible = <span style="color: rgba(0, 0, 255, 1)">true</span>
+<span style="color: rgba(0, 128, 128, 1)">20</span> <span style="color: rgba(0, 0, 0, 1)">    },
+</span><span style="color: rgba(0, 128, 128, 1)">21</span> <span style="color: rgba(0, 0, 0, 1)">    handleUploadSuccess (response, file, fileList) {
+</span><span style="color: rgba(0, 128, 128, 1)">22</span> <span style="color: rgba(0, 0, 0, 1)">      console.log(response)
+</span><span style="color: rgba(0, 128, 128, 1)">23</span> <span style="color: rgba(0, 0, 0, 1)">      console.log(file)
+</span><span style="color: rgba(0, 128, 128, 1)">24</span> <span style="color: rgba(0, 0, 0, 1)">      console.log(fileList)
+</span><span style="color: rgba(0, 128, 128, 1)">25</span>       <span style="color: rgba(0, 0, 255, 1)">this</span><span style="color: rgba(0, 0, 0, 1)">.images.push({
+</span><span style="color: rgba(0, 128, 128, 1)">26</span>         newFileName: response.newFileName, <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 服务器端的新文件名，即后端回调过来的数据</span>
+<span style="color: rgba(0, 128, 128, 1)">27</span> <span style="color: rgba(0, 0, 0, 1)">        oldFile: {
+</span><span style="color: rgba(0, 128, 128, 1)">28</span>           name: file.name, <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 上传之前的文件名，客户端的</span>
+<span style="color: rgba(0, 128, 128, 1)">29</span>           url: file.url <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 页面显示上传的图片的src属性绑定用的</span>
+<span style="color: rgba(0, 128, 128, 1)">30</span> <span style="color: rgba(0, 0, 0, 1)">        }
+</span><span style="color: rgba(0, 128, 128, 1)">31</span> <span style="color: rgba(0, 0, 0, 1)">      })
+</span><span style="color: rgba(0, 128, 128, 1)">32</span> <span style="color: rgba(0, 0, 0, 1)">    },
+</span><span style="color: rgba(0, 128, 128, 1)">33</span> <span style="color: rgba(0, 0, 0, 1)">    handleUploadError (response, file, fileList) {
+</span><span style="color: rgba(0, 128, 128, 1)">34</span>       <span style="color: rgba(0, 0, 255, 1)">this</span><span style="color: rgba(0, 0, 0, 1)">.$message.error(JSON.parse(response.message).msg)
+</span><span style="color: rgba(0, 128, 128, 1)">35</span> <span style="color: rgba(0, 0, 0, 1)">    }
+</span><span style="color: rgba(0, 128, 128, 1)">36</span>   }</pre></code-box>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><a data-fancybox="gallery" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/copycode.gif"><img src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/copycode.gif"></a></a></span></div></div>
+<p>&nbsp;这里面注意各个handle中频繁出现的三个参数：response 、 file 和 fileList</p>
+<p>&nbsp;其中response，就是后端发送过来的数据</p>
+<p>&nbsp;file：单文件上传时，他包含了该文件所有信息</p>
+<p>&nbsp;fileList：指的是多文件上传所包含的文件信息</p>
+<div> <nav id="articleDirectory" style="top: 233px; right: 0px;"> <ul class="nav nav-pills"> <li class="nav-item articleDirectory-overflow"><a class="nav-link articleDirectory-overflow" href="https://www.cnblogs.com/shapman/p/12272120.html#tid-wthQR4" goto="tid-wthQR4" onclick="return false;">第一步，配置文件的设置</a></li><li class="nav-item articleDirectory-overflow"><a class="nav-link articleDirectory-overflow" href="https://www.cnblogs.com/shapman/p/12272120.html#tid-QKrGQR" goto="tid-QKrGQR" onclick="return false;">第二步，依赖注入</a></li><li class="nav-item articleDirectory-overflow"><a class="nav-link articleDirectory-overflow" href="https://www.cnblogs.com/shapman/p/12272120.html#tid-bymEGf" goto="tid-bymEGf" onclick="return false;">&nbsp;&nbsp;&nbsp;&nbsp;在SingleImageUploadController中构造注入</a></li><li class="nav-item articleDirectory-overflow"><a class="nav-link articleDirectory-overflow" href="https://www.cnblogs.com/shapman/p/12272120.html#tid-mASGXE" goto="tid-mASGXE" onclick="return false;">第三步，构建POST api</a></li><li class="nav-item articleDirectory-overflow"><a class="nav-link articleDirectory-overflow" href="https://www.cnblogs.com/shapman/p/12272120.html#tid-4WzXjc" goto="tid-4WzXjc" onclick="return false;">&nbsp;&nbsp;&nbsp;&nbsp;所以，后台这边，我们也是要通过form表单，获取上传的文件，具体代码如下：</a></li><li class="nav-item articleDirectory-overflow"><a class="nav-link articleDirectory-overflow" href="https://www.cnblogs.com/shapman/p/12272120.html#tid-JnGmfQ" goto="tid-JnGmfQ" onclick="return false;">第四步，配置前端vue项目</a></li> </ul> </nav> </div><span class="articleSuffix-flg"> <br><p class="essaySuffix-eof">__EOF__</p> <div id="articleSuffix"> <div class="articleSuffix-bg"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 147.78 155.96"> <path d="M10.5,99.81a1.9,1.9,0,0,0-.53-.09,1.66,1.66,0,0,0-1.64,1.65A1.64,1.64,0,0,0,10,103a1.57,1.57,0,0,0,.87-.25l26.76,26.82.45-1.08L11.52,101.91A1.65,1.65,0,0,0,10.5,99.81Zm-.13,2a.57.57,0,0,1-.8,0,.58.58,0,0,1-.17-.41.58.58,0,0,1,.57-.57h0a.57.57,0,0,1,.56.58A.55.55,0,0,1,10.37,101.77Z" style="fill:#c5c9e0"></path><path d="M56.15,117.58H39.06l0-.09a1.65,1.65,0,0,0-1.36-1H37.5a1.65,1.65,0,1,0,1.56,2.19H55.7L92.92,156h41.44v-1.08h-41Zm-18.25.94a.56.56,0,0,1-.79,0,.58.58,0,0,1-.17-.41.57.57,0,0,1,.56-.57h0a.58.58,0,0,1,.57.58A.54.54,0,0,1,37.9,118.52Z" style="fill:#c5c9e0"></path><path d="M23.52,50.32a1.65,1.65,0,0,0,1.55-1.11H55.28l48-48.13h31.06V0H102.85l-48,48.13H25.07a1.64,1.64,0,0,0-2.09-1,1.64,1.64,0,0,0,.54,3.2Zm0-2.21a.57.57,0,0,1,0,1.13.57.57,0,1,1,0-1.13Z" style="fill:#c5c9e0"></path><polygon points="102.86 0 102.86 0 102.86 0 102.86 0" style="fill:#c5c9e0"></polygon><path d="M107.72,12.14h26.64V11.07H107.27L57.4,61H3.09a1.66,1.66,0,0,0-1.45-.86H1.52A1.65,1.65,0,1,0,2.81,63a1.59,1.59,0,0,0,.45-.87H57.85ZM2.05,62.23a.57.57,0,0,1-.8,0,.58.58,0,0,1-.17-.41.57.57,0,0,1,.56-.57h.09a.57.57,0,0,1,.32,1Z" style="fill:#c5c9e0"></path><path d="M134.36,43.22V42.14h-22.3l-9.62,9.63a1.64,1.64,0,0,0-2.19.77,1.61,1.61,0,0,0-.17.71,1.65,1.65,0,1,0,3.29,0,1.61,1.61,0,0,0-.16-.72l9.3-9.32Zm-32.64,10.6a.57.57,0,0,1,0-1.13.57.57,0,0,1,0,1.13Z" style="fill:#c5c9e0"></path><path d="M147,52.3l-9,9H111.48a1.64,1.64,0,0,0-1.61-1.33h-.14a1.65,1.65,0,1,0,1.6,2.41h27.19l9.26-9.29L147,52.3Zm-37.15,9.85a.56.56,0,0,1-.56-.57h0a.56.56,0,0,1,.56-.56h0a.57.57,0,1,1,0,1.13Z" style="fill:#c5c9e0"></path><path d="M66.79,75.35l11,11.06h56.53V85.33H78.27l-11-11.06H49.49L37.12,86.67a1.64,1.64,0,0,0-2.09,1,1.61,1.61,0,0,0-.09.54,1.65,1.65,0,0,0,3.29,0,1.68,1.68,0,0,0-.26-.89l12-12ZM36.58,88.79a.57.57,0,1,1,.57-.56A.57.57,0,0,1,36.58,88.79Z" style="fill:#c5c9e0"></path><path d="M110.61,95.55,92.8,113.4a1.62,1.62,0,1,0,.77.76l17.49-17.53h23.31V95.55ZM92.49,115.28a.56.56,0,0,1-.8,0,.58.58,0,0,1-.17-.41.57.57,0,0,1,.57-.57h0a.58.58,0,0,1,.56.58A.55.55,0,0,1,92.49,115.28Z" style="fill:#c5c9e0"></path><path d="M97.89,122.3H76.62L64.2,109.85a1.65,1.65,0,0,0-.77-2.2,1.77,1.77,0,0,0-.72-.17h-.14a1.65,1.65,0,0,0,.15,3.29,1.58,1.58,0,0,0,.71-.17l12.74,12.77H98.34l17.48-17.52h18.54v-1.08h-19ZM63.12,109.53a.56.56,0,0,1-.8,0,.58.58,0,0,1-.17-.41.57.57,0,0,1,1.14,0A.54.54,0,0,1,63.12,109.53Z" style="fill:#c5c9e0"></path> </svg> </div> <div class="articleSuffix-left"> <a data-fancybox="gallery" href="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/20200124202737.png"><img src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/20200124202737.png"></a> </div> <div class="articleSuffix-right"> <item> <li> <b>本文作者：</b> <a href="https://www.cnblogs.com/shapman" target="_blank">吕小不</a> </li> <li> <b>本文链接：</b> <a href="https://www.cnblogs.com/shapman/p/12272120.html" target="_blank">https://www.cnblogs.com/shapman/p/12272120.html</a> </li> <li> <b>关于博主：</b> 评论和私信会在第一时间回复。或者<a href="https://msg.cnblogs.com/msg/send/shapman" target="_blank">直接私信</a>我。 </li> <li> <b>版权声明：</b> 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" alt="BY-NC-SA" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！ </li> <li> <b>声援博主：</b> 如果您觉得文章对您有帮助，可以点击文章右下角<strong><span style="color: #ff0000; font-size: 12pt;">【<a id="post-up" onclick="votePost(12272120,&#39;Digg&#39;)" href="javascript:void(0);">推荐</a>】</span></strong>一下。 </li> </item> </div> <div style="clear:both"></div> </div> </span></div>
+<div class="clear"></div>
+<div id="blog_post_info_block"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/shapman/category/1637744.html" target="_blank"><span class="iconfont icon-marketing_fill"></span>.net core</a>,             <a href="https://www.cnblogs.com/shapman/category/1638238.html" target="_blank"><span class="iconfont icon-marketing_fill"></span>vue</a></div>
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(12272120,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a><button class="custom-btn btn-11" onclick="DiggIt(12272120,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">推荐该文<div class="dot"></div></button>
+        <a id="green_channel_follow" onclick="follow(&#39;5c7c9eac-f65f-47e5-17a3-08d6e92ebcfd&#39;);" href="javascript:void(0);">关注我</a><button class="custom-btn btn-12" onclick="follow(&#39;5c7c9eac-f65f-47e5-17a3-08d6e92ebcfd&#39;);"><span>关注博主</span><span>关注博主</span></button>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a><button class="custom-btn btn-7" onclick="AddToWz(cb_entryId);return false;"><span>收藏本文</span></button>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/icon_weibo_24.png" alt=""></a><button class="custom-btn btn-15" onclick="ShareToTsina()">分享微博</button>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/wechat.png" alt=""></a><button class="custom-btn btn-13" onclick="shareOnWechat()">分享微信</button>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/shapman/" target="_blank"><img src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/20200124202737.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/shapman/">吕小不</a><br>
+            <a href="https://home.cnblogs.com/u/shapman/followees/">关注 - 6</a><br>
+            <a href="https://home.cnblogs.com/u/shapman/followers/">粉丝 - 11</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;5c7c9eac-f65f-47e5-17a3-08d6e92ebcfd&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(12272120,&#39;Digg&#39;)"><i class="iconfont icon-zan1"></i>
+        <span class="diggnum" id="digg_count">2</span>
+    </div>
+    <div class="buryit" onclick="votePost(12272120,&#39;Bury&#39;)"><i class="iconfont icon-buzan"></i>
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/shapman/p/12268141.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/shapman/p/12268141.html" title="发布于 2020-02-06 11:57">.net core控制台使用log4net</a>
+    <br>
+    <a href="https://www.cnblogs.com/shapman/p/12303479.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/shapman/p/12303479.html" title="发布于 2020-02-13 14:17">阿里云的学生机如何开放全部端口</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc" style="display: block;">posted @ 
+<span id="post-date">2020-02-07 10:22</span>&nbsp;
+<a href="https://www.cnblogs.com/shapman/">吕小不</a>&nbsp;
+阅读(<span id="post_view_count">4268</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=12272120" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(12272120);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;12272120&#39;, targetLink: &#39;https://www.cnblogs.com/shapman/p/12272120.html&#39;, title: &#39;.net core3.1 webapi + vue + element-ui upload组件实现文件上传&#39; })">举报</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+
+<script>
+    markdown_highlight()
+    var allowComments = true, cb_blogId = 574774, cb_blogApp = 'shapman', cb_blogUserGuid = '5c7c9eac-f65f-47e5-17a3-08d6e92ebcfd';
+    var cb_entryId = 12272120, cb_entryCreatedDate = '2020-02-07 10:22', cb_postType = 1;
+    updatePostStats(
+        [cb_entryId],
+        function(id, count) { $("#post_view_count").text(count) },
+        function(id, count) { $("#post_comment_count").text(count) })
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+</script>
+<a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/shapman/p/12272120.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/shapman/p/12272120.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="cnblogs_ch"><a href="https://cloud.baidu.com/campaign/2022/index.html?track=cp:bokeyuan|pf:pc|pp:H-bokeyuan-22xinchun-neiyewenzilian-cpa|pu:22xinchun-neiyewenzilian-cpa|ci:22xinchun|kw:10549392" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-百度智能云&#39;})">【推荐】百度智能云 2022 新春嘉年华：云上迎新春，开心过大年</a><br><a href="https://www.cnblogs.com/cmt/p/15768371.html" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-博客园&#39;})">【推荐】发布 VSCode 插件 Cnblogs Client For VSCode 预览版</a><br><a href="https://www.cnblogs.com/cmt/p/15788104.html" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-博客园&#39;})">【推荐】园子的不务正业：开始做华为云代理业务，期待您的支持</a><br><a href="https://brands.cnblogs.com/huawei" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-华为专区&#39;})">【推荐】华为开发者专区，与开发者一起构建万物互联的智能世界</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card" style="display: none;">
+            <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px; display: none;" data-google-query-id="CJ-b4r6EyvUCFVluvQodz98Byg"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none; width: 300px; height: 0px;"></div></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/yexiaochai/p/15834794.html" target="_blank">技术部如何做复盘——“年终盘点一对一”想要进步的同学</a>
+    <br>
+· <a href="https://www.cnblogs.com/lyosaki88/p/15795323.html" target="_blank">高并发场景案例分享（二）count实时查询之坑</a>
+    <br>
+· <a href="https://www.cnblogs.com/dragonir/p/15824939.html" target="_blank">使用 Three.js 制作一个专属3D奖牌</a>
+    <br>
+· <a href="https://www.cnblogs.com/coco1s/p/15821173.html" target="_blank">巧用 CSS 实现动态线条 Loading 动画</a>
+    <br>
+· <a href="https://www.cnblogs.com/Jinfeng1213/p/15813900.html" target="_blank">Abp vnext EFCore 实现动态上下文 DbSet 踩坑记</a>
+    <br>
+</div></div>
+        <div id="cnblogs_c2" class="under-post-card">
+            <a href="https://cloud.baidu.com/campaign/2022/index.html?track=cp:bokeyuan|pf:pc|pp:H-bokeyuan-22xinchun-bokeneiyebowenxiafangC2-cpa|pu:22xinchun-bokeneiyebowenxiafangC2-cpa|ci:22xinchun|kw:10549393" rel="nofollow" target="_blank" onclick="countCreativeClicks(&#39;C2-百度智能云&#39;)">
+                <img src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/35695-20220120183038073-180863177.jpg" alt="" onload="countCreativeImpressions(&#39;C2-百度智能云&#39;)">
+            </a>
+        </div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/711618/" target="_blank">资本热炒的预制菜，年轻人不买账？</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/711617/" target="_blank">米读救不了趣头条</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/711616/" target="_blank">大厂年会，“卷”不动了</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/711615/" target="_blank">大学教授演讲：游戏平衡这门课都讲了些什么？</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/711614/" target="_blank">宁德做换电，到底图个啥？</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+
+                window.tocManager.displayDisableTocTips = false;
+                window.tocManager.generateToc();
+            setTimeout(function() { incrementViewCount(cb_entryId); }, 50);        deliverT2();
+        deliverC1C2();
+        loadNewsAndKb();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+        loadOptUnderPost();
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem"><div class="main-header" id="main-header" style="height: 40vh; background: url(&quot;https://cdn.cnblogs.com/jsDelivr/gh/BNDong/Cnblogs-Theme-SimpleMemory@v2.0.9/dist/images/6d995b207bae4175ff28.webp&quot;) center center / cover no-repeat rgb(34, 34, 34);"> <div id="nhBannerAnimation"> <ul class="circles"> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> </ul> </div> <div class="vertical"> <div class="main-header-content inner" style="max-width: 100vw;"> <h1 class="page-title" id="homeTopTitle" style="display: none;"><span></span></h1> <h2 class="page-description" id="hitokoto"></h2> <h3 class="page-author" id="hitokotoAuthor"></h3> <h1 class="sb-title" id="sbTitle"> <span id="sbTitleText" style="color:#fff">
+    .net core3.1 webapi + vue + element-ui upload组件实现文件上传
+    
+
+
+</span> <span id="sbTitleConsole" style="visibility: hidden;">_</span> </h1> <p class="article-info" id="articleInfo"><p class="article-info-text"><span class="postMeta"><i class="iconfont icon-time1"></i>20/02/07 10:22<i class="iconfont icon-browse"></i>4268<i class="iconfont icon-interactive"></i>0<i class="iconfont icon-hot"></i>2<br><i class="iconfont icon-wenzi4"></i>4582<i class="iconfont icon-shangwutubiao-"></i>9:09 ~ 15:16</span></p><a href="https://www.cnblogs.com/shapman/category/1637744.html" target="_blank"><span class="article-info-tag article-tag-class-color">.net core</span></a><a href="https://www.cnblogs.com/shapman/category/1638238.html" target="_blank"><span class="article-info-tag article-tag-class-color">vue</span></a></p> </div> </div> <a class="scroll-down" href="javascript:void(0);" data-offset="-45" style="display: none;"> <span class="hidden">Scroll Down</span> <i class="scroll-down-icon iconfont icon-fanhui"></i> </a> </div><div class="container"> <div class="menu-wrap optiscroll is-enabled" id="menuWrap" style="display:none"><div class=" optiscroll-content" style="right: -3px; bottom: -3px;"> <nav class="menu"> <div class="introduce-box" style="background: url(&quot;https://cdn.cnblogs.com/jsDelivr/gh/BNDong/Cnblogs-Theme-SimpleMemory@v2.0.9/dist/images/82deab5871314fe2ef83.webp&quot;) center center / 100% no-repeat rgb(0, 0, 0);"> <div class="introduce-head"> <div class="introduce-via" id="menuBlogAvatar"><img src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/20200124202737.png"></div> </div> <div id="introduce">
+        昵称：
+        <a href="https://home.cnblogs.com/u/shapman/">
+            吕小不
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/shapman/" title="入园时间：2019-06-07">
+            2年7个月
+        </a>
+        <br>
+        粉丝：
+        <a href="https://home.cnblogs.com/u/shapman/followers/">
+            11
+        </a>
+        <br>
+        关注：
+        <a href="https://home.cnblogs.com/u/shapman/followees/">
+            6
+        </a>
+        <div id="p_b_follow">
+<a href="javascript:void(0)" onclick="follow(&#39;5c7c9eac-f65f-47e5-17a3-08d6e92ebcfd&#39;)">+加关注</a></div>
+        
+    </div> </div> <div class="nav-title"></div> <div class="icon-list"> <ul id="m-nav-list"> <li> <a href="https://www.cnblogs.com/shapman" target="_self"> <i class="iconfont icon-homepage_fill"></i>首页 </a> </li> <li> <a href="https://msg.cnblogs.com/send/shapman" target="_blank"> <i class="iconfont icon-zhifeiji"></i>联系 </a> </li> <li> <a href="javascript:void(0)" onclick="$(&quot;#blog_nav_rss&quot;).trigger(&quot;click&quot;)" data-rss="https://www.cnblogs.com/shapman/rss/"> <i class="iconfont icon-qinmifu"></i>订阅 </a> </li> <li> <a href="https://i.cnblogs.com/" target="_blank"> <i class="iconfont icon-setup_fill"></i>管理 </a> </li></ul> </div> <span id="calendar-box"><div id="blog-calendar" style="visibility: visible;">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2021/12/24&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2022年1月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2022/02/24&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">26</td>
+                            <td class="CalOtherMonthDay" align="center">27</td>
+                            <td class="CalOtherMonthDay" align="center">28</td>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                            <td class="CalOtherMonthDay" align="center">31</td>
+                    <td class="CalWeekendDay" align="center">
+                        1
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            2
+                        </td>
+                            <td class="" align="center">
+                                3
+                            </td>
+                            <td class="" align="center">
+                                4
+                            </td>
+                            <td class="" align="center">
+                                5
+                            </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            8
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            9
+                        </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                            <td class="" align="center">
+                                11
+                            </td>
+                            <td class="" align="center">
+                                12
+                            </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            15
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            16
+                        </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                            <td class="" align="center">
+                                18
+                            </td>
+                            <td class="" align="center">
+                                19
+                            </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            22
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            23
+                        </td>
+                            <td class="CalTodayDay" align="center">
+                                24
+                            </td>
+                            <td class="" align="center">
+                                25
+                            </td>
+                            <td class="" align="center">
+                                26
+                            </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            29
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            30
+                        </td>
+                            <td class="" align="center">
+                                31
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                1
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                2
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            5
+                        </td>
+                </tr>
+    </tbody>
+</table></div></span> <div class="m-list-title" style="display: block;"><span>找找看</span></div> <div class="m-icon-list" id="sb-sidebarSearchBox"><div id="sb_widget_my_zzk" class="div_my_zzk"><input id="q" type="text" onkeydown="return zzk_go_enter(event);" class="input_my_zzk"></div></div> <div class="m-list-title"><span>积分排名<span class="iconfont icon-select m-list-title-select"></span></span> </div> <div class="m-icon-list" id="sb-sidebarScorerank"></div> <span id="menuCustomList"></span> <div class="m-list-title"><span>最新随笔<span class="iconfont icon-select m-list-title-select"></span></span> </div> <div class="m-icon-list" id="sb-sidebarRecentposts"></div> <div class="m-list-title"><span>我的标签<span class="iconfont icon-select m-list-title-select"></span></span> </div> <div class="m-icon-list" id="sb-toptags"></div> <div class="m-list-title" style="display: block;"><span>随笔分类<span class="iconfont icon-select m-list-title-select"></span></span> </div> <div class="m-icon-list" id="sb-classify"><div><ul><li><a href="https://www.cnblogs.com/shapman/category/1637744.html" class="category-item-link" rel="" target=""><span class="iconfont icon-marketing_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>.net core(16)</a></li><li><a href="https://www.cnblogs.com/shapman/category/1834356.html" class="category-item-link" rel="" target=""><span class="iconfont icon-marketing_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>docker(4)</a></li><li><a href="https://www.cnblogs.com/shapman/category/1921308.html" class="category-item-link" rel="" target=""><span class="iconfont icon-marketing_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>elasticsearch(1)</a></li><li><a href="https://www.cnblogs.com/shapman/category/1891092.html" class="category-item-link" rel="" target=""><span class="iconfont icon-marketing_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>git(1)</a></li><li><a href="https://www.cnblogs.com/shapman/category/1652768.html" class="category-item-link" rel="" target=""><span class="iconfont icon-marketing_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>Linux(5)</a></li><li><a href="https://www.cnblogs.com/shapman/category/1638238.html" class="category-item-link" rel="" target=""><span class="iconfont icon-marketing_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>vue(5)</a></li><li><a href="https://www.cnblogs.com/shapman/category/1646657.html" class="category-item-link" rel="" target=""><span class="iconfont icon-marketing_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>阿里云(1)</a></li><li><a href="https://www.cnblogs.com/shapman/category/1938939.html" class="category-item-link" rel="" target=""><span class="iconfont icon-marketing_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>工具(1)</a></li><li><a href="https://www.cnblogs.com/shapman/category/1657673.html" class="category-item-link" rel="" target=""><span class="iconfont icon-marketing_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>爬虫(1)</a></li><li><a href="https://www.cnblogs.com/shapman/category/1643025.html" class="category-item-link" rel="" target=""><span class="iconfont icon-marketing_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>前端(2)</a></li><li><a href="https://www.cnblogs.com/shapman/category/1660612.html" class="category-item-link" rel="" target=""><span class="iconfont icon-marketing_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>设计模式(3)</a></li><li><a href="https://www.cnblogs.com/shapman/category/1791257.html" class="category-item-link" rel="" target=""><span class="iconfont icon-marketing_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>微信小程序(1)</a></li><li><a href="https://www.cnblogs.com/shapman/category/1791253.html" class="category-item-link" rel="" target=""><span class="iconfont icon-marketing_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>语言(1)</a></li><li><a href="https://www.cnblogs.com/shapman/category/2008762.html" class="category-item-link" rel="" target=""><span class="iconfont icon-marketing_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>运维(1)</a></li></ul></div></div> <div class="m-list-title"><span>文章分类<span class="iconfont icon-select m-list-title-select"></span></span> </div> <div class="m-icon-list" id="sb-ArticleCategory"></div> <div class="m-list-title" style="display: block;"><span>阅读排行<span class="iconfont icon-select m-list-title-select"></span></span> </div> <div class="m-icon-list" id="sb-topview"><div><ul><li><a href="https://www.cnblogs.com/shapman/p/12347433.html"><span class="iconfont icon-browse_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>centos7.x中安装SQL Server(8174)</a></li><li><a href="https://www.cnblogs.com/shapman/p/13172995.html"><span class="iconfont icon-browse_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>小程序地理位置授权，以及无法打开授权弹框的解决办法(5344)</a></li><li><a href="https://www.cnblogs.com/shapman/p/12272120.html"><span class="iconfont icon-browse_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>.net core3.1 webapi + vue + element-ui upload组件实现文件上传(4268)</a></li><li><a href="https://www.cnblogs.com/shapman/p/12232640.html"><span class="iconfont icon-browse_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>.net core3.1 web api中使用newtonsoft替换掉默认的json序列化组件(3749)</a></li><li><a href="https://www.cnblogs.com/shapman/p/12242675.html"><span class="iconfont icon-browse_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>vue2.x中使用三元表达式绑定class的时候遇到的坑(3266)</a></li></ul></div></div> <div class="m-list-title" style="display: block;"><span>推荐排行<span class="iconfont icon-select m-list-title-select"></span></span> </div> <div class="m-icon-list" id="sb-topDiggPosts"><div><ul><li><a href="https://www.cnblogs.com/shapman/p/12347433.html"><span class="iconfont icon-like_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>centos7.x中安装SQL Server(3)</a></li><li><a href="https://www.cnblogs.com/shapman/p/12272120.html"><span class="iconfont icon-like_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>.net core3.1 webapi + vue + element-ui upload组件实现文件上传(2)</a></li><li><a href="https://www.cnblogs.com/shapman/p/12232868.html"><span class="iconfont icon-like_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>.net core3.1 webapi + vue.js + axios实现跨域(2)</a></li><li><a href="https://www.cnblogs.com/shapman/p/13747762.html"><span class="iconfont icon-like_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>.net core在Docker-&gt;Linux及Window平台环境变量的获取的兼容(1)</a></li><li><a href="https://www.cnblogs.com/shapman/p/13545457.html"><span class="iconfont icon-like_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>使用docker部署.net core3.1时的Dockerfile写法（持续补充）(1)</a></li></ul></div></div> <div class="m-list-title" style="display: block;"><span>最新评论<span class="iconfont icon-select m-list-title-select"></span></span> </div> <div class="m-icon-list" id="sb-recentComments"><div><ul><li><a href="https://www.cnblogs.com/shapman/p/12347433.html"><span class="iconfont icon-pinglunzu" style="color: #888;font-size: 15px;margin-right: 5px;"></span>Re:centos7.x中安装SQL Server</a><div style="padding-left: 1.5em;color: #777;position: relative;top: -5px;">@吕小不小迷弟 @吕小不 是不是因为sqlserver和mysql不兼容呀，我一开始能用，后面装了mysql就不能用了，如果是的话，那有什么办法可以同时装这两种数据库吗 可以试试用docker部署，那...</div><div style="text-align: right;color: #444;position: relative;top: -10px;">--吕小不</div></li><li><a href="https://www.cnblogs.com/shapman/p/12347433.html"><span class="iconfont icon-pinglunzu" style="color: #888;font-size: 15px;margin-right: 5px;"></span>Re:centos7.x中安装SQL Server</a><div style="padding-left: 1.5em;color: #777;position: relative;top: -5px;">@吕小不 是不是因为sqlserver和mysql不兼容呀，我一开始能用，后面装了mysql就不能用了，如果是的话，那有什么办法可以同时装这两种数据库吗...</div><div style="text-align: right;color: #444;position: relative;top: -10px;">--吕小不小迷弟</div></li><li><a href="https://www.cnblogs.com/shapman/p/12347433.html"><span class="iconfont icon-pinglunzu" style="color: #888;font-size: 15px;margin-right: 5px;"></span>Re:centos7.x中安装SQL Server</a><div style="padding-left: 1.5em;color: #777;position: relative;top: -5px;">@吕小不小迷弟 你先确定下你部署的sql server是不是默认的1433端口，如果不是，就要在连接的时候这样写地址：xxx.33.xxx.201,端口;如果端口没问题的话，再检查下centos系统的...</div><div style="text-align: right;color: #444;position: relative;top: -10px;">--吕小不</div></li><li><a href="https://www.cnblogs.com/shapman/p/12347433.html"><span class="iconfont icon-pinglunzu" style="color: #888;font-size: 15px;margin-right: 5px;"></span>Re:centos7.x中安装SQL Server</a><div style="padding-left: 1.5em;color: #777;position: relative;top: -5px;">楼主，请问我服务器上是centos系统，然后他提示我 标题: 连接到服务器 无法连接到 xxx.33.xxx.201。 其他信息: 在与 SQL Server 建立连接时出现与网络相关的或特定于实例的...</div><div style="text-align: right;color: #444;position: relative;top: -10px;">--吕小不小迷弟</div></li><li><a href="https://www.cnblogs.com/shapman/p/13747762.html"><span class="iconfont icon-pinglunzu" style="color: #888;font-size: 15px;margin-right: 5px;"></span>Re:.net core在Docker-&gt;Linux及Window平台环境变量的获取的兼容</a><div style="padding-left: 1.5em;color: #777;position: relative;top: -5px;">很好的总结，另外推荐一篇跨平台的设置&amp;获取环境变量： .net core的一种兼容Docker,k8s,Linux及Window的获取环境变量的方式...</div><div style="text-align: right;color: #444;position: relative;top: -10px;">--黄岛主</div></li></ul></div></div> <div class="m-list-title"><span>文章档案<span class="iconfont icon-select m-list-title-select"></span></span> </div> <div class="m-icon-list" id="sb-articlearchive"></div> <div class="m-list-title" style="display: block;"><span>随笔档案<span class="iconfont icon-select m-list-title-select"></span></span> </div> <div class="m-icon-list" id="sb-record"><div><ul><li><a href="https://www.cnblogs.com/shapman/archive/2021/08.html" class="category-item-link" rel="" target=""><span class="iconfont icon-task_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>2021年8月(1)</a></li><li><a href="https://www.cnblogs.com/shapman/archive/2021/06.html" class="category-item-link" rel="" target=""><span class="iconfont icon-task_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>2021年6月(1)</a></li><li><a href="https://www.cnblogs.com/shapman/archive/2021/01.html" class="category-item-link" rel="" target=""><span class="iconfont icon-task_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>2021年1月(1)</a></li><li><a href="https://www.cnblogs.com/shapman/archive/2020/12.html" class="category-item-link" rel="" target=""><span class="iconfont icon-task_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>2020年12月(3)</a></li><li><a href="https://www.cnblogs.com/shapman/archive/2020/11.html" class="category-item-link" rel="" target=""><span class="iconfont icon-task_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>2020年11月(2)</a></li><li><a href="https://www.cnblogs.com/shapman/archive/2020/10.html" class="category-item-link" rel="" target=""><span class="iconfont icon-task_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>2020年10月(2)</a></li><li><a href="https://www.cnblogs.com/shapman/archive/2020/09.html" class="category-item-link" rel="" target=""><span class="iconfont icon-task_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>2020年9月(2)</a></li><li><a href="https://www.cnblogs.com/shapman/archive/2020/08.html" class="category-item-link" rel="" target=""><span class="iconfont icon-task_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>2020年8月(2)</a></li><li><a href="https://www.cnblogs.com/shapman/archive/2020/06.html" class="category-item-link" rel="" target=""><span class="iconfont icon-task_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>2020年6月(2)</a></li><li><a href="https://www.cnblogs.com/shapman/archive/2020/04.html" class="category-item-link" rel="" target=""><span class="iconfont icon-task_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>2020年4月(1)</a></li><li><a href="https://www.cnblogs.com/shapman/archive/2020/03.html" class="category-item-link" rel="" target=""><span class="iconfont icon-task_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>2020年3月(4)</a></li><li><a href="https://www.cnblogs.com/shapman/archive/2020/02.html" class="category-item-link" rel="" target=""><span class="iconfont icon-task_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>2020年2月(6)</a></li><li><a href="https://www.cnblogs.com/shapman/archive/2020/01.html" class="category-item-link" rel="" target=""><span class="iconfont icon-task_fill" style="color: #888;font-size: 14px;margin-right: 5px;"></span>2020年1月(6)</a></li></ul></div></div> </nav> <button class="close-button" id="close-button">Close Menu</button> <div class="morph-shape" id="morph-shape" data-morph-open="M-7.312,0H15c0,0,66,113.339,66,399.5C81,664.006,15,800,15,800H-7.312V0z;M-7.312,0H100c0,0,0,113.839,0,400c0,264.506,0,400,0,400H-7.312V0z"> <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 800" preserveAspectRatio="none"> <path d="M-7.312,0H0c0,0,0,113.839,0,400c0,264.506,0,400,0,400h-7.312V0z"></path> <desc>Created with Snap</desc><defs></defs></svg> </div> </div><div class="optiscroll-v"><b class="optiscroll-vtrack"></b></div><div class="optiscroll-h"><b class="optiscroll-htrack"></b></div></div> <button class="menu-button" id="open-button">MENU</button> <div class="content-wrap" id="content-wrap"></div> </div><!--done-->
+<h3 class="catListTitle">公告</h3>
+
+<div id="blog-news"><div id="progressBar"><div id="top-progress-bar" style="position: relative; top: 0px; left: 0px; right: 0px; background-color: rgb(119, 182, 255); height: 2px; width: 0%; transition: width 0.2s ease 0s, opacity 0.6s ease 0s; opacity: 1;"></div></div><div id="rightMenu"> <div id="rtaDirectory" class="rightMenuItem" style=""> <span class="rightMenuSpan rtaDirectorySpan"> 文章目录 </span> <i banmv="" class="iconfont icon-mulu"></i> </div> <div id="rightMenuHome" class="rightMenuItem" style="" clickflg="true"> <span class="rightMenuSpan"> 访问主页 </span> <i class="iconfont icon-home"></i> </div> <span class="hideRightMenu"> <div id="rightDiggit" class="rightMenuItem" clickflg="false" style="" onclick="votePost(12272120,&#39;Digg&#39;)"> <span class="rightMenuSpan rightDiggitSpan">2</span> <i class="iconfont icon-zan1"></i> </div> <div id="rightBuryit" class="rightMenuItem" clickflg="false" style="" onclick="votePost(12272120,&#39;Bury&#39;)"> <span class="rightMenuSpan rightBuryitSpan">0</span> <i class="iconfont icon-buzan"></i> </div> <div id="rightDashang" class="rightMenuItem" clickflg="false" style="display:none"> <span class="rightMenuSpan rightDanshanSpan"> <div class="ds-pay"> <div class="ds-alipay" style="display:none"> <img \=""> <span>Alipay</span> </div> <div class="ds-wecat" style="display:none"> <img \=""> <span>WeChat</span> </div> </div> </span> <i class="iconfont icon-dashang2"></i> </div> <div id="rightGzh" class="rightMenuItem" clickflg="false" style="display:none"> <span class="rightMenuSpan rightGzhSpan"> <div class="ds-pay"> <div class="ds-gzh"> <img><span>qrCode</span> </div> </div> </span> <i class="iconfont icon-erweima4"></i> </div> <div id="attention" class="rightMenuItem" clickflg="false" onclick="follow(&#39;5c7c9eac-f65f-47e5-17a3-08d6e92ebcfd&#39;)"> <span class="rightMenuSpan attentionSpan">关注</span> <i class="iconfont icon-dianzan"></i> </div> </span> <div id="rightMenuSite" class="rightMenuItem" clickflg="true"> <span class="rightMenuSpan"> 点击开启 </span> <i banmv="" class="iconfont icon-shezhi3" style="transform: rotate(39deg); transform-origin: 50% 50%;"></i> </div> <div id="toUpDown" class="rightMenuItem" data="down"> <span class="rightMenuSpan toUpDownSpan">跳至底部</span> <div id="toUpDownI" style="transform: rotate(-180deg); transform-origin: 50% 50%;"> <i banmv="" class="iconfont icon-zhiding"></i> </div> </div> </div><div id="loading" style="display: none;"></div>
+    <script type="text/javascript">window['__document_write_ajax_callbacks__']['4']();</script><script type="text/javascript">window['__document_write_ajax_callbacks__']['1']();</script>
+<script type="text/javascript">window['__document_write_ajax_callbacks__']['5']();</script><script type="text/javascript">window['__document_write_ajax_callbacks__']['6']();</script><script defer="">window['__document_write_ajax_callbacks__']['2']();</script>
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/shapman/">
+            吕小不
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/shapman/" title="入园时间：2019-06-07">
+            2年7个月
+        </a>
+        <br>
+        粉丝：
+        <a href="https://home.cnblogs.com/u/shapman/followers/">
+            11
+        </a>
+        <br>
+        关注：
+        <a href="https://home.cnblogs.com/u/shapman/followees/">
+            6
+        </a>
+        <div id="p_b_follow">
+<a href="javascript:void(0)" onclick="follow(&#39;5c7c9eac-f65f-47e5-17a3-08d6e92ebcfd&#39;)">+加关注</a></div>
+        <script type="text/javascript">window['__document_write_ajax_callbacks__']['7']();</script><script>window['__document_write_ajax_callbacks__']['3']();</script>
+    </div>
+</div>
+
+</div>
+<div id="sidebar_c3"></div>
+			<script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            <div id="widget_my_google" class="div_my_zzk">
+                <input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block"><div class="catListLink">
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+    
+<li><a href="https://www.cnblogs.com/shapman/p/" title="我的博客的随笔列表">我的随笔</a></li>
+<li><a href="https://www.cnblogs.com/shapman/MyComments.html" title="我的发表过的评论列表">我的评论</a></li>
+<li><a href="https://www.cnblogs.com/shapman/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li>
+<li><a href="https://www.cnblogs.com/shapman/RecentComments.html" title="我的博客的评论列表">最新评论</a></li>
+<li><a href="https://www.cnblogs.com/shapman/tag/" title="我的博客的标签列表">我的标签</a></li>
+
+</ul>
+</div>
+
+</div>
+
+<!-- 最新随笔 -->
+
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block"></div>
+
+<!-- 积分与排名 -->
+
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔分类
+
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/category/1637744.html" class="category-item-link" rel="" target="">.net core(16)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/category/1834356.html" class="category-item-link" rel="" target="">docker(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/category/1921308.html" class="category-item-link" rel="" target="">elasticsearch(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/category/1891092.html" class="category-item-link" rel="" target="">git(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/category/1652768.html" class="category-item-link" rel="" target="">Linux(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/category/1638238.html" class="category-item-link" rel="" target="">vue(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/category/1646657.html" class="category-item-link" rel="" target="">阿里云(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/category/1938939.html" class="category-item-link" rel="" target="">工具(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/category/1657673.html" class="category-item-link" rel="" target="">爬虫(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/category/1643025.html" class="category-item-link" rel="" target="">前端(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/category/1660612.html" class="category-item-link" rel="" target="">设计模式(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/category/1791257.html" class="category-item-link" rel="" target="">微信小程序(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/category/1791253.html" class="category-item-link" rel="" target="">语言(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/category/2008762.html" class="category-item-link" rel="" target="">运维(1)</a>
+ 
+                </li>                
+            
+        </ul>
+
+
+    </div>    
+    <div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔档案
+
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/archive/2021/08.html" class="category-item-link" rel="" target="">2021年8月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/archive/2021/06.html" class="category-item-link" rel="" target="">2021年6月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/archive/2021/01.html" class="category-item-link" rel="" target="">2021年1月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/archive/2020/12.html" class="category-item-link" rel="" target="">2020年12月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/archive/2020/11.html" class="category-item-link" rel="" target="">2020年11月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/archive/2020/10.html" class="category-item-link" rel="" target="">2020年10月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/archive/2020/09.html" class="category-item-link" rel="" target="">2020年9月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/archive/2020/08.html" class="category-item-link" rel="" target="">2020年8月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/archive/2020/06.html" class="category-item-link" rel="" target="">2020年6月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/archive/2020/04.html" class="category-item-link" rel="" target="">2020年4月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/archive/2020/03.html" class="category-item-link" rel="" target="">2020年3月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/archive/2020/02.html" class="category-item-link" rel="" target="">2020年2月(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/shapman/archive/2020/01.html" class="category-item-link" rel="" target="">2020年1月(6)</a>
+ 
+                </li>                
+            
+        </ul>
+
+
+    </div>    
+</div>
+
+<!-- 最新评论 -->
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block"><div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/shapman/p/12347433.html">
+                            1. centos7.x中安装SQL Server(8174)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/shapman/p/13172995.html">
+                            2. 小程序地理位置授权，以及无法打开授权弹框的解决办法(5344)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/shapman/p/12272120.html">
+                            3. .net core3.1 webapi + vue + element-ui upload组件实现文件上传(4268)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/shapman/p/12232640.html">
+                            4. .net core3.1 web api中使用newtonsoft替换掉默认的json序列化组件(3749)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/shapman/p/12242675.html">
+                            5. vue2.x中使用三元表达式绑定class的时候遇到的坑(3266)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block"><div class="catListFeedback">
+<h3 class="catListTitle">评论排行榜</h3>
+	<div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/shapman/p/12347433.html">
+                            1. centos7.x中安装SQL Server(16)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/shapman/p/12382476.html">
+                            2. 使用HtmlAgilityPack开发爬虫筛选HTML时，关于xpath的坑(6)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/shapman/p/14054522.html">
+                            3. .net core通过jenkins + gogs + docker实现自动化部署(4)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/shapman/p/12408180.html">
+                            4. .net core3.1中swagger的使用(2)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/shapman/p/13747762.html">
+                            5. .net core在Docker-&gt;Linux及Window平台环境变量的获取的兼容(1)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block">
+<div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">推荐排行榜</h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/shapman/p/12347433.html">
+                                1. centos7.x中安装SQL Server(3)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/shapman/p/12272120.html">
+                                2. .net core3.1 webapi + vue + element-ui upload组件实现文件上传(2)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/shapman/p/12232868.html">
+                                3. .net core3.1 webapi + vue.js + axios实现跨域(2)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/shapman/p/13747762.html">
+                                4. .net core在Docker-&gt;Linux及Window平台环境变量的获取的兼容(1)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/shapman/p/13545457.html">
+                                5. 使用docker部署.net core3.1时的Dockerfile写法（持续补充）(1)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div></div><div id="sidebar_recentcomments" class="sidebar-block"><div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+
+	<div class="RecentCommentBlock">
+        <ul>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/shapman/p/12347433.html">1. Re:centos7.x中安装SQL Server</a></li>
+                    <li class="recent_comment_body">@吕小不小迷弟 @吕小不 是不是因为sqlserver和mysql不兼容呀，我一开始能用，后面装了mysql就不能用了，如果是的话，那有什么办法可以同时装这两种数据库吗 可以试试用docker部署，那...</li>
+                    <li class="recent_comment_author">--吕小不</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/shapman/p/12347433.html">2. Re:centos7.x中安装SQL Server</a></li>
+                    <li class="recent_comment_body">@吕小不 是不是因为sqlserver和mysql不兼容呀，我一开始能用，后面装了mysql就不能用了，如果是的话，那有什么办法可以同时装这两种数据库吗...</li>
+                    <li class="recent_comment_author">--吕小不小迷弟</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/shapman/p/12347433.html">3. Re:centos7.x中安装SQL Server</a></li>
+                    <li class="recent_comment_body">@吕小不小迷弟 你先确定下你部署的sql server是不是默认的1433端口，如果不是，就要在连接的时候这样写地址：xxx.33.xxx.201,端口;如果端口没问题的话，再检查下centos系统的...</li>
+                    <li class="recent_comment_author">--吕小不</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/shapman/p/12347433.html">4. Re:centos7.x中安装SQL Server</a></li>
+                    <li class="recent_comment_body">楼主，请问我服务器上是centos系统，然后他提示我 标题: 连接到服务器 无法连接到 xxx.33.xxx.201。 其他信息: 在与 SQL Server 建立连接时出现与网络相关的或特定于实例的...</li>
+                    <li class="recent_comment_author">--吕小不小迷弟</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/shapman/p/13747762.html">5. Re:.net core在Docker-&gt;Linux及Window平台环境变量的获取的兼容</a></li>
+                    <li class="recent_comment_body">很好的总结，另外推荐一篇跨平台的设置&amp;获取环境变量： .net core的一种兼容Docker,k8s,Linux及Window的获取环境变量的方式...</li>
+                    <li class="recent_comment_author">--黄岛主</li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+
+</div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer"> <div class="footer-image" id="footerStyle1" style="display:none"></div> <footer id="footerStyle2" style=""> <footer-background> <figure class="clouds" style="background: url(&quot;https://cdn.cnblogs.com/jsDelivr/gh/BNDong/Cnblogs-Theme-SimpleMemory@v2.0.9/dist/images/0ff63a3006d8a2821be2.webp&quot;) repeat-x;"></figure> <figure class="background" style="background: url(&quot;https://cdn.cnblogs.com/jsDelivr/gh/BNDong/Cnblogs-Theme-SimpleMemory@v2.0.9/dist/images/af2701cbb4196bedb254.webp&quot;) repeat-x;"></figure> <figure class="foreground" style="background: url(&quot;https://cdn.cnblogs.com/jsDelivr/gh/BNDong/Cnblogs-Theme-SimpleMemory@v2.0.9/dist/images/30b4f3f93333bef2cf56.webp&quot;) repeat-x;"></figure> </footer-background> </footer> <div class="footer-box"> <div class="footer-text" style="display: none; padding-bottom: 0px; border-bottom: none; margin-bottom: 0px;"> [ ##textLeft## <span class="footer-text-icon"> <span class="iconfont ##iconFont##" style="color:##iconColor##;font-size:##iconSize##"></span> </span> ##textRight## ] </div> <div> <span id="blogRunTimeSpan">This blog has running : 388 d 9 h 6 m 32 s</span> <span class="my-face">ღゝ◡╹)ノ♡</span> </div> <div id="linksHtml" style="display:none">##linksHtml##</div> <div id="cnzzInfo" style="display:none"> <div id="cnzzProtocol" style="display:none"> <span class="id_cnzz_stat_icon" id="cnzz_stat_icon_##cnzzId##"></span> <script src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/z_stat.php"></script> </div> ##cnzzHtml## </div> <div>
+		
+Copyright © 2022 吕小不
+Powered by .NET 6 on Kubernetes
+
+
+
+	</div> </div></div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8GsLOKiGtk1Au0UP1SouGdUc58f64TyChYTSaPOsps-yEShorJQKz_NNn-GuOK2guJYjjxpOsNGHUfdgRFmn222qV9o2dg433dOJ0wEHtMCQmxTg-hFgS-mLKu5XPZr-nu_e0pAqrjI0-X0NWJlcnps">
+    <script async="" src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/js"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+    </script>
+    <script defer="" src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/hm.js.下载"></script><iframe src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/container.html" style="visibility: hidden; display: none;"></iframe>
+
+<script type="text/javascript">
+    window.cnblogsConfig = {
+      info: {
+        name: '吕小不', // 用户名
+        startDate: '2021-01-01', // 入园时间，年-月-日。入园时间查看方法：鼠标停留园龄时间上，会显示入园时间
+        avatar: 'https://pic.cnblogs.com/face/1709656/20200124202737.png', // 用户头像
+      },
+    }
+</script><script type="text/javascript">getFollowStatus('5c7c9eac-f65f-47e5-17a3-08d6e92ebcfd');</script><iframe src="./_net core3.1 webapi + vue + element-ui upload组件实现文件上传 - 吕小不 - 博客园_files/aframe.html" width="0" height="0" style="display: none;"></iframe></body></html>
