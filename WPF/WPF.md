@@ -166,11 +166,16 @@ ShowGridLines属性(true/false)：行列分割线是否显示
             <Setter Property="Height" Value="40"/>
             <Setter Property="Foreground" Value="Red"/>
         </Style>
-        <Style TargetType="Button" x:Key="style1" BasedOn="{StaticResource BaseStyle}">
+        <Style TargetType="Button" x:Key="StyleButton" BasedOn="{StaticResource BaseStyle}">
             <Setter Property="Content" Value="hello"/>
         </Style>
     </Window.Resources>
-</Window>    
+    <StackPanel>
+        <Button Style="{StaticResource StyleButton}"></Button>
+        <Button Content="button2"></Button>
+        <Button Content="button3"></Button>
+    </StackPanel>
+</Window>
 ```
 
 - 当样式没有设置`x:key` 属性时表示全局，如下面没有给声明的样式添加`x:key` 的时候全部的`button` 都使用这个样式
@@ -528,7 +533,7 @@ ShowGridLines属性(true/false)：行列分割线是否显示
             <DataGrid ItemsSource="{Binding Students}"  AutoGenerateColumns="False" Margin="0 10 0 0 ">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="姓名" Binding="{Binding Name}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="姓名" Binding="{Binding Sex}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="性别" Binding="{Binding Sex}"></DataGridTextColumn>
 </DataGrid.Columns>
             </DataGrid>
 
@@ -629,6 +634,18 @@ ShowGridLines属性(true/false)：行列分割线是否显示
 
 ```xaml
 <Button Margin="0 10 0 0" Command="{Binding GetDataCommand}" Width="40" Height="20" Content="显示"></Button>
+<TextBlock Text="{Binding Name}"></TextBlock>
+```
+
+```c#
+public partial class MainWindow : Window
+{
+    public MainWindow()
+    {
+        InitializeComponent();
+        this.DataContext = new MainViewModel();
+    }
+}    
 ```
 
 ## 对于没有Command属性的控件
@@ -924,6 +941,45 @@ DataGrid ItemsSource="{Binding Students}"  AutoGenerateColumns="False" Margin="0
                 </DataGrid.Columns>
             </DataGrid>
 ```
+
+# ToolKit
+
+NuGet下载 Microsoft.Toolkit.Mvvm 
+
+```c#
+	internal class MainViewModel:ObservableObject
+    {
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                OnPropertyChanged();
+            }
+        }
+        /// <summary>
+        /// Initializes a new instance of the MainViewModel class.
+        /// </summary>
+        public MainViewModel()
+        {
+            Name = "Hello";
+            ShowCommand = new RelayCommand(Show);
+        }
+
+        public RelayCommand ShowCommand { get; set; }
+
+
+        public void Show()
+        {
+            Name = "点击";
+            MessageBox.Show(Name);
+        }
+    }
+```
+
+
 
 # 调用api(可以用postman查看调用代码)
 
