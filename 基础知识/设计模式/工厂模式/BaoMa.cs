@@ -8,9 +8,9 @@ namespace 工厂模式
 {
     public class BaoMa : ICar
     {
-        public void CreateCar()
+        public void Go()
         {
-            Console.WriteLine("造一辆宝马车");
+            Console.WriteLine("宝马车");
         }
     }
 }

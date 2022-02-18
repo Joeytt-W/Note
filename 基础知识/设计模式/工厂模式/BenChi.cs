@@ -8,9 +8,9 @@ namespace 工厂模式
 {
     public class BenChi : ICar
     {
-        public void CreateCar()
+        public void Go()
         {
-            Console.WriteLine("造一辆奔驰车");
+            Console.WriteLine("奔驰车");
         }
     }
 }
