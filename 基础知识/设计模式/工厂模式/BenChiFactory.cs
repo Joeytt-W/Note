@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace 工厂模式
 {
-    public interface ICar
+    public class BenChiFactory : CarFactory
     {
-        public void Go();
+        public override ICar CreateCar()
+        {
+            return new BenChi();
+        }
     }
 }

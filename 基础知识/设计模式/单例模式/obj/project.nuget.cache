@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "vyfQNpr/MVdEBa7tgqAqZODrFQoxNpFxGM6CFVVWmhsumGP1TjSQ6RlokyJDUdJcU3aYn5lpXU2TQbGqPUUCCQ==",
+  "dgSpecHash": "lzTMi3i6cvbRoivmD/+a17MiM2y0u3eB0xEItN83ocM0yH0VDnShHswvqGhfTwtOqoMYstv3Z1mpHc1okwSD1w==",
   "success": true,
-  "projectFilePath": "D:\\文件\\我的\\Test\\设计模式\\单例模式\\单例模式.csproj",
+  "projectFilePath": "D:\\文件\\我的\\Note\\基础知识\\设计模式\\单例模式\\单例模式.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

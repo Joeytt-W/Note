@@ -1,0 +1,7 @@
+D:\文件\我的\Note\基础知识\设计模式\建造者模式\bin\Debug\建造者模式.exe.config
+D:\文件\我的\Note\基础知识\设计模式\建造者模式\bin\Debug\建造者模式.exe
+D:\文件\我的\Note\基础知识\设计模式\建造者模式\bin\Debug\建造者模式.pdb
+D:\文件\我的\Note\基础知识\设计模式\建造者模式\obj\Debug\建造者模式.csproj.AssemblyReference.cache
+D:\文件\我的\Note\基础知识\设计模式\建造者模式\obj\Debug\建造者模式.csproj.CoreCompileInputs.cache
+D:\文件\我的\Note\基础知识\设计模式\建造者模式\obj\Debug\建造者模式.exe
+D:\文件\我的\Note\基础知识\设计模式\建造者模式\obj\Debug\建造者模式.pdb

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace 工厂模式
 {
-    public interface ICar
+    public interface IGetNewCar
     {
-        public void Go();
+        public ICar GetCar(CarType carType);
     }
 }

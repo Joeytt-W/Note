@@ -6,16 +6,9 @@ using System.Threading.Tasks;
 
 namespace 工厂模式
 {
-    public class CarFactory
+    public abstract class CarFactory
     {
-        public ICar CreateCar(CarType carType)
-        {
-            if (carType == CarType.BaoMa)
-                return new BaoMa();
-            else if (carType == CarType.BenChi)
-                return new BenChi();
-            else
-                return null;
-        }
+        public abstract ICar CreateCar();
+        
     }
 }

@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "工厂模式", "工厂模�
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "单例模式", "单例模式\单例模式.csproj", "{45217798-27F2-4FFF-94E4-49CF2EDD56CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "建造者模式", "建造者模式\建造者模式.csproj", "{24171BE6-9445-4C89-9617-C36244E901DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{45217798-27F2-4FFF-94E4-49CF2EDD56CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45217798-27F2-4FFF-94E4-49CF2EDD56CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45217798-27F2-4FFF-94E4-49CF2EDD56CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24171BE6-9445-4C89-9617-C36244E901DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24171BE6-9445-4C89-9617-C36244E901DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24171BE6-9445-4C89-9617-C36244E901DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24171BE6-9445-4C89-9617-C36244E901DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

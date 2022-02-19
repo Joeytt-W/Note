@@ -7,4 +7,4 @@ build_property.PublishSingleFile =
 build_property.IncludeAllContentForSelfExtract = 
 build_property._SupportedPlatformList = Android,iOS,Linux,macOS,Windows
 build_property.RootNamespace = 工厂模式
-build_property.ProjectDir = D:\文件\我的\Test\设计模式\工厂模式\
+build_property.ProjectDir = D:\文件\我的\Note\基础知识\设计模式\工厂模式\
