@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "Vt301J9TlvukGXTf8lz4xcG6D//1U3z4IeXa8cvI0bw14CZauu8neD8oLli8FzNFSvv9tUNnD7+45gmdgBmYLw==",
+  "success": true,
+  "projectFilePath": "D:\\Work\\WorkSpaces\\Note\\WPF\\WPF实战2022\\WpfApp1\\WpfApp3\\WpfApp3.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\78472\\.nuget\\packages\\microsoft.toolkit.mvvm\\7.1.2\\microsoft.toolkit.mvvm.7.1.2.nupkg.sha512"
+  ],
+  "logs": []
+}

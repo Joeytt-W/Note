@@ -1,0 +1,31 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "42e19227-fcaa-4c88-9483-02c39fed8b24": {
+      "ProjectGuid": "42e19227-fcaa-4c88-9483-02c39fed8b24",
+      "DisplayName": "WpfApp1",
+      "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "杂项文件",
+      "ColorIndex": -1
+    },
+    "9c4a744a-883c-4165-a665-4ad1c05dfad5": {
+      "ProjectGuid": "9c4a744a-883c-4165-a665-4ad1c05dfad5",
+      "DisplayName": "WpfApp2",
+      "ColorIndex": 1
+    },
+    "d799877b-af1f-48eb-854e-12006209d324": {
+      "ProjectGuid": "d799877b-af1f-48eb-854e-12006209d324",
+      "DisplayName": "WpfApp3",
+      "ColorIndex": 2
+    },
+    "f524d398-4f9d-414b-b14b-e4213b83d262": {
+      "ProjectGuid": "f524d398-4f9d-414b-b14b-e4213b83d262",
+      "DisplayName": "WpfApp4",
+      "ColorIndex": 3
+    }
+  },
+  "NextColorIndex": 4
+}

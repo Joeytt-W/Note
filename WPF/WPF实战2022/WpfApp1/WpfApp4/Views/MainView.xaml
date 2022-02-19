@@ -1,0 +1,25 @@
+﻿<Window x:Class="WpfApp4.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp4"
+        xmlns:prism="http://prismlibrary.com/"
+        mc:Ignorable="d"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        Title="MainWindow" Height="450" Width="800">
+    <!--prism:ViewModelLocator.AutoWireViewModel   自动查找对应名称的ViewModel,自动绑定-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Button Content="模块A" Margin="5" Command="{Binding OpenCommand}" CommandParameter="ViewA"></Button>
+            <Button Content="模块B" Margin="5" Command="{Binding OpenCommand}" CommandParameter="ViewB"></Button>
+            <Button Content="模块C" Margin="5" Command="{Binding OpenCommand}" CommandParameter="ViewC"></Button>
+        </StackPanel>
+        <!--prism:RegionManager.RegionName 定义区域-->
+        <ContentControl Grid.Row="1" prism:RegionManager.RegionName="ContentRegion"></ContentControl>
+    </Grid>
+</Window>

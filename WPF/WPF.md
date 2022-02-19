@@ -1267,6 +1267,18 @@ IRestResponse response = client.Execute(request);
 
 # 动画
 
+## 分类
+
+- 线性动画
+- 关键帧动画
+- 路径动画
+
+## 命名空间
+
+System.Windows.Media.Animation
+
+## 封装DoubleAnimation
+
 ```c#
         private void BtnStart(object sender, RoutedEventArgs e)
         {
@@ -1459,6 +1471,157 @@ IRestResponse response = client.Execute(request);
         </TabControl>
     </Grid>
 ```
+
+# Prism
+
+1. Nuget 安装 Prism.DryIoc
+2. 修改App.xaml.cs，继承PrismApplication
+
+```c#
+	/// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : PrismApplication
+
+    {
+        /// <summary>
+        /// 依赖注入
+        /// </summary>
+        /// <param name="containerRegistry"></param>
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+            
+        }
+
+        /// <summary>
+        /// 首页
+        /// </summary>
+        /// <returns></returns>
+        protected override Window CreateShell()
+        {
+            return Container.Resolve<MainWindow>();
+        }
+    }
+```
+
+3. 修改App.xaml
+
+```xaml
+<prism:PrismApplication 
+    x:Class="WpfApp4.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:WpfApp4"
+             xmlns:prism="http://prismlibrary.com/"
+             >
+    <Application.Resources>
+         
+    </Application.Resources>
+</prism:PrismApplication>
+```
+
+> 安装 Prism TTemplate Pack扩展，可以直接建立该模板
+
+## Prism区域
+
+MainView.xaml
+
+```xaml
+<Window x:Class="WpfApp4.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp4"
+        xmlns:prism="http://prismlibrary.com/"
+        mc:Ignorable="d"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        Title="MainWindow" Height="450" Width="800">
+    <!--prism:ViewModelLocator.AutoWireViewModel   自动查找对应名称的ViewModel,自动绑定-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Button Content="模块A" Margin="5" Command="{Binding OpenCommand}" CommandParameter="ViewA"></Button>
+            <Button Content="模块B" Margin="5" Command="{Binding OpenCommand}" CommandParameter="ViewB"></Button>
+            <Button Content="模块C" Margin="5" Command="{Binding OpenCommand}" CommandParameter="ViewC"></Button>
+        </StackPanel>
+        <!--prism:RegionManager.RegionName 定义区域-->
+        <ContentControl Grid.Row="1" prism:RegionManager.RegionName="ContentRegion"></ContentControl>
+    </Grid>
+</Window>
+
+```
+
+MainViewModel.cs
+
+```c#
+	public class MainViewModel:BindableBase
+    {
+        private readonly IRegionManager _regionManager;
+        public DelegateCommand<string> OpenCommand { get; set; }
+
+        /// <summary>
+        /// IRegionManager负责管理所有定义的区域
+        /// </summary>
+        /// <param name="regionManager"></param>
+        public MainViewModel(IRegionManager regionManager)
+        {
+            _regionManager = regionManager;
+            OpenCommand = new DelegateCommand<string>(Open);
+        }
+
+        private void Open(string obj)
+        {
+            //通过IRegionManager获取到全局定义的可用区域
+            //通过依赖注入的形式往区域动态的设置内容
+            _regionManager.Regions["ContentRegion"].RequestNavigate(obj);
+        }
+    }
+```
+
+App.xaml.cs
+
+```c#
+	/// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : PrismApplication
+    {
+        /// <summary>
+        /// 依赖注入
+        /// </summary>
+        /// <param name="containerRegistry"></param>
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+            //注册导航
+            containerRegistry.RegisterForNavigation<ViewA>();
+            containerRegistry.RegisterForNavigation<ViewB>();
+            containerRegistry.RegisterForNavigation<ViewC>();
+        }
+
+        /// <summary>
+        /// 首页
+        /// </summary>
+        /// <returns></returns>
+        protected override Window CreateShell()
+        {
+            return Container.Resolve<MainView>();
+        }
+    }
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
