@@ -1613,19 +1613,198 @@ App.xaml.cs
     }
 ```
 
+在Prism中, 控件都支持注册Region, 只是有些控件需要自己实现一个RegionAdapters(区域适配器)
 
+## RegionAdapters
 
+​		假设在应用程序的某个区域, 需要显示我们定义的视图,这个时候实际上利用了RegionAdapter。
+该类负责将传入我们定义的视图到指定的Region当中
 
+Prism提供了许多内置得RegionAdapter
+\- ContentControlRegionAdapter
+\- ItemsControlRegionAdapter
 
+\- SelectorRegionAdapter
+\- ComboBox
+\- ListBox
+\- Ribbon
+\- TabControl
 
+**注:除此之外, 如果想要实现控件作用域Region, 则必须创建自己的自定义Region**
 
+首先创建一个类继承于RegionAdapterBase，重写其中的CreateRegion和Adapt方法
 
+```c#
+public class StackPanelRegionAdapter : RegionAdapterBase<StackPanel>
+    {
+        public StackPanelRegionAdapter(IRegionBehaviorFactory regionBehaviorFactory) : base(regionBehaviorFactory)
+        {
+        }
 
+        protected override void Adapt(IRegion region, StackPanel regionTarget)
+        {
+            //该事件监听往StackPanel添加view时的操作
+            region.Views.CollectionChanged += (sender, e) =>
+            {
+                //监听到增加操作时则往StackPanel添加Children，枚举出来的操作在后面一段代码中体现
+                if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+                {
+                    regionTarget.Children.Clear();
+                    foreach (var item in e.NewItems)
+                    {
+                        regionTarget.Children.Add(item as UIElement);
+                    }
+                }
+            };
+        }
 
+        protected override IRegion CreateRegion()
+        {
+            return new Region();
+        }
+    }
+```
 
+在App.cs当中, 注册我们创建好的自定义适配器
 
+```c#
+protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)
+        {
+            base.ConfigureRegionAdapterMappings(regionAdapterMappings);
 
+            regionAdapterMappings.RegisterMapping(typeof(StackPanel), Container.Resolve<StackPanelRegionAdapter>());
+        }
+```
 
+## Module模块
 
+​		对于一个应用程序而言, 特定功能的所有View、Logic、Service等都可以独立存在。那么意味着, 每个
+独立的功能我们都可以称之为模块。
 
+创建一个基于WPF的应用程序, 定义为ModuleA, 为ModuleA定义一个类,并且实现IModule接口
+
+```c#
+public class ModuleAModule : IModule
+    {
+        /// <summary>
+        /// 通知模块已被初始化。
+        /// </summary>
+        /// <param name="containerProvider"></param>
+        public void OnInitialized(IContainerProvider containerProvider)
+        {
+        }
+
+        /// <summary>
+        /// 用于在您的应用程序将使用的容器中注册类型。
+        /// </summary>
+        /// <param name="containerRegistry"></param>
+        public void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+        }
+    }
+
+```
+
+在启动项目当中,添加ModuleA的应用, 打开App.xaml.cs, 重写ConfigureModuleCatalog方法
+
+```c#
+public partial class App
+    {
+        protected override Window CreateShell()
+        {
+            return Container.Resolve<MainWindow>();
+        }
+
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+
+        }
+
+        protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
+        {
+            //添加模块A
+            moduleCatalog.AddModule<ModuleAModule>();
+        }
+    }
+```
+
+在Prism当中, 有多种方式可以加载我们的模块, 如下所示:
+Module Catalog
+
+- (代码方式)Code
+- (配置文件)App.config
+- (磁盘目录)Disk/Directory
+- (XAML定义)XAML
+- (自定义)Custom
+  Register Catalog with PrismApplication
+  Register Modules with Catalog
+
+### Directory配置模块目录
+
+```c#
+public partial class App
+    {
+        protected override IModuleCatalog CreateModuleCatalog()
+        {
+            return new DirectoryModuleCatalog() { ModulePath=@".\Modules" };
+        }
+    }
+```
+
+### App.Config配置模块目录
+
+```c#
+ public partial class App
+    {
+        protected override IModuleCatalog CreateModuleCatalog()
+        {
+            return new ConfigurationModuleCatalog();
+        }
+    }
+```
+
+然后,为应用程序添加配置文件app.config, 添加以下内容:
+
+```xml
+<configuration>
+  <configSections>
+    <section name="modules" type="Prism.Modularity.ModulesConfigurationSection, Prism.Wpf" />
+  </configSections>
+  <startup>
+  </startup>
+  <modules>
+    <module assemblyFile="ModuleA.dll" moduleType="ModuleA.ModuleAModule, ModuleA, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" moduleName="ModuleAModule" startupLoaded="True" />
+  </modules>
+</configuration>
+```
+
+### XAML配置模块目录
+
+修改CreateModuleCatalog方法, 从指定XAML文件读取模块配置
+
+```c#
+    public partial class App
+    {
+        protected override IModuleCatalog CreateModuleCatalog()
+        {
+            return new XamlModuleCatalog(new Uri("/Modules;component/ModuleCatalog.xaml", UriKind.Relative));
+        }
+    }
+
+```
+
+创建模块名为ModuleCatalog.xaml文件, 添加模块信息
+
+```xaml
+<m:ModuleCatalog xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:m="clr-namespace:Prism.Modularity;assembly=Prism.Wpf">
+
+    <m:ModuleInfo ModuleName="ModuleAModule" 
+                  ModuleType="ModuleA.ModuleAModule, ModuleA, 
+                  Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+
+</m:ModuleCatalog>
+
+```
 
