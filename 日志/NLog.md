@@ -2,7 +2,7 @@
 
 [配置文件说明地址（github地址）](https://github.com/NLog/NLog/wiki/Tutorial)
 
-## ``LogLevel``
+## LogLevel
 
 - `Trace` - 非常详细的日志，其可以包括诸如协议有效载荷之类的大容量信息。 此日志级别通常仅在开发期间启用
 - `Debug` - 调试信息，比跟踪更少，通常在生产环境中启用
@@ -228,9 +228,9 @@ IP归属地：${event-context:item=IPAddress}${newline}
     }
 ```
 
-## ``.net core``
+## .net core
 
-###  ``program.cs``
+###  program.cs
 
 ```c#
 using System;
@@ -274,7 +274,7 @@ public static IHostBuilder CreateHostBuilder(string[] args) =>
       .UseNLog();  // NLog: Setup NLog for Dependency injection
 ```
 
-### 配置``appsettings.json``
+### 配置appsettings.json
 
 ``AppSettings.json``中指定的日志记录配置覆盖了对``SetMinimumLevel``的任何调用。 所以要么删除“默认”：或正确调整到您的需求。
 
