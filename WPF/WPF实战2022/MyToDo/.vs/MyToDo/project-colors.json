@@ -5,6 +5,11 @@
       "ProjectGuid": "b1fbd23a-9a48-41e2-b1d8-76da595d1538",
       "DisplayName": "MyToDo",
       "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "杂项文件",
+      "ColorIndex": -1
     }
   },
   "NextColorIndex": 1

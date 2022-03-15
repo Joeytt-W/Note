@@ -1,8 +1,13 @@
 ﻿
-FD:\Work\WorkSpaces\Note\WPF\WPF实战2022\MyToDo\MyToDo\App.xaml;;
-FD:\Work\WorkSpaces\Note\WPF\WPF实战2022\MyToDo\MyToDo\Views\MainView.xaml;;
-FD:\Work\WorkSpaces\Note\WPF\WPF实战2022\MyToDo\MyToDo\Views\IndexView.xaml;;
-FD:\Work\WorkSpaces\Note\WPF\WPF实战2022\MyToDo\MyToDo\Views\MemoView.xaml;;
-FD:\Work\WorkSpaces\Note\WPF\WPF实战2022\MyToDo\MyToDo\Views\SettingsView.xaml;;
-FD:\Work\WorkSpaces\Note\WPF\WPF实战2022\MyToDo\MyToDo\Views\ToDoView.xaml;;
+FD:\Work\WorkSpaces\WPF\MyToDoApp\MyToDo\MyToDo\MyToDo\App.xaml;;
+FD:\Work\WorkSpaces\WPF\MyToDoApp\MyToDo\MyToDo\MyToDo\Views\AboutView.xaml;;
+FD:\Work\WorkSpaces\WPF\MyToDoApp\MyToDo\MyToDo\MyToDo\Views\IndexView.xaml;;
+FD:\Work\WorkSpaces\WPF\MyToDoApp\MyToDo\MyToDo\MyToDo\Views\LoginView.xaml;;
+FD:\Work\WorkSpaces\WPF\MyToDoApp\MyToDo\MyToDo\MyToDo\Views\MainView.xaml;;
+FD:\Work\WorkSpaces\WPF\MyToDoApp\MyToDo\MyToDo\MyToDo\Views\MemoView.xaml;;
+FD:\Work\WorkSpaces\WPF\MyToDoApp\MyToDo\MyToDo\MyToDo\Views\MsgView.xaml;;
+FD:\Work\WorkSpaces\WPF\MyToDoApp\MyToDo\MyToDo\MyToDo\Views\ProgressView.xaml;;
+FD:\Work\WorkSpaces\WPF\MyToDoApp\MyToDo\MyToDo\MyToDo\Views\SettingsView.xaml;;
+FD:\Work\WorkSpaces\WPF\MyToDoApp\MyToDo\MyToDo\MyToDo\Views\SkinView.xaml;;
+FD:\Work\WorkSpaces\WPF\MyToDoApp\MyToDo\MyToDo\MyToDo\Views\ToDoView.xaml;;
 
