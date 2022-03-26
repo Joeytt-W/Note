@@ -1,4 +1,4 @@
-# 项目结构
+# 	项目结构
 
 ## 如何启动（App.xaml）
 
@@ -1522,7 +1522,7 @@ System.Windows.Media.Animation
 
 > 安装 Prism TTemplate Pack扩展，可以直接建立该模板
 
-## Prism区域
+## Prism区域导航
 
 MainView.xaml
 
@@ -1598,6 +1598,10 @@ App.xaml.cs
         {
             //注册导航
             containerRegistry.RegisterForNavigation<ViewA>();
+            //指定ViewModel
+            //containerRegistry.RegisterForNavigation<ViewA, ViewAViewModel>();
+            //指定ViewModel并且添加别名
+            //containerRegistry.RegisterForNavigation<ViewB, ViewBViewModel>("CustomName");
             containerRegistry.RegisterForNavigation<ViewB>();
             containerRegistry.RegisterForNavigation<ViewC>();
         }
@@ -1614,6 +1618,115 @@ App.xaml.cs
 ```
 
 在Prism中, 控件都支持注册Region, 只是有些控件需要自己实现一个RegionAdapters(区域适配器)
+
+### 使用导航
+
+```c#
+IRegionManager regionManager = …;
+regionManager.RequestNavigate("RegionName", "ViewName");
+```
+
+可以注意点, 我们调用了IRegionManager接口的RequestNavigate方法, 并且传递了两个参数:
+
+- RegionName: 该参数为注册的区域名称
+- ViewName: 该参数实际为我们上面注册过的导航页, 字符串类型, 对应的是我们注册页面的nameof
+
+### 带参数导航
+
+```c#
+var param = new NavigationParameters();
+param.Add("Parameter", param);
+_regionManger.RequestNavigate("RegionName", "ViewName", param);
+
+//类似URL地址传递参数
+_regionManger.RequestNavigate("RegionName", "ViewName?id=1&Name=xiaoming");
+
+```
+
+### INavigationAware
+
+该接口包含3个方法, 每个方法中都包含当前导航的上下文, 如下所示:
+
+```c#
+        public void OnNavigatedTo(NavigationContext navigationContext)
+        {
+
+        }
+
+        public bool IsNavigationTarget(NavigationContext navigationContext)
+        {
+            return true;
+        }
+
+        public void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+
+        }
+
+```
+
+- OnNavigatedTo: 导航完成前, 此处可以传递过来的参数以及是否允许导航等动作的控制。
+- IsNavigationTarget: 调用以确定此实例是否可以处理导航请求。否则新建实例
+- OnNavigatedFrom: 当导航离开当前页时, 类似打开A, 再打开B时, 该方法被触发。
+
+### 获取导航请求参数
+
+```c#
+        public void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            var id = navigationContext.Parameters.GetValue<int>("id");
+
+            var name = navigationContext.Parameters["Name"].ToString();
+        }
+
+```
+
+### IConfirmNavigationRequest
+
+该接口继承于INavigationAware, 所以, 它多了一个功能: 允许用户针对导航请求进行拦截。
+
+```cpp
+    //多了一个回调函数, 该值觉得是否拦截该导航请求
+    void ConfirmNavigationRequest(NavigationContext navigationContext, Action<bool> continuationCallback);
+```
+
+### 拦截导航请求
+
+当打开新的导航时, 或许有些情况下你需要经过用户进行确认, 这个时候, IConfirmNavigationRequest接口可以满足需求, 如下:
+
+```c#
+        public void ConfirmNavigationRequest(NavigationContext navigationContext, Action<bool> continuationCallback)
+        {
+            bool result = true;
+
+            if (MessageBox.Show("确认导航?", "温馨提示", MessageBoxButton.YesNo) == MessageBoxResult.No)
+                result = false;
+
+            //通过回调当前返回的确认结果,决定是否启动该导航
+            continuationCallback(result);
+        }
+```
+
+## Navigation Journal
+
+导航日志, 其实就是对导航系统的一个管理功能, 理论上来说, 我们应该知道我们上一步导航的位置、以及下一步导航的位置, 包括我们导航的历史记录。以便于我们使用导航对应用程序可以灵活的控制。
+
+### IRegionNavigationJournal
+
+该接口包含以下功能:
+
+- GoBack() : 返回上一页
+- CanGoBack : 是否可以返回上一页
+- GoForward(): 返回后一页
+- CanGoForward : 是否可以返回后一页
+
+### 1.示例(返回上一页)
+
+当导航日志当中,包含上一页的历史记录,  D的前面有ABC的记录,所以对于D而言, 它可以返回上一页, 所以CanGoBack 为True。
+
+### 2.示例(返回下一页)
+
+当导航日志当中,包含下一个的历史记录,D的后面有E的记录,所以对于D而言,它可以返回下一页,所以CanGoForward 为True。
 
 ## RegionAdapters
 
@@ -1806,5 +1919,149 @@ public partial class App
 
 </m:ModuleCatalog>
 
+```
+
+## View Injection
+
+通过依赖注入的方式,使用IRegionManager接口来向指定区域注册视图:
+
+```c#
+public class ModuleAModule : IModule
+{
+    private readonly IRegionManager _regionManager;
+
+    public ModuleAModule(IRegionManager regionManager)
+    {
+        _regionManager = regionManager;
+    }
+
+    public void OnInitialized(IContainerProvider containerProvider)
+    {
+        _regionManager.RegisterViewWithRegion("ContentRegion", typeof(ViewA));
+    }
+
+    public void RegisterTypes(IContainerRegistry containerRegistry)
+    {
+            
+    }
+}
+
+```
+
+可以对已定义的区域进行 Add / Remove/ Activate/ Deactivate 等操作
+
+```c#
+Iregion region = _regionManager.Regions[“RegionName“];
+region.Add(viewInstance);
+region.Remove(viewInstance);
+region.Activate(viewInstance);
+region.Deactivate(viewInstance);
+```
+
+## ViewModelLocator
+
+```c#
+prism:ViewModelLocator.AutoWireViewModel="True"
+```
+
+### 更改约定
+
+修改方式:
+1.使用ViewModelLocationProvider设置默认视图类型指定的ViewModel
+
+```c#
+ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver((viewType) =>
+            {
+                var viewName = viewType.FullName;
+                var assemblyName = viewType.Assembly.FullName;
+                var vmName = $"{viewName.Replace("Controls", "ViewModels")}ViewModel, {assemblyName}";
+                return Type.GetType(vmName);
+            });
+
+```
+
+该代码的最终意思就是,将原有的View命名控件命名改成了符合约定的命名。
+
+2.使用ViewModelLocationProvider指定View与ViewModel的类型。
+
+```c#
+        public void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+            ViewModelLocationProvider.Register<ControlA, ControlAViewModel>();
+
+            //ViewModelLocationProvider.Register<ControlA>(() => new ControlAViewModel() { Text = "Hello from Factory" });
+        }
+```
+
+## Dialog
+
+Prism提供了一组对话服务, 封装了常用的对话框组件的功能, 例如:
+
+- RegisterDialog/IDialogService (注册对话及使用对话)
+- 打开对话框传递参数/关闭对话框返回参数
+- 回调通知对话结果
+
+- 创建对话框,通常是一组用户控件 ,并且实现 IDialogAware
+
+```csharp
+public interface IDialogAware
+{
+string Title { get; }
+event Action<IDialogResult> RequestClose;
+bool CanCloseDialog();
+void OnDialogClosed();
+void OnDialogOpened(IDialogParameters parameters);
+}
+```
+
+- 注册对话框 RegisterDialog
+
+```cpp
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+            //仅注册视图
+            containerRegistry.RegisterDialog<MessageDialog>();
+
+            //注册视图时绑定VM
+            containerRegistry.RegisterDialog<MessageDialog, MessageDialogViewModel>();
+
+            //添加别名
+            containerRegistry.RegisterDialog<MessageDialog>("DialogName");
+        }
+```
+
+- 使用IDialogService接口 Show/ShowDialog 方法调用对话框
+
+```c#
+        private readonly IDialogService dialogService;
+
+        private void ShowDialog()
+        {
+            DialogParameters keys = new DialogParameters();
+            keys.Add("message", "Hello,Prism!");
+
+            dialogService.ShowDialog("MessageDialog", keys, arg =>
+            {
+                
+            });
+        }
+
+```
+
+**调用Show/ShowDialog,我们通过注册时候的名称进行打开, 并且可以传递参数, 以及回调方法(主要用于返回对话框的返回结果)**
+
+## 封装Dialog API
+
+对于对话框而言, 通常我们需要做的只是打开, 传递参数, 接收到指定的返回结果,仅此而已。
+对于常用的公共对话框, 我们可以封装成扩展方法, 以便于我们在应用程序的任何位置可以使用到它, 所以, 通常我们可以考虑以下做法:
+
+```c#
+public static void ShowNotification(this IDialogService dialogService,
+string message, Action<IDialogResult> callback)
+{
+var p = new DialogParameters();
+p.Add("message", message);
+dialogService.ShowDialog(“NotificationDialog", p, callback);
+}
 ```
 
