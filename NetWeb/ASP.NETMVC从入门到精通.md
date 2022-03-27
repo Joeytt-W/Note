@@ -384,11 +384,7 @@ ASP.NET MVC  Route---转发请求---1.客户端发起请求---2.到达IIS---3.�
 
 2.触发一个增量初始化的动作----注册路由规则，扫描控制器。。。。
 
-
-
 ## 九.Razor语法-混编
-
-
 
 一、在视图中可以写入各种Html标签
 
@@ -406,11 +402,83 @@ MVC:可以由后台程序员全权完成整个项目开发；
 
 ## 十、Razor扩展
 
-一、全部由后台人员来做全部的开发。
+### 一、常用HtmlHepler
+
+```c#
+@Html.ActionLink("LinkText","ActionName")
+@Html.ActionLink("LinkText", "ActionName","ControllerName")
+@Html.ActionLink("LinkText", "ActionName",new {id=1,name="张三"})
+@Html.ActionLink("LinkText", "ActionName",new {id=1,name="张三"},new{@class = "active",style="width: 200px;",tt="xxx"})
+@Html.TextBox("NameId")
+@Html.TextBox("NameId","Value")
+@Html.TextBox("NameId", "Value", new { @class = "classText",@style="width:200px" })    
+@Html.Hidden("NameId")
+@Html.Hidden("NameId", "Value")
+@Html.Password("NameId")
+@Html.Password("NameId", "Value")
+@Html.CheckBox("NameId", true)
+@Html.CheckBox("NameId", false)
+@* 这些另一种写法 *@
+@Html.CheckBoxFor(a =>a.IsVaild, new { @class = "checkBox" })    
+@Html.RadioButton("NameId","Value", true) @* true就是被选中 *@
+@Html.RadioButton("NameId", "Value", false)
+    
+    
+@*=========================================================================*@
+@{
+        SelectListItem item;
+        List<SelectListItem> list = new List<SelectListItem>();
+        for(int i=1;i<5;i++)
+        {
+            item = new SelectListItem();
+            item.Text = "Text" + i;
+            item.Value = "Value" + i;
+            item.Selected = (i==2);
+            list.Add(item);
+        }       
+}
+@*下拉菜单*@
+@Html.DropDownList("Id", list)
+Html.DropDownListFor(a => a.Text, list, "--Select One--", new { @class = "dropdownlist" })    
+@*多选列表框*@   
+@Html.ListBox("NameId", list)    
+```
+
+### 二、自定义htmlhelper。
 
 ​      各种html标签可以通过后台语言来进行生成。
 
+```c#
+public static class HtmlExtensions
+    {
+        public static MvcHtmlString Br(this HtmlHelper helper)
+        {
+            var builder = new TagBuilder("br");
+		   //return new HtmlString(string.Format("<span style='font-weight:bold;'>Hello-{0}-End</span>", value));
+            return MvcHtmlString.Create(builder.ToString(TagRenderMode.SelfClosing));
+        }
 
+
+        public static MvcHtmlString Image(this HtmlHelper helper, string src, string alt, string title,
+            object htmlAttribute, string defaultClass = "btn btn-default")
+        {
+            var builder = new TagBuilder("Img");
+            builder.MergeAttribute("src",src);
+            builder.MergeAttribute("alt", alt);
+            builder.MergeAttribute("title", title);
+            builder.MergeAttribute("class", defaultClass);
+            builder.MergeAttributes<string,object>(new RouteValueDictionary(htmlAttribute));
+
+            return MvcHtmlString.Create(builder.ToString(TagRenderMode.SelfClosing));
+        }
+    }
+```
+
+```c#
+@using AspNet.Project.Extensions;
+
+@Html.Br()
+```
 
 ## 十一、页面布局
 
