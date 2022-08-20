@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "+K84cbuoKqVKiXR9N2g2QukhZnw8J7IpvSbVp3dSRXh0x8bwLXkRCp0lsCw0QsuRzLVe+oVJ2rgy2iuDl425uQ==",
+  "dgSpecHash": "VA37RqerVgcCtfVFmmlqj06H45eomi/vnfBV4NMKHx9y4PH935fUbutFqaZRK0rUEoLeg5tSm8XWHiRWHFZwRQ==",
   "success": true,
-  "projectFilePath": "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Utility\\Core.Utility.csproj",
+  "projectFilePath": "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Utility\\Core.Utility.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.extensions.configuration\\3.0.0\\microsoft.extensions.configuration.3.0.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\3.0.0\\microsoft.extensions.configuration.abstractions.3.0.0.nupkg.sha512",

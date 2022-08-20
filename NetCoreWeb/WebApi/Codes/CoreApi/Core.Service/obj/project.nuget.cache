@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "0fXUriQZ2VyUIQ57NCYc5WdLgdeXT7NpA+O2PG74wxbyfoHa+oLxXsfrXEP3FtfPNtNiFj8Ihv7jljAjLJc69A==",
+  "dgSpecHash": "eSTwISznAUln0cg9EepCBAyYN5lhzTK8UKgJMM3iKclpHAfJXAwKYI39n7ZsBq9/LFa+4SrTokmcf+IMMuZxAw==",
   "success": true,
-  "projectFilePath": "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Service\\Core.Service.csproj",
+  "projectFilePath": "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Service\\Core.Service.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Administrator\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.1\\automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",

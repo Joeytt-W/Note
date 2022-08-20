@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5Ij8fHM4kNrnb/ZqrfFRNPdSECw42eGZbF+mcEKyrxO/vFpz62SLKkuIhWU5gj7sV8FkIJ6xkb7G2oLRfaNqvg==",
+  "dgSpecHash": "YWVUJWghupOyWo4NlVkiRIcrc/aPPN2wqvhYABsmK4f66DtIZNAs43xdm4IfWUhqQ1Q744HiV7/MCR0AGsd+fQ==",
   "success": true,
-  "projectFilePath": "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Entity\\Core.Entity.csproj",
+  "projectFilePath": "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Entity\\Core.Entity.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.entityframeworkcore\\5.0.5\\microsoft.entityframeworkcore.5.0.5.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\5.0.5\\microsoft.entityframeworkcore.abstractions.5.0.5.nupkg.sha512",

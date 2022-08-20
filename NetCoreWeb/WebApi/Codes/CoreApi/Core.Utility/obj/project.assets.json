@@ -329,24 +329,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Administrator\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Administrator\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Utility\\Core.Utility.csproj",
+      "projectUniqueName": "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Utility\\Core.Utility.csproj",
       "projectName": "Core.Utility",
-      "projectPath": "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Utility\\Core.Utility.csproj",
+      "projectPath": "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Utility\\Core.Utility.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Utility\\obj\\",
+      "outputPath": "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Utility\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
         "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -392,7 +387,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.403\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }

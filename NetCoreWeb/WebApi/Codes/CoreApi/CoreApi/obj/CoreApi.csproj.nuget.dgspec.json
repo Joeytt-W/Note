@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\CoreApi\\CoreApi.csproj": {}
+    "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\CoreApi\\CoreApi.csproj": {}
   },
   "projects": {
-    "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Entity\\Core.Entity.csproj": {
+    "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Entity\\Core.Entity.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Entity\\Core.Entity.csproj",
+        "projectUniqueName": "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Entity\\Core.Entity.csproj",
         "projectName": "Core.Entity",
-        "projectPath": "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Entity\\Core.Entity.csproj",
+        "projectPath": "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Entity\\Core.Entity.csproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Entity\\obj\\",
+        "outputPath": "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Entity\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
           "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -32,8 +28,8 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Utility\\Core.Utility.csproj": {
-                "projectPath": "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Utility\\Core.Utility.csproj"
+              "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Utility\\Core.Utility.csproj": {
+                "projectPath": "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Utility\\Core.Utility.csproj"
               }
             }
           }
@@ -68,25 +64,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.403\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Service\\Core.Service.csproj": {
+    "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Service\\Core.Service.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Service\\Core.Service.csproj",
+        "projectUniqueName": "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Service\\Core.Service.csproj",
         "projectName": "Core.Service",
-        "projectPath": "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Service\\Core.Service.csproj",
+        "projectPath": "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Service\\Core.Service.csproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Service\\obj\\",
+        "outputPath": "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Service\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
           "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -100,8 +92,8 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Entity\\Core.Entity.csproj": {
-                "projectPath": "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Entity\\Core.Entity.csproj"
+              "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Entity\\Core.Entity.csproj": {
+                "projectPath": "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Entity\\Core.Entity.csproj"
               }
             }
           }
@@ -164,25 +156,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.403\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Utility\\Core.Utility.csproj": {
+    "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Utility\\Core.Utility.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Utility\\Core.Utility.csproj",
+        "projectUniqueName": "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Utility\\Core.Utility.csproj",
         "projectName": "Core.Utility",
-        "projectPath": "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Utility\\Core.Utility.csproj",
+        "projectPath": "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Utility\\Core.Utility.csproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Utility\\obj\\",
+        "outputPath": "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Utility\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
           "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -228,25 +216,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.403\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\CoreApi\\CoreApi.csproj": {
+    "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\CoreApi\\CoreApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\CoreApi\\CoreApi.csproj",
+        "projectUniqueName": "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\CoreApi\\CoreApi.csproj",
         "projectName": "CoreApi",
-        "projectPath": "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\CoreApi\\CoreApi.csproj",
+        "projectPath": "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\CoreApi\\CoreApi.csproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\CoreApi\\obj\\",
+        "outputPath": "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\CoreApi\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
           "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -260,8 +244,8 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Service\\Core.Service.csproj": {
-                "projectPath": "D:\\文件\\我的\\Note\\NetCoreWeb\\Code\\CoreApi\\Core.Service\\Core.Service.csproj"
+              "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Service\\Core.Service.csproj": {
+                "projectPath": "E:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\CoreApi\\Core.Service\\Core.Service.csproj"
               }
             }
           }
@@ -307,7 +291,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.403\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }
