@@ -45,7 +45,7 @@ namespace FakeXiecheng.api.Helper
 
                     if(propertyInfo == null)
                     {
-                        throw new Exception($"属性{propertName}找不打破" + $"{typeof(TSource)}");
+                        throw new Exception($"属性{propertName}找不到" + $"{typeof(TSource)}");
                     }
 
                     propertyInfoList.Add(propertyInfo);
