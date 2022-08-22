@@ -390,4 +390,4 @@ Docker for Windows 有两种运行模式，一种运行Windows相关容器，一
 
 1. docker images	--查看docker中所有已拉取的镜像
 2. docker pull imagename    --拉取镜像
-3. docker run [--name runningname] [-m 512m(分配资源)] [-e (环境变量)] [-p 对外开放端口:容器内部端口(端口映射)] [-d(后台运行)]
+3. docker run [--name runningname] [-m 512m(分配资源)] [-e (环境变量)] [-p 对外开放端口:容器内部端口(端口映射)] [-d(后台运行)] imagename
