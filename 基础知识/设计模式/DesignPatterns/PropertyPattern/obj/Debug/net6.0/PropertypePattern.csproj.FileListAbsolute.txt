@@ -1,0 +1,17 @@
+D:\文件\我的\Common\Design Pattern\DesignPatterns\PropertyPattern\bin\Debug\net6.0\PropertypePattern.exe
+D:\文件\我的\Common\Design Pattern\DesignPatterns\PropertyPattern\bin\Debug\net6.0\PropertypePattern.deps.json
+D:\文件\我的\Common\Design Pattern\DesignPatterns\PropertyPattern\bin\Debug\net6.0\PropertypePattern.runtimeconfig.json
+D:\文件\我的\Common\Design Pattern\DesignPatterns\PropertyPattern\bin\Debug\net6.0\PropertypePattern.dll
+D:\文件\我的\Common\Design Pattern\DesignPatterns\PropertyPattern\bin\Debug\net6.0\PropertypePattern.pdb
+D:\文件\我的\Common\Design Pattern\DesignPatterns\PropertyPattern\obj\Debug\net6.0\PropertypePattern.csproj.AssemblyReference.cache
+D:\文件\我的\Common\Design Pattern\DesignPatterns\PropertyPattern\obj\Debug\net6.0\PropertypePattern.GeneratedMSBuildEditorConfig.editorconfig
+D:\文件\我的\Common\Design Pattern\DesignPatterns\PropertyPattern\obj\Debug\net6.0\PropertypePattern.AssemblyInfoInputs.cache
+D:\文件\我的\Common\Design Pattern\DesignPatterns\PropertyPattern\obj\Debug\net6.0\PropertypePattern.AssemblyInfo.cs
+D:\文件\我的\Common\Design Pattern\DesignPatterns\PropertyPattern\obj\Debug\net6.0\PropertypePattern.csproj.CoreCompileInputs.cache
+D:\文件\我的\Common\Design Pattern\DesignPatterns\PropertyPattern\obj\Debug\net6.0\PropertypePattern.dll
+D:\文件\我的\Common\Design Pattern\DesignPatterns\PropertyPattern\obj\Debug\net6.0\refint\PropertypePattern.dll
+D:\文件\我的\Common\Design Pattern\DesignPatterns\PropertyPattern\obj\Debug\net6.0\PropertypePattern.pdb
+D:\文件\我的\Common\Design Pattern\DesignPatterns\PropertyPattern\obj\Debug\net6.0\PropertypePattern.genruntimeconfig.cache
+D:\文件\我的\Common\Design Pattern\DesignPatterns\PropertyPattern\obj\Debug\net6.0\ref\PropertypePattern.dll
+D:\文件\我的\Common\Design Pattern\DesignPatterns\PropertyPattern\bin\Debug\net6.0\Newtonsoft.Json.dll
+D:\文件\我的\Common\Design Pattern\DesignPatterns\PropertyPattern\obj\Debug\net6.0\PropertypePattern.csproj.CopyComplete

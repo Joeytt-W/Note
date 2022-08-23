@@ -1,0 +1,15 @@
+E:\Pluraslight\Design Pattern\DesignPatterns\Visitor\bin\Debug\net6.0\Visitor.exe
+E:\Pluraslight\Design Pattern\DesignPatterns\Visitor\bin\Debug\net6.0\Visitor.deps.json
+E:\Pluraslight\Design Pattern\DesignPatterns\Visitor\bin\Debug\net6.0\Visitor.runtimeconfig.json
+E:\Pluraslight\Design Pattern\DesignPatterns\Visitor\bin\Debug\net6.0\Visitor.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\Visitor\bin\Debug\net6.0\Visitor.pdb
+E:\Pluraslight\Design Pattern\DesignPatterns\Visitor\obj\Debug\net6.0\Visitor.csproj.AssemblyReference.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Visitor\obj\Debug\net6.0\Visitor.GeneratedMSBuildEditorConfig.editorconfig
+E:\Pluraslight\Design Pattern\DesignPatterns\Visitor\obj\Debug\net6.0\Visitor.AssemblyInfoInputs.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Visitor\obj\Debug\net6.0\Visitor.AssemblyInfo.cs
+E:\Pluraslight\Design Pattern\DesignPatterns\Visitor\obj\Debug\net6.0\Visitor.csproj.CoreCompileInputs.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Visitor\obj\Debug\net6.0\Visitor.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\Visitor\obj\Debug\net6.0\refint\Visitor.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\Visitor\obj\Debug\net6.0\Visitor.pdb
+E:\Pluraslight\Design Pattern\DesignPatterns\Visitor\obj\Debug\net6.0\Visitor.genruntimeconfig.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Visitor\obj\Debug\net6.0\ref\Visitor.dll

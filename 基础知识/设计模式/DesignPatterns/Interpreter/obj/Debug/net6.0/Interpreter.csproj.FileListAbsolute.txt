@@ -1,0 +1,15 @@
+E:\Pluraslight\Design Pattern\DesignPatterns\Interpreter\bin\Debug\net6.0\Interpreter.exe
+E:\Pluraslight\Design Pattern\DesignPatterns\Interpreter\bin\Debug\net6.0\Interpreter.deps.json
+E:\Pluraslight\Design Pattern\DesignPatterns\Interpreter\bin\Debug\net6.0\Interpreter.runtimeconfig.json
+E:\Pluraslight\Design Pattern\DesignPatterns\Interpreter\bin\Debug\net6.0\Interpreter.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\Interpreter\bin\Debug\net6.0\Interpreter.pdb
+E:\Pluraslight\Design Pattern\DesignPatterns\Interpreter\obj\Debug\net6.0\Interpreter.csproj.AssemblyReference.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Interpreter\obj\Debug\net6.0\Interpreter.GeneratedMSBuildEditorConfig.editorconfig
+E:\Pluraslight\Design Pattern\DesignPatterns\Interpreter\obj\Debug\net6.0\Interpreter.AssemblyInfoInputs.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Interpreter\obj\Debug\net6.0\Interpreter.AssemblyInfo.cs
+E:\Pluraslight\Design Pattern\DesignPatterns\Interpreter\obj\Debug\net6.0\Interpreter.csproj.CoreCompileInputs.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Interpreter\obj\Debug\net6.0\Interpreter.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\Interpreter\obj\Debug\net6.0\refint\Interpreter.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\Interpreter\obj\Debug\net6.0\Interpreter.pdb
+E:\Pluraslight\Design Pattern\DesignPatterns\Interpreter\obj\Debug\net6.0\Interpreter.genruntimeconfig.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Interpreter\obj\Debug\net6.0\ref\Interpreter.dll

@@ -1,0 +1,15 @@
+E:\Pluraslight\Design Pattern\DesignPatterns\CommandPattern\obj\Debug\net6.0\CommandPattern.csproj.AssemblyReference.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\CommandPattern\obj\Debug\net6.0\CommandPattern.GeneratedMSBuildEditorConfig.editorconfig
+E:\Pluraslight\Design Pattern\DesignPatterns\CommandPattern\obj\Debug\net6.0\CommandPattern.AssemblyInfoInputs.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\CommandPattern\obj\Debug\net6.0\CommandPattern.AssemblyInfo.cs
+E:\Pluraslight\Design Pattern\DesignPatterns\CommandPattern\obj\Debug\net6.0\CommandPattern.csproj.CoreCompileInputs.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\CommandPattern\bin\Debug\net6.0\CommandPattern.exe
+E:\Pluraslight\Design Pattern\DesignPatterns\CommandPattern\bin\Debug\net6.0\CommandPattern.deps.json
+E:\Pluraslight\Design Pattern\DesignPatterns\CommandPattern\bin\Debug\net6.0\CommandPattern.runtimeconfig.json
+E:\Pluraslight\Design Pattern\DesignPatterns\CommandPattern\bin\Debug\net6.0\CommandPattern.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\CommandPattern\bin\Debug\net6.0\CommandPattern.pdb
+E:\Pluraslight\Design Pattern\DesignPatterns\CommandPattern\obj\Debug\net6.0\CommandPattern.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\CommandPattern\obj\Debug\net6.0\refint\CommandPattern.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\CommandPattern\obj\Debug\net6.0\CommandPattern.pdb
+E:\Pluraslight\Design Pattern\DesignPatterns\CommandPattern\obj\Debug\net6.0\CommandPattern.genruntimeconfig.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\CommandPattern\obj\Debug\net6.0\ref\CommandPattern.dll

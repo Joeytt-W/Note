@@ -1,0 +1,15 @@
+E:\Pluraslight\Design Pattern\DesignPatterns\Bridge\bin\Debug\net6.0\Bridge.exe
+E:\Pluraslight\Design Pattern\DesignPatterns\Bridge\bin\Debug\net6.0\Bridge.deps.json
+E:\Pluraslight\Design Pattern\DesignPatterns\Bridge\bin\Debug\net6.0\Bridge.runtimeconfig.json
+E:\Pluraslight\Design Pattern\DesignPatterns\Bridge\bin\Debug\net6.0\Bridge.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\Bridge\bin\Debug\net6.0\Bridge.pdb
+E:\Pluraslight\Design Pattern\DesignPatterns\Bridge\obj\Debug\net6.0\Bridge.csproj.AssemblyReference.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Bridge\obj\Debug\net6.0\Bridge.GeneratedMSBuildEditorConfig.editorconfig
+E:\Pluraslight\Design Pattern\DesignPatterns\Bridge\obj\Debug\net6.0\Bridge.AssemblyInfoInputs.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Bridge\obj\Debug\net6.0\Bridge.AssemblyInfo.cs
+E:\Pluraslight\Design Pattern\DesignPatterns\Bridge\obj\Debug\net6.0\Bridge.csproj.CoreCompileInputs.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Bridge\obj\Debug\net6.0\Bridge.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\Bridge\obj\Debug\net6.0\refint\Bridge.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\Bridge\obj\Debug\net6.0\Bridge.pdb
+E:\Pluraslight\Design Pattern\DesignPatterns\Bridge\obj\Debug\net6.0\Bridge.genruntimeconfig.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Bridge\obj\Debug\net6.0\ref\Bridge.dll

@@ -1,0 +1,15 @@
+E:\Pluraslight\Design Pattern\DesignPatterns\Mediator\bin\Debug\net6.0\Mediator.exe
+E:\Pluraslight\Design Pattern\DesignPatterns\Mediator\bin\Debug\net6.0\Mediator.deps.json
+E:\Pluraslight\Design Pattern\DesignPatterns\Mediator\bin\Debug\net6.0\Mediator.runtimeconfig.json
+E:\Pluraslight\Design Pattern\DesignPatterns\Mediator\bin\Debug\net6.0\Mediator.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\Mediator\bin\Debug\net6.0\Mediator.pdb
+E:\Pluraslight\Design Pattern\DesignPatterns\Mediator\obj\Debug\net6.0\Mediator.csproj.AssemblyReference.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Mediator\obj\Debug\net6.0\Mediator.GeneratedMSBuildEditorConfig.editorconfig
+E:\Pluraslight\Design Pattern\DesignPatterns\Mediator\obj\Debug\net6.0\Mediator.AssemblyInfoInputs.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Mediator\obj\Debug\net6.0\Mediator.AssemblyInfo.cs
+E:\Pluraslight\Design Pattern\DesignPatterns\Mediator\obj\Debug\net6.0\Mediator.csproj.CoreCompileInputs.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Mediator\obj\Debug\net6.0\Mediator.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\Mediator\obj\Debug\net6.0\refint\Mediator.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\Mediator\obj\Debug\net6.0\Mediator.pdb
+E:\Pluraslight\Design Pattern\DesignPatterns\Mediator\obj\Debug\net6.0\Mediator.genruntimeconfig.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Mediator\obj\Debug\net6.0\ref\Mediator.dll

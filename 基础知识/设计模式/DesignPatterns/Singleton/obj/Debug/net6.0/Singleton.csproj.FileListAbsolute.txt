@@ -1,0 +1,15 @@
+D:\文件\我的\Common\Design Pattern\DesignPatterns\Singleton\bin\Debug\net6.0\Singleton.exe
+D:\文件\我的\Common\Design Pattern\DesignPatterns\Singleton\bin\Debug\net6.0\Singleton.deps.json
+D:\文件\我的\Common\Design Pattern\DesignPatterns\Singleton\bin\Debug\net6.0\Singleton.runtimeconfig.json
+D:\文件\我的\Common\Design Pattern\DesignPatterns\Singleton\bin\Debug\net6.0\Singleton.dll
+D:\文件\我的\Common\Design Pattern\DesignPatterns\Singleton\bin\Debug\net6.0\Singleton.pdb
+D:\文件\我的\Common\Design Pattern\DesignPatterns\Singleton\obj\Debug\net6.0\Singleton.csproj.AssemblyReference.cache
+D:\文件\我的\Common\Design Pattern\DesignPatterns\Singleton\obj\Debug\net6.0\Singleton.GeneratedMSBuildEditorConfig.editorconfig
+D:\文件\我的\Common\Design Pattern\DesignPatterns\Singleton\obj\Debug\net6.0\Singleton.AssemblyInfoInputs.cache
+D:\文件\我的\Common\Design Pattern\DesignPatterns\Singleton\obj\Debug\net6.0\Singleton.AssemblyInfo.cs
+D:\文件\我的\Common\Design Pattern\DesignPatterns\Singleton\obj\Debug\net6.0\Singleton.csproj.CoreCompileInputs.cache
+D:\文件\我的\Common\Design Pattern\DesignPatterns\Singleton\obj\Debug\net6.0\Singleton.dll
+D:\文件\我的\Common\Design Pattern\DesignPatterns\Singleton\obj\Debug\net6.0\refint\Singleton.dll
+D:\文件\我的\Common\Design Pattern\DesignPatterns\Singleton\obj\Debug\net6.0\Singleton.pdb
+D:\文件\我的\Common\Design Pattern\DesignPatterns\Singleton\obj\Debug\net6.0\Singleton.genruntimeconfig.cache
+D:\文件\我的\Common\Design Pattern\DesignPatterns\Singleton\obj\Debug\net6.0\ref\Singleton.dll

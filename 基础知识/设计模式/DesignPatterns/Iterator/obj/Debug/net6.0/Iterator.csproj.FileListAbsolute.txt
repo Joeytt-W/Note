@@ -1,0 +1,15 @@
+E:\Pluraslight\Design Pattern\DesignPatterns\Iterator\bin\Debug\net6.0\Iterator.exe
+E:\Pluraslight\Design Pattern\DesignPatterns\Iterator\bin\Debug\net6.0\Iterator.deps.json
+E:\Pluraslight\Design Pattern\DesignPatterns\Iterator\bin\Debug\net6.0\Iterator.runtimeconfig.json
+E:\Pluraslight\Design Pattern\DesignPatterns\Iterator\bin\Debug\net6.0\Iterator.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\Iterator\bin\Debug\net6.0\Iterator.pdb
+E:\Pluraslight\Design Pattern\DesignPatterns\Iterator\obj\Debug\net6.0\Iterator.csproj.AssemblyReference.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Iterator\obj\Debug\net6.0\Iterator.GeneratedMSBuildEditorConfig.editorconfig
+E:\Pluraslight\Design Pattern\DesignPatterns\Iterator\obj\Debug\net6.0\Iterator.AssemblyInfoInputs.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Iterator\obj\Debug\net6.0\Iterator.AssemblyInfo.cs
+E:\Pluraslight\Design Pattern\DesignPatterns\Iterator\obj\Debug\net6.0\Iterator.csproj.CoreCompileInputs.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Iterator\obj\Debug\net6.0\Iterator.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\Iterator\obj\Debug\net6.0\refint\Iterator.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\Iterator\obj\Debug\net6.0\Iterator.pdb
+E:\Pluraslight\Design Pattern\DesignPatterns\Iterator\obj\Debug\net6.0\Iterator.genruntimeconfig.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Iterator\obj\Debug\net6.0\ref\Iterator.dll

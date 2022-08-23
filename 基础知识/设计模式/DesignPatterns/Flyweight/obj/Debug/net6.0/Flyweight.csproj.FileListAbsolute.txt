@@ -1,0 +1,15 @@
+E:\Pluraslight\Design Pattern\DesignPatterns\Flyweight\bin\Debug\net6.0\Flyweight.exe
+E:\Pluraslight\Design Pattern\DesignPatterns\Flyweight\bin\Debug\net6.0\Flyweight.deps.json
+E:\Pluraslight\Design Pattern\DesignPatterns\Flyweight\bin\Debug\net6.0\Flyweight.runtimeconfig.json
+E:\Pluraslight\Design Pattern\DesignPatterns\Flyweight\bin\Debug\net6.0\Flyweight.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\Flyweight\bin\Debug\net6.0\Flyweight.pdb
+E:\Pluraslight\Design Pattern\DesignPatterns\Flyweight\obj\Debug\net6.0\Flyweight.csproj.AssemblyReference.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Flyweight\obj\Debug\net6.0\Flyweight.GeneratedMSBuildEditorConfig.editorconfig
+E:\Pluraslight\Design Pattern\DesignPatterns\Flyweight\obj\Debug\net6.0\Flyweight.AssemblyInfoInputs.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Flyweight\obj\Debug\net6.0\Flyweight.AssemblyInfo.cs
+E:\Pluraslight\Design Pattern\DesignPatterns\Flyweight\obj\Debug\net6.0\Flyweight.csproj.CoreCompileInputs.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Flyweight\obj\Debug\net6.0\Flyweight.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\Flyweight\obj\Debug\net6.0\refint\Flyweight.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\Flyweight\obj\Debug\net6.0\Flyweight.pdb
+E:\Pluraslight\Design Pattern\DesignPatterns\Flyweight\obj\Debug\net6.0\Flyweight.genruntimeconfig.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Flyweight\obj\Debug\net6.0\ref\Flyweight.dll

@@ -388,6 +388,52 @@ Docker for Windows 有两种运行模式，一种运行Windows相关容器，一
 
 # 常用命令
 
-1. docker images	--查看docker中所有已拉取的镜像
-2. docker pull imagename    --拉取镜像
-3. docker run [--name runningname] [-m 512m(分配资源)] [-e (环境变量)] [-p 对外开放端口:容器内部端口(端口映射)] [-d(后台运行)] imagename
+1. docker命令需要管理员权限，切换root模式后可以免去sudo输入
+
+     1. 查看所有镜像
+
+        docker images
+
+     2. 拉取docker镜像，示例拉取的SQL server镜像
+
+        docker pull microsoft/mssql-server-linux
+
+     3. 启动容器
+
+        docker run --name sql_server -m 512m -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=sa.123456' -p 11433:1433 -d microsoft/mssql-server-linux
+
+        --name：容器名
+
+        -m：配置内存
+
+        -e：设置环境变量
+
+        -p：端口映射，左边docker映射端口，右边容器内部端口
+
+        -d：后台运行
+
+     4. 查看容器状态
+
+        docker ps
+
+     5. 停止和开启容器
+
+        docker stop 容器名
+
+        docker start 容器名
+
+     6. 重启容器
+
+        docker restart 容器名
+
+     7. 容器自启动
+
+        docker update --restart=always sql_server
+
+     8. 删除容器，删除前需要先停止容器
+
+        docker rm 容器名
+
+     9. 删除镜像
+
+        docker rmi 镜像名

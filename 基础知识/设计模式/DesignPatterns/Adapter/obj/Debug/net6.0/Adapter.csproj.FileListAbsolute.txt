@@ -1,0 +1,15 @@
+E:\Pluraslight\Design Pattern\DesignPatterns\Adapter\bin\Debug\net6.0\Adapter.exe
+E:\Pluraslight\Design Pattern\DesignPatterns\Adapter\bin\Debug\net6.0\Adapter.deps.json
+E:\Pluraslight\Design Pattern\DesignPatterns\Adapter\bin\Debug\net6.0\Adapter.runtimeconfig.json
+E:\Pluraslight\Design Pattern\DesignPatterns\Adapter\bin\Debug\net6.0\Adapter.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\Adapter\bin\Debug\net6.0\Adapter.pdb
+E:\Pluraslight\Design Pattern\DesignPatterns\Adapter\obj\Debug\net6.0\Adapter.csproj.AssemblyReference.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Adapter\obj\Debug\net6.0\Adapter.GeneratedMSBuildEditorConfig.editorconfig
+E:\Pluraslight\Design Pattern\DesignPatterns\Adapter\obj\Debug\net6.0\Adapter.AssemblyInfoInputs.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Adapter\obj\Debug\net6.0\Adapter.AssemblyInfo.cs
+E:\Pluraslight\Design Pattern\DesignPatterns\Adapter\obj\Debug\net6.0\Adapter.csproj.CoreCompileInputs.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Adapter\obj\Debug\net6.0\Adapter.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\Adapter\obj\Debug\net6.0\refint\Adapter.dll
+E:\Pluraslight\Design Pattern\DesignPatterns\Adapter\obj\Debug\net6.0\Adapter.pdb
+E:\Pluraslight\Design Pattern\DesignPatterns\Adapter\obj\Debug\net6.0\Adapter.genruntimeconfig.cache
+E:\Pluraslight\Design Pattern\DesignPatterns\Adapter\obj\Debug\net6.0\ref\Adapter.dll
