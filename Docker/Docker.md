@@ -1,6 +1,6 @@
 # 安装
 
-## Ubuntu [官方网址](https://docs.docker.com/engine/install/ubuntu/)
+Ubuntu [官方安装网址](https://docs.docker.com/engine/install/ubuntu/)
 
 ## OS requirements
 
@@ -386,54 +386,297 @@ Docker for Windows 有两种运行模式，一种运行Windows相关容器，一
 
 [Dockerfile 镜像构建参考文档](https://docs.docker.com/engine/reference/builder/)
 
-# 常用命令
+# 常用操作和命令
 
-1. docker命令需要管理员权限，切换root模式后可以免去sudo输入
+## 启动，停止，重启docker服务(Linux)
 
-     1. 查看所有镜像
+```powershell
+# 启动
+systemctl start docker
 
-        docker images
+# 停止
+systemctl stop docker
 
-     2. 拉取docker镜像，示例拉取的SQL server镜像
+# 重启
+systemctl restart docker
+```
 
-        docker pull microsoft/mssql-server-linux
+## 查看docker状态，信息
 
-     3. 启动容器
+```powershell
+# 状态
+systemctl status docker
 
-        docker run --name sql_server -m 512m -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=sa.123456' -p 11433:1433 -d microsoft/mssql-server-linux
+#信息
+docker info
+```
 
-        --name：容器名
+## docker开机启动
 
-        -m：配置内存
+```powershell
+systemctl enable docker
+```
 
-        -e：设置环境变量
+## 查找镜像
 
-        -p：端口映射，左边docker映射端口，右边容器内部端口
+```powershell
+docker search 镜像名
+```
 
-        -d：后台运行
+![](images/01.png)
 
-     4. 查看容器状态
+- REPOSITORY:镜像的仓库源
+- TAG:镜像版本号
+- IMAGE ID:镜像ID
+- CREATED:创建时间
+- SIZE:镜像大小
 
-        docker ps
+## 查看所有镜像
 
-     5. 停止和开启容器
+``` powershell
+docker images
+```
 
-        docker stop 容器名
+## 拉取docker镜像，示例拉取的SQL server镜像
 
-        docker start 容器名
+```powershell
+docker pull microsoft/mssql-server-linux[:TAG]
+```
 
-     6. 重启容器
+## 删除镜像
 
-        docker restart 容器名
+```powershell
+# 删除容器和镜像要先停止运行的容器
+docker rmi 镜像名
+```
 
-     7. 容器自启动
+## 启动容器
 
-        docker update --restart=always sql_server
+```powershell
+docker run --name sql_server -m 512m -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=sa.123456' -p 11433:1433 -d microsoft/mssql-server-linux
+```
 
-     8. 删除容器，删除前需要先停止容器
+--name：容器名
 
-        docker rm 容器名
+-m：配置内存
 
-     9. 删除镜像
+-e：设置环境变量
 
-        docker rmi 镜像名
+-p：指定端口映射，左边docker映射端口，右边容器内部端口
+
+-P：随机端口映射
+
+-d：后台运行
+
+-i：以交互模式运行容器，通常和-t同时使用
+
+-t：为容器重新分配一个伪输入终端，即启动交互式容器
+
+## 查看容器状态
+
+```powershell
+docker ps
+```
+
+## 停止和开启容器
+
+```powershell
+docker stop 容器名
+
+docker start 容器名
+```
+
+## 重启容器
+
+```powershell
+docker restart 容器名
+```
+
+## 容器自启动
+
+```powershell
+docker update --restart=always sql_server
+```
+
+## 删除容器，删除前需要先停止容器
+
+```powershell
+docker rm 容器名
+```
+
+## 查看容器运行日志
+
+``` powershell
+docker logs 容器ID
+```
+
+## 查看容器内部细节
+
+```powershell
+docker inspect 容器ID
+```
+
+## 进入正在运行的容器，终端交互
+
+```powershell
+docker exec -it 容器ID /bin/bash
+
+#退出,容器不停止
+exit
+```
+
+## 从容器拷贝文件到主机
+
+```powershell
+docker cp 容器ID:容器内路径 目的主机路径
+```
+
+## 导入导出容器
+
+```powershell
+# 导出
+docker export 容器ID > name.tar
+
+#导入
+cat name.tar | docker import - 镜像用户/镜像名:镜像版本号
+```
+
+## 提交容器副本作为新的镜像
+
+```powershell
+docker commit -m="描述信息" -a="作者" 容器ID 要创建的目标镜像名:[TAG]
+```
+
+![](images/02.png)
+
+## 本地镜像推送到阿里云
+
+![](images/03.png)
+
+![](images/04.png)
+
+![](images/05.png)
+
+![](images/06.png)
+
+- 按照阿里云指令执行
+
+  ```powershell
+  docker login --username=7847*****@qq.com registry.cn-hangzhou.aliyuncs.com
+  
+  docker tag [ImageId] registry.cn-hangzhou.aliyuncs.com/wqy_testspace/myubuntu:[镜像版本号]
+  
+  docker push registry.cn-hangzhou.aliyuncs.com/wqy_testspace/myubuntu:[镜像版本号]
+  ```
+
+![](images/07.png)
+
+![](images/08.png)
+
+## 映射容器目录和宿主主机目录
+
+```powershell
+#-v可以多个
+#:ro或者rw readonly 或者 read+write 
+docker run -it --privileged=true -v 宿主主机绝对路径:容器内绝对路径[:ro或者rw] 镜像名
+```
+
+## 本地镜像推送到私有库
+
+-  Docker Registry是官方提供的工具，可以用于构建私有镜像仓库
+
+  ```powershell
+  docker pull registry
+  
+  docker run -d -p 5000:5000  -v /本地路径/myregistry/:/tmp/registry --privileged=true registry
+  # 默认情况，仓库被创建在容器的/var/lib/registry目录下，建议自行用容器卷映射，方便于宿主机联调
+  ```
+
+- curl验证私服库上有什么镜像
+
+  ```powershell
+  curl -XGET http://192.168.242.128:5000/v2/_catalog
+  ```
+
+- 将新镜像zzyyubuntu:1.2修改符合私服规范的Tag
+
+  ```powershell
+  # docker   tag   镜像:Tag   Host:Port/Repository:Tag
+  
+  docker tag  wqy/ubuntu:1.0  192.168.242.128:5000/myubuntu:1.0
+  ```
+
+- 修改配置文件使之支持http
+
+  ```powershell
+  vim /etc/docker/daemon.json
+  ```
+
+  ```json
+  {
+    "registry-mirrors": ["https://aa25jngu.mirror.aliyuncs.com"],
+    "insecure-registries": ["192.168.242.128:5000"]
+  }
+  # docker默认不允许http方式推送镜像，通过配置选项来取消这个限制。====> 修改完后如果不生效，建议重启docker
+  ```
+
+- push推送到私服库
+
+  ```powershell
+  docker push 192.168.242.128:5000/myubuntu:1.0
+  ```
+
+- pull到本地并运行
+
+  ```powershell
+  docker pull 192.168.242.128:5000/myubuntu:1.0
+  ```
+
+# Docker轻量级可视化工具Portainer
+
+- https://www.portainer.io/
+
+-  https://docs.portainer.io/v/ce-2.9/start/install/server/docker/linux
+
+## 安装
+
+### Linux
+
+```powershell
+docker pull portainer
+
+docker volume create portainer_data
+
+docker run -d -p 8000:8000 -p 9000:9000 --name portainer \
+    --restart=always \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v portainer_data:/data \
+    portainer/portainer-ce:latest
+```
+
+### windows
+
+```powershell
+# powershell
+netsh advfirewall firewall add rule name="cluster_management" dir=in action=allow protocol=TCP localport=2377
+netsh advfirewall firewall add rule name="node_communication_tcp" dir=in action=allow protocol=TCP localport=7946
+netsh advfirewall firewall add rule name="node_communication_udp" dir=in action=allow protocol=UDP localport=7946
+netsh advfirewall firewall add rule name="overlay_network" dir=in action=allow protocol=UDP localport=4789
+netsh advfirewall firewall add rule name="swarm_dns_tcp" dir=in action=allow protocol=TCP localport=53
+netsh advfirewall firewall add rule name="swarm_dns_udp" dir=in action=allow protocol=UDP localport=53
+
+Enable-WindowsOptionalFeature -Online -FeatureName containers -All
+Install-Module -Name DockerMsftProvider -Repository PSGallery -Force
+Install-Package -Name docker -ProviderName DockerMsftProvider
+```
+
+```powershell
+docker volume create portainer_data
+
+docker run -d -p 8000:8000 -p 9000:9000 --name portainer --restart always -v \\.\pipe\docker_engine:\\.\pipe\docker_engine -v portainer_data:C:\data portainer/portainer-ce:latest
+```
+
+
+
+
+
