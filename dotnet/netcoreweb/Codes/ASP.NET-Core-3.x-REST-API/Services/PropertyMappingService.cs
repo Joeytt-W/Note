@@ -8,6 +8,7 @@ namespace Routine.Api.Services
 {
     public class PropertyMappingService : IPropertyMappingService
     {
+        #region 建立Dto到Entity的可用于排序字段的映射关系
         private readonly Dictionary<string, PropertyMappingValue> _companyPropertyMapping =
             new Dictionary<string, PropertyMappingValue>(StringComparer.OrdinalIgnoreCase)
             {
@@ -29,6 +30,7 @@ namespace Routine.Api.Services
                 {"GenderDisplay", new PropertyMappingValue(new List<string>{"Gender"})},
                 {"Age", new PropertyMappingValue(new List<string>{"DateOfBirth"}, true)}
             };
+        #endregion
 
         private readonly IList<IPropertyMapping> _propertyMappings = new List<IPropertyMapping>();
 
@@ -38,6 +40,13 @@ namespace Routine.Api.Services
             _propertyMappings.Add(new PropertyMapping<CompanyDto, Company>(_companyPropertyMapping));
         }
 
+        /// <summary>
+        /// 获取映射关系，通过类型确认
+        /// </summary>
+        /// <typeparam name="TSource">Dto</typeparam>
+        /// <typeparam name="TDestination">Entity</typeparam>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public Dictionary<string, PropertyMappingValue> GetPropertyMapping<TSource, TDestination>()
         {
             var matchingMapping = _propertyMappings.OfType<PropertyMapping<TSource, TDestination>>();

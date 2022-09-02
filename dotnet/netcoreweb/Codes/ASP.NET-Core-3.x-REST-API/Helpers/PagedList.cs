@@ -6,6 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Routine.Api.Helpers
 {
+    /// <summary>
+    /// 分页
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class PagedList<T>: List<T>
     {
         public int CurrentPage { get; private set; }

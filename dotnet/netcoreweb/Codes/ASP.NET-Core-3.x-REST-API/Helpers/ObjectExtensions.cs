@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Routine.Api.Helpers
 {
+    /// <summary>
+    /// 数据塑性，只取想要的字段
+    /// </summary>
     public static class ObjectExtensions
     {
         public static ExpandoObject ShapeData<TSource>(this TSource source, string fields)

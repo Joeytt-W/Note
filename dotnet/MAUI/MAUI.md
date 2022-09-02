@@ -172,3 +172,5 @@ public partial class AppShell : Shell
     }
 ```
 
+# 控件
+

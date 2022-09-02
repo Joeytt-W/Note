@@ -3,6 +3,9 @@ using Routine.Api.Models;
 
 namespace Routine.Api.ValidationAttributes
 {
+    /// <summary>
+    /// 自定义验证特性
+    /// </summary>
     public class EmployeeNoMustDifferentFromFirstNameAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)

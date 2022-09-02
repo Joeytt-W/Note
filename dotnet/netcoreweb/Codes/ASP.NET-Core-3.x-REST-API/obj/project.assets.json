@@ -2485,11 +2485,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\ASP.NET-Core-3.x-REST-API\\Routine.Api.csproj",
+      "projectUniqueName": "F:\\我的\\Note\\dotnet\\netcoreweb\\Codes\\ASP.NET-Core-3.x-REST-API\\Routine.Api.csproj",
       "projectName": "Routine.Api",
-      "projectPath": "F:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\ASP.NET-Core-3.x-REST-API\\Routine.Api.csproj",
+      "projectPath": "F:\\我的\\Note\\dotnet\\netcoreweb\\Codes\\ASP.NET-Core-3.x-REST-API\\Routine.Api.csproj",
       "packagesPath": "C:\\Users\\78472\\.nuget\\packages\\",
-      "outputPath": "F:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\ASP.NET-Core-3.x-REST-API\\obj\\",
+      "outputPath": "F:\\我的\\Note\\dotnet\\netcoreweb\\Codes\\ASP.NET-Core-3.x-REST-API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "D:\\Work\\Visual Studio 2019\\Shared\\NuGetPackages"

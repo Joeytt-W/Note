@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "IotpVLuULo7Epl6iF9uclYNYuttQ4s51txX1U8ln6XeN1nislDkLMkf1ykb764Xhfj42twIHqAINJ166vVONUQ==",
+  "dgSpecHash": "tzpefyWWDCAfEj/MfirBvAptO2y51GyFY6d2DrMrQXkxYoyz6w/8nzELakxkWGUzMI1jvRrHxszSBhTAaYr4/g==",
   "success": true,
-  "projectFilePath": "F:\\我的\\Note\\NetCoreWeb\\WebApi\\Codes\\ASP.NET-Core-3.x-REST-API\\Routine.Api.csproj",
+  "projectFilePath": "F:\\我的\\Note\\dotnet\\netcoreweb\\Codes\\ASP.NET-Core-3.x-REST-API\\Routine.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\78472\\.nuget\\packages\\automapper\\9.0.0\\automapper.9.0.0.nupkg.sha512",
     "C:\\Users\\78472\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\7.0.0\\automapper.extensions.microsoft.dependencyinjection.7.0.0.nupkg.sha512",

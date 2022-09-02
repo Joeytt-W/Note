@@ -30,6 +30,9 @@ namespace Routine.Api.Helpers
 
             var orderByAfterSplit = orderBy.Split(",");
 
+
+            //如果传入的orderBy=name,age desc,需要实现的效果是 select *** from *** order by name,birthday
+            //如果不Reverse，实际会先执行name排序，之后再执行birthday排序，得到的效果变成了select *** from *** order by birthday,name
             foreach (var orderByClause in orderByAfterSplit.Reverse())
             {
                 var trimmedOrderByClause = orderByClause.Trim();

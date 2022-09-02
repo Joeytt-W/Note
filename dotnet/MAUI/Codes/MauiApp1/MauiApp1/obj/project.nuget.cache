@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "434p9LGNFxNcHA0k5VueFjwTCbzTN4q/Bwze8B97yNQnS3+46O9eAwnjZoFaLE0iaZ7jnjGBkqTIZ0AyFTVL3w==",
+  "dgSpecHash": "72Ri5hdEUKBEyjZ16pTkQrShpalJQ2enFsg44OHmLng1UsX0qOBkww7AS5sJ1sPMs0uVernZcexPZrCdK3Wfsg==",
   "success": true,
-  "projectFilePath": "D:\\Work\\WorkSpaces\\Test\\MauiApp1\\MauiApp1\\MauiApp1.csproj",
+  "projectFilePath": "F:\\我的\\Note\\dotnet\\MAUI\\Codes\\MauiApp1\\MauiApp1\\MauiApp1.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\78472\\.nuget\\packages\\communitytoolkit.mvvm\\8.0.0\\communitytoolkit.mvvm.8.0.0.nupkg.sha512",
     "C:\\Users\\78472\\.nuget\\packages\\googlegson\\2.9.0.1\\googlegson.2.9.0.1.nupkg.sha512",
