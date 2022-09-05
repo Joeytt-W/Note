@@ -1,0 +1,12 @@
+D:\CodeMan\教案\Redis专题-1\示例代码\CodeMan.Redis.Sample\CodeMan.Redis.Entities\bin\Debug\net5.0\CodeMan.Redis.Entities.deps.json
+D:\CodeMan\教案\Redis专题-1\示例代码\CodeMan.Redis.Sample\CodeMan.Redis.Entities\bin\Debug\net5.0\CodeMan.Redis.Entities.dll
+D:\CodeMan\教案\Redis专题-1\示例代码\CodeMan.Redis.Sample\CodeMan.Redis.Entities\bin\Debug\net5.0\ref\CodeMan.Redis.Entities.dll
+D:\CodeMan\教案\Redis专题-1\示例代码\CodeMan.Redis.Sample\CodeMan.Redis.Entities\bin\Debug\net5.0\CodeMan.Redis.Entities.pdb
+D:\CodeMan\教案\Redis专题-1\示例代码\CodeMan.Redis.Sample\CodeMan.Redis.Entities\obj\Debug\net5.0\CodeMan.Redis.Entities.csproj.AssemblyReference.cache
+D:\CodeMan\教案\Redis专题-1\示例代码\CodeMan.Redis.Sample\CodeMan.Redis.Entities\obj\Debug\net5.0\CodeMan.Redis.Entities.GeneratedMSBuildEditorConfig.editorconfig
+D:\CodeMan\教案\Redis专题-1\示例代码\CodeMan.Redis.Sample\CodeMan.Redis.Entities\obj\Debug\net5.0\CodeMan.Redis.Entities.AssemblyInfoInputs.cache
+D:\CodeMan\教案\Redis专题-1\示例代码\CodeMan.Redis.Sample\CodeMan.Redis.Entities\obj\Debug\net5.0\CodeMan.Redis.Entities.AssemblyInfo.cs
+D:\CodeMan\教案\Redis专题-1\示例代码\CodeMan.Redis.Sample\CodeMan.Redis.Entities\obj\Debug\net5.0\CodeMan.Redis.Entities.csproj.CoreCompileInputs.cache
+D:\CodeMan\教案\Redis专题-1\示例代码\CodeMan.Redis.Sample\CodeMan.Redis.Entities\obj\Debug\net5.0\CodeMan.Redis.Entities.dll
+D:\CodeMan\教案\Redis专题-1\示例代码\CodeMan.Redis.Sample\CodeMan.Redis.Entities\obj\Debug\net5.0\ref\CodeMan.Redis.Entities.dll
+D:\CodeMan\教案\Redis专题-1\示例代码\CodeMan.Redis.Sample\CodeMan.Redis.Entities\obj\Debug\net5.0\CodeMan.Redis.Entities.pdb

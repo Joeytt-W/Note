@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "CodeMan.Redis.Entities/1.0.0": {
+        "runtime": {
+          "CodeMan.Redis.Entities.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "CodeMan.Redis.Entities/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

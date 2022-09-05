@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CodeMan.Redis.Base.Redis\CodeMan.Redis.Base.Redis.csproj" />
+    <ProjectReference Include="..\CodeMan.Redis.Entities\CodeMan.Redis.Entities.csproj" />
+  </ItemGroup>
+
+</Project>
