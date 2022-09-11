@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "Ua0ecMAf2qkCXJf+oS70QlQRS/bfH5IAFVsXQajOZaLw3oWjrA66lt7uS44SyT5sAG3owOa9yojRwFu6f04JAQ==",
+  "dgSpecHash": "2tcyWo/tXTdUNx4+Hia4DvuFmfaTzCvOGc9l8WxuyfB4+EjqEG9MxseGUlosrkcMk4UGPpHIu1F10lOJL2oaig==",
   "success": true,
-  "projectFilePath": "F:\\我的\\Note\\dotnet\\tools\\RabbitMQ\\CodeMan.RabbitMq\\CodeMan.RabbitMq.Base.RabbitMq\\CodeMan.RabbitMq.Base.RabbitMq.csproj",
+  "projectFilePath": "E:\\我的\\Note\\dotnet\\tools\\RabbitMQ\\CodeMan.RabbitMq\\CodeMan.RabbitMq.Base.RabbitMq\\CodeMan.RabbitMq.Base.RabbitMq.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\78472\\.nuget\\packages\\rabbitmq.client\\6.2.2\\rabbitmq.client.6.2.2.nupkg.sha512",
-    "C:\\Users\\78472\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
-    "C:\\Users\\78472\\.nuget\\packages\\system.threading.channels\\4.7.1\\system.threading.channels.4.7.1.nupkg.sha512"
+    "C:\\Users\\Administrator\\.nuget\\packages\\rabbitmq.client\\6.2.2\\rabbitmq.client.6.2.2.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\system.threading.channels\\4.7.1\\system.threading.channels.4.7.1.nupkg.sha512"
   ],
   "logs": []
 }

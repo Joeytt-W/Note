@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "pXBmsgljjVDG/RlLTloXvLTq8Q+W+ErNMcU6aZYyRLKA7IWVaw1MuygQLMOW2qk0PAxSmStuBM0y37yfWZmwtw==",
+  "dgSpecHash": "JKAQ2ZzlxFeVwDmLmnozvRSoFS9YHCFU/yzS74RZenaF9F3oM+hIc7J2WqJG/Td78CDEmCUg19aJvPI8ZKTiNQ==",
   "success": true,
-  "projectFilePath": "D:\\CodeMan\\教案\\公开课\\Redis专题-1\\示例代码\\CodeMan.Redis.Sample\\CodeMan.Redis.Service\\CodeMan.Redis.Service.csproj",
+  "projectFilePath": "E:\\我的\\Note\\dotnet\\tools\\Redis\\CodeMan.Redis.Sample\\CodeMan.Redis.Service\\CodeMan.Redis.Service.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.win32.registry\\5.0.0\\microsoft.win32.registry.5.0.0.nupkg.sha512",

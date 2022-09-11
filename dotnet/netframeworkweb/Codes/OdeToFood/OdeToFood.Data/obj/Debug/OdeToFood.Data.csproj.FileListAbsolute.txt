@@ -1,0 +1,6 @@
+D:\Work\WorkSpaces\Pluraslight\OdeToFood\OdeToFood.Data\bin\Debug\OdeToFood.Data.dll
+D:\Work\WorkSpaces\Pluraslight\OdeToFood\OdeToFood.Data\bin\Debug\OdeToFood.Data.pdb
+D:\Work\WorkSpaces\Pluraslight\OdeToFood\OdeToFood.Data\obj\Debug\OdeToFood.Data.csproj.AssemblyReference.cache
+D:\Work\WorkSpaces\Pluraslight\OdeToFood\OdeToFood.Data\obj\Debug\OdeToFood.Data.csproj.CoreCompileInputs.cache
+D:\Work\WorkSpaces\Pluraslight\OdeToFood\OdeToFood.Data\obj\Debug\OdeToFood.Data.dll
+D:\Work\WorkSpaces\Pluraslight\OdeToFood\OdeToFood.Data\obj\Debug\OdeToFood.Data.pdb

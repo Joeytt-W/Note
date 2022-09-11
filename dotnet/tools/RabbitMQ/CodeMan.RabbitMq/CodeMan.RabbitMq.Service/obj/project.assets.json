@@ -5,14 +5,10 @@
       "Newtonsoft.Json/13.0.1": {
         "type": "package",
         "compile": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {
-            "related": ".xml"
-          }
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         },
         "runtime": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {
-            "related": ".xml"
-          }
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
       "RabbitMQ.Client/6.2.2": {
@@ -22,14 +18,10 @@
           "System.Threading.Channels": "4.7.1"
         },
         "compile": {
-          "lib/netstandard2.0/RabbitMQ.Client.dll": {
-            "related": ".pdb;.xml"
-          }
+          "lib/netstandard2.0/RabbitMQ.Client.dll": {}
         },
         "runtime": {
-          "lib/netstandard2.0/RabbitMQ.Client.dll": {
-            "related": ".pdb;.xml"
-          }
+          "lib/netstandard2.0/RabbitMQ.Client.dll": {}
         }
       },
       "System.Memory/4.5.4": {
@@ -44,14 +36,10 @@
       "System.Threading.Channels/4.7.1": {
         "type": "package",
         "compile": {
-          "lib/netcoreapp3.0/System.Threading.Channels.dll": {
-            "related": ".xml"
-          }
+          "lib/netcoreapp3.0/System.Threading.Channels.dll": {}
         },
         "runtime": {
-          "lib/netcoreapp3.0/System.Threading.Channels.dll": {
-            "related": ".xml"
-          }
+          "lib/netcoreapp3.0/System.Threading.Channels.dll": {}
         }
       },
       "CodeMan.RabbitMq.Base.RabbitMq/1.0.0": {
@@ -193,24 +181,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\78472\\.nuget\\packages\\": {},
-    "D:\\Work\\Visual Studio 2019\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Administrator\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\我的\\Note\\dotnet\\tools\\RabbitMQ\\CodeMan.RabbitMq\\CodeMan.RabbitMq.Service\\CodeMan.RabbitMq.Service.csproj",
+      "projectUniqueName": "E:\\我的\\Note\\dotnet\\tools\\RabbitMQ\\CodeMan.RabbitMq\\CodeMan.RabbitMq.Service\\CodeMan.RabbitMq.Service.csproj",
       "projectName": "CodeMan.RabbitMq.Service",
-      "projectPath": "F:\\我的\\Note\\dotnet\\tools\\RabbitMQ\\CodeMan.RabbitMq\\CodeMan.RabbitMq.Service\\CodeMan.RabbitMq.Service.csproj",
-      "packagesPath": "C:\\Users\\78472\\.nuget\\packages\\",
-      "outputPath": "F:\\我的\\Note\\dotnet\\tools\\RabbitMQ\\CodeMan.RabbitMq\\CodeMan.RabbitMq.Service\\obj\\",
+      "projectPath": "E:\\我的\\Note\\dotnet\\tools\\RabbitMQ\\CodeMan.RabbitMq\\CodeMan.RabbitMq.Service\\CodeMan.RabbitMq.Service.csproj",
+      "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+      "outputPath": "E:\\我的\\Note\\dotnet\\tools\\RabbitMQ\\CodeMan.RabbitMq\\CodeMan.RabbitMq.Service\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "D:\\Work\\Visual Studio 2019\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\78472\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -218,18 +201,17 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "F:\\我的\\Note\\dotnet\\tools\\RabbitMQ\\CodeMan.RabbitMq\\CodeMan.RabbitMq.Base.RabbitMq\\CodeMan.RabbitMq.Base.RabbitMq.csproj": {
-              "projectPath": "F:\\我的\\Note\\dotnet\\tools\\RabbitMQ\\CodeMan.RabbitMq\\CodeMan.RabbitMq.Base.RabbitMq\\CodeMan.RabbitMq.Base.RabbitMq.csproj"
+            "E:\\我的\\Note\\dotnet\\tools\\RabbitMQ\\CodeMan.RabbitMq\\CodeMan.RabbitMq.Base.RabbitMq\\CodeMan.RabbitMq.Base.RabbitMq.csproj": {
+              "projectPath": "E:\\我的\\Note\\dotnet\\tools\\RabbitMQ\\CodeMan.RabbitMq\\CodeMan.RabbitMq.Base.RabbitMq\\CodeMan.RabbitMq.Base.RabbitMq.csproj"
             },
-            "F:\\我的\\Note\\dotnet\\tools\\RabbitMQ\\CodeMan.RabbitMq\\CodeMan.RabbitMq.Entities\\CodeMan.RabbitMq.Entities.csproj": {
-              "projectPath": "F:\\我的\\Note\\dotnet\\tools\\RabbitMQ\\CodeMan.RabbitMq\\CodeMan.RabbitMq.Entities\\CodeMan.RabbitMq.Entities.csproj"
+            "E:\\我的\\Note\\dotnet\\tools\\RabbitMQ\\CodeMan.RabbitMq\\CodeMan.RabbitMq.Entities\\CodeMan.RabbitMq.Entities.csproj": {
+              "projectPath": "E:\\我的\\Note\\dotnet\\tools\\RabbitMQ\\CodeMan.RabbitMq\\CodeMan.RabbitMq.Entities\\CodeMan.RabbitMq.Entities.csproj"
             }
           }
         }
@@ -255,8 +237,7 @@
           "net47",
           "net471",
           "net472",
-          "net48",
-          "net481"
+          "net48"
         ],
         "assetTargetFallback": true,
         "warn": true,
@@ -265,7 +246,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }

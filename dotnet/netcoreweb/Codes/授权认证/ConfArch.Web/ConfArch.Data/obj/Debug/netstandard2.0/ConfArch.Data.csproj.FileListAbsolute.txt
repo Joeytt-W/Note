@@ -1,0 +1,10 @@
+F:\Pluraslight\授权认证\ConfArch.Web\ConfArch.Data\bin\Debug\netstandard2.0\ConfArch.Data.deps.json
+F:\Pluraslight\授权认证\ConfArch.Web\ConfArch.Data\bin\Debug\netstandard2.0\ConfArch.Data.dll
+F:\Pluraslight\授权认证\ConfArch.Web\ConfArch.Data\bin\Debug\netstandard2.0\ConfArch.Data.pdb
+F:\Pluraslight\授权认证\ConfArch.Web\ConfArch.Data\obj\Debug\netstandard2.0\ConfArch.Data.csproj.AssemblyReference.cache
+F:\Pluraslight\授权认证\ConfArch.Web\ConfArch.Data\obj\Debug\netstandard2.0\ConfArch.Data.GeneratedMSBuildEditorConfig.editorconfig
+F:\Pluraslight\授权认证\ConfArch.Web\ConfArch.Data\obj\Debug\netstandard2.0\ConfArch.Data.AssemblyInfoInputs.cache
+F:\Pluraslight\授权认证\ConfArch.Web\ConfArch.Data\obj\Debug\netstandard2.0\ConfArch.Data.AssemblyInfo.cs
+F:\Pluraslight\授权认证\ConfArch.Web\ConfArch.Data\obj\Debug\netstandard2.0\ConfArch.Data.csproj.CoreCompileInputs.cache
+F:\Pluraslight\授权认证\ConfArch.Web\ConfArch.Data\obj\Debug\netstandard2.0\ConfArch.Data.dll
+F:\Pluraslight\授权认证\ConfArch.Web\ConfArch.Data\obj\Debug\netstandard2.0\ConfArch.Data.pdb

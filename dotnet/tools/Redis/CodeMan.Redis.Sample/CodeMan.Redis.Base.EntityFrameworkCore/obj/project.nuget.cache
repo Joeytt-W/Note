@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/ILi2ALfezZuFWBUk90xA3zqpwXbaJFQJN8ice02byxMiYu0neSU1Hz6+z86XcHDYtCSC4goNsB/eAy0cnmZnQ==",
+  "dgSpecHash": "ixkh4xezKXy4nRgFqC4YcciQ+b3j01GkE7ZjgUNcKY/CCltkFXqMzewyJjTvhkR6XdB8cJW+rpnThS4XngjToA==",
   "success": true,
-  "projectFilePath": "D:\\CodeMan\\教案\\公开课\\Redis专题-1\\示例代码\\CodeMan.Redis.Sample\\CodeMan.Redis.Base.EntityFrameworkCore\\CodeMan.Redis.Base.EntityFrameworkCore.csproj",
+  "projectFilePath": "E:\\我的\\Note\\dotnet\\tools\\Redis\\CodeMan.Redis.Sample\\CodeMan.Redis.Base.EntityFrameworkCore\\CodeMan.Redis.Base.EntityFrameworkCore.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.entityframeworkcore\\5.0.7\\microsoft.entityframeworkcore.5.0.7.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\5.0.7\\microsoft.entityframeworkcore.abstractions.5.0.7.nupkg.sha512",

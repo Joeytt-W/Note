@@ -7,4 +7,4 @@ build_property.InvariantGlobalization =
 build_property.PlatformNeutralAssembly = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = CodeMan.RabbitMq.HttpApi.Order
-build_property.ProjectDir = F:\我的\Note\dotnet\tools\RabbitMQ\CodeMan.RabbitMq\CodeMan.RabbitMq.HttpApi.Order\
+build_property.ProjectDir = E:\我的\Note\dotnet\tools\RabbitMQ\CodeMan.RabbitMq\CodeMan.RabbitMq.HttpApi.Order\

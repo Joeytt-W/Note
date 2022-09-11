@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "DB94Elp0DKkWc3IbAIZN/fCST7odPHRpOUOUJw+o5SbCQHOBftIRmiqDZQuLp17rh4XhD7fJ96FQvLTDokPj9g==",
+  "dgSpecHash": "KTG2jBjnOpIA1eSqWx/eqK8Cx0WznmSQqyaB1NzVmWFx3sh8tddBtnzo59Mb9eyYhVKFjkdRazAKHPd4kBt0CA==",
   "success": true,
-  "projectFilePath": "F:\\我的\\Note\\dotnet\\tools\\RabbitMQ\\CodeMan.RabbitMq\\CodeMan.RabbitMq.Entities\\CodeMan.RabbitMq.Entities.csproj",
+  "projectFilePath": "E:\\我的\\Note\\dotnet\\tools\\RabbitMQ\\CodeMan.RabbitMq\\CodeMan.RabbitMq.Entities\\CodeMan.RabbitMq.Entities.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

@@ -375,3 +375,28 @@ channel.QueueDeclare("QueueHello", false, false, false, null);//创建一个名�
 ### 主题模式
 
 ![](images/14.png)
+
+### 设置TTL（延时队列）
+
+#### 在申明队列时设置
+
+![](images/15.png)
+
+#### 给每条消息单独设置TTL
+
+![](images/16.png)
+
+### 死信队列
+
+> 在设置TTL的时间内没有被消费的消息会成为死信消息
+
+```c#
+//配置死信交换机
+props = new Dictionary<string, object>()
+                {
+                    {"x-dead-letter-exchange", RabbitConstant.DEAD_LETTER_EXCHANGE},
+                    {"x-dead-letter-routing-key", RabbitConstant.DEAD_LETTER_ROUTING_KEY}
+                },
+model.QueueDeclare(queue, true, false, false, props);
+```
+
