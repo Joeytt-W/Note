@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Pluraslight\\Design Pattern\\DesignPatterns\\Memento\\Memento.csproj": {}
+    "E:\\我的\\Note\\dotnet\\设计模式\\DesignPatterns\\Memento\\Memento.csproj": {}
   },
   "projects": {
-    "E:\\Pluraslight\\Design Pattern\\DesignPatterns\\Memento\\Memento.csproj": {
+    "E:\\我的\\Note\\dotnet\\设计模式\\DesignPatterns\\Memento\\Memento.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Pluraslight\\Design Pattern\\DesignPatterns\\Memento\\Memento.csproj",
+        "projectUniqueName": "E:\\我的\\Note\\dotnet\\设计模式\\DesignPatterns\\Memento\\Memento.csproj",
         "projectName": "Memento",
-        "projectPath": "E:\\Pluraslight\\Design Pattern\\DesignPatterns\\Memento\\Memento.csproj",
-        "packagesPath": "C:\\Users\\78472\\.nuget\\packages\\",
-        "outputPath": "E:\\Pluraslight\\Design Pattern\\DesignPatterns\\Memento\\obj\\",
+        "projectPath": "E:\\我的\\Note\\dotnet\\设计模式\\DesignPatterns\\Memento\\Memento.csproj",
+        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "outputPath": "E:\\我的\\Note\\dotnet\\设计模式\\DesignPatterns\\Memento\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "D:\\Work\\Visual Studio 2019\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\78472\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

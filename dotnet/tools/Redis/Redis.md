@@ -16,12 +16,18 @@
 
 6. ./redis-server 启动redis服务  
 
-## docker安装redis
+## docker使用redis
+
+### 安装
 
 1. docker pull redis
 2. docker run -itd --name redis-wms -p 6379:6379 -d redis --requirepass “password”
 
-## redis数据类型和使用场景
+### 启动cmd交互窗口
+
+docker exec -t containerid /bin/bash
+
+## redis数据类型
 
 ![images](images\001.png)
 

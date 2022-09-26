@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "cx4Wx92WhliXYhdIQQ5FCjdYNNAQNUYt7HZlsg3LJbWa/uw+WQv/6iaAxaRlwyC2yfW69nWTCd2uahblVxH4lA==",
+  "dgSpecHash": "oDnyKW8+sxbo4XCLY50ai4Q3aI21PFtJRjsEMTkGftbf7V9/dIyzDEnD2nGRuCc56bjDVLYPa55G0p4Oi6NuBg==",
   "success": true,
-  "projectFilePath": "E:\\Pluraslight\\Design Pattern\\DesignPatterns\\Visitor\\Visitor.csproj",
+  "projectFilePath": "E:\\我的\\Note\\dotnet\\设计模式\\DesignPatterns\\Visitor\\Visitor.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

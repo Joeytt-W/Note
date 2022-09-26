@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "4ZqcYkcn6PYnpP757zZ/1QXvXdyuPUUDGp5Jd0K0K9wfNYUggdb7EcGCDmN8U96AcYwF3FamzG/xoexM/Ty/8w==",
+  "dgSpecHash": "y01FEB3+Z9TfsgugKHby961NV1DlTQsZmNP4KWm20UCK1UC2L/Lbq/kISGK0NkNnX+YWYV6E2zwEA2XI2uTesw==",
   "success": true,
-  "projectFilePath": "E:\\Pluraslight\\Design Pattern\\DesignPatterns\\Interpreter\\Interpreter.csproj",
+  "projectFilePath": "E:\\我的\\Note\\dotnet\\设计模式\\DesignPatterns\\Interpreter\\Interpreter.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

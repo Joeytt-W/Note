@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5REZjnQS1gF1M/uNgjICb4nY44p286alhvDZ8N66aaZpslryD8Tw7TMDue8A9CaF9XdYzHJ7fwKm6aOLm72d7Q==",
+  "dgSpecHash": "mobh038XoGFSbx5dDTRO8iSf2BcHzHT980lrPly4YR2TBRejc2pYo3Tr1CAdze1olzdLJqYGZz1FghAZZTKFVA==",
   "success": true,
-  "projectFilePath": "E:\\Pluraslight\\Design Pattern\\DesignPatterns\\State\\State.csproj",
+  "projectFilePath": "E:\\我的\\Note\\dotnet\\设计模式\\DesignPatterns\\State\\State.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

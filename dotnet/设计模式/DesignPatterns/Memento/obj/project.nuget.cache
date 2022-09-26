@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/k4G91NDi8vxBfuaUUdJW6+oAkK3EOoQprhJ99dslY3mDpvGGjArBy+Q53A8MJCNj1yNFzFoWyw0MkpJlEhDqQ==",
+  "dgSpecHash": "VzNxSkmwOmIBWpGw+xjj6M4T0KRWDEAnRuz7F4K4az7EoXbA/mUxFMuUf4j1WjfMQbl4gdWb0v3m8Mbv9ITx2A==",
   "success": true,
-  "projectFilePath": "E:\\Pluraslight\\Design Pattern\\DesignPatterns\\Memento\\Memento.csproj",
+  "projectFilePath": "E:\\我的\\Note\\dotnet\\设计模式\\DesignPatterns\\Memento\\Memento.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

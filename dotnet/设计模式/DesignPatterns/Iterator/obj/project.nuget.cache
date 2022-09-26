@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CVD8G+JrAgR9rXhqKEODJGB7oqUapJ+SilM07Houdsrfbe0chxh+mkvrhlFpMrSDtQ749Fy9EveHLSVukSTdIA==",
+  "dgSpecHash": "3idD4PBeSvNu+a8GV3jOPmmIZiYfMa7aeB6dqGcUORhTeZTdr/wbMQyR4FL4bvZEnB2S6FjtbKd1rM3sTjezKQ==",
   "success": true,
-  "projectFilePath": "E:\\Pluraslight\\Design Pattern\\DesignPatterns\\Iterator\\Iterator.csproj",
+  "projectFilePath": "E:\\我的\\Note\\dotnet\\设计模式\\DesignPatterns\\Iterator\\Iterator.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

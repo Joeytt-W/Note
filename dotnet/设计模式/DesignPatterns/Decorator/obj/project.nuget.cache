@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "LQyhP5LCPzsNj0F3/3N72Mm1lCdlagy78AslrAnLi3RcDDUJEmg4Z5OOUDxUOFqrKOaaWQn0xGCjVkbo0HE0Hw==",
+  "dgSpecHash": "IxxvR3D2tAYNBJiOfqWsvCVOFpOH2v23KF7RNaubWmrK1YfSczWA8utAEHH/j0631KKvhGQauq/Kno2Q9+0zkQ==",
   "success": true,
-  "projectFilePath": "E:\\Pluraslight\\Design Pattern\\DesignPatterns\\Decorator\\Decorator.csproj",
+  "projectFilePath": "E:\\我的\\Note\\dotnet\\设计模式\\DesignPatterns\\Decorator\\Decorator.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

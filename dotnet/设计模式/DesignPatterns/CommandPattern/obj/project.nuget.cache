@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "753bzkia2pvcxb0ChZ0GcbU6DC0so7ogOl2V46qQsrs2UT+JzveL/3F0wayhSX1++4nyePjJALEXyUTz3ufztQ==",
+  "dgSpecHash": "T5iS55XeUYoYVGVQTTjzZ2D5mO6lOUspo1Nes2DnXjXIWcFyXMzzwNi50OC91otxxG38dDfrwPHsfn8fMJJivw==",
   "success": true,
-  "projectFilePath": "E:\\Pluraslight\\Design Pattern\\DesignPatterns\\CommandPattern\\CommandPattern.csproj",
+  "projectFilePath": "E:\\我的\\Note\\dotnet\\设计模式\\DesignPatterns\\CommandPattern\\CommandPattern.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kQIrkcfaHvDNZvTdvDDdNGvWYYb1iyNOMIYFRCXblLxJy+XNqSsQvYya9lOil62vfJrBvf96vR3VHjZpo29suQ==",
+  "dgSpecHash": "2drW2DfWTS7a9IwmgewPnAe1Yg2ulxEsLNuuRfpHEeDSMFg/0eTqfSqhX7P5BlGQw6seUXQw4nsr7s26X8N1WQ==",
   "success": true,
-  "projectFilePath": "E:\\Pluraslight\\Design Pattern\\DesignPatterns\\Proxy\\Proxy.csproj",
+  "projectFilePath": "E:\\我的\\Note\\dotnet\\设计模式\\DesignPatterns\\Proxy\\Proxy.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "+/uJ2BV7UtiP1sy9U5qzthrAKK3w0swxrY3LgiB11Jrs6KQqI6cXT/dhS2jXjvXbh+d5mbH5t7BP5rWlMlVuIQ==",
+  "dgSpecHash": "deSMTM4PnTgIgEn53e9cViF3mpIphx5AI8exYDr9dOgy373ZdXLUiDdstdtpTNwoWEE53+WzzvlunatQtxTr4w==",
   "success": true,
-  "projectFilePath": "E:\\Pluraslight\\Design Pattern\\DesignPatterns\\Adapter\\Adapter.csproj",
+  "projectFilePath": "E:\\我的\\Note\\dotnet\\设计模式\\DesignPatterns\\Adapter\\Adapter.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

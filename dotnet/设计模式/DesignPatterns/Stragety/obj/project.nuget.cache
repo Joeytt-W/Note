@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "QmejqqHsCqzIprz86cLPv+s1TUuJ06NW0P8PS2yXCL0AVXINOgPlk0rftjZvnERhidoxMz1c0K24gdkBTIN+qw==",
+  "dgSpecHash": "kWrhK8IeRZzcn1k/8MGg9uFP1QsGbXxRWjUcgWTG5BwRQ7qNQlNNJxxQCa3eI34VWRZjs6SNuAgnDeor1N2nGw==",
   "success": true,
-  "projectFilePath": "E:\\Pluraslight\\Design Pattern\\DesignPatterns\\Stragety\\Strategy.csproj",
+  "projectFilePath": "E:\\我的\\Note\\dotnet\\设计模式\\DesignPatterns\\Stragety\\Strategy.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "aTdWl3hBtWImJWnhalxNQHxnmAH3ktdyUDAOsiD9CCy93sOijVqutEMsVgfUqN1b8NX0zVB7xrg3OzHZm0v43g==",
+  "dgSpecHash": "2qJNb/RLdHc9zVGk0O9C5YlijbxeTXPt5oZLhCB5OfsvRYdrwftZiEeL/sZI6nk4VBZA4Yre/mX5cVq4PD1Ghg==",
   "success": true,
-  "projectFilePath": "E:\\Pluraslight\\Design Pattern\\DesignPatterns\\TemplatePattern\\TemplatePattern.csproj",
+  "projectFilePath": "E:\\我的\\Note\\dotnet\\设计模式\\DesignPatterns\\TemplatePattern\\TemplatePattern.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
