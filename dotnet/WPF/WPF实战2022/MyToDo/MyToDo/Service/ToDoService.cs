@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MyToDo.Service
 {
-    public class ToDoService : BaseService<ToDoDto>, IToDoService
+    public class ToDoService : BaseService<Shared.Dtos.ToDoDto>, IToDoService
     {
         private readonly HttpRestClient client;
 
@@ -19,7 +19,7 @@ namespace MyToDo.Service
             this.client = client;
         }
 
-        public async Task<ApiResponse<PagedList<ToDoDto>>> GetAllFilterAsync(ToDoParameter parameter)
+        public async Task<ApiResponse<PagedList<Shared.Dtos.ToDoDto>>> GetAllFilterAsync(ToDoParameter parameter)
         {
             BaseRequest request = new BaseRequest();
             request.Method = RestSharp.Method.GET;
@@ -27,7 +27,7 @@ namespace MyToDo.Service
                 $"&pageSize={parameter.PageSize}" +
                 $"&search={parameter.Search}" +
                 $"&status={parameter.Status}";
-            return await client.ExecuteAsync<PagedList<ToDoDto>>(request);
+            return await client.ExecuteAsync<PagedList<Shared.Dtos.ToDoDto>>(request);
         }
 
         public async Task<ApiResponse<SummaryDto>> SummaryAsync()

@@ -1,27 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Work\\WorkSpaces\\WPF\\MyToDoApp\\MyToDo\\MyToDo\\MyToDo.Api\\MyToDo.Api.csproj": {}
+    "E:\\Programming\\我的\\Note\\dotnet\\WPF\\WPF实战2022\\MyToDo\\MyToDo.Api\\MyToDo.Api.csproj": {}
   },
   "projects": {
-    "D:\\Work\\WorkSpaces\\WPF\\MyToDoApp\\MyToDo\\MyToDo\\MyToDo.Api\\MyToDo.Api.csproj": {
+    "E:\\Programming\\我的\\Note\\dotnet\\WPF\\WPF实战2022\\MyToDo\\MyToDo.Api\\MyToDo.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Work\\WorkSpaces\\WPF\\MyToDoApp\\MyToDo\\MyToDo\\MyToDo.Api\\MyToDo.Api.csproj",
+        "projectUniqueName": "E:\\Programming\\我的\\Note\\dotnet\\WPF\\WPF实战2022\\MyToDo\\MyToDo.Api\\MyToDo.Api.csproj",
         "projectName": "MyToDo.Api",
-        "projectPath": "D:\\Work\\WorkSpaces\\WPF\\MyToDoApp\\MyToDo\\MyToDo\\MyToDo.Api\\MyToDo.Api.csproj",
-        "packagesPath": "C:\\Users\\78472\\.nuget\\packages\\",
-        "outputPath": "D:\\Work\\WorkSpaces\\WPF\\MyToDoApp\\MyToDo\\MyToDo\\MyToDo.Api\\obj\\",
+        "projectPath": "E:\\Programming\\我的\\Note\\dotnet\\WPF\\WPF实战2022\\MyToDo\\MyToDo.Api\\MyToDo.Api.csproj",
+        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "outputPath": "E:\\Programming\\我的\\Note\\dotnet\\WPF\\WPF实战2022\\MyToDo\\MyToDo.Api\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "D:\\Work\\Visual Studio 2019\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\78472\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -34,8 +28,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "D:\\Work\\WorkSpaces\\WPF\\MyToDoApp\\MyToDo\\MyToDo\\MyToDo.Shared\\MyToDo.Shared.csproj": {
-                "projectPath": "D:\\Work\\WorkSpaces\\WPF\\MyToDoApp\\MyToDo\\MyToDo\\MyToDo.Shared\\MyToDo.Shared.csproj"
+              "E:\\Programming\\我的\\Note\\dotnet\\WPF\\WPF实战2022\\MyToDo\\MyToDo.Shared\\MyToDo.Shared.csproj": {
+                "projectPath": "E:\\Programming\\我的\\Note\\dotnet\\WPF\\WPF实战2022\\MyToDo\\MyToDo.Shared\\MyToDo.Shared.csproj"
               }
             }
           }
@@ -85,7 +79,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -97,28 +92,22 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\Work\\WorkSpaces\\WPF\\MyToDoApp\\MyToDo\\MyToDo\\MyToDo.Shared\\MyToDo.Shared.csproj": {
+    "E:\\Programming\\我的\\Note\\dotnet\\WPF\\WPF实战2022\\MyToDo\\MyToDo.Shared\\MyToDo.Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Work\\WorkSpaces\\WPF\\MyToDoApp\\MyToDo\\MyToDo\\MyToDo.Shared\\MyToDo.Shared.csproj",
+        "projectUniqueName": "E:\\Programming\\我的\\Note\\dotnet\\WPF\\WPF实战2022\\MyToDo\\MyToDo.Shared\\MyToDo.Shared.csproj",
         "projectName": "MyToDo.Shared",
-        "projectPath": "D:\\Work\\WorkSpaces\\WPF\\MyToDoApp\\MyToDo\\MyToDo\\MyToDo.Shared\\MyToDo.Shared.csproj",
-        "packagesPath": "C:\\Users\\78472\\.nuget\\packages\\",
-        "outputPath": "D:\\Work\\WorkSpaces\\WPF\\MyToDoApp\\MyToDo\\MyToDo\\MyToDo.Shared\\obj\\",
+        "projectPath": "E:\\Programming\\我的\\Note\\dotnet\\WPF\\WPF实战2022\\MyToDo\\MyToDo.Shared\\MyToDo.Shared.csproj",
+        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "outputPath": "E:\\Programming\\我的\\Note\\dotnet\\WPF\\WPF实战2022\\MyToDo\\MyToDo.Shared\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "D:\\Work\\Visual Studio 2019\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\78472\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -148,7 +137,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -157,7 +147,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -34,9 +34,9 @@ namespace MyToDo.ViewModels
             this.memoService = provider.Resolve<IMemoService>();
             this.regionManager = provider.Resolve<IRegionManager>();
             this.dialog = dialog;
-            EditMemoCommand = new DelegateCommand<MemoDto>(AddMemo);
-            EditToDoCommand = new DelegateCommand<ToDoDto>(AddToDo);
-            ToDoCompltedCommand = new DelegateCommand<ToDoDto>(Complted);
+            EditMemoCommand = new DelegateCommand<Shared.Dtos.MemoDto>(AddMemo);
+            EditToDoCommand = new DelegateCommand<Shared.Dtos.ToDoDto>(AddToDo);
+            ToDoCompltedCommand = new DelegateCommand<Shared.Dtos.ToDoDto>(Complted);
             NavigateCommand = new DelegateCommand<TaskBar>(Navigate);
         }
 
@@ -53,7 +53,7 @@ namespace MyToDo.ViewModels
             regionManager.Regions[PrismManager.MainViewRegionName].RequestNavigate(obj.Target, param);
         }
 
-        private async void Complted(ToDoDto obj)
+        private async void Complted(Shared.Dtos.ToDoDto obj)
         {
             try
             {
@@ -78,9 +78,9 @@ namespace MyToDo.ViewModels
             }
         }
 
-        public DelegateCommand<ToDoDto> ToDoCompltedCommand { get; private set; }
-        public DelegateCommand<ToDoDto> EditToDoCommand { get; private set; }
-        public DelegateCommand<MemoDto> EditMemoCommand { get; private set; }
+        public DelegateCommand<Shared.Dtos.ToDoDto> ToDoCompltedCommand { get; private set; }
+        public DelegateCommand<Shared.Dtos.ToDoDto> EditToDoCommand { get; private set; }
+        public DelegateCommand<Shared.Dtos.MemoDto> EditMemoCommand { get; private set; }
         public DelegateCommand<string> ExecuteCommand { get; private set; }
 
         public DelegateCommand<TaskBar> NavigateCommand { get; private set; }
@@ -128,7 +128,7 @@ namespace MyToDo.ViewModels
         /// <summary>
         /// 添加待办事项
         /// </summary>
-        async void AddToDo(ToDoDto model)
+        async void AddToDo(Shared.Dtos.ToDoDto model)
         {
             DialogParameters param = new DialogParameters();
             if (model != null)
@@ -140,7 +140,7 @@ namespace MyToDo.ViewModels
                 try
                 {
                     UpdateLoading(true);
-                    var todo = dialogResult.Parameters.GetValue<ToDoDto>("Value");
+                    var todo = dialogResult.Parameters.GetValue<Shared.Dtos.ToDoDto>("Value");
                     if (todo.Id > 0)
                     {
                         var updateResult = await toDoService.UpdateAsync(todo);
@@ -176,7 +176,7 @@ namespace MyToDo.ViewModels
         /// <summary>
         /// 添加备忘录
         /// </summary>
-        async void AddMemo(MemoDto model)
+        async void AddMemo(Shared.Dtos.MemoDto model)
         {
             DialogParameters param = new DialogParameters();
             if (model != null)
@@ -188,7 +188,7 @@ namespace MyToDo.ViewModels
                 try
                 {
                     UpdateLoading(true);
-                    var memo = dialogResult.Parameters.GetValue<MemoDto>("Value");
+                    var memo = dialogResult.Parameters.GetValue<Shared.Dtos.MemoDto>("Value");
 
                     if (memo.Id > 0)
                     {

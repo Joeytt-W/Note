@@ -24,15 +24,15 @@ namespace MyToDo.ViewModels
         public ToDoViewModel(IToDoService service, IContainerProvider provider)
             : base(provider)
         {
-            ToDoDtos = new ObservableCollection<ToDoDto>();
+            ToDoDtos = new ObservableCollection<Shared.Dtos.ToDoDto>();
             ExecuteCommand = new DelegateCommand<string>(Execute);
-            SelectedCommand = new DelegateCommand<ToDoDto>(Selected);
-            DeleteCommand = new DelegateCommand<ToDoDto>(Delete);
+            SelectedCommand = new DelegateCommand<Shared.Dtos.ToDoDto>(Selected);
+            DeleteCommand = new DelegateCommand<Shared.Dtos.ToDoDto>(Delete);
             dialogHost = provider.Resolve<IDialogHostService>();
             this.service = service;
         }
 
-        private async void Delete(ToDoDto obj)
+        private async void Delete(Shared.Dtos.ToDoDto obj)
         {
             try
             {
@@ -98,12 +98,12 @@ namespace MyToDo.ViewModels
             set { isRightDrawerOpen = value; RaisePropertyChanged(); }
         }
 
-        private ToDoDto currentDto;
+        private Shared.Dtos.ToDoDto currentDto;
 
         /// <summary>
         /// 编辑选中/新增时对象
         /// </summary>
-        public ToDoDto CurrentDto
+        public Shared.Dtos.ToDoDto CurrentDto
         {
             get { return currentDto; }
             set { currentDto = value; RaisePropertyChanged(); }
@@ -114,11 +114,11 @@ namespace MyToDo.ViewModels
         /// </summary>
         private void Add()
         {
-            CurrentDto = new ToDoDto();
+            CurrentDto = new Shared.Dtos.ToDoDto();
             IsRightDrawerOpen = true;
         }
 
-        private async void Selected(ToDoDto obj)
+        private async void Selected(Shared.Dtos.ToDoDto obj)
         {
             try
             {
@@ -186,13 +186,13 @@ namespace MyToDo.ViewModels
         }
 
         public DelegateCommand<string> ExecuteCommand { get; private set; }
-        public DelegateCommand<ToDoDto> SelectedCommand { get; private set; }
-        public DelegateCommand<ToDoDto> DeleteCommand { get; private set; }
+        public DelegateCommand<Shared.Dtos.ToDoDto> SelectedCommand { get; private set; }
+        public DelegateCommand<Shared.Dtos.ToDoDto> DeleteCommand { get; private set; }
 
-        private ObservableCollection<ToDoDto> toDoDtos;
+        private ObservableCollection<Shared.Dtos.ToDoDto> toDoDtos;
         private readonly IToDoService service;
 
-        public ObservableCollection<ToDoDto> ToDoDtos
+        public ObservableCollection<Shared.Dtos.ToDoDto> ToDoDtos
         {
             get { return toDoDtos; }
             set { toDoDtos = value; RaisePropertyChanged(); }

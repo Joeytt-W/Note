@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "2F4Jl51ekXUg/LMFz3pxuHlfsRYMNfEVCEk9woSNAS4=",
+  "Source": "ClientCredentialApi",
+  "BasePath": "_content/ClientCredentialApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

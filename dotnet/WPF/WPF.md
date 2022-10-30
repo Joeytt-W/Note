@@ -664,344 +664,6 @@ public partial class MainWindow : Window
             </Border>
 ```
 
-# MVVMLight
-
-- 1.NuGet引用MVVM框架包
-
-![](images/010.png)
-
-引入该框架包之后, 默认会在目录下创建ViewModel层的示例代码
-
-![](images/011.png)
-
-- 第二步, 通过在MainViewModel中创建一些业务代码, 将其与MainWindow.xaml 通过上下文的方式关联起来, 而MainWindow则是通过Binding的写法 引用业务逻辑的部分
-- 在MainViewModel中, 添加同一个班级名称, 与学生列表, 分别用于显示在文本 和列表上展示, Command则用于绑定DataGrid的双击命令上, 通过双击, 展示点击行的学生信息
-- MainViewModel 继承了 ViewModelBase, 该继承的父类实在MVVM框架中, 实现双向通知的基类, 通过引用该类, 那么其之类的属性则可通过 添加 RaisePropertyChanged() 即可
-
-```c#
-	//Student类
-	public class Student : ViewModelBase
-    {
-        private string name;
-        private string age;
-        private string sex;
-        
-        public string Name
-        {
-            get { return name; }
-            set { name = value; RaisePropertyChanged(); }
-        }
-        public string Age
-        {
-            get { return age; }
-            set { age = value; RaisePropertyChanged(); }
-        }
-        public string Sex
-        {
-            get { return sex; }
-            set { sex = value; RaisePropertyChanged(); }
-        }
-    }
-
-	//MainViewModel.cs
-	public class MainViewModel : ViewModelBase
-    {
-        public MainViewModel()
-        {
-            ClassName = "高二三班";
-            Students = new ObservableCollection<Student>();
-            Students.Add(new Student() { Name = "张三", Age = "18", Sex = "男" });
-            Students.Add(new Student() { Name = "李四", Age = "19", Sex = "女" });
-            Students.Add(new Student() { Name = "王二", Age = "20", Sex = "男" });
-        }
-
-        private string className;
-
-        public string ClassName
-        {
-            get { return className; }
-            set { className = value; RaisePropertyChanged(); }
-        }
-
-        private ObservableCollection<Student> students;
-        public ObservableCollection<Student> Students
-        {
-            get { return students; }
-            set { students = value; RaisePropertyChanged(); }
-        }
-
-        
-        private RelayCommand<Student> command;
-        public RelayCommand<Student> Command
-        {
-            get
-            {
-                if (command == null)
-                    command = new RelayCommand<Student>((t) => Rcommand(t));
-                return command;
-            }
-        }
-
-        private void Rcommand(Student stu)
-        {
-            MessageBox.Show($"学生的姓名:{stu.Name}学生的年龄:{stu.Age}学生的性别:{stu.Sex}");
-        }
-
-
-        private RelayCommand updateCommand;
-        public RelayCommand UpdateCommand
-        {
-            get
-            {
-                if (updateCommand == null)
-                    updateCommand = new RelayCommand(() => UpdateText());
-                return updateCommand;
-            }
-        }
-
-        private void UpdateText()
-        {
-            ClassName = "高三三班";
-        }
-
-    }
-
-	//MainWindow.xaml.cs
-	public MainWindow()
-        {
-            InitializeComponent();
-            this.DataContext = new MainViewModel();
-        }
-```
-
-- 设计UI层, 添加一个文本用于显示班级名称,  添加一个DataGrid 用于展示学生列表,  同时DataGrid中添加一个绑定的命令,MouseAction 以为触发的事件类型, CommandParameter 则是命令传递的参数, 也就是DataGrid选中的一行的类型 Student,Command 则是MainViewModel中定义的Command
-
-```xaml
-	<Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Command="{Binding UpdateCommand}" Content="刷新"/>
-            <TextBlock Margin="5 0 0 0" Text="班级名称:" />
-            <TextBlock Margin="5 0 0 0" Text="{Binding ClassName}"/>
-        </StackPanel>
-
-        <DataGrid Grid.Row="1" ItemsSource="{Binding Students}" AutoGenerateColumns="False">
-            <DataGrid.InputBindings>
-                <MouseBinding MouseAction="LeftDoubleClick"  
-                                  CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
-                        AncestorType=DataGrid}, Path=SelectedItem}"  
-                                  Command="{Binding Command}"/>
-            </DataGrid.InputBindings>
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Name}"  Header="名称"/>
-                <DataGridTextColumn Binding="{Binding Age}" Header="年龄"/>
-                <DataGridTextColumn Binding="{Binding Sex}" Header="性别"/>
-            </DataGrid.Columns>
-        </DataGrid>
-    </Grid>
-```
-
-## 注册和发送消息
-
-```c#
-		//在命令中发送消息
-        Messenger.Default.Send("123","show");
-
-		public MainWindow()
-        {
-            InitializeComponent();
-
-
-            //在当前的页面注册一个消息
-            Messenger.Default.Register<string>(this, "show", Show);
-        }
-
-        void Show(string str)
-        {
-            MessageBox.Show(str);
-        }
-```
-
-## 如果需要发送信息且接收回调microsoft.toolkit.mvvm
-
-将``MvvmLight`` 改为安装``microsoft.toolkit.mvvm``,``MainViewModel``继承``ObservableObject``
-
-```c#
-			//发送消息
-			//回调会显示名字改成了李四
-			var result = WeakReferenceMessenger.Default.Send(new Student()
-            {
-                Name = "张三",
-                Sex = "男"
-            },"show");
-
-
-			//在当前的页面注册一个消息
-            WeakReferenceMessenger.Default.Register<Student,string>(this, "show", (sender, arg) =>
-            {
-                arg.Name = "李四";
-            });
-
-
-			//用完要取消注册
-			WeakReferenceMessenger.Default.UnregisterAll(this);
-
-```
-
-## 异步的Command
-
-``IAsyncRelayCommand``
-
-```c#
- public class MainViewModel:ObservableObject
-    {
-        public MainViewModel()
-        {
-            GetDataCommand = new AsyncRelayCommand(GetData);
-        }
-
-        private async Task GetData()
-        {
-            Students = new ObservableCollection<Student>();
-            for (int i = 0; i < 10; i++)
-            {
-                Students.Add(new Student()
-                {
-                    Name = $"Student-{i}",
-                    Sex = i % 2 == 0 ? "男" : "女"
-                });
-            }
-
-            //发送消息
-            var result = WeakReferenceMessenger.Default.Send(new Student()
-            {
-                Name = "张三",
-                Sex = "男"
-            },"show");
-
-
-            await Task.Run(() =>
-            {
-                Console.WriteLine(result);
-            });
-        }
-
-
-        private ObservableCollection<Student> _students;
-
-        public ObservableCollection<Student> Students
-        {
-            get => _students;
-            set 
-            { _students = value;
-                OnPropertyChanged();
-            }
-        }
-
-
-        #region 命令
-        public IAsyncRelayCommand GetDataCommand { get; set; }
-        #endregion
-    }
-```
-
-## DataGrid传递当前行参数
-
-```c#
-		public MainViewModel()
-        {
-            GetDataCommand = new AsyncRelayCommand(GetData);
-            GetDataCommand2 = new RelayCommand<string>(GetData2);
-        }
-
-        private void GetData2(string m)
-        {
-            m = m + "s";
-        }
-
-		public RelayCommand<string> GetDataCommand2 { get; set; }
-```
-
-```xaml
-DataGrid ItemsSource="{Binding Students}"  AutoGenerateColumns="False" Margin="0 10 0 0 ">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="姓名" Binding="{Binding Name}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="性别" Binding="{Binding Sex}"></DataGridTextColumn>
-                    <DataGridTemplateColumn>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Content="编辑" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}},Path=DataContext.GetDataCommand2}" CommandParameter="{Binding  Name}"></Button>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-```
-
-# ToolKit
-
-NuGet下载 Microsoft.Toolkit.Mvvm 
-
-```c#
-	internal class MainViewModel:ObservableObject
-    {
-        private string _name;
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                _name = value;
-                OnPropertyChanged();
-            }
-        }
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
-        public MainViewModel()
-        {
-            Name = "Hello";
-            ShowCommand = new RelayCommand(Show);
-        }
-
-        public RelayCommand ShowCommand { get; set; }
-
-
-        public void Show()
-        {
-            Name = "点击";
-            MessageBox.Show(Name);
-        }
-    }
-```
-
-
-
-# 调用api(可以用postman查看调用代码)
-
-```c#
-var client = new RestClient("https://localhost:44391/api/student/Login");
-client.Timeout = -1;
-var request = new RestRequest(Method.POST);
-request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-request.AddParameter("UserName", "aaaaaa");
-request.AddParameter("UserPwd", "12231");
-IRestResponse response = client.Execute(request);
-
-
-
-
-var client = new RestClient("https://localhost:44391/api/student/1");
-client.Timeout = -1;
-var request = new RestRequest(Method.GET);
-request.AddHeader("token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJMb2dpbk5hbWUiOiJhYWFhYWEiLCJVc2VyUHdkIjoiMTIyMzEiLCJ0aW1lb3V0IjoiMjAyMS0wNC0yNVQwMDoyNzoyNC4zNDcyNTQ3KzA4OjAwIn0.baWyjzh52h12kdGbxaQ8ybJD2J0_Q5u1dCxw-M6Tp9E");
-IRestResponse response = client.Execute(request);
-```
-
 # 装饰器
 
 ```c#
@@ -1470,6 +1132,321 @@ System.Windows.Media.Animation
             </TabItem>
         </TabControl>
     </Grid>
+```
+
+# MVVMLight
+
+- 1.NuGet引用MVVM框架包
+
+![](images/010.png)
+
+引入该框架包之后, 默认会在目录下创建ViewModel层的示例代码
+
+![](images/011.png)
+
+- 第二步, 通过在MainViewModel中创建一些业务代码, 将其与MainWindow.xaml 通过上下文的方式关联起来, 而MainWindow则是通过Binding的写法 引用业务逻辑的部分
+- 在MainViewModel中, 添加同一个班级名称, 与学生列表, 分别用于显示在文本 和列表上展示, Command则用于绑定DataGrid的双击命令上, 通过双击, 展示点击行的学生信息
+- MainViewModel 继承了 ViewModelBase, 该继承的父类实在MVVM框架中, 实现双向通知的基类, 通过引用该类, 那么其之类的属性则可通过 添加 RaisePropertyChanged() 即可
+
+```c#
+	//Student类
+	public class Student : ViewModelBase
+    {
+        private string name;
+        private string age;
+        private string sex;
+        
+        public string Name
+        {
+            get { return name; }
+            set { name = value; RaisePropertyChanged(); }
+        }
+        public string Age
+        {
+            get { return age; }
+            set { age = value; RaisePropertyChanged(); }
+        }
+        public string Sex
+        {
+            get { return sex; }
+            set { sex = value; RaisePropertyChanged(); }
+        }
+    }
+
+	//MainViewModel.cs
+	public class MainViewModel : ViewModelBase
+    {
+        public MainViewModel()
+        {
+            ClassName = "高二三班";
+            Students = new ObservableCollection<Student>();
+            Students.Add(new Student() { Name = "张三", Age = "18", Sex = "男" });
+            Students.Add(new Student() { Name = "李四", Age = "19", Sex = "女" });
+            Students.Add(new Student() { Name = "王二", Age = "20", Sex = "男" });
+        }
+
+        private string className;
+
+        public string ClassName
+        {
+            get { return className; }
+            set { className = value; RaisePropertyChanged(); }
+        }
+
+        private ObservableCollection<Student> students;
+        public ObservableCollection<Student> Students
+        {
+            get { return students; }
+            set { students = value; RaisePropertyChanged(); }
+        }
+
+        
+        private RelayCommand<Student> command;
+        public RelayCommand<Student> Command
+        {
+            get
+            {
+                if (command == null)
+                    command = new RelayCommand<Student>((t) => Rcommand(t));
+                return command;
+            }
+        }
+
+        private void Rcommand(Student stu)
+        {
+            MessageBox.Show($"学生的姓名:{stu.Name}学生的年龄:{stu.Age}学生的性别:{stu.Sex}");
+        }
+
+
+        private RelayCommand updateCommand;
+        public RelayCommand UpdateCommand
+        {
+            get
+            {
+                if (updateCommand == null)
+                    updateCommand = new RelayCommand(() => UpdateText());
+                return updateCommand;
+            }
+        }
+
+        private void UpdateText()
+        {
+            ClassName = "高三三班";
+        }
+
+    }
+
+	//MainWindow.xaml.cs
+	public MainWindow()
+        {
+            InitializeComponent();
+            this.DataContext = new MainViewModel();
+        }
+```
+
+- 设计UI层, 添加一个文本用于显示班级名称,  添加一个DataGrid 用于展示学生列表,  同时DataGrid中添加一个绑定的命令,MouseAction 以为触发的事件类型, CommandParameter 则是命令传递的参数, 也就是DataGrid选中的一行的类型 Student,Command 则是MainViewModel中定义的Command
+
+```xaml
+	<Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Command="{Binding UpdateCommand}" Content="刷新"/>
+            <TextBlock Margin="5 0 0 0" Text="班级名称:" />
+            <TextBlock Margin="5 0 0 0" Text="{Binding ClassName}"/>
+        </StackPanel>
+
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Students}" AutoGenerateColumns="False">
+            <DataGrid.InputBindings>
+                <MouseBinding MouseAction="LeftDoubleClick"  
+                                  CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
+                        AncestorType=DataGrid}, Path=SelectedItem}"  
+                                  Command="{Binding Command}"/>
+            </DataGrid.InputBindings>
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Name}"  Header="名称"/>
+                <DataGridTextColumn Binding="{Binding Age}" Header="年龄"/>
+                <DataGridTextColumn Binding="{Binding Sex}" Header="性别"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+```
+
+## 注册和发送消息
+
+```c#
+		//在命令中发送消息
+        Messenger.Default.Send("123","show");
+
+		public MainWindow()
+        {
+            InitializeComponent();
+
+
+            //在当前的页面注册一个消息
+            Messenger.Default.Register<string>(this, "show", Show);
+        }
+
+        void Show(string str)
+        {
+            MessageBox.Show(str);
+        }
+```
+
+## 如果需要发送信息且接收回调microsoft.toolkit.mvvm
+
+将``MvvmLight`` 改为安装``microsoft.toolkit.mvvm``,``MainViewModel``继承``ObservableObject``
+
+```c#
+			//发送消息
+			//回调会显示名字改成了李四
+			var result = WeakReferenceMessenger.Default.Send(new Student()
+            {
+                Name = "张三",
+                Sex = "男"
+            },"show");
+
+
+			//在当前的页面注册一个消息
+            WeakReferenceMessenger.Default.Register<Student,string>(this, "show", (sender, arg) =>
+            {
+                arg.Name = "李四";
+            });
+
+
+			//用完要取消注册
+			WeakReferenceMessenger.Default.UnregisterAll(this);
+
+```
+
+## 异步的Command
+
+``IAsyncRelayCommand``
+
+```c#
+ public class MainViewModel:ObservableObject
+    {
+        public MainViewModel()
+        {
+            GetDataCommand = new AsyncRelayCommand(GetData);
+        }
+
+        private async Task GetData()
+        {
+            Students = new ObservableCollection<Student>();
+            for (int i = 0; i < 10; i++)
+            {
+                Students.Add(new Student()
+                {
+                    Name = $"Student-{i}",
+                    Sex = i % 2 == 0 ? "男" : "女"
+                });
+            }
+
+            //发送消息
+            var result = WeakReferenceMessenger.Default.Send(new Student()
+            {
+                Name = "张三",
+                Sex = "男"
+            },"show");
+
+
+            await Task.Run(() =>
+            {
+                Console.WriteLine(result);
+            });
+        }
+
+
+        private ObservableCollection<Student> _students;
+
+        public ObservableCollection<Student> Students
+        {
+            get => _students;
+            set 
+            { _students = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        #region 命令
+        public IAsyncRelayCommand GetDataCommand { get; set; }
+        #endregion
+    }
+```
+
+## DataGrid传递当前行参数
+
+```c#
+		public MainViewModel()
+        {
+            GetDataCommand = new AsyncRelayCommand(GetData);
+            GetDataCommand2 = new RelayCommand<string>(GetData2);
+        }
+
+        private void GetData2(string m)
+        {
+            m = m + "s";
+        }
+
+		public RelayCommand<string> GetDataCommand2 { get; set; }
+```
+
+```xaml
+DataGrid ItemsSource="{Binding Students}"  AutoGenerateColumns="False" Margin="0 10 0 0 ">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="姓名" Binding="{Binding Name}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="性别" Binding="{Binding Sex}"></DataGridTextColumn>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="编辑" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}},Path=DataContext.GetDataCommand2}" CommandParameter="{Binding  Name}"></Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+```
+
+# ToolKit
+
+NuGet下载 Microsoft.Toolkit.Mvvm 
+
+```c#
+	internal class MainViewModel:ObservableObject
+    {
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                OnPropertyChanged();
+            }
+        }
+        /// <summary>
+        /// Initializes a new instance of the MainViewModel class.
+        /// </summary>
+        public MainViewModel()
+        {
+            Name = "Hello";
+            ShowCommand = new RelayCommand(Show);
+        }
+
+        public RelayCommand ShowCommand { get; set; }
+
+
+        public void Show()
+        {
+            Name = "点击";
+            MessageBox.Show(Name);
+        }
+    }
 ```
 
 # Prism
