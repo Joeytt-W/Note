@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32922.545
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsulWebApi", "ConsulWebApi\ConsulWebApi.csproj", "{966A60EA-B21E-41DF-8CE5-42A03C88EFCF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OcelotForWeatherApp", "OcelotForWeatherApp\OcelotForWeatherApp.csproj", "{DBED11E6-CC04-48A9-8674-573865B1EEBC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{966A60EA-B21E-41DF-8CE5-42A03C88EFCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{966A60EA-B21E-41DF-8CE5-42A03C88EFCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{966A60EA-B21E-41DF-8CE5-42A03C88EFCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{966A60EA-B21E-41DF-8CE5-42A03C88EFCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBED11E6-CC04-48A9-8674-573865B1EEBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBED11E6-CC04-48A9-8674-573865B1EEBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBED11E6-CC04-48A9-8674-573865B1EEBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBED11E6-CC04-48A9-8674-573865B1EEBC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {65949189-1875-4638-BBEB-5558444D2C89}
+	EndGlobalSection
+EndGlobal

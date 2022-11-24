@@ -1,0 +1,81 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/{url}", //服务地址
+      "DownstreamScheme": "http",
+      "UpstreamPathTemplate": "/T/{url}", //网关地址
+      "UpstreamHttpMethod": [ "Post", "Put", "Get" ],
+      "UseServiceDiscovery": true,
+      "ServiceName": "ConsulWeb", //consul服务名称
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin" //RoundRobin轮询   LeastConnection-将请求发往最空闲的那个服务器;  NoLoadBalance不负载均衡,总是发往第一个请求或者是服务发现
+      }
+      //"DownstreamHostAndPorts": [
+      //  {
+      //    "Host": "localhost",
+      //    "Port": 9001
+      //  },
+      //  {
+      //    "Host": "localhost",
+      //    "Port": 9002
+      //  },
+      //  {
+      //    "Host": "localhost",
+      //    "Port": 9003
+      //  }
+      //],
+      //"QoSOptions": {
+      //  "ExceptionsAllowedBeforeBreaking": 3, //允许多少个异常请求
+      //  "DurationOfBreak": 10000, // 熔断的时间，单位为ms
+      //  "TimeoutValue": 10000 //如果下游请求的处理时间超过多少则自如将请求设置为超时 默认90秒
+      //},
+      //"DownstreamHttpVersion": "",
+      //"AddHeadersToRequest": {},
+      //"AddClaimsToRequest": {},
+      //"RouteClaimsRequirement": {},
+      //"AddQueriesToRequest": {},
+      //"RequestIdKey": "",
+      //"FileCacheOptions": {
+      //  "TtlSeconds": 0,
+      //  "Region": ""
+      //},
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "",
+      //  "AllowedScopes": []
+      //},
+      //"HttpHandlerOptions": {
+      //  "AllowAutoRedirect": true,
+      //  "UseCookieContainer": true,
+      //  "UseTracing": true,
+      //  "MaxConnectionsPerServer": 100 //这控制内部HttpClient将打开多少连接。这可以在路线或全球一级设置。
+      //},
+      //"DangerousAcceptAnyServerCertificateValidator": false,
+      ////路由限流配置
+      //"RateLimitOptions": {
+      //  "ClientWhitelist": [], //白名单
+      //  "EnableRateLimiting": false, //是否启用限流
+      //  "Period": "5s", //统计时间段：1s，5m，1h，1d
+      //  "PeriodTimespan": 10, //客户端可以重试时间，单位秒
+      //  "Limit": 3 //在统计时间段内允许的最大请求数量
+      //},
+      ////Polly配置
+      //"QoSOptions": {
+      //  "ExceptionsAllowedBeforeBreaking": 3, //允许多少个异常请求
+      //  "DurationOfBreak": 5, //熔断的时间，单位为秒
+      //  "TimeoutValue": 6000 //如果下游请求的处理时间超过多少则自动将请求设置为超时
+      //},
+
+      //"Priority": 0 ,//优先权顺序
+
+    }
+  ],
+  "GlobalConfiguration": {
+    //"BaseUrl": "http://127.0.0.1:8099", //网关对外地址
+    //"RequestIdKey": "OcRequestId",
+    "ServiceDiscoveryProvider": {
+      "Host": "localhost",
+      "Port": 8500,
+      "Type": "Consul" //由Consul提供服务发现
+    }
+  }
+}

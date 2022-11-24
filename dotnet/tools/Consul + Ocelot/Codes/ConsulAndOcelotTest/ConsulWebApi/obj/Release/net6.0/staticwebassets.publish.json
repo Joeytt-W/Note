@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "p6L+chtulxHKeCiFYLZ/89FoMwR0O4hev4nOnLuuGjA=",
+  "Source": "ConsulWebApi",
+  "BasePath": "_content/ConsulWebApi",
+  "Mode": "Default",
+  "ManifestType": "Publish",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

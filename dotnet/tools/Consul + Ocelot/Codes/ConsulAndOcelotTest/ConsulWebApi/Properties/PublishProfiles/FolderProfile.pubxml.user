@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>F:\Programming\Mine\Note\dotnet\tools\Consul + Ocelot\App</_PublishTargetUrl>
+    <History>True|2022-11-02T14:53:12.5122064Z;True|2022-11-02T22:51:37.0242213+08:00;False|2022-11-02T22:51:21.6124019+08:00;True|2022-11-02T19:05:19.4308358+08:00;False|2022-11-02T19:03:39.5892885+08:00;True|2022-11-02T16:03:56.7910593+08:00;True|2022-11-02T15:43:45.3052248+08:00;True|2022-11-02T15:43:17.9416418+08:00;True|2022-11-02T15:14:15.5272777+08:00;True|2022-11-02T15:03:49.3119329+08:00;True|2022-11-02T14:44:35.1367548+08:00;True|2022-11-02T14:37:46.4499340+08:00;True|2022-11-02T14:33:17.1207643+08:00;True|2022-11-02T14:27:36.2661915+08:00;True|2022-11-02T14:19:25.5928390+08:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

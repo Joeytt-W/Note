@@ -1,0 +1,13 @@
+E:\Programming\Mine\Note\dotnet\tools\Consul + Ocelot\Codes\ConsulAndOcelotTest\ConsulWebApi\obj\Release\net6.0\PubTmp\Out\ConsulWebApi.exe
+E:\Programming\Mine\Note\dotnet\tools\Consul + Ocelot\Codes\ConsulAndOcelotTest\ConsulWebApi\obj\Release\net6.0\PubTmp\Out\appsettings.Development.json
+E:\Programming\Mine\Note\dotnet\tools\Consul + Ocelot\Codes\ConsulAndOcelotTest\ConsulWebApi\obj\Release\net6.0\PubTmp\Out\appsettings.json
+E:\Programming\Mine\Note\dotnet\tools\Consul + Ocelot\Codes\ConsulAndOcelotTest\ConsulWebApi\obj\Release\net6.0\PubTmp\Out\ConsulWebApi.dll
+E:\Programming\Mine\Note\dotnet\tools\Consul + Ocelot\Codes\ConsulAndOcelotTest\ConsulWebApi\obj\Release\net6.0\PubTmp\Out\ConsulWebApi.deps.json
+E:\Programming\Mine\Note\dotnet\tools\Consul + Ocelot\Codes\ConsulAndOcelotTest\ConsulWebApi\obj\Release\net6.0\PubTmp\Out\ConsulWebApi.runtimeconfig.json
+E:\Programming\Mine\Note\dotnet\tools\Consul + Ocelot\Codes\ConsulAndOcelotTest\ConsulWebApi\obj\Release\net6.0\PubTmp\Out\ConsulWebApi.pdb
+E:\Programming\Mine\Note\dotnet\tools\Consul + Ocelot\Codes\ConsulAndOcelotTest\ConsulWebApi\obj\Release\net6.0\PubTmp\Out\Consul.dll
+E:\Programming\Mine\Note\dotnet\tools\Consul + Ocelot\Codes\ConsulAndOcelotTest\ConsulWebApi\obj\Release\net6.0\PubTmp\Out\Microsoft.OpenApi.dll
+E:\Programming\Mine\Note\dotnet\tools\Consul + Ocelot\Codes\ConsulAndOcelotTest\ConsulWebApi\obj\Release\net6.0\PubTmp\Out\Newtonsoft.Json.dll
+E:\Programming\Mine\Note\dotnet\tools\Consul + Ocelot\Codes\ConsulAndOcelotTest\ConsulWebApi\obj\Release\net6.0\PubTmp\Out\Swashbuckle.AspNetCore.Swagger.dll
+E:\Programming\Mine\Note\dotnet\tools\Consul + Ocelot\Codes\ConsulAndOcelotTest\ConsulWebApi\obj\Release\net6.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerGen.dll
+E:\Programming\Mine\Note\dotnet\tools\Consul + Ocelot\Codes\ConsulAndOcelotTest\ConsulWebApi\obj\Release\net6.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerUI.dll
