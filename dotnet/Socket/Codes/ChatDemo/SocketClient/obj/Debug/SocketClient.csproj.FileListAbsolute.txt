@@ -1,0 +1,11 @@
+F:\Programming\Mine\Note\dotnet\Socket\Codes\ChatDemo\SocketClient\bin\Debug\SocketClient.exe.config
+F:\Programming\Mine\Note\dotnet\Socket\Codes\ChatDemo\SocketClient\bin\Debug\SocketClient.exe
+F:\Programming\Mine\Note\dotnet\Socket\Codes\ChatDemo\SocketClient\bin\Debug\SocketClient.pdb
+F:\Programming\Mine\Note\dotnet\Socket\Codes\ChatDemo\SocketClient\obj\Debug\SocketClient.csproj.AssemblyReference.cache
+F:\Programming\Mine\Note\dotnet\Socket\Codes\ChatDemo\SocketClient\obj\Debug\SocketClient.csproj.SuggestedBindingRedirects.cache
+F:\Programming\Mine\Note\dotnet\Socket\Codes\ChatDemo\SocketClient\obj\Debug\SocketClient.MainFrm.resources
+F:\Programming\Mine\Note\dotnet\Socket\Codes\ChatDemo\SocketClient\obj\Debug\SocketClient.Properties.Resources.resources
+F:\Programming\Mine\Note\dotnet\Socket\Codes\ChatDemo\SocketClient\obj\Debug\SocketClient.csproj.GenerateResource.cache
+F:\Programming\Mine\Note\dotnet\Socket\Codes\ChatDemo\SocketClient\obj\Debug\SocketClient.csproj.CoreCompileInputs.cache
+F:\Programming\Mine\Note\dotnet\Socket\Codes\ChatDemo\SocketClient\obj\Debug\SocketClient.exe
+F:\Programming\Mine\Note\dotnet\Socket\Codes\ChatDemo\SocketClient\obj\Debug\SocketClient.pdb

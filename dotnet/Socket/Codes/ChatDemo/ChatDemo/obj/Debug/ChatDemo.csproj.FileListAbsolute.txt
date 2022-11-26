@@ -1,0 +1,11 @@
+F:\Programming\Mine\Note\dotnet\Socket\Codes\ChatDemo\ChatDemo\obj\Debug\ChatDemo.csproj.AssemblyReference.cache
+F:\Programming\Mine\Note\dotnet\Socket\Codes\ChatDemo\ChatDemo\obj\Debug\ChatDemo.csproj.SuggestedBindingRedirects.cache
+F:\Programming\Mine\Note\dotnet\Socket\Codes\ChatDemo\ChatDemo\obj\Debug\ChatDemo.MainFrm.resources
+F:\Programming\Mine\Note\dotnet\Socket\Codes\ChatDemo\ChatDemo\obj\Debug\ChatDemo.Properties.Resources.resources
+F:\Programming\Mine\Note\dotnet\Socket\Codes\ChatDemo\ChatDemo\obj\Debug\ChatDemo.csproj.GenerateResource.cache
+F:\Programming\Mine\Note\dotnet\Socket\Codes\ChatDemo\ChatDemo\obj\Debug\ChatDemo.csproj.CoreCompileInputs.cache
+F:\Programming\Mine\Note\dotnet\Socket\Codes\ChatDemo\ChatDemo\bin\Debug\ChatDemo.exe.config
+F:\Programming\Mine\Note\dotnet\Socket\Codes\ChatDemo\ChatDemo\bin\Debug\ChatDemo.exe
+F:\Programming\Mine\Note\dotnet\Socket\Codes\ChatDemo\ChatDemo\bin\Debug\ChatDemo.pdb
+F:\Programming\Mine\Note\dotnet\Socket\Codes\ChatDemo\ChatDemo\obj\Debug\ChatDemo.exe
+F:\Programming\Mine\Note\dotnet\Socket\Codes\ChatDemo\ChatDemo\obj\Debug\ChatDemo.pdb
