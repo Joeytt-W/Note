@@ -1,0 +1,22 @@
+﻿<Window x:Class="LearnWpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LearnWpf"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="500" Width="500">
+
+    <Canvas>
+        <!--先旋转，再扭曲一个文本块-->
+        <TextBlock FontSize="28" Canvas.Left="10" Canvas.Top="10" Text="在文本块中组合多个变换">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="45" />
+                    <ScaleTransform ScaleX="0.5" ScaleY="0.5"/>
+                </TransformGroup>
+            </TextBlock.RenderTransform>
+        </TextBlock>
+    </Canvas>
+
+</Window>
