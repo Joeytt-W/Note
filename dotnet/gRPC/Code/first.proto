@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+message FirstMessage{
+    int32 id = 1;//=后面的数值表示字段的tag
+    string name = 2;
+    bool is_male = 3;
+    string age = 5;
+    reserved 4, "address";
+    reserved "age";
+
+}
