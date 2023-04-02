@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	selection := 4
+	selection := 1
 
 	switch selection {
 	case 1:

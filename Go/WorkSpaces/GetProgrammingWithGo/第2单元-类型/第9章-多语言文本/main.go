@@ -7,7 +7,7 @@ import (
 
 func raw() {
 	fmt.Println("原始字符串字面量：")
-	fmt.Println("peace be upon you\nupon you be peace")
+	fmt.Println("peace be upon you\n upon you be peace")
 	fmt.Println(`strings can span multiple lines with the \n escape sequence`)
 }
 func rawLines() {
