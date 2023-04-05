@@ -512,3 +512,368 @@ func main() {
 	fmt.Print(k, "°K is ", c, "°C")
 }
 ```
+
+## 数组
+- 是一组固定长度且有序的元素集合
+- 数组声明：var planets [8]string
+### 访问数组元素
+planets[0],planets[1]...
+- 数组长度可由内置函数``len``确定
+- 数组中未被赋值的元素的值是对应类型的零值
+- 无论数组是赋值给一个新的变量还是作为参数传递给函数，都会产生一个完整的副本
+```go
+package main
+
+import (
+	"fmt"
+)
+
+type planet string
+
+func main() {
+	var planets = [...]planet{
+		"Mercury",
+		"Venus",
+		"Earth",
+		"Mars",
+		"Jupiter",
+		"Sturn",
+		"Uranus",
+		"Neptune",
+	}
+	//遍历数组
+	// for i, dwarf := range planets {
+	// 	fmt.Println(i, dwarf)
+	// }
+	fmt.Printf("planets length:%d\n", len(planets)) // "planets length: 12"
+	planetsMarkII := planets
+	planets[2] = "whoops"
+	fmt.Println(planets)
+	fmt.Println(planetsMarkII)
+
+	var test [4]string
+	test[0] = "foo"
+	test[1] = "bar"
+	fmt.Println(test[2] == "")
+}
+```
+
+![](Images/27.png)
+
+### 二维数组
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var board [8][8]string
+
+	board[0][0] = "r"
+	board[0][7] = "r"
+
+	for column := range board[1] {
+		board[1][column] = "p"
+	}
+	fmt.Println(board)
+}
+```
+
+![](Images/28.png)
+
+### 切片(``Slice``)
+- 假设planets是一个数组，planets[0:4]就是一个切片，它切出了数组的前四个元素
+- 切分数组不会导致原数组被修改，只是创建了一个指向数组的窗口
+- 忽略掉切片的起始索引，表示从数组的开始位置进行切分；忽略切片的结束索引，表示使用数组的长度作为结束索引；同时省略切片的起始索引和结束索引，那么它就是一个包含数组所有元素的切片
+- 切分数组的语法也可以用于切分字符串，切分字符串时索引代表的是字节数
+- go1.2中引入第三个索引：planets[0:4:4]限制切片的容量
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var planets = [...]string{
+		"Mercury",
+		"Venus",
+		"Earth",
+		"Mars",
+		"Jupiter",
+		"Sturn",
+		"Uranus",
+		"Neptune",
+	}
+	terrestrail := planets[0:4]
+	gasGiants := planets[4:6]
+	iceGiants := planets[6:8]
+	colonized := terrestrail[2:]
+	fmt.Println(terrestrail, gasGiants, iceGiants, colonized)
+	fmt.Println(gasGiants[0])
+
+	giants := planets[4:]
+	gas := giants[:2]
+	ice := giants[2:4]
+	fmt.Println(giants, gas, ice)
+
+	allPlanets:=planets[:]
+	fmt.Println(allPlanets)
+}
+```
+
+![](Images/29.png)
+
+#### ``append``函数
+- ``len``函数获取切片的长度
+- ``cap``函数获取切片的容量
+- ``make``函数，创建切片可以对切片进行预分配策略，避免额外的内存分配和数组复制操作
+- 切片的容量：切片的底层数组的长度-切片的起始索引
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func dump(label string, slice []string) {
+	fmt.Printf("%v: length %v, capacity %v %v\n", label, len(slice), cap(slice), slice)
+}
+
+func main() {
+	dwarfs := make([]string, 0, 10)
+	dwarfs = append(dwarfs, "Ceres", "Pluto", "Haumea", "Makemake", "Eris")
+	dump("dwarfs", dwarfs)
+	dwarfs = append(dwarfs, "Salacia", "Quaoar", "Sedna", "Orcus")
+	dump("dwarfs", dwarfs)
+	dump("dwarfs[4:7]", dwarfs[4:7])
+
+	terrestrial := dwarfs[0:4:4]
+	worlds:=append(terrestrial,"Ceres")
+	dump("worlds",worlds)
+}
+```
+
+![](Images/30.png)
+
+## ``map``
+
+![](Images/31.png)
+
+### 声明
+
+![](Images/32.png)
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	temperature := map[string]int{
+		"Earth": 15,
+		"Mars":  -65,
+	}
+
+	temp := temperature["Earth"]
+	fmt.Printf("On average the Earth is %v°C\n", temp)
+	temperature["Earth"] = 16
+	temperature["Venus"] = 464
+
+	fmt.Println(temperature)
+
+	//不存在的moon返回零值
+	if moon, ok := temperature["Moon"]; ok {
+		fmt.Printf("On average the Moon is %v°C\n", moon)
+	} else {
+		fmt.Println("Where is the moon?")
+	}
+}
+```
+
+![](Images/33.png)
+
+### ``map``赋值给新变量或者作为参数时不会被复制（按引用传递）
+```go
+package main
+
+import "fmt"
+
+func main(){
+	planets:=map[string]string{
+		"Earth":"Sector ZZ9",
+		"Mars":"Sector ZZ9",
+	}
+
+	planetsMarkII := planets
+	planets["Earth"] = "whoops"
+
+	fmt.Println(planets) 
+	fmt.Println(planetsMarkII)
+
+	delete(planets,"Earth")
+	
+	fmt.Println(planets) 
+	fmt.Println(planetsMarkII)
+}
+```
+
+![](Images/34.png)
+
+### ``make``函数预分配
+
+![](Images/35.png)
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	temperature := []float64{
+		-28.0, 32.0, -31.0, -29.0, -23.0, -29.0, -28.0, -33.0,
+	}
+	frequency := make(map[float64]int, 6)
+
+	for _, t := range temperature {
+		frequency[t]++
+	}
+	fmt.Println(frequency)
+}
+```
+
+![](Images/36.png)
+
+## 结构类型(``struct``)
+```go
+package main
+
+import "fmt"
+
+type location struct {
+	lat  float64
+	long float64
+}
+
+func main() {
+	var curiosity = location{lat: -4.5895, long: 137.4417}
+	//var curiosity struct{
+		//lat float64
+		//long float64
+	//}
+	var spirit location
+	spirit.lat = -14.5684
+	spirit.long = 175.472636
+
+	var opportunity location
+	opportunity.lat = -1.9462
+	opportunity.long = 354.4734
+	fmt.Println(curiosity, spirit, opportunity)
+	fmt.Printf("%+v %+v %+v\n", curiosity, spirit, opportunity)
+}
+```
+### ``struct``组成的切片
+```go
+// 由location结构组成的切片
+package main
+
+import "fmt"
+
+type location struct {
+	name string
+	lat  float64
+	long float64
+}
+
+func main() {
+	locations := []location{
+		{name: "Bradbury Landing", lat: -4.5895, long: 137.4417},
+		{name: "Columbia Memorial", lat: -14.5684, long: 175.472636},
+		{name: "Challenger Memorial", lat: -1.9462, long: 354.4734},
+	}
+	fmt.Println(locations)
+}
+```
+### 将``struct``编码为``json``
+```go
+// 定制Location结构中的字段
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"os"
+)
+
+func main() {
+	//字段名字一定要首字母大写才能通过json.Marshal正常导出
+	//注明标签latitude和longitude指定参数在json中对应的名字
+	type location struct {
+		//Lat  float64
+		//Long float64
+		Lat  float64 `json:"latitude"xml:"latitude"`
+		Long float64 `json:"longitude"`
+	}
+
+	curiosity := location{-4.5895, 137.4417}
+	//bytes, err := json.MarshalIndent(curiosity,"","\t")//json格式化打印
+	bytes, err := json.Marshal(curiosity)
+	exitOnError(err)
+
+	fmt.Println(bytes)
+	fmt.Println(string(bytes))
+}
+
+// exitOnError打印所有错误和退出信息
+func exitOnError(err error) {
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+}
+```
+
+![](Images/37.png)
+
+### ``go``没有类的概念
+#### 构造函数
+
+![](Images/38.png)
+
+```go
+package main
+
+import "fmt"
+
+// 使用度/分/秒格式的坐标表示东西南北半球
+type coordinate struct {
+	d, m, s float64
+	h       rune
+}
+
+type location struct {
+	lat, long float64
+}
+
+// decimal方法会将DMS格式的坐标转换除成十进制格式
+func (c coordinate) decimal() float64 {
+	sign := 1.0
+	switch c.h {
+	case 'S', 'W', 's', 'w':
+		sign = -1
+	}
+	return sign * (c.d + c.m/60 + c.s/3600)
+}
+
+// 创建新的location
+func newLocation(lat, long coordinate) location {
+	return location{lat.decimal(), long.decimal()}
+}
+
+func main() {
+	lat := coordinate{4, 35, 22.2, 'S'}
+	long := coordinate{137, 26, 30.12, 'E'}
+	fmt.Println(lat.decimal(), long.decimal())
+
+	curiosity := newLocation(lat, long)
+	fmt.Println(curiosity)
+}
+```

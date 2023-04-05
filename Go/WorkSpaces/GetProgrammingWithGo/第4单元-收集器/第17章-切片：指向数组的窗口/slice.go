@@ -24,4 +24,7 @@ func main() {
 	gas := giants[:2]
 	ice := giants[2:4]
 	fmt.Println(giants, gas, ice)
+
+	allPlanets:=planets[:]
+	fmt.Println(allPlanets)
 }

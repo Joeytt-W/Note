@@ -1,0 +1,11 @@
+D:\WorkSpaces\Github\Note\dotnet\Winform\Codes\WinFormMVVM\WinFormMVVM\obj\Debug\WinFormMVVM.csproj.AssemblyReference.cache
+D:\WorkSpaces\Github\Note\dotnet\Winform\Codes\WinFormMVVM\WinFormMVVM\obj\Debug\WinFormMVVM.csproj.SuggestedBindingRedirects.cache
+D:\WorkSpaces\Github\Note\dotnet\Winform\Codes\WinFormMVVM\WinFormMVVM\obj\Debug\WinFormMVVM.Form1.resources
+D:\WorkSpaces\Github\Note\dotnet\Winform\Codes\WinFormMVVM\WinFormMVVM\obj\Debug\WinFormMVVM.Properties.Resources.resources
+D:\WorkSpaces\Github\Note\dotnet\Winform\Codes\WinFormMVVM\WinFormMVVM\obj\Debug\WinFormMVVM.csproj.GenerateResource.cache
+D:\WorkSpaces\Github\Note\dotnet\Winform\Codes\WinFormMVVM\WinFormMVVM\obj\Debug\WinFormMVVM.csproj.CoreCompileInputs.cache
+D:\WorkSpaces\Github\Note\dotnet\Winform\Codes\WinFormMVVM\WinFormMVVM\bin\Debug\WinFormMVVM.exe.config
+D:\WorkSpaces\Github\Note\dotnet\Winform\Codes\WinFormMVVM\WinFormMVVM\bin\Debug\WinFormMVVM.exe
+D:\WorkSpaces\Github\Note\dotnet\Winform\Codes\WinFormMVVM\WinFormMVVM\bin\Debug\WinFormMVVM.pdb
+D:\WorkSpaces\Github\Note\dotnet\Winform\Codes\WinFormMVVM\WinFormMVVM\obj\Debug\WinFormMVVM.exe
+D:\WorkSpaces\Github\Note\dotnet\Winform\Codes\WinFormMVVM\WinFormMVVM\obj\Debug\WinFormMVVM.pdb

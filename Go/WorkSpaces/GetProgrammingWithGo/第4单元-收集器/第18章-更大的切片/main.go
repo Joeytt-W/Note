@@ -15,4 +15,8 @@ func main() {
 	dwarfs = append(dwarfs, "Salacia", "Quaoar", "Sedna", "Orcus")
 	dump("dwarfs", dwarfs)
 	dump("dwarfs[4:7]", dwarfs[4:7])
+
+	terrestrial := dwarfs[0:4:4]
+	worlds:=append(terrestrial,"Ceres")
+	dump("worlds",worlds)
 }
