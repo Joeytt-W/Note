@@ -877,3 +877,145 @@ func main() {
 	fmt.Println(curiosity)
 }
 ```
+### 组合
+#### 方法转发
+
+![](Images/40.png)
+
+```go
+package main
+
+import "fmt"
+
+// 摄氏度
+type celsius float64
+
+// 位置
+type location struct {
+	lat, long float64
+}
+
+// 温度
+type temperature struct {
+	high, low celsius
+}
+
+// 获取平均温度
+func (t temperature) average() celsius {
+	return (t.high + t.low) / 2
+}
+
+//方法的转发
+// func (r report) average() celsius{
+// 	return r.temperature.average()
+// }
+
+// 天气报告
+type report struct {
+	sol int
+	temperature
+	location
+}
+
+func main() {
+	report := report{
+		sol:         15,
+		temperature: temperature{high: -1.0, low: -78.0},
+		location:    location{-4.5895, 137.4417},
+	}
+	fmt.Printf("%+v\n",report)
+	//转发后report可以直接使用temperature的average()方法
+	fmt.Println(report.average())
+	fmt.Printf("average %v°C\n", report.average())
+	fmt.Printf("high: %v°C\n", report.high)
+}
+```
+
+![](Images/39.png)
+
+## 接口
+
+![](Images/41.png)
+
+### 接口变量
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+var t interface {
+	talk() string
+}
+
+type martian struct{}
+
+func (m martian) talk() string {
+	return "nack nack"
+}
+
+type laser int
+
+func (l laser) talk() string {
+	return strings.Repeat("pew ", int(l))
+}
+
+func main() {
+	t = martian{}
+	fmt.Println(t.talk())
+	t = laser(3)
+	fmt.Println(t.talk())
+}
+```
+### 接口类型
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+type talker interface {
+	talk() string
+}
+
+type martian struct{}
+
+func (m martian) talk() string {
+	return "nack nack"
+}
+
+type laser int
+
+func (l laser) talk() string {
+	return strings.Repeat("pew ", int(l))
+}
+
+// 大声喊出想说的话
+func shout(t talker) {
+	louder := strings.ToUpper(t.talk())
+	fmt.Println(louder)
+}
+
+//通过嵌入满足接口
+type starship struct {
+	laser
+}
+
+func main() {
+	// 大声呼喊
+	shout(martian{})
+	shout(laser(5))
+	s := starship{laser(9)}
+	shout(s)
+	// 多态
+	var t talker
+	t = martian{}
+	fmt.Println(t.talk())
+	t = laser(3)
+	fmt.Println(t.talk())
+}
+```

@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // 摄氏度
 type celsius float64
@@ -20,6 +22,10 @@ func (t temperature) average() celsius {
 	return (t.high + t.low) / 2
 }
 
+// func (r report) average() celsius{
+// 	return r.temperature.average()
+// }
+
 // 天气报告
 type report struct {
 	sol int
@@ -33,6 +39,8 @@ func main() {
 		temperature: temperature{high: -1.0, low: -78.0},
 		location:    location{-4.5895, 137.4417},
 	}
+	fmt.Printf("%+v\n",report)
+	fmt.Println(report.average())
 	fmt.Printf("average %v°C\n", report.average())
 	fmt.Printf("high: %v°C\n", report.high)
 }
