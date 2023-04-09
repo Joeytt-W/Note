@@ -1019,3 +1019,424 @@ func main() {
 	fmt.Println(t.talk())
 }
 ```
+## 指针
+### ``&``和``*``符号
+- ``&``表示地址操作符，通过``&``可以获得变量的内存地址
+- ``&``操作符无法获得字符串，数值，布尔值字面值的地址，``&42``，``&"hello"``这些都会编译出错
+- ``*``操作符与``&``相反，它用来解引用，提供内存地址指向的值
+```go
+package main
+
+import "fmt"
+
+func main() {
+	answer := 42
+	address := &answer
+
+	fmt.Printf("answer is %v\n", answer)
+	fmt.Printf("address is %v\n", address)
+
+	fmt.Printf("answer is a %T\n", answer)
+	fmt.Printf("address is a %T\n", address)
+}
+```
+
+![](Images/42.png)
+
+### 指针类型
+- 将``*``放在类型前面表示声明指针类型
+```go
+package main
+
+import "fmt"
+
+func main() {
+	canada := "Canada"
+
+	var home *string
+	fmt.Printf("home is a %T\n", home)
+
+	home = &canada
+	fmt.Println(*home)
+}
+```
+### 实现修改
+```go
+package main
+
+import "fmt"
+
+type person struct {
+	name, superpower string
+	age              int
+}
+
+func birthday(p *person) {
+	p.age++
+}
+
+func main() {
+	rebecca := person{
+		name:       "Rebecca",
+		superpower: "imagination",
+		age:        17,
+	}
+
+	birthday(&rebecca)
+
+	fmt.Printf("%+v\n", rebecca)
+}
+```
+
+![](Images/43.png)
+
+### 内部指针
+
+![](Images/45.png)
+
+```go
+package main
+
+import "fmt"
+
+type stats struct {
+	level             int
+	endurance, health int
+}
+
+func levelUp(s *stats) {
+	s.level++
+	s.endurance = 42 + (14 * s.level)
+	s.health = 5 * s.endurance
+}
+
+type character struct {
+	name  string
+	stats stats
+}
+
+func main() {
+	player := character{name: "Matthias"}
+	levelUp(&player.stats)
+
+	fmt.Printf("%+v\n", player.stats)
+}
+```
+
+![](Images/46.png)
+
+### 隐式的指针
+- ``map``
+
+![](Images/47.png)
+
+- ``slice``指向数组
+
+![](Images/48.png)
+
+![](Images/49.png)
+
+### 指针和接口
+```go
+// 指针和接口
+package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+type talker interface {
+	talk() string
+}
+
+func shout(t talker) {
+	louder := strings.ToUpper(t.talk())
+	fmt.Println(louder)
+}
+
+type martian struct{}
+
+func (m martian) talk() string {
+	return "nack nack"
+}
+
+type laser int
+
+func (l *laser) talk() string {
+	return strings.Repeat("pew ", int(*l))
+}
+
+func main() {
+	// 无论是martian还是指向martian的指针，都满足talker接口
+	shout(martian{})
+	shout(&martian{})
+
+	// 如果方法使用的是指针接收者，情况会有所不同
+	pew := laser(2)
+	shout(&pew)
+	// shout(pew)
+}
+```
+## ``nil``
+
+![](Images/50.png)
+
+## 错误处理
+### 内置类型``error``
+```g
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	err := proverbs("proverbs.txt")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+}
+
+func proverbs(name string) error {
+	f, err := os.Create(name)
+	if err != nil {
+		return err
+	}
+
+	_, err = fmt.Fprintln(f, "Don’t just check errors, handle them gracefully.")
+	if err != nil {
+		f.Close()
+		return err
+	}
+
+	_, err = fmt.Fprintln(f, "Don’t just check errors, handle them gracefully.")
+	f.Close()
+	return err
+```
+#### ``New Error``
+- ``errors``包包含一个构造用``New``函数，接收``string``作为参数用来表示错误信息，该函数返回一个``error``类型
+```go
+package main
+
+import (
+	"errors"
+	"fmt"
+	"os"
+)
+
+const rows, columns = 9, 9
+
+// Grid是一个数独网络
+type Grid [rows][columns]int8
+
+// 检查形参
+func (g *Grid) Set(row, column int, digit int8) error {
+	if !inBounds(row, column) {
+		return errors.New("out of bounds")
+	}
+	g[row][column] = digit
+	return nil
+}
+
+// 辅助函数
+func inBounds(row, column int) bool {
+	if row < 0 || row >= rows {
+		return false
+	}
+	if column < 0 || column >= columns {
+		return false
+	}
+	return true
+}
+
+func main() {
+	var g Grid
+	err := g.Set(10, 0, 5)
+	if err != nil {
+		fmt.Printf("An error occurred: %v.\n", err)
+		os.Exit(1)
+	}
+}
+```
+### ``defer``关键字
+- 使用``defer``关键字，可以保证所有``defered``的动作可以在函数返回之前执行
+```go
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	err := proverbs("proverbs.txt")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+}
+
+func proverbs(name string) error {
+	f, err := os.Create(name)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	_, err = fmt.Fprintln(f, "Don’t just check errors, handle them gracefully.")
+	if err != nil {
+		return err
+	}
+
+	_, err = fmt.Fprintln(f, "Errors are values.")
+	return err
+}
+```
+## ``goroutine``和并发
+### ``goroutine``
+
+![](Images/51.png)
+
+#### 启动``goroutine``
+- 只需要在调用前面加上``go``关键字
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	go sleepyGopher()
+	time.Sleep(4 * time.Second)
+}
+
+func sleepyGopher(){
+	time.Sleep(3 * time.Second)
+	fmt.Println("...snore...")
+```
+#### ``goroutine``的参数
+- 向``goroutine``传递参数和向函数传递参数一样，参数都是按值传递的
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	for i := 0; i < 5; i++ {
+		go sleepyGopher(i)
+	}
+	time.Sleep(4 * time.Second)
+}
+
+func sleepyGopher(i int){
+	time.Sleep(3 * time.Second)
+	fmt.Println("...snore...",i)
+}
+```
+
+![](Images/52.png)
+
+### 通道``channel``
+- 通道可以在多个``goroutine``之间安全的传值
+- 通道可以用作变量，函数参数，结构体字段...
+- 创建通道用``make``函数,并指定其传输数据的类型
+```go
+c:=make(chan int)
+```
+#### 通道发送接收
+- 使用``<-``向通道发送值或从通道接收值
+```go
+c <- 99//向通道发送值
+r := <-c//从通道接收值
+```
+- 发送操作会等待直到另一个``goroutine``尝试对该通道进行接收操作为止，执行发送操作的``goroutine``在等待期间将无法执行其他操作;执行接收操作的``goroutine``将等待直到另一个``goroutine``尝试向该通道进行发送操作为止
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main(){
+	c:=make(chan int)
+	for i := 0; i < 5; i++ {
+		go sleepyGopher(i,c)
+	}
+	for i := 0; i < 5; i++ {
+		gopherID:=<-c
+		fmt.Println("gopher ",gopherID," has finished sleeping")
+	}
+}
+
+func sleepyGopher(id int,c chan int){
+	time.Sleep(3 * time.Second)
+	fmt.Println("...snore...",id)
+	c<-id
+}
+```
+
+![](Images/53.png)
+#### 使用``select``处理多个通道
+
+![](Images/54.png)
+```go
+package main
+
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
+
+func main() {
+	c := make(chan int)
+	for i := 0; i < 5; i++ {
+		go sleepyGopher(i, c)
+	}
+	timeout := time.After(2 * time.Second)
+	for i := 0; i < 5; i++ {
+		select {
+		case gopherID := <-c:
+			fmt.Println("gopher ", gopherID, " has finished sleeping")
+		case <-timeout:
+			fmt.Println("time out")
+		}
+
+	}
+}
+
+func sleepyGopher(id int, c chan int) {
+	time.Sleep(time.Duration(rand.Intn(4000)) * time.Millisecond)
+	c <- id
+}
+```
+
+![](Images/55.png)
+
+> ``select``在不包含任何``case``的情况下将永远等待下去
+
+#### ``nil``通道
+
+![](Images/56.png)
+
+### 阻塞和死锁
+- 阻塞是进程(也可以是线程、协程)的状态之一（新建、就绪、运行、阻塞、终止). 指的是当数据未准备就绪，这个进程(线程、协程)一直等待，这就是阻塞
+### 并发状态
+并发编程中，为了确保并发安全，可以使用锁机制. golang 提供了标准库 sync ，它实现了并发需要的各种锁. 包括:
+1. Mutex: 互斥锁，有俩个方法 Lock() 和 Unlock(), 它只能同时被一个 goroutine 锁定，其它锁再次尝试锁定将被阻塞，直到解锁.
+2. RWMutex: 读写锁，有四个方法，Lock()写锁定、Unlock()写解锁、RLock()读锁定、RUnlock()读解锁，读锁定和写锁定只能同时存在一个. 只能有一个协程处于写锁定状态，但是可以有多个协程处于读锁定状态. 即写的时候不可读，读的时候不可写. 只能同时有一个写操作确保数据一致性. 而可以多个协程同时读数据，确保读操作的并发性能。
+3. 此外在 go 的并发编程中，还会常用到 sync 的以下内容:
+- sync.Map: 并发安全的字典 map
+- sync.WaitGroup: 用来等待一组协程的结束，常常用来阻塞主线程.
+- sync.Once: 用于控制函数只能被使用一次，
+- sync.Cond: 条件同步变量. 可以通过 Wait()方法阻塞协程，通过 Signal()、Broadcast() 方法唤醒协程.
+- sync.Pool: 一组临时对象的集合，是并发安全的. 它主要是用于存储分配但还未被使用的值，避免频繁的重新分配内存，减少 gc 的压力.
