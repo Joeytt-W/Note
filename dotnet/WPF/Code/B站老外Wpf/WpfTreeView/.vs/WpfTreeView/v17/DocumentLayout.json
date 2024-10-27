@@ -1,0 +1,172 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{9E179502-65EB-40C8-BADB-7CCA61FC1C03}|WpfTreeView\\WpfTreeView.csproj|D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\wpftreeview\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{9E179502-65EB-40C8-BADB-7CCA61FC1C03}|WpfTreeView\\WpfTreeView.csproj|solutionrelative:wpftreeview\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9E179502-65EB-40C8-BADB-7CCA61FC1C03}|WpfTreeView\\WpfTreeView.csproj|D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\wpftreeview\\headertoimageconverter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9E179502-65EB-40C8-BADB-7CCA61FC1C03}|WpfTreeView\\WpfTreeView.csproj|solutionrelative:wpftreeview\\headertoimageconverter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9E179502-65EB-40C8-BADB-7CCA61FC1C03}|WpfTreeView\\WpfTreeView.csproj|d:\\workspaces\\self\\note\\dotnet\\wpf\\code\\b\u7AD9\u8001\u5916wpf\\wpftreeview\\wpftreeview\\directory\\viewmodels\\directoryitemviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9E179502-65EB-40C8-BADB-7CCA61FC1C03}|WpfTreeView\\WpfTreeView.csproj|solutionrelative:wpftreeview\\directory\\viewmodels\\directoryitemviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9E179502-65EB-40C8-BADB-7CCA61FC1C03}|WpfTreeView\\WpfTreeView.csproj|d:\\workspaces\\self\\note\\dotnet\\wpf\\code\\b\u7AD9\u8001\u5916wpf\\wpftreeview\\wpftreeview\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9E179502-65EB-40C8-BADB-7CCA61FC1C03}|WpfTreeView\\WpfTreeView.csproj|solutionrelative:wpftreeview\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9E179502-65EB-40C8-BADB-7CCA61FC1C03}|WpfTreeView\\WpfTreeView.csproj|d:\\workspaces\\self\\note\\dotnet\\wpf\\code\\b\u7AD9\u8001\u5916wpf\\wpftreeview\\wpftreeview\\directory\\viewmodels\\directorystructureviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9E179502-65EB-40C8-BADB-7CCA61FC1C03}|WpfTreeView\\WpfTreeView.csproj|solutionrelative:wpftreeview\\directory\\viewmodels\\directorystructureviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9E179502-65EB-40C8-BADB-7CCA61FC1C03}|WpfTreeView\\WpfTreeView.csproj|D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\wpftreeview\\directory\\directorystructure.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9E179502-65EB-40C8-BADB-7CCA61FC1C03}|WpfTreeView\\WpfTreeView.csproj|solutionrelative:wpftreeview\\directory\\directorystructure.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9E179502-65EB-40C8-BADB-7CCA61FC1C03}|WpfTreeView\\WpfTreeView.csproj|d:\\workspaces\\self\\note\\dotnet\\wpf\\code\\b\u7AD9\u8001\u5916wpf\\wpftreeview\\wpftreeview\\directory\\viewmodels\\base\\baseviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9E179502-65EB-40C8-BADB-7CCA61FC1C03}|WpfTreeView\\WpfTreeView.csproj|solutionrelative:wpftreeview\\directory\\viewmodels\\base\\baseviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9E179502-65EB-40C8-BADB-7CCA61FC1C03}|WpfTreeView\\WpfTreeView.csproj|d:\\workspaces\\self\\note\\dotnet\\wpf\\code\\b\u7AD9\u8001\u5916wpf\\wpftreeview\\wpftreeview\\directory\\viewmodels\\base\\relaycommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9E179502-65EB-40C8-BADB-7CCA61FC1C03}|WpfTreeView\\WpfTreeView.csproj|solutionrelative:wpftreeview\\directory\\viewmodels\\base\\relaycommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9E179502-65EB-40C8-BADB-7CCA61FC1C03}|WpfTreeView\\WpfTreeView.csproj|D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\wpftreeview\\directory\\data\\directoryitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9E179502-65EB-40C8-BADB-7CCA61FC1C03}|WpfTreeView\\WpfTreeView.csproj|solutionrelative:wpftreeview\\directory\\data\\directoryitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DirectoryStructureViewModel.cs",
+              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\WpfTreeView\\Directory\\ViewModels\\DirectoryStructureViewModel.cs",
+              "RelativeDocumentMoniker": "WpfTreeView\\Directory\\ViewModels\\DirectoryStructureViewModel.cs",
+              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\WpfTreeView\\Directory\\ViewModels\\DirectoryStructureViewModel.cs",
+              "RelativeToolTip": "WpfTreeView\\Directory\\ViewModels\\DirectoryStructureViewModel.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAA+AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-23T12:24:23.733Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "RelayCommand.cs",
+              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\WpfTreeView\\Directory\\ViewModels\\Base\\RelayCommand.cs",
+              "RelativeDocumentMoniker": "WpfTreeView\\Directory\\ViewModels\\Base\\RelayCommand.cs",
+              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\WpfTreeView\\Directory\\ViewModels\\Base\\RelayCommand.cs",
+              "RelativeToolTip": "WpfTreeView\\Directory\\ViewModels\\Base\\RelayCommand.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAVAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-23T12:14:32.913Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "BaseViewModel.cs",
+              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\WpfTreeView\\Directory\\ViewModels\\Base\\BaseViewModel.cs",
+              "RelativeDocumentMoniker": "WpfTreeView\\Directory\\ViewModels\\Base\\BaseViewModel.cs",
+              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\WpfTreeView\\Directory\\ViewModels\\Base\\BaseViewModel.cs",
+              "RelativeToolTip": "WpfTreeView\\Directory\\ViewModels\\Base\\BaseViewModel.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAeAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-23T11:46:10.221Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "DirectoryItemViewModel.cs",
+              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\WpfTreeView\\Directory\\ViewModels\\DirectoryItemViewModel.cs",
+              "RelativeDocumentMoniker": "WpfTreeView\\Directory\\ViewModels\\DirectoryItemViewModel.cs",
+              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\WpfTreeView\\Directory\\ViewModels\\DirectoryItemViewModel.cs",
+              "RelativeToolTip": "WpfTreeView\\Directory\\ViewModels\\DirectoryItemViewModel.cs",
+              "ViewState": "AQIAAA8AAAAAAAAAAAAuwCYAAAAeAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-23T11:31:05.635Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "DirectoryItem.cs",
+              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\WpfTreeView\\Directory\\Data\\DirectoryItem.cs",
+              "RelativeDocumentMoniker": "WpfTreeView\\Directory\\Data\\DirectoryItem.cs",
+              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\WpfTreeView\\Directory\\Data\\DirectoryItem.cs",
+              "RelativeToolTip": "WpfTreeView\\Directory\\Data\\DirectoryItem.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-22T05:39:39.643Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\WpfTreeView\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "WpfTreeView\\MainWindow.xaml",
+              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\WpfTreeView\\MainWindow.xaml",
+              "RelativeToolTip": "WpfTreeView\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-09-22T01:05:47.042Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "DirectoryStructure.cs",
+              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\WpfTreeView\\Directory\\DirectoryStructure.cs",
+              "RelativeDocumentMoniker": "WpfTreeView\\Directory\\DirectoryStructure.cs",
+              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\WpfTreeView\\Directory\\DirectoryStructure.cs",
+              "RelativeToolTip": "WpfTreeView\\Directory\\DirectoryStructure.cs",
+              "ViewState": "AQIAAAUAAAAAAAAAAAAmwBEAAAAYAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-22T05:38:24.758Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "HeaderToImageConverter.cs",
+              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\WpfTreeView\\HeaderToImageConverter.cs",
+              "RelativeDocumentMoniker": "WpfTreeView\\HeaderToImageConverter.cs",
+              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\WpfTreeView\\HeaderToImageConverter.cs",
+              "RelativeToolTip": "WpfTreeView\\HeaderToImageConverter.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABkAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-22T02:38:09.032Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\WpfTreeView\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "WpfTreeView\\MainWindow.xaml.cs",
+              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\WpfTreeView\\WpfTreeView\\MainWindow.xaml.cs",
+              "RelativeToolTip": "WpfTreeView\\MainWindow.xaml.cs",
+              "ViewState": "AQIAAAkAAAAAAAAAAADgvxEAAABBAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-22T01:05:46.342Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\WpfBasics\WpfApp1\bin\Debug\WpfApp1.exe.config
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\WpfBasics\WpfApp1\bin\Debug\WpfApp1.exe
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\WpfBasics\WpfApp1\bin\Debug\WpfApp1.pdb
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\WpfBasics\WpfApp1\obj\Debug\WpfBasics.csproj.AssemblyReference.cache
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\WpfBasics\WpfApp1\obj\Debug\MainWindow.g.cs
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\WpfBasics\WpfApp1\obj\Debug\App.g.cs
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\WpfBasics\WpfApp1\obj\Debug\WpfApp1_MarkupCompile.cache
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\WpfBasics\WpfApp1\obj\Debug\WpfApp1_MarkupCompile.lref
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\WpfBasics\WpfApp1\obj\Debug\MainWindow.baml
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\WpfBasics\WpfApp1\obj\Debug\WpfApp1.g.resources
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\WpfBasics\WpfApp1\obj\Debug\WpfApp1.Properties.Resources.resources
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\WpfBasics\WpfApp1\obj\Debug\WpfBasics.csproj.GenerateResource.cache
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\WpfBasics\WpfApp1\obj\Debug\WpfBasics.csproj.CoreCompileInputs.cache
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\WpfBasics\WpfApp1\obj\Debug\WpfApp1.exe
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\WpfBasics\WpfApp1\obj\Debug\WpfApp1.pdb
