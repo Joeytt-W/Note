@@ -1,0 +1,12 @@
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Core\bin\Debug\netstandard2.0\Fasetto.Word.Core.deps.json
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Core\bin\Debug\netstandard2.0\Fasetto.Word.Core.dll
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Core\bin\Debug\netstandard2.0\Fasetto.Word.Core.pdb
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Core\obj\Debug\netstandard2.0\Fasetto.Word.Core.csproj.AssemblyReference.cache
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Core\obj\Debug\netstandard2.0\Fasetto.Word.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Core\obj\Debug\netstandard2.0\Fasetto.Word.Core.AssemblyInfoInputs.cache
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Core\obj\Debug\netstandard2.0\Fasetto.Word.Core.AssemblyInfo.cs
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Core\obj\Debug\netstandard2.0\Fasetto.Word.Core.csproj.CoreCompileInputs.cache
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Core\obj\Debug\netstandard2.0\Fasetto.Word.Core.sourcelink.json
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Core\obj\Debug\netstandard2.0\Fasetto.Word.Core.csproj.Fody.CopyLocal.cache
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Core\obj\Debug\netstandard2.0\Fasetto.Word.Core.dll
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Core\obj\Debug\netstandard2.0\Fasetto.Word.Core.pdb

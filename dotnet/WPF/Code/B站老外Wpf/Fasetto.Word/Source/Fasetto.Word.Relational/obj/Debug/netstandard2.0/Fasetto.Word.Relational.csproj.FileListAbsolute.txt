@@ -1,0 +1,14 @@
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Relational\bin\Debug\netstandard2.0\Fasetto.Word.Relational.deps.json
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Relational\bin\Debug\netstandard2.0\Fasetto.Word.Relational.dll
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Relational\bin\Debug\netstandard2.0\Fasetto.Word.Relational.pdb
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Relational\bin\Debug\netstandard2.0\Fasetto.Word.Core.dll
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Relational\bin\Debug\netstandard2.0\Fasetto.Word.Core.pdb
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Relational\obj\Debug\netstandard2.0\Fasetto.Word.Relational.csproj.AssemblyReference.cache
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Relational\obj\Debug\netstandard2.0\Fasetto.Word.Relational.GeneratedMSBuildEditorConfig.editorconfig
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Relational\obj\Debug\netstandard2.0\Fasetto.Word.Relational.AssemblyInfoInputs.cache
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Relational\obj\Debug\netstandard2.0\Fasetto.Word.Relational.AssemblyInfo.cs
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Relational\obj\Debug\netstandard2.0\Fasetto.Word.Relational.csproj.CoreCompileInputs.cache
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Relational\obj\Debug\netstandard2.0\Fasetto.Word.Relational.sourcelink.json
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Relational\obj\Debug\netstandard2.0\Fasetto..B18D19AF.Up2Date
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Relational\obj\Debug\netstandard2.0\Fasetto.Word.Relational.dll
+D:\WorkSpaces\Self\Note\dotnet\WPF\Code\B站老外Wpf\Fasetto.Word\Source\Fasetto.Word.Relational\obj\Debug\netstandard2.0\Fasetto.Word.Relational.pdb
