@@ -11,13 +11,15 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("Fasetto.Word.Core")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("WPFTutorial")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bc55b9efc1c8aff3f1b53ca39255cb2101f33bf5")]
-[assembly: System.Reflection.AssemblyProductAttribute("Fasetto.Word.Core")]
-[assembly: System.Reflection.AssemblyTitleAttribute("Fasetto.Word.Core")]
+[assembly: System.Reflection.AssemblyProductAttribute("WPFTutorial")]
+[assembly: System.Reflection.AssemblyTitleAttribute("WPFTutorial")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
+[assembly: System.Runtime.Versioning.TargetPlatformAttribute("Windows7.0")]
+[assembly: System.Runtime.Versioning.SupportedOSPlatformAttribute("Windows7.0")]
 
 // 由 MSBuild WriteCodeFragment 类生成。
 

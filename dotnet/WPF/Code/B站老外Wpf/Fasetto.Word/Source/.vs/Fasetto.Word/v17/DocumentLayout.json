@@ -3,6 +3,18 @@
   "WorkspaceRootPath": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\Fasetto.Word\\Source\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{E69312C9-96E1-44CB-8CAA-237E09DFE433}|Fasetto.Word\\Fasetto.Word.csproj|d:\\workspaces\\self\\note\\dotnet\\wpf\\code\\b\u7AD9\u8001\u5916wpf\\fasetto.word\\source\\fasetto.word\\valueconverters\\basevalueconverter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E69312C9-96E1-44CB-8CAA-237E09DFE433}|Fasetto.Word\\Fasetto.Word.csproj|solutionrelative:fasetto.word\\valueconverters\\basevalueconverter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E69312C9-96E1-44CB-8CAA-237E09DFE433}|Fasetto.Word\\Fasetto.Word.csproj|d:\\workspaces\\self\\note\\dotnet\\wpf\\code\\b\u7AD9\u8001\u5916wpf\\fasetto.word\\source\\fasetto.word\\wpfviewmodels\\windowviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E69312C9-96E1-44CB-8CAA-237E09DFE433}|Fasetto.Word\\Fasetto.Word.csproj|solutionrelative:fasetto.word\\wpfviewmodels\\windowviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E69312C9-96E1-44CB-8CAA-237E09DFE433}|Fasetto.Word\\Fasetto.Word.csproj|d:\\workspaces\\self\\note\\dotnet\\wpf\\code\\b\u7AD9\u8001\u5916wpf\\fasetto.word\\source\\fasetto.word\\pages\\basepage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E69312C9-96E1-44CB-8CAA-237E09DFE433}|Fasetto.Word\\Fasetto.Word.csproj|solutionrelative:fasetto.word\\pages\\basepage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{E69312C9-96E1-44CB-8CAA-237E09DFE433}|Fasetto.Word\\Fasetto.Word.csproj|d:\\workspaces\\self\\note\\dotnet\\wpf\\code\\b\u7AD9\u8001\u5916wpf\\fasetto.word\\source\\fasetto.word\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{E69312C9-96E1-44CB-8CAA-237E09DFE433}|Fasetto.Word\\Fasetto.Word.csproj|solutionrelative:fasetto.word\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     }
@@ -19,6 +31,45 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "BaseValueConverter.cs",
+              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\Fasetto.Word\\Source\\Fasetto.Word\\ValueConverters\\BaseValueConverter.cs",
+              "RelativeDocumentMoniker": "Fasetto.Word\\ValueConverters\\BaseValueConverter.cs",
+              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\Fasetto.Word\\Source\\Fasetto.Word\\ValueConverters\\BaseValueConverter.cs",
+              "RelativeToolTip": "Fasetto.Word\\ValueConverters\\BaseValueConverter.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-03T13:06:33.573Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "BasePage.cs",
+              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\Fasetto.Word\\Source\\Fasetto.Word\\Pages\\BasePage.cs",
+              "RelativeDocumentMoniker": "Fasetto.Word\\Pages\\BasePage.cs",
+              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\Fasetto.Word\\Source\\Fasetto.Word\\Pages\\BasePage.cs",
+              "RelativeToolTip": "Fasetto.Word\\Pages\\BasePage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-03T13:05:54.271Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "WindowViewModel.cs",
+              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\Fasetto.Word\\Source\\Fasetto.Word\\WPFViewModels\\WindowViewModel.cs",
+              "RelativeDocumentMoniker": "Fasetto.Word\\WPFViewModels\\WindowViewModel.cs",
+              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\Fasetto.Word\\Source\\Fasetto.Word\\WPFViewModels\\WindowViewModel.cs",
+              "RelativeToolTip": "Fasetto.Word\\WPFViewModels\\WindowViewModel.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAvwDUAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-03T13:05:28.133Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\WPF\\Code\\B\u7AD9\u8001\u5916Wpf\\Fasetto.Word\\Source\\Fasetto.Word\\MainWindow.xaml",
               "RelativeDocumentMoniker": "Fasetto.Word\\MainWindow.xaml",
