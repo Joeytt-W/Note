@@ -41,7 +41,7 @@ $ sudo apt-get remove docker docker-engine docker.io containerd runc
 #### 设置存储库
 
 1. 更新软件包索引并安装软件包以允许使用 基于 HTTPS 的存储库：`apt``apt`
-
+   
    ```
    $ sudo apt-get update
    
@@ -53,14 +53,14 @@ $ sudo apt-get remove docker docker-engine docker.io containerd runc
    ```
 
 2. 添加 Docker 的官方 GPG 密钥：
-
+   
    ```
    $ sudo mkdir -p /etc/apt/keyrings
    $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
    ```
 
 3. 使用以下命令设置存储库：
-
+   
    ```
    $ echo \
      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
@@ -70,41 +70,40 @@ $ sudo apt-get remove docker docker-engine docker.io containerd runc
 #### 安装 Docker 引擎
 
 1. 更新包索引：`apt`
-
+   
    ```
    $ sudo apt-get update
    ```
-
+   
    > 运行时收到 GPG 错误？`apt-get update`
-   >
    > 默认[掩码](https://en.wikipedia.org/wiki/Umask)可能配置不正确，导致无法检测到 存储库公钥文件。尝试授予 Docker 的读取权限 更新包索引之前的公钥文件：
-   >
    > 
-   >
+   > 
+   > 
    > ```
    > $ sudo chmod a+r /etc/apt/keyrings/docker.gpg
    > $ sudo apt-get update
    > ```
 
 2. 安装 Docker Engine、containerd 和 Docker Compose。
-
+   
    - 最近的
    - 特定版本
-
+   
    要安装最新版本，请运行：
-
+   
    ```
     $ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
    ```
-
+   
    ------
 
 3. 通过运行映像验证 Docker 引擎安装是否成功：`hello-world`
-
+   
    ```
    $ sudo docker run hello-world
    ```
-
+   
    此命令下载测试映像并在容器中运行它。当 容器运行，它会打印确认消息并退出。
 
 您现在已成功安装并启动 Docker 引擎。用户 组存在，但不包含任何用户，这就是为什么需要使用来运行 Docker 命令的原因。继续执行[Linux 安装后](https://docs.docker.com/engine/install/linux-postinstall/)操作，以允许非特权用户运行 Docker 命令和其他可选 配置步骤。`docker``sudo`
@@ -124,29 +123,29 @@ $ sudo apt-get remove docker docker-engine docker.io containerd runc
 3. 转到并选择适用的体系结构（,,, OR）。`pool/stable/``amd64``armhf``arm64``s390x`
 
 4. 下载以下适用于 Docker 引擎、CLI、containerd 和 和 Docker Compose 包：`deb`
-
+   
    - `containerd.io_<version>_<arch>.deb`
    - `docker-ce_<version>_<arch>.deb`
    - `docker-ce-cli_<version>_<arch>.deb`
    - `docker-compose-plugin_<version>_<arch>.deb`
 
 5. 安装软件包。将以下示例中的路径更新为 您下载了 Docker 软件包的位置。`.deb`
-
+   
    ```
    $ sudo dpkg -i ./containerd.io_<version>_<arch>.deb \
      ./docker-ce_<version>_<arch>.deb \
      ./docker-ce-cli_<version>_<arch>.deb \
      ./docker-compose-plugin_<version>_<arch>.deb
    ```
-
+   
    Docker 守护程序会自动启动。
 
 6. 通过运行映像验证 Docker 引擎安装是否成功：`hello-world`
-
+   
    ```
    $ sudo docker run hello-world
    ```
-
+   
    此命令下载测试映像并在容器中运行它。当 容器运行，它会打印确认消息并退出。
 
 您现在已成功安装并启动 Docker 引擎。用户 组存在，但不包含任何用户，这就是为什么需要使用来运行 Docker 命令的原因。继续执行[Linux 安装后](https://docs.docker.com/engine/install/linux-postinstall/)操作，以允许非特权用户运行 Docker 命令和其他可选 配置步骤。`docker``sudo`
@@ -169,9 +168,9 @@ Docker提供了一个方便的脚本，https://get.docker.com/ 将Docker安装�
 - 该脚本并非旨在升级现有的 Docker 安装。什么时候 使用脚本更新现有安装，依赖项可能不是 更新到预期版本，导致版本过时。
 
 > 提示：运行前预览脚本步骤
->
+> 
 > 您可以使用选项运行脚本，以了解哪些步骤 脚本将在调用时运行：`DRY_RUN=1`
->
+> 
 > ```
 > $ curl -fsSL https://get.docker.com -o get-docker.sh
 > $ DRY_RUN=1 sudo sh ./get-docker.sh
@@ -189,7 +188,7 @@ Executing docker install script, commit: 7cae5f8b0decc17d6571f9f52eb840fbc13b273
 您现在已成功安装并启动 Docker 引擎。该服务在基于 Debian 的发行版上自动启动。基于基础 发行版，如 CentOS、Fedora、RHEL 或 SLES，您需要启动它 手动使用 appropriateor命令。作为消息 表示默认情况下，非 root 用户无法运行 Docker 命令。`docker``RPM``systemctl``service`
 
 > **以非特权用户身份使用 Docker，还是以无根模式安装？**
->
+> 
 > 安装脚本需要权限才能安装和 使用 Docker。如果要授予非 root 用户访问 Docker 的权限，请参阅[Linux 的安装后步骤](https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user)。 您也可以在没有权限的情况下安装 Docker，或配置为在 无根模式。有关在无根模式下运行 Docker 的说明，请参阅[以非 root 用户身份运行 Docker 守护程序（无根模式）。](https://docs.docker.com/engine/security/rootless/)`root``sudo``root`
 
 #### 安装预发行版
@@ -210,13 +209,13 @@ $ sudo sh test-docker.sh
 ## 卸载Docker引擎
 
 1. 卸载 Docker Engine、CLI、containerd 和 Docker Compose 软件包：
-
+   
    ```
    $ sudo apt-get purge docker-ce docker-ce-cli containerd.io docker-compose-plugin
    ```
 
 2. 主机上的映像、容器、卷或自定义配置文件 不会自动移除。要删除所有映像、容器和卷，请执行以下操作：
-
+   
    ```
    $ sudo rm -rf /var/lib/docker
    $ sudo rm -rf /var/lib/containerd
@@ -230,9 +229,9 @@ $ sudo sh test-docker.sh
 
 加速器
 
-| 加速器地址                               |
-| ---------------------------------------- |
-| https://ph2uascc.mirror.aliyuncs.com复制 |
+| 加速器地址                                |
+| ------------------------------------ |
+| https://ph2uascc.mirror.aliyuncs.com |
 
 操作文档
 
@@ -252,7 +251,13 @@ $ sudo sh test-docker.sh
 sudo mkdir -p /etc/docker
 sudo tee /etc/docker/daemon.json <<-'EOF'
 {
-  "registry-mirrors": ["https://ph2uascc.mirror.aliyuncs.com"]
+  "registry-mirrors": [
+                "https://registry.docker-cn.com",
+                "https://mirrors.tuna.tsinghua.edu.cn",
+                "https://aeckruos.mirror.aliyuncs.com",
+                "http://hub-mirror.c.163.com",
+                "https://docker.mirrors.ustc.edu.cn"
+    ]
 }
 EOF
 sudo systemctl daemon-reload
@@ -425,7 +430,7 @@ docker search 镜像名
 
 ## 查看所有镜像
 
-``` powershell
+```powershell
 docker images
 ```
 
@@ -498,7 +503,7 @@ docker rm 容器名
 
 ## 查看容器运行日志
 
-``` powershell
+```powershell
 docker logs 容器ID
 ```
 
@@ -552,7 +557,7 @@ docker commit -m="描述信息" -a="作者" 容器ID 要创建的目标镜像名
 ![](images/06.png)
 
 - 按照阿里云指令执行
-
+  
   ```powershell
   docker login --username=7847*****@qq.com registry.cn-hangzhou.aliyuncs.com
   
@@ -575,8 +580,8 @@ docker run -it --privileged=true -v 宿主主机绝对路径:容器内绝对路�
 
 ## 本地镜像推送到私有库
 
--  Docker Registry是官方提供的工具，可以用于构建私有镜像仓库
-
+- Docker Registry是官方提供的工具，可以用于构建私有镜像仓库
+  
   ```powershell
   docker pull registry
   
@@ -585,13 +590,13 @@ docker run -it --privileged=true -v 宿主主机绝对路径:容器内绝对路�
   ```
 
 - curl验证私服库上有什么镜像
-
+  
   ```powershell
   curl -XGET http://192.168.242.128:5000/v2/_catalog
   ```
 
 - 将新镜像zzyyubuntu:1.2修改符合私服规范的Tag
-
+  
   ```powershell
   # docker   tag   镜像:Tag   Host:Port/Repository:Tag
   
@@ -599,11 +604,11 @@ docker run -it --privileged=true -v 宿主主机绝对路径:容器内绝对路�
   ```
 
 - 修改配置文件使之支持http
-
+  
   ```powershell
   vim /etc/docker/daemon.json
   ```
-
+  
   ```json
   {
     "registry-mirrors": ["https://aa25jngu.mirror.aliyuncs.com"],
@@ -613,13 +618,13 @@ docker run -it --privileged=true -v 宿主主机绝对路径:容器内绝对路�
   ```
 
 - push推送到私服库
-
+  
   ```powershell
   docker push 192.168.242.128:5000/myubuntu:1.0
   ```
 
 - pull到本地并运行
-
+  
   ```powershell
   docker pull 192.168.242.128:5000/myubuntu:1.0
   ```
@@ -628,7 +633,7 @@ docker run -it --privileged=true -v 宿主主机绝对路径:容器内绝对路�
 
 - https://www.portainer.io/
 
--  https://docs.portainer.io/v/ce-2.9/start/install/server/docker/linux
+- https://docs.portainer.io/v/ce-2.9/start/install/server/docker/linux
 
 ## 安装
 
@@ -667,8 +672,3 @@ docker volume create portainer_data
 
 docker run -d -p 8000:8000 -p 9000:9000 --name portainer --restart always -v \\.\pipe\docker_engine:\\.\pipe\docker_engine -v portainer_data:C:\data portainer/portainer-ce:latest
 ```
-
-
-
-
-
