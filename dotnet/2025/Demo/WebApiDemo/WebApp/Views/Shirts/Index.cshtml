@@ -1,0 +1,27 @@
+﻿@model List<Shirt>
+
+<H3>Shirts</H3>
+<br />
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Brand</th>
+            <th>Gender</th>
+            <th>Color</th>
+            <th>Size</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var shirt in Model)
+        {
+            <tr>
+                <td>@shirt.Brand</td>
+                <td>@shirt.Gender</td>
+                <td>@shirt.Color</td>
+                <td>@shirt.Size</td>
+                <td>@(shirt.Price.HasValue? shirt.Price.Value.ToString("c"):"")</td>
+            </tr>
+        }
+    </tbody>
+</table> 
