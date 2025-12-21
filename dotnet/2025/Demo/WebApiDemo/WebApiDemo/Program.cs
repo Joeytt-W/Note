@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi;
 using WebApiDemo.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,16 +13,28 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Add services to the container.
 builder.Services.AddControllers();
 
+//openapi
+builder.Services.AddOpenApi();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+// openapi
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "WebApiDemo API V1");
+    });
+}
 
 // 告诉应用程序 如果请求使用HTTP协议 则重定向到HTTPS协议
 app.UseHttpsRedirection();
 
 // 将请求映射到控制器
 app.MapControllers();
-
 // 路由
 // "/shirts"
 //app.MapGet("/shirts", () =>

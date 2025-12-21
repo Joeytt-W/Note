@@ -3,40 +3,12 @@
   "WorkspaceRootPath": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{2CE1FA80-AB13-4AE3-9C90-685319357554}|WebApp\\WebApp.csproj|d:\\workspaces\\self\\note\\dotnet\\2025\\demo\\webapidemo\\webapp\\data\\webapiexecuter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2CE1FA80-AB13-4AE3-9C90-685319357554}|WebApp\\WebApp.csproj|solutionrelative:webapp\\data\\webapiexecuter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{DD25868F-BB43-ECE5-C189-4014C6857DD7}|WebApiDemo\\WebApiDemo.csproj|d:\\workspaces\\self\\note\\dotnet\\2025\\demo\\webapidemo\\webapidemo\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD25868F-BB43-ECE5-C189-4014C6857DD7}|WebApiDemo\\WebApiDemo.csproj|solutionrelative:webapidemo\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2CE1FA80-AB13-4AE3-9C90-685319357554}|WebApp\\WebApp.csproj|d:\\workspaces\\self\\note\\dotnet\\2025\\demo\\webapidemo\\webapp\\controllers\\shirtscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2CE1FA80-AB13-4AE3-9C90-685319357554}|WebApp\\WebApp.csproj|solutionrelative:webapp\\controllers\\shirtscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2CE1FA80-AB13-4AE3-9C90-685319357554}|WebApp\\WebApp.csproj|d:\\workspaces\\self\\note\\dotnet\\2025\\demo\\webapidemo\\webapp\\views\\shirts\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{2CE1FA80-AB13-4AE3-9C90-685319357554}|WebApp\\WebApp.csproj|solutionrelative:webapp\\views\\shirts\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2CE1FA80-AB13-4AE3-9C90-685319357554}|WebApp\\WebApp.csproj|d:\\workspaces\\self\\note\\dotnet\\2025\\demo\\webapidemo\\webapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2CE1FA80-AB13-4AE3-9C90-685319357554}|WebApp\\WebApp.csproj|solutionrelative:webapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2CE1FA80-AB13-4AE3-9C90-685319357554}|WebApp\\WebApp.csproj|d:\\workspaces\\self\\note\\dotnet\\2025\\demo\\webapidemo\\webapp\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{2CE1FA80-AB13-4AE3-9C90-685319357554}|WebApp\\WebApp.csproj|solutionrelative:webapp\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2CE1FA80-AB13-4AE3-9C90-685319357554}|WebApp\\WebApp.csproj|d:\\workspaces\\self\\note\\dotnet\\2025\\demo\\webapidemo\\webapp\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2CE1FA80-AB13-4AE3-9C90-685319357554}|WebApp\\WebApp.csproj|solutionrelative:webapp\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2CE1FA80-AB13-4AE3-9C90-685319357554}|WebApp\\WebApp.csproj|d:\\workspaces\\self\\note\\dotnet\\2025\\demo\\webapidemo\\webapp\\models\\repositories\\shirtrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2CE1FA80-AB13-4AE3-9C90-685319357554}|WebApp\\WebApp.csproj|solutionrelative:webapp\\models\\repositories\\shirtrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2CE1FA80-AB13-4AE3-9C90-685319357554}|WebApp\\WebApp.csproj|d:\\workspaces\\self\\note\\dotnet\\2025\\demo\\webapidemo\\webapp\\models\\shirt.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2CE1FA80-AB13-4AE3-9C90-685319357554}|WebApp\\WebApp.csproj|solutionrelative:webapp\\models\\shirt.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2CE1FA80-AB13-4AE3-9C90-685319357554}|WebApp\\WebApp.csproj|d:\\workspaces\\self\\note\\dotnet\\2025\\demo\\webapidemo\\webapp\\models\\validations\\shirt_ensurecorrectsizingattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2CE1FA80-AB13-4AE3-9C90-685319357554}|WebApp\\WebApp.csproj|solutionrelative:webapp\\models\\validations\\shirt_ensurecorrectsizingattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{DD25868F-BB43-ECE5-C189-4014C6857DD7}|WebApiDemo\\WebApiDemo.csproj|d:\\workspaces\\self\\note\\dotnet\\2025\\demo\\webapidemo\\webapidemo\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{DD25868F-BB43-ECE5-C189-4014C6857DD7}|WebApiDemo\\WebApiDemo.csproj|solutionrelative:webapidemo\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -46,116 +18,33 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "WebApiExecuter.cs",
-              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\WebApp\\Data\\WebApiExecuter.cs",
-              "RelativeDocumentMoniker": "WebApp\\Data\\WebApiExecuter.cs",
-              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\WebApp\\Data\\WebApiExecuter.cs",
-              "RelativeToolTip": "WebApp\\Data\\WebApiExecuter.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T10:50:56.048Z",
+              "DocumentIndex": 1,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\WebApiDemo\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "WebApiDemo\\Properties\\launchSettings.json",
+              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\WebApiDemo\\Properties\\launchSettings.json",
+              "RelativeToolTip": "WebApiDemo\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-12-21T05:52:16.115Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "Program.cs",
-              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\WebApp\\Program.cs",
-              "RelativeDocumentMoniker": "WebApp\\Program.cs",
-              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\WebApp\\Program.cs",
-              "RelativeToolTip": "WebApp\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\WebApiDemo\\Program.cs",
+              "RelativeDocumentMoniker": "WebApiDemo\\Program.cs",
+              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\WebApiDemo\\Program.cs",
+              "RelativeToolTip": "WebApiDemo\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T10:24:20.721Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "_Layout.cshtml",
-              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\WebApp\\Views\\Shared\\_Layout.cshtml",
-              "RelativeDocumentMoniker": "WebApp\\Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\WebApp\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "WebApp\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-12-14T10:19:15.974Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\WebApp\\Views\\Shirts\\Index.cshtml",
-              "RelativeDocumentMoniker": "WebApp\\Views\\Shirts\\Index.cshtml",
-              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\WebApp\\Views\\Shirts\\Index.cshtml",
-              "RelativeToolTip": "WebApp\\Views\\Shirts\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-12-14T10:15:15.815Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ShirtsController.cs",
-              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\WebApp\\Controllers\\ShirtsController.cs",
-              "RelativeDocumentMoniker": "WebApp\\Controllers\\ShirtsController.cs",
-              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\WebApp\\Controllers\\ShirtsController.cs",
-              "RelativeToolTip": "WebApp\\Controllers\\ShirtsController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAABKAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T10:14:28.407Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "HomeController.cs",
-              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\WebApp\\Controllers\\HomeController.cs",
-              "RelativeDocumentMoniker": "WebApp\\Controllers\\HomeController.cs",
-              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\WebApp\\Controllers\\HomeController.cs",
-              "RelativeToolTip": "WebApp\\Controllers\\HomeController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T10:14:27.783Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "ShirtRepository.cs",
-              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\WebApp\\Models\\Repositories\\ShirtRepository.cs",
-              "RelativeDocumentMoniker": "WebApp\\Models\\Repositories\\ShirtRepository.cs",
-              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\WebApp\\Models\\Repositories\\ShirtRepository.cs",
-              "RelativeToolTip": "WebApp\\Models\\Repositories\\ShirtRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T10:14:22.377Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Shirt_EnsureCorrectSizingAttribute.cs",
-              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\WebApp\\Models\\Validations\\Shirt_EnsureCorrectSizingAttribute.cs",
-              "RelativeDocumentMoniker": "WebApp\\Models\\Validations\\Shirt_EnsureCorrectSizingAttribute.cs",
-              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\WebApp\\Models\\Validations\\Shirt_EnsureCorrectSizingAttribute.cs",
-              "RelativeToolTip": "WebApp\\Models\\Validations\\Shirt_EnsureCorrectSizingAttribute.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T10:14:01.007Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Shirt.cs",
-              "DocumentMoniker": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\WebApp\\Models\\Shirt.cs",
-              "RelativeDocumentMoniker": "WebApp\\Models\\Shirt.cs",
-              "ToolTip": "D:\\WorkSpaces\\Self\\Note\\dotnet\\2025\\Demo\\WebApiDemo\\WebApp\\Models\\Shirt.cs",
-              "RelativeToolTip": "WebApp\\Models\\Shirt.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T10:13:23.482Z"
+              "WhenOpened": "2025-12-21T05:49:58.036Z",
+              "EditorCaption": ""
             }
           ]
         }

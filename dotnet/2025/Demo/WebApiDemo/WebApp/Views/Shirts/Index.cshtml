@@ -2,26 +2,45 @@
 
 <H3>Shirts</H3>
 <br />
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Brand</th>
-            <th>Gender</th>
-            <th>Color</th>
-            <th>Size</th>
-            <th>Price</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var shirt in Model)
-        {
+
+<div class="text-danger" asp-validation-summary="All"></div>
+
+@if(Model != null)
+{
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <td>@shirt.Brand</td>
-                <td>@shirt.Gender</td>
-                <td>@shirt.Color</td>
-                <td>@shirt.Size</td>
-                <td>@(shirt.Price.HasValue? shirt.Price.Value.ToString("c"):"")</td>
+                <th>Brand</th>
+                <th>Gender</th>
+                <th>Color</th>
+                <th>Size</th>
+                <th>Price</th>
+                <th></th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table> 
+        </thead>
+        <tbody>
+            @foreach (var shirt in Model)
+            {
+                <tr>
+                    <td>@shirt.Brand</td>
+                    <td>@shirt.Gender</td>
+                    <td>@shirt.Color</td>
+                    <td>@shirt.Size</td>
+                    <td>@(shirt.Price.HasValue? shirt.Price.Value.ToString("c"):"")</td>
+                    <td><a class="btn btn-link" asp-controller="shirts" asp-action="Update" asp-route-shirtId="@shirt.ShirtId">Edit</a></td>
+                    <td>
+                        <form method="post" asp-controller="shirts" asp-action="Delete" onsubmit="return confirm('Are you sure to delete?');">
+                            <input type="hidden" name="ShirtId" value="@shirt.ShirtId" />
+                            <button type="submit" class="btn btn-link text-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<br/>
+
+<a asp-controller="Shirts" asp-action="Create" class="btn btn-primary">Create</a>

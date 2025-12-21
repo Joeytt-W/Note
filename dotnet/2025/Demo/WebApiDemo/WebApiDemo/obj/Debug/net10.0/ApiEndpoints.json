@@ -77,5 +77,21 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApiDemo.Controllers.AuthorityController",
+    "Method": "Authenticate",
+    "RelativePath": "auth",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "credential",
+        "Type": "WebApiDemo.Authority.AppCredential",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]
