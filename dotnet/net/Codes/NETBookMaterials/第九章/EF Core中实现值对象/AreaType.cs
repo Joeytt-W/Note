@@ -1,1 +1,0 @@
-﻿enum AreaType { SquareKM, Hectare, CnMu }

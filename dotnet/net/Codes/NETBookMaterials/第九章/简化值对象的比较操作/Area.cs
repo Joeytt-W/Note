@@ -1,1 +1,0 @@
-﻿record Area(double Value, AreaType Unit);
