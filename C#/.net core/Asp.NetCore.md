@@ -564,11 +564,11 @@ public class HomeController:Controller{
 
 ## ILogger
 
-![img](images\004.png)
+![](images/004.png)
 
 注入：
 
-![img](images\005.png)
+![](images/005.png)
 
 ## 使用第三方Logger
 
