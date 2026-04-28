@@ -190,8 +190,13 @@ Python 全体系
 # pip search package           # 搜索包（已禁用）
 
 # pip 镜像源（国内加速）
-# pip install package -i https://pypi.tuna.tsinghua.edu.cn/simple
+# 一次下载
+# pip install package -i https://pypi.tuna.tsinghua.edu.cn/simple 
+
+# 永久配置
+# pip config set install.trusted-host pypi.tuna.tsinghua.edu.cn
 # pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+
 
 # ==========================================
 # 虚拟环境
