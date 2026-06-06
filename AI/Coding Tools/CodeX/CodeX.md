@@ -8,6 +8,6 @@
 
 [API keys - OpenAI API](https://platform.openai.com/api-keys)
 
-我的：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
+我的：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
 
 ![image-20260505230946302](images/image-20260505230946302.png)
