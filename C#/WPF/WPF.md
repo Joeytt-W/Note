@@ -60,7 +60,7 @@ dictionaryEntries.ForEach(args =>
 
 ## 控件和布局继承关系
 
-![](images/003.png)
+![](images/WPF/003.png)
 
 - 凡是继承于ContentControl的控件定义内容都用Content属性，除了TextBlock之外大部分都是用Content
 - 继承Control的控件大部分都有Padding，Margin属性，TextBlock则是单独实现了这两个属性
@@ -110,7 +110,7 @@ ShowGridLines属性(true/false)：行列分割线是否显示
 </Grid>
 ```
 
-![](images/002.png)
+![](images/WPF/002.png)
 
 ### StackPanel
 
@@ -136,7 +136,7 @@ ShowGridLines属性(true/false)：行列分割线是否显示
 </Window>
 ```
 
-![](images/016.png)
+![](images/WPF/016.png)
 
 - Orientation属性：按行排或者按列排，默认情况下按自上而下顺序排列(垂直Vertical；水平:Horizontal)
 - StackPanel主要用于垂直或水平排列元素、在容器的可用尺寸内放置有限个元素，元素的尺寸总和(长/高)不允许超过StackPanel的尺寸, 否则超出的部分不可见。
@@ -169,7 +169,7 @@ ShowGridLines属性(true/false)：行列分割线是否显示
 
 ```
 
-![](images/017.png)
+![](images/WPF/017.png)
 
 ### WrapPanel
 
@@ -217,7 +217,7 @@ ShowGridLines属性(true/false)：行列分割线是否显示
 
 ```
 
-![](images/020.png)
+![](images/WPF/020.png)
 
 ## Border元素
 
@@ -225,7 +225,7 @@ ShowGridLines属性(true/false)：行列分割线是否显示
 
 ### Border的属性
 
-![](images/018.png)
+![](images/WPF/018.png)
 
 ```xaml
 <Window x:Class="LearnWpf.MainWindow"
@@ -265,11 +265,11 @@ ShowGridLines属性(true/false)：行列分割线是否显示
 
 ```
 
-![](images/019.png)
+![](images/WPF/019.png)
 
 ## 常用的布局属性
 
-![](images/001.png)
+![](images/WPF/001.png)
 
 ## 依赖项属性
 
@@ -398,9 +398,9 @@ namespace LearnWpf
 
 ### FrameworkPropertyMetadata类的属性
 
-![](images/021.png)
+![](images/WPF/021.png)
 
-![](images/022.png)
+![](images/WPF/022.png)
 
 ### 依赖项属性的两个关键行为
 
@@ -473,7 +473,7 @@ private static object IsCoerceValueCallback(DependencyObject obj, object value)
 
 作用过程:
 
-![](images/023.png)
+![](images/WPF/023.png)
 
 # 路由事件
 
@@ -664,7 +664,7 @@ stpBtn.AddHandler(Button.ClickEvent, new RoutedEventHandler(DoSomething));
 
 效果：
 
-![009](images/009.png)
+![009](images/WPF/009.png)
 
 
 
@@ -678,7 +678,7 @@ stpBtn.AddHandler(Button.ClickEvent, new RoutedEventHandler(DoSomething));
 
 ### OneWay和TwoWay更新的时机
 
-![](images/024.png)
+![](images/WPF/024.png)
 
 ```xaml
 <Grid>
@@ -730,7 +730,7 @@ stpBtn.AddHandler(Button.ClickEvent, new RoutedEventHandler(DoSomething));
     </StackPanel>
 ```
 
-![](images/025.png)
+![](images/WPF/025.png)
 
 - DataContext: 从当前的元素树向上查找到第一个非空的DataContext属性为源对象
 
@@ -1166,13 +1166,13 @@ WPF允许在代码中以及在标记中的各个位置定义资源(和特定的�
 
 效果如下：
 
-![](images/004.png)
+![](images/WPF/004.png)
 
 ## 触发器
 
 ### 定义
 
-![](images/005.png)
+![](images/WPF/005.png)
 
 ### 声明触发器
 
@@ -1258,7 +1258,7 @@ WPF允许在代码中以及在标记中的各个位置定义资源(和特定的�
 </Window>
 ```
 
-![](images/006.png)
+![](images/WPF/006.png)
 
 ### MultiTrigger
 
@@ -1279,7 +1279,7 @@ WPF允许在代码中以及在标记中的各个位置定义资源(和特定的�
 - `MultiTrigger.Conditions` 设置条件
 - `MultiTrigger.Setters` 设置样式
 
-![](images/007.png)
+![](images/WPF/007.png)
 
 ### DataTrigger
 
@@ -1298,7 +1298,7 @@ WPF允许在代码中以及在标记中的各个位置定义资源(和特定的�
 
 - `DataTrigger` 监测数据达到条件使用特定样式
 
-![](images/008.png)
+![](images/WPF/008.png)
 
 ### MultiDataTrigger
 
@@ -1424,13 +1424,13 @@ WPF允许在代码中以及在标记中的各个位置定义资源(和特定的�
 
 ### 继承层次
 
-![](images/026.png)
+![](images/WPF/026.png)
 
 ### Shape类的重要属性
 
-![](images/027.png)
+![](images/WPF/027.png)
 
-![](images/028.png)
+![](images/WPF/028.png)
 
 > 如果不设置Stroke或者Fille属性图像不会显示
 
@@ -1443,7 +1443,7 @@ WPF允许在代码中以及在标记中的各个位置定义资源(和特定的�
 </StackPanel>
 ```
 
-![](images/029.png)
+![](images/WPF/029.png)
 
 ### 直线
 
@@ -1453,7 +1453,7 @@ WPF允许在代码中以及在标记中的各个位置定义资源(和特定的�
 </StackPanel>
 ````
 
-![](images/030.png)
+![](images/WPF/030.png)
 
 ### 折线
 
@@ -1465,7 +1465,7 @@ WPF允许在代码中以及在标记中的各个位置定义资源(和特定的�
 </Grid>
 ```
 
-![](images/031.png)
+![](images/WPF/031.png)
 
 **点划线（虚线）**
 
@@ -1483,11 +1483,11 @@ WPF允许在代码中以及在标记中的各个位置定义资源(和特定的�
 </Grid>
 ```
 
-![](images/032.png)
+![](images/WPF/032.png)
 
 ## 画刷
 
-![](images/033.png)
+![](images/WPF/033.png)
 
 ### 实心画刷**（**SolidColorBrush**）**
 
@@ -1513,7 +1513,7 @@ WPF允许在代码中以及在标记中的各个位置定义资源(和特定的�
 
 > 两种写法都一样，矩形的Fill属性为画刷Brush类型，Fill 为附加属性，可以直接对其赋值。
 
-![](images/034.png)
+![](images/WPF/034.png)
 
 ### 梯度画刷**（**GradientBrush**）**
 
@@ -1550,7 +1550,7 @@ WPF允许在代码中以及在标记中的各个位置定义资源(和特定的�
     </Canvas>
 ```
 
-![](images/035.png)
+![](images/WPF/035.png)
 
 #### RadialgradientBrush(圆形梯度画刷)
 
@@ -1580,7 +1580,7 @@ WPF允许在代码中以及在标记中的各个位置定义资源(和特定的�
     </Grid>
 ```
 
-![](images/036.png)
+![](images/WPF/036.png)
 
 ### 图像画刷**（**ImageBrush**）**
 
@@ -1602,7 +1602,7 @@ WPF允许在代码中以及在标记中的各个位置定义资源(和特定的�
     </Grid>
 ```
 
-![](images/037.png)
+![](images/WPF/037.png)
 
 ### 控件画刷**（**VisualBrush**）**
 
@@ -1631,7 +1631,7 @@ WPF允许在代码中以及在标记中的各个位置定义资源(和特定的�
     </Grid>
 ```
 
-![](images/038.png)
+![](images/WPF/038.png)
 
 ### 自定义画刷**（**DrawingBrush**）**
 
@@ -1686,11 +1686,11 @@ WPF允许在代码中以及在标记中的各个位置定义资源(和特定的�
     </Grid>
 ```
 
-![](images/039.png)
+![](images/WPF/039.png)
 
 ## 变换
 
-![](images/040.png)
+![](images/WPF/040.png)
 
 ### TranslateTransform平移变换
 
@@ -1725,7 +1725,7 @@ WPF允许在代码中以及在标记中的各个位置定义资源(和特定的�
        </Rectangle>
 ```
 
-![](images/041.png)
+![](images/WPF/041.png)
 
 ### ScaleTransform缩放变换
 
@@ -1759,7 +1759,7 @@ WPF允许在代码中以及在标记中的各个位置定义资源(和特定的�
    </Canvas>
 ```
 
-![](images/042.png)
+![](images/WPF/042.png)
 
 ### SkewTransform扭曲变换
 
@@ -1793,7 +1793,7 @@ WPF允许在代码中以及在标记中的各个位置定义资源(和特定的�
 
 ```
 
-![](images/043.png)
+![](images/WPF/043.png)
 
 ### TransformGroup组合变换
 
@@ -2097,9 +2097,9 @@ System.Windows.Media.Animation
 
 - 效果
 
-![](images/013.png)
+![](images/WPF/013.png)
 
-![](images/012.png)
+![](images/WPF/012.png)
 
 # 转换器
 
@@ -2147,7 +2147,7 @@ System.Windows.Media.Animation
 
 - 效果
 
-![](images/014.png)
+![](images/WPF/014.png)
 
 ## 多值转换器
 
@@ -2207,17 +2207,17 @@ System.Windows.Media.Animation
 
 - 效果
 
-![](images/015.png)
+![](images/WPF/015.png)
 
 # MVVMLight
 
 - 1.NuGet引用MVVM框架包
 
-![](images/010.png)
+![](images/WPF/010.png)
 
 引入该框架包之后, 默认会在目录下创建ViewModel层的示例代码
 
-![](images/011.png)
+![](images/WPF/011.png)
 
 - 第二步, 通过在MainViewModel中创建一些业务代码, 将其与MainWindow.xaml 通过上下文的方式关联起来, 而MainWindow则是通过Binding的写法 引用业务逻辑的部分
 - 在MainViewModel中, 添加同一个班级名称, 与学生列表, 分别用于显示在文本 和列表上展示, Command则用于绑定DataGrid的双击命令上, 通过双击, 展示点击行的学生信息

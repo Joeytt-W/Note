@@ -29,7 +29,7 @@ docker exec -t containerid /bin/bash
 
 ## redis数据类型
 
-![images](images\001.png)
+![images](images/Redis/001.png)
 
 
 

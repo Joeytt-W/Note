@@ -4,15 +4,15 @@
 
 [Install | Consul | HashiCorp Developer](https://developer.hashicorp.com/consul/downloads)
 
-![](Images/01.png)
+![](images/Consul&Ocelot/01.png)
 
 下载完成后解压，根据自己实际情况选择路径
 
 解压完成后，在解压路径下的地址栏输入“cmd”，打开命令行窗口。并键入“consul”，若出现一连串英文则表示安装成功
 
-![](Images/02.png)
+![](images/Consul&Ocelot/02.png)
 
-![](Images/03.png)
+![](images/Consul&Ocelot/03.png)
 
 ## 启动：
 
@@ -22,7 +22,7 @@
 
 http://localhost:8500
 
-![](Images/04.png)
+![](images/Consul&Ocelot/04.png)
 
 ## 服务注册Consul
 
@@ -143,7 +143,7 @@ dotnet ConsulWebApi.dll --url="http://127.0.0.1:9002" --ip="127.0.0.1" --port=90
 dotnet ConsulWebApi.dll --url="http://127.0.0.1:9003" --ip="127.0.0.1" --port=9003 --nameback="Third"
 ```
 
-![](Images/05.png)
+![](images/Consul&Ocelot/05.png)
 
 # Ocelot网关
 
@@ -274,7 +274,7 @@ dotnet ConsulWebApi.dll --url="http://127.0.0.1:9003" --ip="127.0.0.1" --port=90
    dotnet OcelotForWeatherApp.dll --url="http://127.0.0.1:8099" --ip="127.0.0.1" --port="8099"
    ```
 
-   ![](Images/06.png)
+   ![](images/Consul&Ocelot/06.png)
 
 # 问题
 
@@ -286,7 +286,7 @@ Ocelot版本在16.0.0之前的配置文件最外层节点的Routes应改为ReRou
 
 详细异常如下：
 
-![](Images/07.png)
+![](images/Consul&Ocelot/07.png)
 
 **成因**:造成这的问题是,consul支持SSL认证加入的处理。如果有node，下游地址使用node.name
 
@@ -298,5 +298,5 @@ Ocelot版本在16.0.0之前的配置文件最外层节点的Routes应改为ReRou
 **第二种:**在启动consul的时候,node参数可写成"hostname",在Hosts文件中对,node参数添加dns解析.
 consul agent -server -ui -bootstrap-expect=1 -data-dir=d:\consul -node=hostname -client=0.0.0.0 -bind=127.0.0.1 -datacenter=dc1 -join 127.0.0.1,hosts文件位置:C:\System32\drivers\etc，在hosts文件中添加一行"127.0.0.1 hostname"即可
 
-![](Images/08.png)
+![](images/Consul&Ocelot/08.png)
 

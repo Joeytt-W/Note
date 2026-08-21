@@ -420,7 +420,7 @@ systemctl enable docker
 docker search 镜像名
 ```
 
-![](images/01.png)
+![](images/Docker/01.png)
 
 - REPOSITORY:镜像的仓库源
 - TAG:镜像版本号
@@ -544,17 +544,17 @@ cat name.tar | docker import - 镜像用户/镜像名:镜像版本号
 docker commit -m="描述信息" -a="作者" 容器ID 要创建的目标镜像名:[TAG]
 ```
 
-![](images/02.png)
+![](images/Docker/02.png)
 
 ## 本地镜像推送到阿里云
 
-![](images/03.png)
+![](images/Docker/03.png)
 
-![](images/04.png)
+![](images/Docker/04.png)
 
-![](images/05.png)
+![](images/Docker/05.png)
 
-![](images/06.png)
+![](images/Docker/06.png)
 
 - 按照阿里云指令执行
   
@@ -566,9 +566,9 @@ docker commit -m="描述信息" -a="作者" 容器ID 要创建的目标镜像名
   docker push registry.cn-hangzhou.aliyuncs.com/wqy_testspace/myubuntu:[镜像版本号]
   ```
 
-![](images/07.png)
+![](images/Docker/07.png)
 
-![](images/08.png)
+![](images/Docker/08.png)
 
 ## 映射容器目录和宿主主机目录
 

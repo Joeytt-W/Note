@@ -26,9 +26,9 @@ curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del in
 
 > 如果出现如下报错：因为区域网络限制,推荐换用``Winget``
 
-![](images/1.png)
+![](<images/Claude Code/1.png>)
 
-![](images/2.png)
+![](<images/Claude Code/2.png>)
 
 ### ``Winget``(Windows推荐)
 
@@ -41,7 +41,7 @@ winget install Anthropic.ClaudeCode
 winget upgrade Anthropic.ClaudeCode
 ```
 
-![](images/3.png)
+![](<images/Claude Code/3.png>)
 
 ### ``npm``安装(推荐)
 
@@ -55,7 +55,7 @@ npm install -g https://gaccode.com/claudecode/install --registry=https://registr
 claude --version
 ```
 
-![](images/4.png)
+![](<images/Claude Code/4.png>)
 
 ## 获取``API``
 
@@ -87,17 +87,17 @@ claude --version
 
 打开 cc Switch，点击新建配置：
 
-![cc Switch 新建配置](images/5.png)
+![cc Switch 新建配置](<images/Claude Code/5.png>)
 
 填写 API 配置信息：
 
-![cc Switch API 配置](images/6.png)
+![cc Switch API 配置](<images/Claude Code/6.png>)
 
 配置完成后，点击「应用到 Claude Code 插件」：
 
-![应用到 Claude Code 插件](images/7.png)
+![应用到 Claude Code 插件](<images/Claude Code/7.png>)
 
-![](images/8.png)
+![](<images/Claude Code/8.png>)
 
 ### 方案二：手动配置
 
@@ -119,17 +119,17 @@ claude --version
 
 此时就可以待命令行使用
 
-![](images/11.png)
+![](<images/Claude Code/11.png>)
 
 ## 集成到``VsCode``
 
 1. 安装扩展
 
-   ![](images/10.png)
+   ![](<images/Claude Code/10.png>)
 
 2. 重启 VS Code，如果出现以下界面说明配置成功：
 
-![](images/9.png)
+![](<images/Claude Code/9.png>)
 
 ## skills相关
 
@@ -141,13 +141,13 @@ claude --version
 
 > 安装在项目根目录下的``.claude/skills/``
 
-![image-20260514194701900](images/image-20260514194701900.png)
+![image-20260514194701900](<images/Claude Code/image-20260514194701900.png>)
 
 ##### 用户级
 
 > 用户下``.claude/skills``
 
-![image-20260514200623942](images/image-20260514200623942.png)
+![image-20260514200623942](<images/Claude Code/image-20260514200623942.png>)
 
 #### 安装方式
 
@@ -155,15 +155,15 @@ claude --version
 
 下载后直接放到上面说的路径就可以
 
-![image-20260514195307201](images/image-20260514195307201.png)
+![image-20260514195307201](<images/Claude Code/image-20260514195307201.png>)
 
 ##### 工具
 
 例如skills.sh,复制里面的命令执行，就会下载到对应路径
 
-![image-20260514195650572](images/image-20260514195650572.png)
+![image-20260514195650572](<images/Claude Code/image-20260514195650572.png>)
 
-![image-20260514195701444](images/image-20260514195701444.png)
+![image-20260514195701444](<images/Claude Code/image-20260514195701444.png>)
 
 ##### 插件安装
 
@@ -173,7 +173,7 @@ claude --version
 /plugin install superpowers@claude-plugins-official
 ```
 
-![image-20260514201253918](images/image-20260514201253918.png)
+![image-20260514201253918](<images/Claude Code/image-20260514201253918.png>)
 
 第三方市场
 
@@ -183,9 +183,9 @@ claude --version
 /plugin install superpowers@superpowers-marketplace
 ```
 
-![image-20260514201034912](images/image-20260514201034912.png)
+![image-20260514201034912](<images/Claude Code/image-20260514201034912.png>)
 
-![image-20260514201125455](images/image-20260514201125455.png)
+![image-20260514201125455](<images/Claude Code/image-20260514201125455.png>)
 
 ### 创建skill
 
@@ -195,7 +195,7 @@ claude --version
 
 在你的个人 skills 文件夹中为 skill 创建一个目录。个人 skills 在你的所有项目中都可用
 
-![image-20260514201813808](images/image-20260514201813808.png)
+![image-20260514201813808](<images/Claude Code/image-20260514201813808.png>)
 
 #### 编写 SKILL.md
 

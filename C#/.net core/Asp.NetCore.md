@@ -222,13 +222,13 @@ public class HomeController:Controller{
 
 ## 路由
 
-![](images/051.png)
+![](images/Asp.NetCore/051.png)
 
 ## configureservice方法services.addRazorPages();
 
 ## configure方法
 
-![](images/052.png)
+![](images/Asp.NetCore/052.png)
 
 # TagHelpers
 
@@ -354,7 +354,7 @@ public class HomeController:Controller{
 
 ## 常用注解
 
-![img](images/001.png)
+![img](images/Asp.NetCore/001.png)
 
 - [Display(Name = "")] : 前端label可以显示Name的值
 
@@ -376,7 +376,7 @@ public class HomeController:Controller{
       }
   ```
 
-  ![img](images\002.png)
+  ![img](images/Asp.NetCore/002.png)
 
   ## ModelState.IsValid
 
@@ -517,7 +517,7 @@ public class HomeController:Controller{
 
 1. 项目的ViewComponents文件夹下建立xxxViewCompontnt类，继承ViewComponent,实现Invoke[Async]方法，返回Task<IViewComponentResult>[return view()],如果需要传参数，直接给Invoke[Async]加参数
 
-![](images/050.png)
+![](images/Asp.NetCore/050.png)
 
 2. 视图建在Shared/Components/xxx/Default.cshtml
 
@@ -564,11 +564,11 @@ public class HomeController:Controller{
 
 ## ILogger
 
-![](images/004.png)
+![](images/Asp.NetCore/004.png)
 
 注入：
 
-![](images/005.png)
+![](images/Asp.NetCore/005.png)
 
 ## 使用第三方Logger
 

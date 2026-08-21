@@ -4,7 +4,7 @@
 
 xUnit.net是针对.NET Framework的免费，开源，以社区为中心的单元测试工具。
 
-![](images/001.png)
+![](images/xUnit/001.png)
 
 ## 自动化测试的优点[#](https://www.cnblogs.com/AlexanderZhao/p/12369732.html#3584388098)
 
@@ -24,7 +24,7 @@ xUnit.net是针对.NET Framework的免费，开源，以社区为中心的单元
 UI测试是对应用的界面功能测试。
 实际上常用的是单元测试和集成测试。
 
-![](images/002.png)
+![](images/xUnit/002.png)
 
 ## 是测试行为还是测试私有方法[#](https://www.cnblogs.com/AlexanderZhao/p/12369732.html#3410002173)
 
@@ -98,12 +98,12 @@ public class CalculatorTests
 
 - 通过vs自带的测试资源管理器，找到测试项目，选择运行；
 
-![](images/003.png)
+![](images/xUnit/003.png)
 
 - 通过在ShouldAddEquals5方法上，右键选择运行测试或者快捷键(ctrl+r,t)
 - 通过cmd,在测试项目目录运行dotnet test
 
-![](images/004.png)
+![](images/xUnit/004.png)
 
 ## 测试的三个阶段：AAA[#](https://www.cnblogs.com/AlexanderZhao/p/12369732.html#2160948971)
 
@@ -111,9 +111,9 @@ public class CalculatorTests
 > Act: 在这里执行生产代码并返回结果。例如调用方法或者设置属性。
 > Assert:在这里检查结果，会产生测试通过或者失败两种结果。
 
-![](images/005.png)
+![](images/xUnit/005.png)
 
-![](images/006.png)
+![](images/xUnit/006.png)
 
 # Assert
 
@@ -128,7 +128,7 @@ Assert的结果可能是Pass或者Fail
 2. 而还有一种建议就是，每个test里面可以有多个asserts，只要这些asserts都是针对同一个行为。
    xUnit提供了以下类型的Assert:
 
-![](images/007.png)
+![](images/xUnit/007.png)
 
 ## Assert方法应用[#](https://www.cnblogs.com/AlexanderZhao/p/12369732.html#1503813260)
 
@@ -333,7 +333,7 @@ public void BeNewWhenCreated()
 
 测试分组搜索： 可以在测试资源管理器中按分组排列、搜索、运行测试
 
-![](images/008.png)
+![](images/xUnit/008.png)
 
 在dotnet cli中分组测试：
 

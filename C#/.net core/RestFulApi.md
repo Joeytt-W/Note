@@ -6,7 +6,7 @@ Webapi:使用http协议并通过网络调用的API (大多数API都不是RESTful
 
 示例：
 
-![](images/023.png)
+![](images/RestFulApi/023.png)
 
 # http状态码
 
@@ -68,11 +68,11 @@ Application/xml
 
 ## 请求：
 
-![](images/024.png)
+![](images/RestFulApi/024.png)
 
 ## 响应：
 
-![](images/025.png)
+![](images/RestFulApi/025.png)
 
 ## 设置**请求和响应格式不一致时返回**406状态码
 
@@ -262,31 +262,31 @@ public class CustomExceptionFilter : IExceptionFilter
 
 HEAD几乎和GET一样，只是HEAD的API不应该返回响应的body，HEAD可以用来在资源上获取一些信息
 
-![](images/026.png)
+![](images/RestFulApi/026.png)
 
 # 过滤和搜索
 
 ## Binding Source 特性
 
-![](images/027.png)
+![](images/RestFulApi/027.png)
 
-![](images/028.png)
+![](images/RestFulApi/028.png)
 
 ## ApiController更改后的规则
 
-![](images/029.png)
+![](images/RestFulApi/029.png)
 
 ## 过滤：根据条件限定返回的集合
 
 过滤的意思就是把某个字段的名字以及想要让该字段匹配的值一起传递给API，并将这些作为返回集合的一部分
 
-![](images/030.png)
+![](images/RestFulApi/030.png)
 
-![](images/031.png)
+![](images/RestFulApi/031.png)
 
 ## 搜索：根据预定义的规则，把符合条件的数据添加到集合
 
-![](images/032.png)
+![](images/RestFulApi/032.png)
 
 # Http Options 和 XM支持
 
@@ -296,11 +296,11 @@ Option请求可以获得针对某个api的通信选项信息
 
 ## 定义验证规则
 
-![](images/033.png)
+![](images/RestFulApi/033.png)
 
 ## Attribute示例
 
-![](images/034.png)
+![](images/RestFulApi/034.png)
 
 ## 自定义Attribute示例
 
@@ -320,7 +320,7 @@ public class EmployeeNoMustDifferentFromFirstNameAttribute : ValidationAttribute
 
 ```
 
-![](images/035.png)
+![](images/RestFulApi/035.png)
 
 ## IValidatableObject接口
 
@@ -356,7 +356,7 @@ public abstract class EmployeeAddOrUpdateDto : IValidatableObject
 
 ### 默认的
 
-![](images/036.png)
+![](images/RestFulApi/036.png)
 
 ### **自定义**
 
@@ -388,7 +388,7 @@ Services.ConfigureApiBehaviorOptions(setup =>
 
 # **缓存**
 
-![](images/037.png)
+![](images/RestFulApi/037.png)
 
 - 客户端缓存（存在于客户端，私有）
 
@@ -402,7 +402,7 @@ Services.ConfigureApiBehaviorOptions(setup =>
 
 > ResponseCache：只是添加一个响应头，并没有缓存任何数据
 
-![](images/038.png)
+![](images/RestFulApi/038.png)
 
 2. 注册服务
 
@@ -427,13 +427,13 @@ services.AddControllers(setup =>
 
 然后在特性中指定``[ResponseCache(CacheProfileName = "120CacheProfile")]``
 
-![](images/039.png)
+![](images/RestFulApi/039.png)
 
 ## 支持ETag验证
 
 ### Marvin.Cache.Headers库
 
-![](images/040.png)
+![](images/RestFulApi/040.png)
 
 ### Startup
 
@@ -445,7 +445,7 @@ services.AddControllers(setup =>
 
 ```
 
-![](images/041.png)
+![](images/RestFulApi/041.png)
 
 ### 过期模型和验证模型的一些参数
 
@@ -462,7 +462,7 @@ services.AddHttpCacheHeaders(expires =>//过期模型
             }); 
 ```
 
-![](images/042.png)
+![](images/RestFulApi/042.png)
 
 #### 对各个资源单独配置
 
@@ -483,21 +483,21 @@ services.AddHttpCacheHeaders(expires =>//过期模型
 
 请求时添加一个if-none-match请求头，把之前响应头中的ETag值给它，当请求资源发生改变后，再次请求会响应会带新的ETag，即不是缓存返回而是重新请求
 
-![](images/043.png)
+![](images/RestFulApi/043.png)
 
 # 并发控制
 
 ## 悲观并发控制
 
-![](images/044.png)
+![](images/RestFulApi/044.png)
 
 ## 乐观并发控制
 
-![](images/045.png)
+![](images/RestFulApi/045.png)
 
 ### 例子
 
-![](images/046.png)
+![](images/RestFulApi/046.png)
 
 # Swagger
 
@@ -536,7 +536,7 @@ public void ConfigureServices(IServiceCollection services)
 
 Xml文件输出路径为默认（startup.cs同一级）即可
 
-![](images/049.png)
+![](images/RestFulApi/049.png)
 
 ## API 信息和说明
 

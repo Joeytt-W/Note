@@ -4,15 +4,15 @@ https://studygolang.com/
 ## 配置``VSCode``开发环境
 1. 安装``Go``扩展
 
-![](Images/01.png)
+![](images/Go/01.png)
 
 2. Ctrl + Shift + P
 
-![](Images/02.png)
+![](images/Go/02.png)
 
 3. 全选安装
 
-![](Images/03.png)
+![](images/Go/03.png)
 
 > 如果下载速度缓慢或者遇到网络问题，可以使用Go代理，打开cmd执行 ``go env -w GO111MODULE=on``，然后再执行``go env -w GOPROXY=https://goproxy.cn,direct``
 
@@ -51,7 +51,7 @@ func main() {
 	fmt.Printf("%-15v $%4v\n", "SpaceX", 94.212417899808)
 }
 ```
-![](Images/04.png)
+![](images/Go/04.png)
 ### ``math/rand``
 - 可以生成伪随机数
 #### ``rand.Intn``返回一个指定返回的随机整数
@@ -80,7 +80,7 @@ func main() {
 	fmt.Println(num)
 }
 ```
-![](Images/05.png)
+![](images/Go/05.png)
 
 ## 类型
 ### 浮点型
@@ -97,7 +97,7 @@ func main() {
 	-	如果没有指定宽度，那么就按实际位数显示
 - 精度：小数点后边的位数	
 
-![](Images/06.png)
+![](images/Go/06.png)
 
 ```go
 package main
@@ -138,7 +138,7 @@ func main() {
 }
 ```
 
-![](Images/07.png)
+![](images/Go/07.png)
 
 ### 整数类型
 - Go语言提供了10种整数类型
@@ -150,13 +150,13 @@ func main() {
 - 五种是无符号的整数类型	
 	- 能表示正数、0
 
-![](Images/08.png)
+![](images/Go/08.png)
 
 - 整数类型，包括有符号和无符号，实际上一共有8种
 	- 他们的取值范围各不相同
 	- 与架构无关
 
-![](Images/09.png)
+![](images/Go/09.png)
 
 #### ``int``和``uint``
 - ``int``和``uint``是针对目标设备优化的类型
@@ -190,19 +190,19 @@ func main() {
 }
 ```
 
-![](Images/10.png)
+![](images/Go/10.png)
 
 #### 整数环绕
 
-![](Images/11.png)
+![](images/Go/11.png)
 
 #### 打印每个bit
 
-![](Images/12.png)
+![](images/Go/12.png)
 
 #### 整数类型最大值与最小值
 
-![](Images/13.png)
+![](images/Go/13.png)
 
 ### 大数
 - 对于较大的整数（超过10的十八次方）:``big.Int``
@@ -235,7 +235,7 @@ func main() {
 
 ### 字符串
 
-![](Images/14.png)
+![](images/Go/14.png)
 
 #### 字符串字面值和原始字符串字面值
 - 字符串字面值可以包含转移字符，如\n
@@ -344,18 +344,18 @@ func main() {
 
 #### 字符,``code point``,``runes``,``bytes``
 
-![](Images/18.png)
+![](images/Go/18.png)
 
-![](Images/15.png)
+![](images/Go/15.png)
 
 #### 类型别名
 
-![](Images/16.png)
+![](images/Go/16.png)
 
 #### 打印字符
 - 用``c%``
 
-![](Images/17.png)
+![](images/Go/17.png)
 
 ### 类型转换
 ```go
@@ -441,23 +441,23 @@ func main() {
 ## 函数
 ### 函数声明
 
-![](Images/19.png)
+![](images/Go/19.png)
 
 - 使用``func``关键字声明一个函数
 
-![](Images/20.png)
+![](images/Go/20.png)
 
 - 函数有多个参数如果类型是相同的可以只写一次
 
-![](Images/21.png)
+![](images/Go/21.png)
 
 - 函数返回值可以有多个
 
-![](Images/22.png)
+![](images/Go/22.png)
 
 ### 可变参数函数
 
-![](Images/23.png)
+![](images/Go/23.png)
 
 ## 方法
 - 方法可以理解为只属于某个类型的函数
@@ -465,15 +465,15 @@ func main() {
 ### 声明新类型
 - 使用关键字``type``声明一个新类型
 
-![](Images/24.png)
+![](images/Go/24.png)
 
 ### 通过方法为类型添加行为
 
-![](Images/25.png)
+![](images/Go/25.png)
 
 - 方法声明图解
 
-![](Images/26.png)
+![](images/Go/26.png)
 
 ### 方法调用
 - 使用type.方法名
@@ -558,7 +558,7 @@ func main() {
 }
 ```
 
-![](Images/27.png)
+![](images/Go/27.png)
 
 ### 二维数组
 ```go
@@ -579,7 +579,7 @@ func main() {
 }
 ```
 
-![](Images/28.png)
+![](images/Go/28.png)
 
 ### 切片(``Slice``)
 - 假设planets是一个数组，planets[0:4]就是一个切片，它切出了数组的前四个元素
@@ -620,7 +620,7 @@ func main() {
 }
 ```
 
-![](Images/29.png)
+![](images/Go/29.png)
 
 #### ``append``函数
 - ``len``函数获取切片的长度
@@ -652,15 +652,15 @@ func main() {
 }
 ```
 
-![](Images/30.png)
+![](images/Go/30.png)
 
 ## ``map``
 
-![](Images/31.png)
+![](images/Go/31.png)
 
 ### 声明
 
-![](Images/32.png)
+![](images/Go/32.png)
 
 ```go
 package main
@@ -689,7 +689,7 @@ func main() {
 }
 ```
 
-![](Images/33.png)
+![](images/Go/33.png)
 
 ### ``map``赋值给新变量或者作为参数时不会被复制（按引用传递）
 ```go
@@ -716,11 +716,11 @@ func main(){
 }
 ```
 
-![](Images/34.png)
+![](images/Go/34.png)
 
 ### ``make``函数预分配
 
-![](Images/35.png)
+![](images/Go/35.png)
 
 ```go
 package main
@@ -740,7 +740,7 @@ func main() {
 }
 ```
 
-![](Images/36.png)
+![](images/Go/36.png)
 
 ## 结构类型(``struct``)
 ```go
@@ -831,12 +831,12 @@ func exitOnError(err error) {
 }
 ```
 
-![](Images/37.png)
+![](images/Go/37.png)
 
 ### ``go``没有类的概念
 #### 构造函数
 
-![](Images/38.png)
+![](images/Go/38.png)
 
 ```go
 package main
@@ -880,7 +880,7 @@ func main() {
 ### 组合
 #### 方法转发
 
-![](Images/40.png)
+![](images/Go/40.png)
 
 ```go
 package main
@@ -931,11 +931,11 @@ func main() {
 }
 ```
 
-![](Images/39.png)
+![](images/Go/39.png)
 
 ## 接口
 
-![](Images/41.png)
+![](images/Go/41.png)
 
 ### 接口变量
 ```go
@@ -1041,7 +1041,7 @@ func main() {
 }
 ```
 
-![](Images/42.png)
+![](images/Go/42.png)
 
 ### 指针类型
 - 将``*``放在类型前面表示声明指针类型
@@ -1088,11 +1088,11 @@ func main() {
 }
 ```
 
-![](Images/43.png)
+![](images/Go/43.png)
 
 ### 内部指针
 
-![](Images/45.png)
+![](images/Go/45.png)
 
 ```go
 package main
@@ -1123,18 +1123,18 @@ func main() {
 }
 ```
 
-![](Images/46.png)
+![](images/Go/46.png)
 
 ### 隐式的指针
 - ``map``
 
-![](Images/47.png)
+![](images/Go/47.png)
 
 - ``slice``指向数组
 
-![](Images/48.png)
+![](images/Go/48.png)
 
-![](Images/49.png)
+![](images/Go/49.png)
 
 ### 指针和接口
 ```go
@@ -1180,7 +1180,7 @@ func main() {
 ```
 ## ``nil``
 
-![](Images/50.png)
+![](images/Go/50.png)
 
 ## 错误处理
 ### 内置类型``error``
@@ -1298,7 +1298,7 @@ func proverbs(name string) error {
 ## ``goroutine``和并发
 ### ``goroutine``
 
-![](Images/51.png)
+![](images/Go/51.png)
 
 #### 启动``goroutine``
 - 只需要在调用前面加上``go``关键字
@@ -1342,7 +1342,7 @@ func sleepyGopher(i int){
 }
 ```
 
-![](Images/52.png)
+![](images/Go/52.png)
 
 ### 通道``channel``
 - 通道可以在多个``goroutine``之间安全的传值
@@ -1384,10 +1384,10 @@ func sleepyGopher(id int,c chan int){
 }
 ```
 
-![](Images/53.png)
+![](images/Go/53.png)
 #### 使用``select``处理多个通道
 
-![](Images/54.png)
+![](images/Go/54.png)
 ```go
 package main
 
@@ -1420,13 +1420,13 @@ func sleepyGopher(id int, c chan int) {
 }
 ```
 
-![](Images/55.png)
+![](images/Go/55.png)
 
 > ``select``在不包含任何``case``的情况下将永远等待下去
 
 #### ``nil``通道
 
-![](Images/56.png)
+![](images/Go/56.png)
 
 ### 阻塞和死锁
 - 阻塞是进程(也可以是线程、协程)的状态之一（新建、就绪、运行、阻塞、终止). 指的是当数据未准备就绪，这个进程(线程、协程)一直等待，这就是阻塞

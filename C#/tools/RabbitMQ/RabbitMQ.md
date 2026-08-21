@@ -76,7 +76,7 @@ root@rabbit1:/# rabbitmqctl start_app
 root@rabbit1:/# exit
 ```
 
-![image-20210701161425398](images\image-20210701161425398.png)
+![image-20210701161425398](images/RabbitMQ/image-20210701161425398.png)
 
 #### 设置节点2
 
@@ -89,7 +89,7 @@ root@rabbit2:/# rabbitmqctl start_app
 root@rabbit2:/# exit
 ```
 
-![image-20210701161830775](images\image-20210701161830775.png)
+![image-20210701161830775](images/RabbitMQ/image-20210701161830775.png)
 
 #### 设置节点3
 
@@ -102,7 +102,7 @@ root@rabbit2:/# rabbitmqctl start_app
 root@rabbit2:/# exit
 ```
 
-![image-20210701162118259](images\image-20210701162118259.png)
+![image-20210701162118259](images/RabbitMQ/image-20210701162118259.png)
 
 **主要参数：**
 
@@ -112,7 +112,7 @@ root@rabbit2:/# exit
 
 启动了3个节点，1个磁盘节点和2个内存节点
 
-![image-20210701162703494](images\image-20210701162703494.png)
+![image-20210701162703494](images/RabbitMQ/image-20210701162703494.png)
 
 可以看到有很多节点
 
@@ -124,7 +124,7 @@ root@rabbit2:/# exit
 
 为了使队列成为镜像队列，需要创建一个策略来匹配队列，设置策略有两个键“ha-mode和 ha-params（可选）”。ha-params根据ha-mode设置不同的值，下表说明这些key的选项。
 
-![image-20210701162807198](images\image-20210701162807198.png)
+![image-20210701162807198](images/RabbitMQ/image-20210701162807198.png)
 
 #### 添加策略
 
@@ -137,7 +137,7 @@ root@rabbit1:/# rabbitmqctl set_policy ha-all "^" '{"ha-mode":"all"}'
 
 此策略会同步所在同一VHost中的交换器和队列数据。设置好policy之后，使用 http://ip:15672 再次进行访问，可以看到队列镜像同步。
 
-![image-20210701170207480](images\image-20210701170207480.png)
+![image-20210701170207480](images/RabbitMQ/image-20210701170207480.png)
 
 ## Windows安装
 
@@ -145,23 +145,23 @@ root@rabbit1:/# rabbitmqctl set_policy ha-all "^" '{"ha-mode":"all"}'
 
 下载地址：http://www.erlang.org/downloads 
 
-![](images/01.png)
+![](images/RabbitMQ/01.png)
 
 设置环境变量
 
-![](images/02.png)
+![](images/RabbitMQ/02.png)
 
 检查Erlang是否安装成功,打开 cmd ,输入 erl 后回车，如果看到如下的信息，表明安装成功
 
-![](images/03.png)
+![](images/RabbitMQ/03.png)
 
 ### 安装RabbitMQ服务端
 
 [Messaging that just works — RabbitMQ](https://www.rabbitmq.com/#getstarted)
 
-![](images/04.png)
+![](images/RabbitMQ/04.png)
 
-![](images/06.png)
+![](images/RabbitMQ/06.png)
 
 安装完之后
 
@@ -173,7 +173,7 @@ rabbitmq-service enable
 rabbitmq-service start
 ```
 
-![](images/05.png)
+![](images/RabbitMQ/05.png)
 
 假如显示node没有连接上，需要到C:\Windows目录下，将.erlang.cookie文件，拷贝到用户目录下 C:\Users\{用户名}，这是Erlang的Cookie文件，允许与Erlang进行交互。
 
@@ -183,7 +183,7 @@ rabbitmq-service start
 rabbitmqctl list_users
 ```
 
-![](images/07.png)
+![](images/RabbitMQ/07.png)
 
 RabbitMQ会为我们创建默认的用户名guest和密码guest，guest默认拥有RabbitMQ的所有权限。
 
@@ -223,11 +223,11 @@ rabbitmq-plugins enable rabbitmq_management
 
 然后重启服务（右键点击重启）
 
-![](images/08.png)
+![](images/RabbitMQ/08.png)
 
 rabbitmq_management默认地址为：127.0.0.1:15672
 
-![](images/09.png)
+![](images/RabbitMQ/09.png)
 
 ## Ubuntu安装
 
@@ -303,7 +303,7 @@ rabbitmqctl
 
 > vim /lib/systemd/system/**rabbitmq-server.service**
 
-![](images/10.png)
+![](images/RabbitMQ/10.png)
 
 2. 设置开机启动
 
@@ -317,7 +317,7 @@ rabbitmqctl
 
 ### 工作队列
 
-![](images/11.png)
+![](images/RabbitMQ/11.png)
 
 #### 轮循机制调度
 
@@ -366,25 +366,25 @@ channel.QueueDeclare("QueueHello", false, false, false, null);//创建一个名�
 
 ### 发布订阅模式
 
-![](images/12.png)
+![](images/RabbitMQ/12.png)
 
 ### 路由模式
 
-![](images/13.png)
+![](images/RabbitMQ/13.png)
 
 ### 主题模式
 
-![](images/14.png)
+![](images/RabbitMQ/14.png)
 
 ### 设置TTL（延时队列）
 
 #### 在申明队列时设置
 
-![](images/15.png)
+![](images/RabbitMQ/15.png)
 
 #### 给每条消息单独设置TTL
 
-![](images/16.png)
+![](images/RabbitMQ/16.png)
 
 ### 死信队列
 

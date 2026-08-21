@@ -4,7 +4,7 @@
 
 使用 .NET MAUI，可以从单个共享代码库开发可在 Android、iOS、macOS 和 Windows 上运行的应用。
 
-![](images/01.png)
+![](images/MAUI/01.png)
 
 NET MAUI 是开源的，是 Xamarin.Forms 的演变，它从移动方案扩展到桌面方案，UI 控件从头开始重新生成，以便实现性能和扩展性。 如果以前使用 Xamarin.Forms 生成跨平台用户界面，你将注意到 .NET MAUI 有许多相似之处。 但也有一些差异。 使用 .NET MAUI，可以使用单个项目创建多平台应用，但如有必要，可以添加特定于平台的源代码和资源。 .NET MAUI 的主要目标是在单个代码库中实现尽可能多的应用逻辑和 UI 布局。
 
@@ -18,7 +18,7 @@ NET MAUI 是开源的，是 Xamarin.Forms 的演变，它从移动方案扩展�
 
 .NET MAUI 提供了一个框架，用于为移动和桌面应用构建 UI。 下图显示了 .NET MAUI 应用的体系结构的高级视图：
 
-![](images/02.png)
+![](images/MAUI/02.png)
 
 ## .NET MAUI 提供的内容
 
@@ -71,11 +71,11 @@ NET MAUI 是开源的，是 Xamarin.Forms 的演变，它从移动方案扩展�
 
 Visual Studio Installer
 
-![](images/03.png)
+![](images/MAUI/03.png)
 
 # 项目结构
 
-![](images/04.png)
+![](images/MAUI/04.png)
 
 # 基于MVVM模式
 
@@ -84,7 +84,7 @@ Visual Studio Installer
 - Unget install CommunityToolkit.Mvvm
 - 添加MainViewModel.cs
 
-![](images/07.png)
+![](images/MAUI/07.png)
 
 - [ObservableProperty]和[RelayCommand]特性会在上图中的位置自动生成代码
 - 在MauiPrograme.cs注入

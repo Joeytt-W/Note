@@ -10,7 +10,7 @@
 
 我的：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
 
-![image-20260505230946302](images/image-20260505230946302.png)
+![image-20260505230946302](images/CodeX/image-20260505230946302.png)
 
 管理员秘钥：
 
@@ -72,7 +72,7 @@ Superpowers is available via the [official Codex plugin marketplace](https://git
 
 - Select `Install Plugin`.
 
-  ![image-20260608170046183](images/image-20260608170046183.png)
+  ![image-20260608170046183](images/CodeX/image-20260608170046183.png)
 
 #### Codex App
 

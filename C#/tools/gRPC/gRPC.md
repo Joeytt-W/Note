@@ -4,7 +4,7 @@
 
 # gRPC介绍
 
-![](images/01.png)
+![](images/gRPC/01.png)
 
 ## Protocol Buffers
 
@@ -313,35 +313,35 @@ service SearchService {
 
 ## gRPC结构
 
-![](images/03.png)
+![](images/gRPC/03.png)
 
 ## gRPC生命周期
 
-![](images/04.png)
+![](images/gRPC/04.png)
 
 ## gRPC身份认证
 
-![](images/05.png)
+![](images/gRPC/05.png)
 
 ## 消息传输类型
 
-![](images/06.png)
+![](images/gRPC/06.png)
 
 ### 一元消息
 
-![](images/07.png)
+![](images/gRPC/07.png)
 
 ### Server Streaming
 
-![](images/08.png)
+![](images/gRPC/08.png)
 
 ### Client Streaming
 
-![](images/09.png)
+![](images/gRPC/09.png)
 
 ### 双向Streaming
 
-![](images/10.png)
+![](images/gRPC/10.png)
 
 ## gRPC示例
 

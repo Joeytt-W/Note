@@ -2,7 +2,7 @@
 
 ## 一、ASP.NET MVC
 
-![image-20210424100212897](images/image-20210424100212897.png)
+![image-20210424100212897](images/mvc/image-20210424100212897.png)
 
 ASP.NET MVC：
 
@@ -32,7 +32,7 @@ ASP.NET MVC：
 
 ### 1.MVC生命周期
 
-![](images\002.png)
+![](images/mvc/002.png)
 
 ### 2.内置对象
 
@@ -54,7 +54,7 @@ ASP.NET MVC：
     }        
 ```
 
-![img](images\1.png)
+![img](images/mvc/1.png)
 
 2. Request.Form                        ==========》         Post请求
 
@@ -1354,7 +1354,7 @@ protected void Application_Error(object sender, EventArgs e)
 
 ### 2、Http请求的全流程补充
 
-![](images/03.png)
+![](images/mvc/03.png)
 
 ### 3、ASPNET_ISAPI如何 把请求转交给ASP.NET 管道
 
